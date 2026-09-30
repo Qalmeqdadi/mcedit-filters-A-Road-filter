@@ -43,13 +43,10 @@ function AuditInner() {
   const exportCsv = () => {
     const esc = (v: string) => `"${v.replace(/"/g, '""')}"`;
     const csv = ["timestamp,actor,actor_type,action,detail,stage", ...rows.map((e) => [e.timestamp, e.actor, e.actorType, e.action, e.detail ?? "", stageLabel(e.stage)].map(esc).join(","))].join("\n");
-    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "procurement-audit-trail-synthetic.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Audit trail exported", { description: `${rows.length} events (CSV)` });
+    navigator.clipboard?.writeText(csv).then(
+      () => toast.success("Audit trail copied as CSV", { description: `${rows.length} events — paste into Excel or a text file` }),
+      () => toast.error("Clipboard unavailable", { description: "Your browser blocked clipboard access." }),
+    );
   };
 
   const counts = {
@@ -67,7 +64,7 @@ function AuditInner() {
         description="Every agent action, human decision and control intervention — timestamped, attributed and immutable."
         actions={
           <Button variant="outline" onClick={exportCsv} disabled={rows.length === 0}>
-            <Download /> Export CSV
+            <Download /> Copy as CSV
           </Button>
         }
       />

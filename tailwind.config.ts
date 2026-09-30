@@ -7,8 +7,8 @@ const config: Config = {
     container: { center: true, padding: "1.5rem", screens: { "2xl": "1440px" } },
     extend: {
       fontFamily: {
-        sans: ['"Inter Variable"', "ui-sans-serif", "system-ui", "sans-serif"],
-        serif: ['"Source Serif 4 Variable"', "ui-serif", "Georgia", "serif"],
+        sans: ['"Inter Variable"', "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ['"Source Serif 4 Variable"', '"Source Serif 4"', "ui-serif", "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

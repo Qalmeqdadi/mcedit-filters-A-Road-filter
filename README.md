@@ -4,6 +4,10 @@ An illustrative Proof of Value (PoV) prepared for **Etihad Credit Bureau**, with
 
 > **All data is synthetic.** The suppliers, people, figures, contracts and events are fictional. No ECB systems or credit data are connected. External / credit-risk information is only shown as an example of use *where legally permitted and authorised*. Value figures are illustrative hypotheses to be validated during the PoV.
 
+## Hosted version (no install)
+
+`node artifact/build.mjs` bundles the whole app into one self-contained file, `artifact/dist/index.html`, which is published as a hosted page. It works like the full app, except that routing happens inside the page and the audit export copies CSV to the clipboard.
+
 ## Quick start
 
 ```bash
