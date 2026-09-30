@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 98%;
+    --foreground: 217 67% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 217 67% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 67% 12%;
+    --primary: 217 62% 16%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 218 33% 95%;
+    --secondary-foreground: 217 62% 16%;
+    --muted: 38 25% 95%;
+    --muted-foreground: 218 20% 44%;
+    --accent: 38 45% 94%;
+    --accent-foreground: 217 62% 16%;
+    --destructive: 4 76% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 36 16% 88%;
+    --input: 218 20% 86%;
+    --ring: 215 49% 51%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "cv11", "ss01", "ss03";
+  }
+
+  /* Grid children must be allowed to shrink below their content width (prevents mobile overflow). */
+  .grid > * {
+    min-width: 0;
+  }
+
+  ::selection {
+    background: #f4ebd8;
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #d9dfea transparent;
+  }
+  .guide-highlight {
+    position: relative;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #d0458a;
+    animation: guidePulse 1.8s ease-in-out infinite;
+  }
+  @keyframes guidePulse {
+    0%, 100% { box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(208, 69, 138, 0.9); }
+    50% { box-shadow: 0 0 0 2px #fff, 0 0 0 7px rgba(208, 69, 138, 0.25); }
+  }
+  .bg-grain {
+    background-image: radial-gradient(circle at 1px 1px, rgba(15, 34, 64, 0.045) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+}
+
+@media print {
+  aside, header, [data-guided-panel] { display: none !important; }
+}
