@@ -4,27 +4,34 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { sectorById } from '../data/sectors';
 import { useClient, type ClientProfile, type UseCase } from '../hooks/useClient';
-import { AI_MODEL, assessUseCases, type AiProposal, type AssessResult } from '../utils/aiAssessor';
+import { AI_MODEL, AssessorError, assessUseCases, type AiProposal, type AssessResult } from '../utils/aiAssessor';
 import { cn } from '../utils/cn';
 import { areaResults } from '../utils/workshop';
 
 const KEY_STORE = 'insight-ai-anthropic-key';
+const WS_STORE = 'insight-ai-anthropic-workspace';
 
-function loadKey(): { key: string; remembered: boolean } {
+function loadKey(): { key: string; workspace: string; remembered: boolean } {
   try {
     const remembered = window.localStorage.getItem(KEY_STORE);
-    if (remembered) return { key: remembered, remembered: true };
-    return { key: window.sessionStorage.getItem(KEY_STORE) ?? '', remembered: false };
+    if (remembered) return { key: remembered, workspace: window.localStorage.getItem(WS_STORE) ?? '', remembered: true };
+    return { key: window.sessionStorage.getItem(KEY_STORE) ?? '', workspace: window.sessionStorage.getItem(WS_STORE) ?? '', remembered: false };
   } catch {
-    return { key: '', remembered: false };
+    return { key: '', workspace: '', remembered: false };
   }
 }
 
-function saveKey(key: string, remember: boolean) {
+function saveKey(key: string, workspace: string, remember: boolean) {
   try {
     window.sessionStorage.setItem(KEY_STORE, key);
-    if (remember) window.localStorage.setItem(KEY_STORE, key);
-    else window.localStorage.removeItem(KEY_STORE);
+    window.sessionStorage.setItem(WS_STORE, workspace);
+    if (remember) {
+      window.localStorage.setItem(KEY_STORE, key);
+      window.localStorage.setItem(WS_STORE, workspace);
+    } else {
+      window.localStorage.removeItem(KEY_STORE);
+      window.localStorage.removeItem(WS_STORE);
+    }
   } catch {
     /* storage blocked: key lives for this visit only */
   }
@@ -57,6 +64,8 @@ function AiAssessDialog({ open, onClose }: { open: boolean; onClose: () => void 
   const stored = useRef(loadKey());
   const [phase, setPhase] = useState<Phase>('setup');
   const [apiKey, setApiKey] = useState(stored.current.key);
+  const [workspace, setWorkspace] = useState(stored.current.workspace);
+  const [needsWorkspace, setNeedsWorkspace] = useState(false);
   const [remember, setRemember] = useState(stored.current.remembered);
   const [research, setResearch] = useState(true);
   const [reuse, setReuse] = useState(true);
@@ -98,13 +107,14 @@ function AiAssessDialog({ open, onClose }: { open: boolean; onClose: () => void 
   };
 
   const run = async () => {
-    saveKey(apiKey.trim(), remember);
+    saveKey(apiKey.trim(), workspace.trim(), remember);
     setPhase('running');
     setProgress([]);
     abort.current = new AbortController();
     try {
       const res = await assessUseCases({
         apiKey: apiKey.trim(),
+        workspaceId: workspace.trim() || undefined,
         clientName: session.name,
         sector,
         context: session.aiContext,
@@ -120,6 +130,7 @@ function AiAssessDialog({ open, onClose }: { open: boolean; onClose: () => void 
       setAccepted(new Set(res.proposals.map((p) => p.id)));
       setPhase('review');
     } catch (e) {
+      if (e instanceof AssessorError && e.code === 'workspace') setNeedsWorkspace(true);
       setError(e instanceof Error ? e.message : 'Unexpected error.');
       setPhase('error');
     }
@@ -256,6 +267,25 @@ function AiAssessDialog({ open, onClose }: { open: boolean; onClose: () => void 
                         className="mt-1.5 w-full rounded-lg border border-line bg-surface px-3 py-2 font-mono text-[13px] font-normal text-ink outline-none focus:border-purple"
                       />
                     </label>
+                    <label className="mt-3 block text-[12.5px] font-semibold text-ink-2">
+                      Workspace ID <span className="font-normal text-ink-3">(only for organisation-level keys)</span>
+                      <input
+                        value={workspace}
+                        onChange={(e) => setWorkspace(e.target.value)}
+                        placeholder="wrkspc_…"
+                        autoComplete="off"
+                        aria-label="Workspace ID"
+                        className={cn(
+                          'mt-1.5 w-full rounded-lg border bg-surface px-3 py-2 font-mono text-[13px] font-normal text-ink outline-none focus:border-purple',
+                          needsWorkspace && !workspace.trim() ? 'border-stop ring-2 ring-stop/20' : 'border-line',
+                        )}
+                      />
+                    </label>
+                    {needsWorkspace && !workspace.trim() && (
+                      <p className="mt-1 text-[11.5px] leading-snug text-stop">
+                        This key needs a Workspace ID: Claude Console › Settings › Workspaces › open the workspace › copy its ID. Or use a key created inside a workspace.
+                      </p>
+                    )}
                     <label className="mt-2 flex items-center gap-2 text-[12.5px] text-ink-2">
                       <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="accent-[#6b2bd9]" />
                       Remember on this device (otherwise kept for this browser tab only)

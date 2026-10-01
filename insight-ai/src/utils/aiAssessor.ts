@@ -31,6 +31,8 @@ export interface AiProposal {
 
 export interface AssessInput {
   apiKey: string;
+  /** Needed only for organisation-level API keys (not scoped to a workspace). */
+  workspaceId?: string;
   clientName: string;
   sector: string | null;
   context: string;
@@ -48,12 +50,28 @@ export interface AssessResult {
   usage: { input: number; output: number; searches: number };
 }
 
-export class AssessorError extends Error {}
-
-function makeClient(apiKey: string) {
-  // The key is the consultant's own and stays in their browser; this is a static, backend-less app.
-  return new Anthropic({ apiKey, dangerouslyAllowBrowser: true, maxRetries: 2 });
+export class AssessorError extends Error {
+  constructor(
+    message: string,
+    readonly code?: 'workspace',
+  ) {
+    super(message);
+  }
 }
+
+function makeClient(apiKey: string, workspaceId?: string) {
+  // The key is the consultant's own and stays in their browser; this is a static, backend-less app.
+  const ws = workspaceId?.trim();
+  return new Anthropic({
+    apiKey,
+    dangerouslyAllowBrowser: true,
+    maxRetries: 2,
+    ...(ws ? { defaultHeaders: { 'anthropic-workspace-id': ws } } : {}),
+  });
+}
+
+const WORKSPACE_HELP =
+  'This API key belongs to the whole organisation, so the API needs to know which workspace to use. Either paste the Workspace ID (Claude Console › Settings › Workspaces › open the workspace › copy its ID, which starts with “wrkspc_”), or create a key inside a workspace (Settings › API Keys, with that workspace selected) and use that key instead.';
 
 /** Refusal fallback: on a policy decline the API re-runs the request on another model. */
 const FALLBACK = { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' as const };
@@ -125,7 +143,11 @@ function describeError(e: unknown): string {
   if (e instanceof Anthropic.AuthenticationError) return 'The API key was rejected. Check the key and try again.';
   if (e instanceof Anthropic.PermissionDeniedError) return 'This API key does not have permission for this request.';
   if (e instanceof Anthropic.RateLimitError) return 'Rate limit reached. Wait a minute and try again.';
-  if (e instanceof Anthropic.BadRequestError) return `The request was rejected: ${e.message}`;
+  if (e instanceof Anthropic.BadRequestError) {
+    if (/anthropic-workspace-id/i.test(e.message)) throw new AssessorError(WORKSPACE_HELP, 'workspace');
+    if (/workspace/i.test(e.message)) return `The workspace was not accepted. Check the Workspace ID belongs to this key’s organisation. (${e.message})`;
+    return `The request was rejected: ${e.message}`;
+  }
   if (e instanceof Anthropic.APIConnectionError) return 'Could not reach the Anthropic API. Check the internet connection (and any corporate proxy) and try again.';
   if (e instanceof Anthropic.APIError) return `Anthropic API error ${e.status ?? ''}: ${e.message}`;
   if (e instanceof Error && e.name === 'AbortError') return 'Cancelled.';
@@ -254,7 +276,7 @@ async function assessBatch(client: Anthropic, input: AssessInput, profile: Clien
 }
 
 export async function assessUseCases(input: AssessInput): Promise<AssessResult> {
-  const client = makeClient(input.apiKey);
+  const client = makeClient(input.apiKey, input.workspaceId);
   const usage = { input: 0, output: 0, searches: 0 };
   try {
     let profile = input.reuseProfile;

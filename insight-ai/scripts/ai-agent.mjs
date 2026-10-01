@@ -21,6 +21,9 @@ await page.route('https://api.anthropic.com/v1/messages**', async (route) => {
   const body = JSON.parse(req.postData());
   const headers = req.headers();
   calls.push({ body, headers });
+  if (mode === 'org-key' && !headers['anthropic-workspace-id']) {
+    return route.fulfill({ status: 400, headers: cors, contentType: 'application/json', body: JSON.stringify({ type: 'error', error: { type: 'invalid_request_error', message: 'This API key is not scoped to a workspace, so this request must include the anthropic-workspace-id header with the ID of the workspace to use. Add the header, or use an API key that is scoped to a workspace.' }, request_id: null }) });
+  }
   if (mode === 'unauthorized') {
     return route.fulfill({ status: 401, headers: cors, contentType: 'application/json', body: JSON.stringify({ type: 'error', error: { type: 'authentication_error', message: 'invalid x-api-key' } }) });
   }
@@ -132,6 +135,26 @@ await dlg.getByRole('button', { name: /Run assessment/ }).click();
 await dlg.getByText(/Review \d+ proposed assessments/).waitFor({ timeout: 15000 });
 check('rerun: no new research, only unassessed scope', !calls.some((c) => c.body.tools.some((t) => t.type === 'web_search_20260209')) && (await dlg.innerText()).includes('Review 1 proposed assessments'));
 await dlg.getByRole('button', { name: 'Discard' }).click();
+
+// Organisation-level key: needs a workspace ID (the exact error a real org key returns)
+mode = 'org-key';
+calls.length = 0;
+await page.getByRole('button', { name: /Assess with AI agent/ }).click();
+await dlg.getByLabel('I confirm data may be sent').check();
+await dlg.getByRole('button', { name: /Run assessment/ }).click();
+await dlg.getByText(/belongs to the whole organisation/).waitFor({ timeout: 15000 });
+check('org key: plain-language workspace guidance', (await dlg.innerText()).includes('wrkspc_'));
+await dlg.getByRole('button', { name: 'Back' }).click();
+check('org key: workspace field highlighted', (await dlg.getByLabel('Workspace ID').getAttribute('class')).includes('border-stop'));
+await dlg.getByLabel('Workspace ID').fill('wrkspc_test123');
+await dlg.getByRole('button', { name: /Run assessment/ }).click();
+await dlg.getByText(/Review \d+ proposed assessments/).waitFor({ timeout: 15000 });
+check('org key: header sent, run succeeds', calls.filter((c) => c.headers['anthropic-workspace-id'] === 'wrkspc_test123').length > 0);
+await dlg.getByRole('button', { name: 'Discard' }).click();
+await page.getByRole('button', { name: /Assess with AI agent/ }).click();
+check('org key: workspace ID remembered for this tab', (await dlg.getByLabel('Workspace ID').inputValue()) === 'wrkspc_test123');
+await dlg.getByLabel('Workspace ID').fill('');
+await dlg.getByRole('button', { name: 'Close' }).click();
 
 // Error path
 mode = 'unauthorized';
