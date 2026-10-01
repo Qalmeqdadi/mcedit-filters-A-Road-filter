@@ -9,6 +9,7 @@ import { bbox, bboxOfCollection, type GeoFeature } from "@/simulation/geo";
 import type { GovId } from "@/types/census";
 import { useI18n } from "@/hooks/useI18n";
 import { cn } from "@/lib/utils";
+import { hostedWorkerUrl, isHosted } from "@/lib/hosted";
 import { ProvenanceButton } from "@/components/ui/provenance";
 
 export type Scale = "seq" | "risk" | "pct";
@@ -65,7 +66,7 @@ export interface MapLine {
   label?: string;
 }
 
-if (typeof window !== "undefined") maplibregl.setWorkerUrl(`${window.location.origin}/maplibre/maplibre-gl-worker.mjs`);
+if (typeof window !== "undefined") maplibregl.setWorkerUrl(hostedWorkerUrl() ?? `${window.location.origin}/maplibre/maplibre-gl-worker.mjs`);
 
 /** leaves room for the toolbar (top) and legend (bottom) overlays */
 const FIT_PADDING = { top: 52, bottom: 46, left: 28, right: 28 };
@@ -367,7 +368,7 @@ export function JordanMap(props: Props) {
   const fmt = props.format ?? ((v: number) => String(Math.round(v)));
 
   return (
-    <div className={cn("relative overflow-hidden rounded-lg border border-line bg-[#e8e3d7]", props.className)} style={{ height }}>
+    <div className={cn("relative overflow-hidden rounded-lg border border-line bg-[#e8e3d7]", props.className)} style={{ height: typeof height === "number" ? `min(${height}px, 78vh)` : height }}>
       <div ref={container} style={{ position: "absolute", inset: 0 }} dir="ltr" />
       {/* top bar */}
       <div className="pointer-events-none absolute inset-x-2 top-2 flex items-start justify-between gap-2">
@@ -385,7 +386,7 @@ export function JordanMap(props: Props) {
         </div>
         <div className="pointer-events-auto flex items-center gap-1">
           <button type="button" onClick={() => setShowLabels((s) => !s)} className={cn("rounded-md px-2 py-1 text-[11.5px] font-medium shadow-sm", showLabels ? "bg-navy-800 text-white" : "bg-card/95 text-ink-700")}>{t("showLabels")}</button>
-          <button type="button" onClick={() => setBasemap((s) => !s)} title={L("Online context basemap (requires internet)", "خريطة أساس سياقية (تتطلب اتصالاً بالإنترنت)")} className={cn("rounded-md px-2 py-1 text-[11.5px] font-medium shadow-sm", basemap ? "bg-navy-800 text-white" : "bg-card/95 text-ink-700")}>{L("Basemap", "خريطة أساس")}</button>
+          {isHosted() ? null : <button type="button" onClick={() => setBasemap((s) => !s)} title={L("Online context basemap (requires internet)", "خريطة أساس سياقية (تتطلب اتصالاً بالإنترنت)")} className={cn("rounded-md px-2 py-1 text-[11.5px] font-medium shadow-sm", basemap ? "bg-navy-800 text-white" : "bg-card/95 text-ink-700")}>{L("Basemap", "خريطة أساس")}</button>}
           <button type="button" onClick={reset} className="flex items-center gap-1 rounded-md bg-card/95 px-2 py-1 text-[11.5px] font-medium text-ink-700 shadow-sm hover:text-ink-900"><RotateCcw size={12} />{t("resetView")}</button>
           {props.sources ? <span className="rounded-md bg-card/95 p-0.5 shadow-sm"><ProvenanceButton ids={props.sources} /></span> : null}
         </div>
@@ -398,7 +399,7 @@ export function JordanMap(props: Props) {
             <div className="flex items-end gap-0.5" dir="ltr">
               {activeClass.colors.map((c, i) => (
                 <div key={c} className="flex flex-col items-center">
-                  <div className="h-2.5 w-7" style={{ background: c, borderRadius: i === 0 ? "3px 0 0 3px" : i === activeClass.colors.length - 1 ? "0 3px 3px 0" : 0 }} />
+                  <div className="h-2.5 w-5 sm:w-7" style={{ background: c, borderRadius: i === 0 ? "3px 0 0 3px" : i === activeClass.colors.length - 1 ? "0 3px 3px 0" : 0 }} />
                 </div>
               ))}
             </div>
@@ -419,7 +420,7 @@ export function JordanMap(props: Props) {
         </div>
       )}
       {!props.selectedGov && props.onSelectGov && districtMode === "drill" ? (
-        <div className="pointer-events-none absolute bottom-9 right-2 flex items-center gap-1 rounded-md bg-navy-900/85 px-2 py-1 text-[11px] text-white"><Maximize2 size={11} />{t("clickToDrill")}</div>
+        <div className="pointer-events-none absolute bottom-9 right-2 hidden items-center gap-1 sm:flex rounded-md bg-navy-900/85 px-2 py-1 text-[11px] text-white"><Maximize2 size={11} />{t("clickToDrill")}</div>
       ) : null}
       {/* tooltip */}
       {hover && tip ? (

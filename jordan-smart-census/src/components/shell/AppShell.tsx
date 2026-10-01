@@ -8,6 +8,7 @@ import { Topbar } from "./Topbar";
 import { ProvenancePanel } from "./ProvenancePanel";
 import { AlertsDrawer } from "./AlertsDrawer";
 import { DemoTour } from "./DemoTour";
+import { Toaster } from "./Toaster";
 import { useI18n } from "@/hooks/useI18n";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <ProvenancePanel />
           <AlertsDrawer />
           <DemoTour />
+          <Toaster />
         </div>
       </EngineGate>
     </>

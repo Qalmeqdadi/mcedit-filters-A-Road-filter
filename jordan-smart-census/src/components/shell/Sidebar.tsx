@@ -24,7 +24,7 @@ export function Sidebar({ open, onNavigate }: { open: boolean; onNavigate: () =>
   const { t, ar } = useI18n();
   const path = usePathname();
   return (
-    <aside className={cn("no-print fixed inset-y-0 z-40 flex w-[264px] flex-col bg-navy-900 text-navy-100 transition-transform lg:translate-x-0", ar ? "right-0" : "left-0", open ? "translate-x-0" : ar ? "translate-x-full" : "-translate-x-full")}>
+    <aside style={{ paddingTop: "env(safe-area-inset-top, 0px)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }} className={cn("no-print fixed inset-y-0 z-40 flex w-[264px] flex-col bg-navy-900 text-navy-100 transition-transform lg:translate-x-0", ar ? "right-0" : "left-0", open ? "translate-x-0" : ar ? "translate-x-full" : "-translate-x-full")}>
       <div className="flex items-center gap-2.5 border-b border-white/8 px-4 py-3.5">
         <BrandMark />
         <div className="min-w-0">

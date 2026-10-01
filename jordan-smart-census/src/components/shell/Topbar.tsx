@@ -13,7 +13,7 @@ import { fmtDateTime, fmtPct } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { DEFAULT_SEED } from "@/simulation/generate";
 
-export function SimControls({ compact }: { compact?: boolean }) {
+export function SimControls({ compact, mobile }: { compact?: boolean; mobile?: boolean }) {
   const engine = useEngine();
   const { t, locale } = useI18n();
   const running = useApp((s) => s.running);
@@ -37,8 +37,8 @@ export function SimControls({ compact }: { compact?: boolean }) {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex items-center gap-1">
+    <div className={cn("flex items-center gap-2", mobile && "w-full")}>
+      <div className="flex shrink-0 items-center gap-1">
         {phase === "READY" ? (
           <Button data-demo="sim-start" variant="accent" size="sm" onClick={start}><Play size={13} fill="currentColor" />{t("simStart")}</Button>
         ) : running ? (
@@ -50,15 +50,15 @@ export function SimControls({ compact }: { compact?: boolean }) {
       </div>
       <Segmented<Speed> dark size="xs" value={speed} onChange={setSpeed} options={[1, 5, 10, 20].map((v) => ({ value: v as Speed, label: `${v}×` }))} />
       {!compact && (
-        <div className="hidden min-w-[150px] flex-col xl:flex">
-          <div className="flex items-center justify-between gap-2 text-[11px] text-navy-100">
-            <span className="font-semibold text-white tabular">{t("simDay")} {Math.min(day, engine.lastDay)}<span className="font-normal text-navy-300"> / {engine.config.fieldDays}</span></span>
-            <span className="text-navy-300 tabular">{fmtPct(agg.completionPct, 1)}</span>
+        <div className={cn("min-w-0 flex-col", mobile ? "flex flex-1" : "hidden min-w-[150px] xl:flex")}>
+          <div className="flex items-center justify-between gap-2 whitespace-nowrap text-[11px] text-navy-100">
+            <span className="min-w-0 truncate font-semibold text-white tabular">{mobile ? (locale === "ar" ? "اليوم" : "Day") : t("simDay")} {Math.min(day, engine.lastDay)}<span className="font-normal text-navy-300"> / {engine.config.fieldDays}</span></span>
+            <span className="shrink-0 text-navy-300 tabular">{fmtPct(agg.completionPct, 1)}</span>
           </div>
           <div className="mt-1 h-1 rounded-full bg-white/10">
             <div className="h-1 rounded-full bg-sand-300 transition-[width] duration-300" style={{ width: `${agg.completionPct * 100}%` }} />
           </div>
-          <div className="mt-0.5 text-[10px] text-navy-300 tabular">{phase === "READY" ? t("simReady") : finished ? t("simFinished") : `${running ? t("simRunning") : t("simPaused")} · ${fmtDateTime(engine.timeOf(Math.max(0, engine.step - 1)), locale)}`}</div>
+          <div className="mt-0.5 truncate text-[10px] text-navy-300 tabular">{phase === "READY" ? t("simReady") : finished ? t("simFinished") : `${running ? t("simRunning") : t("simPaused")} · ${fmtDateTime(engine.timeOf(Math.max(0, engine.step - 1)), locale)}`}</div>
         </div>
       )}
       <Modal open={confirm} onOpenChange={setConfirm} title={t("simReset")} footer={<><Button onClick={() => setConfirm(false)}>{t("cancel")}</Button><Button variant="danger" onClick={() => { setConfirm(false); setRunning(false); bumpEngineKey(); }}>{t("simReset")}</Button></>}>
@@ -132,24 +132,28 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
   const demoActive = useApp((s) => s.demoActive);
   const openAlerts = engine.alerts.filter((a) => a.status === "OPEN" || a.status === "ESCALATED").length;
   return (
-    <header className="no-print sticky top-0 z-30">
-      <div className="flex h-[52px] items-center gap-3 bg-navy-850 px-3 text-white lg:px-4">
+    <header className="no-print sticky z-30" style={{ top: "env(safe-area-inset-top, 0px)" }}>
+      <div className="flex h-[52px] items-center gap-1.5 bg-navy-850 px-2 text-white sm:gap-3 sm:px-3 lg:px-4">
         <button type="button" onClick={onMenu} className="rounded p-1.5 text-navy-100 hover:bg-white/10 lg:hidden" aria-label="Menu"><Menu size={18} /></button>
         <div className="hidden min-w-0 flex-col md:flex">
           <span className="truncate text-[12.5px] font-semibold leading-tight">{t("appSubtitle")}</span>
           <span className="truncate text-[10.5px] leading-tight text-navy-300">{ar ? "National Population, Housing & Decision Intelligence Platform" : "منصة السكان والمساكن وذكاء القرار الوطني"}</span>
         </div>
+        <span className="truncate text-[13px] font-semibold md:hidden">{t("appName")}</span>
         <div className="flex-1" />
-        <SimControls />
-        <div className="mx-1 hidden h-6 w-px bg-white/15 sm:block" />
+        <div className="hidden md:block"><SimControls /></div>
+        <div className="mx-1 hidden h-6 w-px bg-white/15 md:block" />
         <Button data-demo="alerts" variant="darkGhost" size="icon" onClick={() => setAlertsOpen(true)} aria-label={t("alertsShort")} title={t("alerts")} className="relative">
           <Bell size={15} />
           {openAlerts > 0 ? <span className="absolute -top-0.5 -end-0.5 min-w-[17px] rounded-full bg-jordan px-1 text-[9.5px] font-bold leading-[17px] tabular">{openAlerts > 999 ? "999+" : openAlerts}</span> : null}
         </Button>
-        <Button variant="darkGhost" size="icon" onClick={() => openProvenance(null)} aria-label={t("provenance")} title={t("provenance")}><Database size={15} /></Button>
+        <Button variant="darkGhost" size="icon" onClick={() => openProvenance(null)} aria-label={t("provenance")} title={t("provenance")} className="hidden sm:inline-flex"><Database size={15} /></Button>
         <Button variant="darkGhost" size="sm" onClick={() => setLocale(ar ? "en" : "ar")} aria-label={t("language")} className="font-semibold"><Languages size={14} />{ar ? "EN" : "عربي"}</Button>
         <SettingsPopover />
-        <Button variant={demoActive ? "dark" : "accent"} size="sm" onClick={() => setDemo(!demoActive, 0)} className="hidden sm:inline-flex"><PresentationIcon size={14} />{t("executiveDemo")}</Button>
+        <Button variant={demoActive ? "dark" : "accent"} size="sm" onClick={() => setDemo(!demoActive, 0)} aria-label={t("executiveDemo")}><PresentationIcon size={14} /><span className="hidden sm:inline">{t("executiveDemo")}</span></Button>
+      </div>
+      <div className="flex items-center border-t border-white/10 bg-navy-900 px-2 py-1.5 text-white md:hidden">
+        <SimControls mobile />
       </div>
       <div className="flex h-9 items-center justify-between gap-3 border-b border-line bg-card/95 px-3 backdrop-blur lg:px-5">
         <div className="flex min-w-0 items-center gap-2">

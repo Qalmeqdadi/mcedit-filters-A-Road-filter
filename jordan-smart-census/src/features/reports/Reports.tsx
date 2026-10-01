@@ -14,6 +14,7 @@ import { PyramidChart } from "@/components/charts/common";
 import { EChart } from "@/components/charts/echart";
 import { barH, VIZ } from "@/components/charts/builders";
 import { downloadCsv } from "@/lib/csv";
+import { isHosted } from "@/lib/hosted";
 import { anomalies, enumeratorPerformance, governorateSummary, pesResults, qualityIssues, scenarioResults } from "@/lib/exports";
 import { computeProfile } from "@/simulation/analytics";
 import { DEFAULT_PARAMS, PROJECTION_YEARS, runScenario } from "@/simulation/scenarios";
@@ -52,7 +53,7 @@ export function Reports() {
     <div>
       <div className="no-print">
         <PageHeader index="21" title={t("nav21")} subtitle={L("Download datasets as CSV (UTF-8 with BOM: Excel-compatible and Arabic-safe) or print the executive report below. Every file carries a data-nature column.", "نزّل مجموعات البيانات بصيغة CSV (UTF-8 متوافقة مع Excel وتدعم العربية) أو اطبع التقرير التنفيذي أدناه. يحمل كل ملف عموداً لطبيعة البيانات.")}>
-          <Button variant="primary" onClick={() => window.print()}><Printer size={14} />{L("Print / save as PDF", "طباعة / حفظ PDF")}</Button>
+          {isHosted() ? null : <Button variant="primary" onClick={() => window.print()}><Printer size={14} />{L("Print / save as PDF", "طباعة / حفظ PDF")}</Button>}
         </PageHeader>
         <div className="mb-4 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-3">
           {exportsList.map((x) => (
@@ -66,7 +67,7 @@ export function Reports() {
         {exportsList.some((x) => x.disabled) ? <Callout className="mb-4">{L("Some exports become available once the census simulation has produced issues/anomalies or the PES has been run.", "تتاح بعض الملفات بعد أن تنتج محاكاة التعداد مسائل وحالات شذوذ أو بعد تشغيل مسح ما بعد العدّ.")}</Callout> : null}
       </div>
 
-      <article className="print-page mx-auto max-w-[980px] rounded-lg border border-line bg-white px-8 py-7 shadow-sm">
+      <article className="print-page mx-auto max-w-[980px] rounded-lg border border-line bg-white px-4 py-5 shadow-sm sm:px-8 sm:py-7">
         <header className="flex items-start justify-between gap-4 border-b-2 border-navy-800 pb-4">
           <div className="flex items-center gap-3">
             <BrandMark size={40} />
@@ -114,10 +115,10 @@ export function Reports() {
 
         <section className="mt-5">
           <h2 className={sectionTitle}>4 · {L("Governorate summary", "ملخص المحافظات")}</h2>
-          <table className="w-full text-[12px]">
+          <div className="thin-scroll overflow-x-auto"><table className="w-full min-w-[560px] text-[12px]">
             <thead><tr className="border-b border-line-strong text-[10.5px] uppercase text-ink-500"><th className="py-1 text-start">{t("governorate")}</th><th className="text-end">{L("Reference pop. 2024", "السكان المرجعيون 2024")}</th><th className="text-end">EAs</th><th className="text-end">{t("kCompletion")}</th><th className="text-end">{t("kResponse")}</th><th className="text-end">{L("Enumerated (sim.)", "المعدودون (محاكاة)")}</th></tr></thead>
             <tbody>{world.governorates.map((g) => <tr key={g.id} className="border-b border-line/60"><td className="py-1">{tx(g.name)}</td><td className="text-end tabular">{fmtInt(g.refPopulation)}</td><td className="text-end tabular">{fmtInt(byGov[g.id].eas)}</td><td className="text-end tabular">{fmtPct(byGov[g.id].completionPct, 0)}</td><td className="text-end tabular">{fmtPct(byGov[g.id].responseRate)}</td><td className="text-end tabular">{fmtInt(byGov[g.id].persons)}</td></tr>)}</tbody>
-          </table>
+          </table></div>
         </section>
 
         <section className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -142,7 +143,7 @@ export function Reports() {
         <section className="mt-5">
           <h2 className={sectionTitle}>7 · {L("Data provenance", "مصادر البيانات")}</h2>
           <table className="w-full text-[11.5px]">
-            <tbody>{sources.map((s) => <tr key={s.id} className="border-b border-line/60 align-top"><td className="py-1 pe-2"><NatureBadge nature={s.nature} compact /></td><td className="py-1 pe-2 font-medium">{tx(s.name)}</td><td className="py-1 text-ink-500">{s.source}{s.license ? ` · ${s.license}` : ""}</td></tr>)}</tbody>
+            <tbody>{sources.map((s) => <tr key={s.id} className="border-b border-line/60 align-top"><td className="py-1 pe-2"><NatureBadge nature={s.nature} compact /></td><td className="py-1 pe-2 font-medium">{tx(s.name)}</td><td className="py-1 text-ink-500 [overflow-wrap:anywhere]">{s.source}{s.license ? ` · ${s.license}` : ""}</td></tr>)}</tbody>
           </table>
           <p className="mt-3 text-[11px] leading-relaxed text-ink-500">{L("All operational, microdata, PES and projection figures in this report are simulated for demonstration. Reference data are labelled and must be verified against official Department of Statistics releases before use. No real personal data are included.", "جميع الأرقام التشغيلية والبيانات الجزئية ومسح ما بعد العدّ والإسقاطات في هذا التقرير محاكاة لأغراض العرض. البيانات المرجعية موسومة ويجب التحقق منها مقابل الإصدارات الرسمية لدائرة الإحصاءات العامة قبل الاستخدام. لا يتضمن التقرير بيانات شخصية حقيقية.")}</p>
         </section>

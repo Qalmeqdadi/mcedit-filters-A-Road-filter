@@ -12,6 +12,7 @@ import { Modal } from "@/components/ui/dialog";
 import { NatureBadge, SeverityBadge } from "@/components/ui/badges";
 import { LABELS } from "@/lib/i18n/labels";
 import { cn } from "@/lib/utils";
+import { downloadText } from "@/lib/csv";
 import { applies, emptyForm, newPerson, personAge, validateForm, WG_KEYS, type QForm, type QPerson } from "./schema";
 
 const DRAFT_KEY = "jsc-questionnaire-draft";
@@ -279,7 +280,7 @@ export function Questionnaire() {
                 ))}
               </ul>
             )}
-            <Button size="xs" className="mt-2" onClick={() => { const blob = new Blob([JSON.stringify(engine.questionnaire, null, 2)], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "questionnaires.json"; a.click(); }} disabled={!engine.questionnaire.length}><FileDown size={12} />JSON</Button>
+            <Button size="xs" className="mt-2" onClick={() => downloadText("questionnaires.json", JSON.stringify(engine.questionnaire, null, 2))} disabled={!engine.questionnaire.length}><FileDown size={12} />JSON</Button>
           </Panel>
         </div>
       </div>

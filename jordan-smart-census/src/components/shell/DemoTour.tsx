@@ -79,7 +79,7 @@ export function DemoTour() {
   const Prev = ar ? ChevronRight : ChevronLeft;
   const Next = ar ? ChevronLeft : ChevronRight;
   return (
-    <div className="no-print fixed bottom-4 left-1/2 z-[65] w-[min(720px,94vw)] -translate-x-1/2 rounded-xl border border-navy-700 bg-navy-900 text-white shadow-2xl">
+    <div style={{ marginBottom: "env(safe-area-inset-bottom, 0px)" }} className="no-print fixed bottom-4 left-1/2 z-[65] w-[min(720px,calc(100vw-24px))] -translate-x-1/2 rounded-xl border border-navy-700 bg-navy-900 text-white shadow-2xl">
       <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2">
         <PresentationIcon size={14} className="text-sand-300" />
         <span className="text-[11px] font-semibold uppercase tracking-wider text-sand-300">{L("Executive demo", "العرض التنفيذي")}</span>
@@ -89,12 +89,12 @@ export function DemoTour() {
         </div>
         <button type="button" onClick={() => setDemo(false)} className="rounded p-1 text-navy-300 hover:bg-white/10 hover:text-white" aria-label={L("Exit demo", "إنهاء العرض")}><X size={15} /></button>
       </div>
-      <div className="flex items-end gap-4 px-4 py-3">
+      <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-end sm:gap-4">
         <div className="min-w-0 flex-1">
           <div className="text-[15px] font-semibold">{tx(s.title)}</div>
           <p className="mt-1 text-[12.5px] leading-relaxed text-navy-100">{tx(s.body)}</p>
         </div>
-        <div className="flex shrink-0 gap-1.5">
+        <div className="flex shrink-0 justify-end gap-1.5">
           <Button variant="dark" size="sm" disabled={step === 0} onClick={() => setDemo(true, step - 1)}><Prev size={14} />{L("Previous", "السابق")}</Button>
           {step < steps.length - 1 ? (
             <Button variant="accent" size="sm" onClick={() => setDemo(true, step + 1)}>{L("Next", "التالي")}<Next size={14} /></Button>
