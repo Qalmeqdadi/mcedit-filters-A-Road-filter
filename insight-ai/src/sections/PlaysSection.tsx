@@ -52,7 +52,6 @@ export function PlaysSection() {
       title="Six ways Insight lands and expands"
       lead="Each play starts from a trigger the client recognises, lands with one service’s entry offer, expands across the portfolio and settles into recurring operational value."
       aside={<TypeBadge category="play" />}
-      tone="surface"
     >
       <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
         <PlayTabs active={active} onChange={setActive} />

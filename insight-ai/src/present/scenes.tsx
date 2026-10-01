@@ -7,6 +7,7 @@ import { sectorById } from '../data/sectors';
 import { serviceById, services } from '../data/services';
 import { categories } from '../data/taxonomy';
 import type { AcceleratorFilter, AcceleratorId, ControlDomainId, PlayId, SectorId, ServiceId, StageId } from '../data/types';
+import { BrandMark } from '../components/BrandMark';
 import { Drawer } from '../components/Drawer';
 import { Icon } from '../components/Icon';
 import { TypeBadge } from '../components/TypeBadge';
@@ -69,8 +70,8 @@ function TitleScene() {
       <div aria-hidden className="absolute top-[-120px] right-[-60px] h-[640px] w-[760px] rounded-full bg-[radial-gradient(closest-side,rgba(107,43,217,0.12),transparent)]" />
       <div aria-hidden className="absolute right-[260px] bottom-[-120px] h-[480px] w-[560px] rounded-full bg-[radial-gradient(closest-side,rgba(212,0,111,0.10),transparent)]" />
       <div className="relative">
-        <p className="text-[20px] font-semibold tracking-[0.3em] text-ink uppercase">{brand.name}</p>
-        <h1 className="mt-6 text-[112px] leading-[0.98] font-semibold tracking-[-0.04em] text-ink">
+        <BrandMark size="hero" />
+        <h1 className="mt-10 text-[112px] leading-[0.98] font-semibold tracking-[-0.04em] text-ink">
           AI Transformation.
           <br />
           <span className="text-control-gradient">Built to Operate.</span>

@@ -11,7 +11,6 @@ export function Section({
   aside,
   children,
   className,
-  tone = 'canvas',
 }: {
   id: string;
   number: string;
@@ -21,17 +20,14 @@ export function Section({
   aside?: ReactNode;
   children: ReactNode;
   className?: string;
-  tone?: 'canvas' | 'surface' | 'mist';
 }) {
   return (
     <section
       id={id}
       aria-labelledby={`${id}-title`}
       className={cn(
-        'border-t border-line-soft py-20 md:py-24',
-        tone === 'surface' && 'bg-surface',
-        tone === 'mist' && 'bg-mist/60',
-        className,
+        'pt-10 pb-14 md:pt-14 md:pb-16',
+                className,
       )}
     >
       <div className="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-10">

@@ -31,7 +31,7 @@ await page.waitForTimeout(400);
 const hashHome = await page.evaluate(() => location.hash);
 await page.keyboard.press('Escape');
 await page.waitForTimeout(400);
-const explore = await page.evaluate(() => !document.querySelector('[aria-roledescription="presentation"]') && !!document.querySelector('header.sticky'));
+const explore = await page.evaluate(() => !document.querySelector('[aria-roledescription="presentation"]') && !!document.querySelector('aside [data-nav]'));
 console.log({ total, hashAtEnd, hashHome, backToExplore: explore });
 console.log('overflow:', overflows.length ? overflows.join(', ') : 'none');
 console.log(errors.length ? errors.join('\n') : 'no console errors');

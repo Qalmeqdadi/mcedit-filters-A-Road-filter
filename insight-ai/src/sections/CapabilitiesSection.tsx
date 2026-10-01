@@ -232,7 +232,6 @@ export function CapabilitiesSection() {
       title="How Insight delivers"
       lead="Six capability groups sit beneath the six services. Select any capability to see every service offering that consumes it."
       aside={<TypeBadge category="capability" />}
-      tone="surface"
     >
       <CapabilityExplorer />
       {detail && <CoverageMatrix />}

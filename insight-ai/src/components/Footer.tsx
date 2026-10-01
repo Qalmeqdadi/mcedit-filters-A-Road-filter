@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="border-t border-line-soft bg-canvas">
       <div className="mx-auto flex max-w-[1360px] flex-col gap-4 px-4 py-10 text-[12.5px] text-ink-3 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-10">
         <div className="flex items-center gap-3">
-          <BrandMark />
+          <BrandMark size="sm" />
           <span className="h-4 w-px bg-line" />
           <span>{brand.line}</span>
         </div>

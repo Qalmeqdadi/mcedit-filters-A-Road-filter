@@ -17,6 +17,15 @@ Insight leadership, sales teams and senior clients one coherent view of:
 Static React app (Vite, TypeScript, Tailwind CSS, Framer Motion, Lucide). There is no backend, no API keys and no
 runtime network calls: fonts are bundled, so it works offline once dependencies are installed.
 
+## Single HTML file
+
+`insight-ai.html` at the repository root is the whole app in one self-contained file, with scripts, styles, fonts and
+the logo all inlined. Open it in any browser; no install is needed. Rebuild it with:
+
+```bash
+cd insight-ai && npx vite build -c vite.single.config.ts && cp dist-single/index.html ../insight-ai.html
+```
+
 ## Run
 
 ```bash
@@ -35,7 +44,7 @@ Vite automatically (`vercel.json` pins the build command and the `dist` output).
 
 | | |
 |---|---|
-| **Explore mode** | A scrolling site with twelve sections, sticky navigation and scroll-spy. Deep links work, e.g. `#ai-control`. |
+| **Explore mode** | A left sidebar with twelve pages, shown one at a time, with previous/next controls at the foot of each page. On small screens the sidebar becomes a slide-in menu. Deep links work, e.g. `#ai-control`. |
 | **Present mode** | Press **Present**. It shows 18 scenes on a 16:9 stage that scales to the screen. Use `←` `→` (also PageUp/PageDown, Space, Home/End) to move, `F` for fullscreen and `Esc` to return to Explore. Scenes can be deep-linked, e.g. `#present-6`. |
 | **Executive / Detail** | Executive shows major concepts with minimal text. Detail adds scope, outputs, definitions, the capability coverage matrix, sponsors and qualifying questions. |
 
@@ -77,8 +86,8 @@ scripts/       Playwright QA scripts (interactions, present mode, per-section sc
 ## Editing content
 
 - **Change wording:** edit the relevant file in `src/data/`. The UI updates everywhere.
-- **Logo:** no official Insight logo is bundled, and the app does not redraw one. To use the official asset, place it in
-  `public/brand/` and set `logoSrc` in `src/data/brand.ts`.
+- **Logo:** the official Insight logo supplied for this asset is `src/assets/insight-logo.png`. It is rendered as-is
+  and never redrawn or recoloured. Replace that file to update it.
 - **Accelerator descriptions** describe each asset's role in the architecture only. Confirm feature-level detail with
   the asset owner before external use.
 - **Competitive landscape** is a neutral view of archetypes based on publicly emphasised themes. It contains no

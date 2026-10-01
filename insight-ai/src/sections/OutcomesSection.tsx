@@ -76,7 +76,6 @@ export function OutcomesSection({ onPresent }: { onPresent: () => void }) {
       eyebrow="Client outcomes"
       title="What clients get"
       lead="Concrete outcomes, each demonstrated by evidence the client can inspect. Targets are set with each client against its own baseline."
-      tone="surface"
     >
       <div className="mb-5">
         <LensFilter lens={lens} onChange={setLens} />

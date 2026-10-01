@@ -23,7 +23,6 @@ export function OperatingSystemSection() {
         </>
       }
       aside={<TypeBadge category="architecture" />}
-      tone="surface"
     >
       <OperatingSystemDiagram expanded={expanded} onToggle={(id) => setExpanded((c) => (c === id ? null : id))} />
 

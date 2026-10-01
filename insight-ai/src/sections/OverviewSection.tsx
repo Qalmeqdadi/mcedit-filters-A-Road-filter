@@ -34,8 +34,8 @@ export function OverviewSection({ onNavigate }: { onNavigate: (id: string) => vo
       <div aria-hidden className="pointer-events-none absolute -top-40 right-[-10%] h-[520px] w-[620px] rounded-full bg-[radial-gradient(closest-side,rgba(107,43,217,0.10),transparent)]" />
       <div aria-hidden className="pointer-events-none absolute top-10 right-[18%] h-[380px] w-[420px] rounded-full bg-[radial-gradient(closest-side,rgba(212,0,111,0.08),transparent)]" />
 
-      <div className="relative mx-auto max-w-[1360px] px-4 pt-14 pb-20 sm:px-6 md:pt-20 lg:px-10">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">
+      <div className="relative mx-auto max-w-[1360px] px-4 pt-10 pb-14 sm:px-6 md:pt-14 lg:px-10">
+        <div className="grid gap-12 xl:grid-cols-[minmax(0,1fr)_360px] xl:gap-14">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="eyebrow mb-6 flex items-center gap-3">
               <span className="font-mono text-magenta">01</span>

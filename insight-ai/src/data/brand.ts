@@ -1,12 +1,12 @@
+import insightLogo from '../assets/insight-logo.png';
+
 /**
- * Brand configuration.
- * If an official Insight logo file is supplied, place it in /public/brand and set
- * `logoSrc` (e.g. 'brand/insight-logo.svg'). The app then renders that asset exactly.
- * It never redraws or approximates the corporate logo.
+ * Brand configuration. `logoSrc` is the officially supplied Insight logo, rendered as-is
+ * (never redrawn or recoloured). The import lets the single-file build inline it.
  */
 export const brand = {
   name: 'Insight AI',
   line: 'AI Transformation. Built to Operate.',
-  logoSrc: null as string | null,
+  logoSrc: insightLogo as string | null,
   logoAlt: 'Insight',
 };

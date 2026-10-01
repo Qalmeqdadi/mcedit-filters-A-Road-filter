@@ -141,7 +141,7 @@ export function ArchitectureExplorer({ variant = 'explore', initialSimplified = 
 
   const rows: Record<ArchitectureLayerId, ReactNode> = {
     plays: (
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-2 @xl:grid-cols-3 @2xl:grid-cols-5">
         {sectors.map((s) => (
           <Chip key={s.id} styleKey="industry" {...chipProps(nodeId('sector', s.id))} present={present}>
             <Icon name={s.icon} className="size-4 shrink-0 text-teal" />
@@ -151,7 +151,7 @@ export function ArchitectureExplorer({ variant = 'explore', initialSimplified = 
       </div>
     ),
     os: (
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-2 @md:grid-cols-2 @3xl:grid-cols-5">
         {osLayers.map((l) => (
           <Chip key={l.id} styleKey="architecture" {...chipProps(nodeId('os', l.id))} present={present}>
             <span className="font-mono text-[11px] font-semibold text-blue">{l.number}</span>
@@ -161,7 +161,7 @@ export function ArchitectureExplorer({ variant = 'explore', initialSimplified = 
       </div>
     ),
     control: (
-      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 xl:grid-cols-8">
+      <div className="grid grid-cols-2 gap-1.5 @xl:grid-cols-4 @5xl:grid-cols-8">
         {controlDomains.map((d) => (
           <Chip key={d.id} styleKey="control" {...chipProps(nodeId('ctl', d.id))} present={present} small>
             <span className="font-mono text-[10.5px] font-semibold text-purple">{d.number}</span>
@@ -171,7 +171,7 @@ export function ArchitectureExplorer({ variant = 'explore', initialSimplified = 
       </div>
     ),
     services: (
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-1 gap-2 @md:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-6">
         {services.map((s) => (
           <Chip key={s.id} styleKey="service" {...chipProps(nodeId('svc', s.id))} present={present} emphasis>
             <span className="font-mono text-[11px] font-semibold text-magenta">S{s.number}</span>
@@ -181,7 +181,7 @@ export function ArchitectureExplorer({ variant = 'explore', initialSimplified = 
       </div>
     ),
     capabilities: (
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 @xl:grid-cols-3 @4xl:grid-cols-6">
         {capabilityGroups.map((g) => (
           <Chip key={g.id} styleKey="capability" {...chipProps(nodeId('grp', g.id))} present={present}>
             <Icon name={g.icon} className="size-4 shrink-0 text-navy" />
@@ -201,7 +201,7 @@ export function ArchitectureExplorer({ variant = 'explore', initialSimplified = 
       </div>
     ),
     foundations: (
-      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 xl:grid-cols-8">
+      <div className="grid grid-cols-2 gap-1.5 @xl:grid-cols-4 @5xl:grid-cols-8">
         {techFoundations.map((t) => (
           <Chip key={t.id} styleKey="technology" {...chipProps(nodeId('tech', t.id))} present={present} small>
             <Icon name={t.icon} className="size-3.5 shrink-0 text-slate" />
@@ -280,7 +280,7 @@ export function ArchitectureExplorer({ variant = 'explore', initialSimplified = 
                   transition={{ duration: 0.25 }}
                   className={cn(
                     'relative grid items-center gap-3 rounded-xl border transition-[box-shadow,border-color,background-color] duration-300',
-                    present ? 'grid-cols-[262px_1fr] px-3 py-2' : 'grid-cols-1 px-3 py-3 md:grid-cols-[250px_1fr] md:px-4',
+                    present ? 'grid-cols-[262px_1fr] px-3 py-2' : 'grid-cols-1 px-3 py-3 md:grid-cols-[220px_1fr] md:px-4',
                     isControl ? 'control-gradient-soft border-purple/25' : 'border-line-soft bg-surface',
                     state === 'selected' && 'border-transparent shadow-lift ring-2',
                     state === 'selected' && style.ring,
@@ -324,8 +324,8 @@ export function ArchitectureExplorer({ variant = 'explore', initialSimplified = 
                     </span>
                   </button>
 
-                  {/* Layer content */}
-                  <div className="min-w-0">
+                  {/* Layer content: grids respond to the space available (container queries) */}
+                  <div className="@container min-w-0">
                     <AnimatePresence mode="wait" initial={false}>
                       {simplified ? (
                         <motion.div
@@ -488,7 +488,7 @@ function Chip({
       aria-pressed={state === 'selected'}
       className={cn(
         'relative flex min-w-0 items-center gap-2 rounded-lg border text-left font-medium text-ink transition-all duration-200',
-        small ? 'px-2.5 py-1.5 text-[12.5px]' : 'px-3 py-2 text-[13.5px]',
+        small ? 'px-2.5 py-1.5 text-[12.5px]' : 'px-3 py-2 text-[13px]',
         present && !small && 'py-1.5 text-[13px]',
         inline ? 'inline-flex' : 'w-full',
         styleKey === 'control' ? 'border-white bg-white/85' : 'bg-surface',

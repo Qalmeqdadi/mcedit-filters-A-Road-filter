@@ -81,7 +81,6 @@ export function LandscapeSection() {
       eyebrow="Competitive landscape"
       title="A neutral view of market archetypes"
       lead="Each organisation has a distinct centre of gravity in how it positions AI. Insight’s intended position is the integration of all eight elements into one accountable operating system."
-      tone="surface"
     >
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
         <div className="eyebrow">Market archetypes · publicly emphasised themes</div>

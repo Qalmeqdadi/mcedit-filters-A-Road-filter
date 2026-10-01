@@ -15,7 +15,6 @@ export function ArchitectureSection({ onNavigate }: { onNavigate: (id: string) =
           what it runs on, with <Term id="ai-control" /> spanning every layer.
         </>
       }
-      tone="surface"
     >
       <ArchitectureExplorer onNavigate={onNavigate} />
     </Section>

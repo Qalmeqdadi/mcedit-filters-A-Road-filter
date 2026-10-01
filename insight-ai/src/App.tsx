@@ -1,6 +1,9 @@
-import { useCallback, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { Footer } from './components/Footer';
-import { Header } from './components/Header';
+import { PageNav } from './components/PageNav';
+import { Sidebar } from './components/Sidebar';
+import { sections, type SectionId } from './data/navigation';
 import { useAppState } from './hooks/useAppState';
 import { PresentMode } from './present/PresentMode';
 import { AcceleratorsSection } from './sections/AcceleratorsSection';
@@ -16,47 +19,75 @@ import { PlaysSection } from './sections/PlaysSection';
 import { SectorsSection } from './sections/SectorsSection';
 import { ServicesSection } from './sections/ServicesSection';
 
+const isSection = (id: string): id is SectionId => sections.some((s) => s.id === id);
+
+function sectionFromHash(): SectionId {
+  const h = window.location.hash.slice(1);
+  return isSection(h) ? h : 'overview';
+}
+
 export default function App() {
   const { mode, setMode } = useAppState();
+  const [active, setActive] = useState<SectionId>(sectionFromHash);
 
-  const navigate = useCallback((id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  /** Explore mode shows one page at a time; the hash keeps each page deep-linkable. */
+  const go = useCallback((id: string) => {
+    if (!isSection(id)) return;
+    setActive(id);
     history.replaceState(null, '', `#${id}`);
+    window.scrollTo({ top: 0 });
   }, []);
 
-  // Deep links: #<section> scrolls on load; #present opens present mode.
   useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash && !hash.startsWith('present')) {
-      requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView({ block: 'start' }));
-    }
+    const onHash = () => {
+      const h = window.location.hash.slice(1);
+      if (isSection(h)) setActive(h);
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
   }, []);
+
+  // Returning from present mode restores the page's hash.
+  useEffect(() => {
+    if (mode === 'explore' && !isSection(window.location.hash.slice(1))) history.replaceState(null, '', `#${active}`);
+  }, [mode, active]);
+
+  const pages: Record<SectionId, ReactNode> = {
+    overview: <OverviewSection onNavigate={go} />,
+    architecture: <ArchitectureSection onNavigate={go} />,
+    services: <ServicesSection />,
+    'operating-system': <OperatingSystemSection />,
+    'ai-control': <ControlSection />,
+    capabilities: <CapabilitiesSection />,
+    accelerators: <AcceleratorsSection />,
+    plays: <PlaysSection />,
+    sectors: <SectorsSection />,
+    landscape: <LandscapeSection />,
+    journey: <JourneySection />,
+    outcomes: <OutcomesSection onPresent={() => setMode('present')} />,
+  };
 
   return (
     <>
       <div aria-hidden={mode === 'present'} className={mode === 'present' ? 'hidden' : undefined}>
-        <a
-          href="#architecture"
-          className="sr-only z-[60] rounded bg-ink px-3 py-2 text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
-        >
-          Skip to the architecture
-        </a>
-        <Header />
-        <main>
-          <OverviewSection onNavigate={navigate} />
-          <ArchitectureSection onNavigate={navigate} />
-          <ServicesSection />
-          <OperatingSystemSection />
-          <ControlSection />
-          <CapabilitiesSection />
-          <AcceleratorsSection />
-          <PlaysSection />
-          <SectorsSection />
-          <LandscapeSection />
-          <JourneySection />
-          <OutcomesSection onPresent={() => setMode('present')} />
-        </main>
-        <Footer />
+        <Sidebar active={active} onGo={go} />
+        <div className="lg:pl-[264px]">
+          <main>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {pages[active]}
+              </motion.div>
+            </AnimatePresence>
+          </main>
+          <PageNav active={active} onGo={go} />
+          <Footer />
+        </div>
       </div>
       {mode === 'present' && <PresentMode />}
     </>
