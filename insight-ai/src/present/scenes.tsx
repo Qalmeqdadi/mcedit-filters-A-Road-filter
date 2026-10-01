@@ -28,7 +28,7 @@ import { ServiceCard, ServiceDetail } from '../sections/ServicesSection';
 import { useDetail } from '../hooks/useAppState';
 import { useClient } from '../hooks/useClient';
 import { sessionPlay } from '../utils/workshop';
-import { MaturityInsights, MaturityScorer } from '../sections/MaturitySection';
+import { MaturityResults, Questionnaire, StagePicker } from '../sections/MaturitySection';
 import { RoadmapColumns, UseCaseEditor } from '../sections/PrioritiserSection';
 import { SummaryDocument } from '../sections/SummarySection';
 import { PriorityMatrix } from '../diagrams/PriorityMatrix';
@@ -258,12 +258,13 @@ function OutcomesScene() {
 
 function MaturityScene() {
   return (
-    <div className="grid h-full grid-cols-[1fr_400px] gap-8">
-      <div className="min-h-0 overflow-y-auto pr-1">
-        <MaturityScorer compact />
+    <div className="grid h-full grid-cols-[1fr_360px] gap-6">
+      <div className="min-h-0 space-y-4 overflow-y-auto pr-1">
+        <StagePicker compact />
+        <Questionnaire compact />
       </div>
       <div className="min-h-0 overflow-y-auto pr-1">
-        <MaturityInsights compact />
+        <MaturityResults compact />
       </div>
     </div>
   );
@@ -438,7 +439,7 @@ export const scenes: Scene[] = [
     id: 'maturity',
     section: 'Client Workshop',
     title: 'AI maturity self-check',
-    subtitle: 'Score each dimension with the client, 1 (ad hoc) to 5 (optimised), against an agreed target.',
+    subtitle: 'Set the AI stage, then score each practice from 1 (not in place) to 5 (fully embedded), area by area.',
     Body: MaturityScene,
     dense: true,
   },

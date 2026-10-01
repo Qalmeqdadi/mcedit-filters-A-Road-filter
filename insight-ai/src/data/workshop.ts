@@ -35,6 +35,7 @@ export const maturityDimensions: MaturityDimension[] = [
   { id: 'data-model', name: 'Data & Model Governance', short: 'Models', group: 'AI Control', question: 'Are models inventoried, evaluated and approved for defined purposes?', service: 's03', accelerator: 'radius' },
   { id: 'oversight', name: 'Human Oversight', short: 'Oversight', group: 'AI Control', question: 'Do people remain accountable for material decisions, with the ability to intervene?', service: 's03' },
   { id: 'monitoring', name: 'Monitoring, Evidence & Audit', short: 'Monitoring', group: 'AI Control', question: 'Is AI behaviour monitored, with evidence auditors could rely on?', service: 's03', accelerator: 'policy-agent' },
+  { id: 'intervention', name: 'Intervention & Recovery', short: 'Recovery', group: 'AI Control', question: 'Can AI be paused, rolled back or stopped safely, with a fallback?', service: 's03' },
   { id: 'value-ops', name: 'Value & Operational Monitoring', short: 'Value ops', group: 'AI Control', question: 'Are AI value, cost and service levels tracked once in operation?', service: 's06', accelerator: 'tokenscope' },
 ];
 

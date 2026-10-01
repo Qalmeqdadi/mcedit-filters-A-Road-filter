@@ -12,7 +12,8 @@ import { maturityDimensions, quadrants } from '../data/workshop';
 import { RadarChart } from '../diagrams/RadarChart';
 import { useClient, type ClientSession } from '../hooks/useClient';
 import { cn } from '../utils/cn';
-import { gaps, rankedUseCases, recommendation, roadmap, scoredCount, sessionPlay } from '../utils/workshop';
+import { gaps, progress, rankedUseCases, recommendation, roadmap, scoredCount, sessionPlay, stageName, weakestPractices } from '../utils/workshop';
+import { stageUsesAi } from '../data/assessment';
 
 const formatDate = (iso: string) => {
   if (!iso) return '';
@@ -32,9 +33,12 @@ export function nextSteps(session: ClientSession): string[] {
   if (lighthouse) steps.push(`Scope “${lighthouse.name}” as the Lighthouse PoV.`);
   else if (ranked.length) steps.push('Validate value and readiness scores for the top-ranked use cases.');
   else steps.push('Capture and score the client’s priority use cases.');
+  if (session.aiStage && !stageUsesAi(session.aiStage)) {
+    steps.push('Put AI Control foundations in place before the first deployment: acceptable-use policy, approved tools and a risk assessment for each use case.');
+  }
   if (topGap) {
     const acc = topGap.dimension.accelerator ? `, using ${acceleratorById[topGap.dimension.accelerator].name}` : '';
-    steps.push(`Close the ${topGap.dimension.name} gap (${topGap.now} → ${topGap.target}) through ${serviceById[topGap.dimension.service].shortName}${acc}.`);
+    steps.push(`Close the ${topGap.dimension.name} gap (${topGap.score!.toFixed(1)} → ${topGap.target}) through ${serviceById[topGap.dimension.service].shortName}${acc}.`);
   } else {
     steps.push('Complete the AI maturity self-check to baseline readiness and control.');
   }
@@ -53,8 +57,9 @@ export function summaryText(session: ClientSession) {
     `Trigger: ${play.trigger}`,
     `Entry offer: ${play.land.label}`,
     '',
-    `Maturity self-check (${scoredCount(session)}/${maturityDimensions.length} scored)`,
-    ...gaps(session).slice(0, 5).map((g) => `- ${g.dimension.name}: ${g.now} → ${g.target}`),
+    `Maturity self-check: AI stage ${stageName(session) ?? 'not set'}; ${progress(session).answered}/${progress(session).total} questions answered`,
+    ...gaps(session).slice(0, 5).map((g) => `- ${g.dimension.name}: ${g.score!.toFixed(1)} → ${g.target}`),
+    ...(weakestPractices(session, 5).length ? ['Weakest practices:', ...weakestPractices(session, 5).map((w) => `- ${w.question.text} (${w.score})`)] : []),
     '',
     'Prioritised use cases',
     ...rankedUseCases(session).map((u) => `${u.rank}. ${u.name} (value ${u.value}, readiness ${u.readiness}, ${u.risk} risk) · ${quadrants[u.quadrant].name}`),
@@ -121,7 +126,7 @@ export function SummaryDocument({ compact }: { compact?: boolean }) {
           )}
         </Block>
 
-        <Block title={`Maturity self-check · ${scoredCount(session)} of ${maturityDimensions.length} scored`}>
+        <Block title={`Maturity self-check${session.aiStage ? ` · AI stage: ${stageName(session)}` : ''} · ${scoredCount(session)} of ${maturityDimensions.length} areas`}>
           {scoredCount(session) ? (
             <div className="grid grid-cols-[250px_1fr] items-center gap-3">
               <RadarChart session={session} size={300} showLegend={false} />
@@ -132,7 +137,7 @@ export function SummaryDocument({ compact }: { compact?: boolean }) {
                     {top.map((g) => (
                       <li key={g.dimension.id} className="flex justify-between gap-2 text-[12.5px] text-ink">
                         <span>{g.dimension.name}</span>
-                        <span className="tabular-nums text-ink-3">{g.now} → {g.target}</span>
+                        <span className="tabular-nums text-ink-3">{g.score!.toFixed(1)} → {g.target}</span>
                       </li>
                     ))}
                   </ul>

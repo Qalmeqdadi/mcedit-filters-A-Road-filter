@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { maturityDimensions, maturityLevels } from '../data/workshop';
+import { maturityDimensions } from '../data/workshop';
 import type { ClientSession } from '../hooks/useClient';
-import { targetFor } from '../utils/workshop';
+import { areaResults } from '../utils/workshop';
 
 const NOW = '#d4006f';
 const TARGET = '#6b2bd9';
@@ -20,14 +20,15 @@ export function RadarChart({ session, size = 380, showLegend = true }: { session
   const angle = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / dims.length;
   const pt = (i: number, v: number) => [cx + Math.cos(angle(i)) * (r * v) / 5, cy + Math.sin(angle(i)) * (r * v) / 5];
   const poly = (vals: number[]) => vals.map((v, i) => pt(i, v).join(',')).join(' ');
-  const now = dims.map((d) => session.scores[d.id] ?? 0);
-  const target = dims.map((d) => targetFor(session, d.id));
+  const results = areaResults(session);
+  const now = results.map((r) => r.score ?? 0);
+  const target = results.map((r) => r.target);
   const anyScored = now.some((v) => v > 0);
   const h = hover != null ? dims[hover] : null;
 
   return (
     <figure className="relative m-0">
-      <svg viewBox={`0 0 ${size} ${size}`} className="h-auto w-full" role="img" aria-label="Maturity radar: current score against target for each dimension">
+      <svg viewBox={`0 0 ${size} ${size}`} className="h-auto w-full" role="img" aria-label="Maturity radar: average area score against target">
         {[1, 2, 3, 4, 5].map((ring) => (
           <polygon key={ring} points={poly(dims.map(() => ring))} fill="none" stroke="#e5e1da" strokeWidth={ring === 5 ? 1.2 : 0.8} />
         ))}
@@ -74,9 +75,9 @@ export function RadarChart({ session, size = 380, showLegend = true }: { session
         <div className="pointer-events-none absolute top-2 left-2 rounded-lg bg-ink px-3 py-2 text-[12px] leading-snug text-white shadow-lift">
           <div className="font-semibold">{h.name}</div>
           <div className="text-white/80">
-            Now: {session.scores[h.id] ? `${session.scores[h.id]} · ${maturityLevels[session.scores[h.id]! - 1].name}` : 'not scored'}
+            Now: {results[hover!].score != null ? `${results[hover!].score} (average of ${results[hover!].answered - results[hover!].unknown} answers)` : 'not scored'}
           </div>
-          <div className="text-white/80">Target: {targetFor(session, h.id)}</div>
+          <div className="text-white/80">Target: {results[hover!].target}</div>
         </div>
       )}
       {showLegend && (

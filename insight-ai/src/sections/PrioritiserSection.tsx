@@ -2,6 +2,7 @@ import { ArrowRight, Plus, ShieldAlert, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { sectorById } from '../data/sectors';
 import { quadrants } from '../data/workshop';
+import { ImportUseCases } from '../components/ImportUseCases';
 import { Section } from '../components/Section';
 import { PriorityMatrix } from '../diagrams/PriorityMatrix';
 import { useClient, type Risk, type UseCase } from '../hooks/useClient';
@@ -19,7 +20,11 @@ export function UseCaseEditor({ compact }: { compact?: boolean }) {
   const sector = session.sector ? sectorById[session.sector] : null;
 
   const patch = (id: string, p: Partial<UseCase>) =>
-    update({ useCases: session.useCases.map((u) => (u.id === id ? { ...u, ...p } : u)) });
+    update({
+      useCases: session.useCases.map((u) =>
+        u.id === id ? { ...u, ...p, needsScoring: 'value' in p || 'readiness' in p ? undefined : u.needsScoring } : u,
+      ),
+    });
   const remove = (id: string) => update({ useCases: session.useCases.filter((u) => u.id !== id) });
   const add = () => {
     const n = name.trim();
@@ -55,6 +60,7 @@ export function UseCaseEditor({ compact }: { compact?: boolean }) {
         <button type="submit" disabled={!name.trim()} className="inline-flex items-center gap-1.5 rounded-lg bg-ink px-3.5 py-2 text-[13px] font-medium text-white hover:bg-ink-2 disabled:opacity-40">
           <Plus className="size-4" /> Add
         </button>
+        {!compact && <ImportUseCases />}
         {sector && (
           <button type="button" onClick={addExamples} className="inline-flex items-center gap-1.5 rounded-lg border border-teal/30 bg-teal-soft px-3 py-2 text-[13px] font-medium text-ink hover:border-teal">
             Add {sector.name} examples
@@ -64,7 +70,7 @@ export function UseCaseEditor({ compact }: { compact?: boolean }) {
 
       {ranked.length === 0 ? (
         <p className="rounded-xl border border-dashed border-line px-4 py-6 text-center text-[13.5px] text-ink-3">
-          No use cases yet. Add the client’s own ideas{sector ? `, or start from the ${sector.name} examples` : ''}, then score value and readiness together.
+          No use cases yet. Type the client’s ideas, import them from Excel{sector ? `, or start from the ${sector.name} examples` : ''}, then score value and readiness together.
         </p>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-line-soft bg-surface">
@@ -86,7 +92,13 @@ export function UseCaseEditor({ compact }: { compact?: boolean }) {
                   <td className="px-3 py-1.5">
                     <span className="flex size-6 items-center justify-center rounded-full bg-magenta text-[11px] font-bold text-white">{u.rank}</span>
                   </td>
-                  <td className={cn('px-2 font-medium text-ink', compact ? 'py-1' : 'py-1.5')}>{u.name}</td>
+                  <td className={cn('px-2 text-ink', compact ? 'py-1' : 'py-1.5')}>
+                    <span className="font-medium">{u.name}</span>
+                    {u.needsScoring && <span className="ml-1.5 rounded bg-cond-soft px-1 text-[10.5px] font-semibold text-cond">needs scoring</span>}
+                    {!compact && (u.owner || u.domain) && (
+                      <span className="block text-[11.5px] text-ink-3">{[u.domain, u.owner].filter(Boolean).join(' · ')}</span>
+                    )}
+                  </td>
                   <td className="px-2 py-1.5">
                     <select aria-label={`${u.name} value`} value={u.value} onChange={(e) => patch(u.id, { value: Number(e.target.value) })} className={scoreSelect}>
                       {[1, 2, 3, 4, 5].map((v) => <option key={v}>{v}</option>)}
@@ -171,7 +183,7 @@ export function PrioritiserSection({ onNavigate }: { onNavigate: (id: string) =>
       number="14"
       eyebrow={session.name ? `Client workshop · ${session.name}` : 'Client workshop'}
       title="Use-case prioritiser"
-      lead="Capture the client’s use cases and score value and readiness together. Each one is placed on the 2×2 and the ranking becomes a Now / Next / Later roadmap."
+      lead="Capture the client’s use cases by typing them or importing an Excel sheet, then score value and readiness together. Each one is placed on the 2×2 and the ranking becomes a Now / Next / Later roadmap."
     >
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
         <UseCaseEditor />

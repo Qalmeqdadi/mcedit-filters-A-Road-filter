@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import type { AiStageId } from '../data/assessment';
 import type { PlayId, SectorId } from '../data/types';
 
 export type Risk = 'Low' | 'Medium' | 'High';
@@ -9,27 +10,43 @@ export interface UseCase {
   value: number;
   readiness: number;
   risk: Risk;
+  description?: string;
+  owner?: string;
+  domain?: string;
+  /** Imported without a score; defaulted to 3 until someone scores it. */
+  needsScoring?: boolean;
 }
+
+/** An answer is a 1–5 score or "don't know". */
+export type Answer = number | 'dk';
 
 export interface ClientSession {
   name: string;
   sector: SectorId | null;
   date: string;
   play: PlayId | null;
-  scores: Record<string, number | null>;
+  aiStage: AiStageId | null;
+  answers: Record<string, Answer>;
   targets: Record<string, number>;
   useCases: UseCase[];
   notes: string;
 }
 
-const KEY = 'insight-ai-client-session-v1';
+const KEY = 'insight-ai-client-session-v2';
+const LEGACY_KEY = 'insight-ai-client-session-v1';
 
-const empty: ClientSession = { name: '', sector: null, date: '', play: null, scores: {}, targets: {}, useCases: [], notes: '' };
+const empty: ClientSession = { name: '', sector: null, date: '', play: null, aiStage: null, answers: {}, targets: {}, useCases: [], notes: '' };
 
 function load(): ClientSession {
   try {
     const raw = window.localStorage.getItem(KEY);
     if (raw) return { ...empty, ...JSON.parse(raw) };
+    // Carry over client details and use cases from the earlier session format.
+    const legacy = window.localStorage.getItem(LEGACY_KEY);
+    if (legacy) {
+      const { name, sector, date, play, useCases, notes } = JSON.parse(legacy);
+      return { ...empty, name: name ?? '', sector: sector ?? null, date: date ?? '', play: play ?? null, useCases: useCases ?? [], notes: notes ?? '' };
+    }
   } catch {
     /* storage blocked: start empty */
   }
