@@ -1,0 +1,52 @@
+/** Central CSV exporters (every row carries its data nature). */
+import type { CensusEngine } from "@/simulation/engine";
+import { computeProfile } from "@/simulation/analytics";
+import { RULE_INDEX } from "@/simulation/quality";
+import { medianFromHist } from "@/simulation/anomalies";
+import { compareScenarios, DEFAULT_PARAMS, PROJECTION_YEARS, runScenario, type FullScenario } from "@/simulation/scenarios";
+import type { PESSummary } from "@/types/census";
+
+export function governorateSummary(engine: CensusEngine) {
+  const byGov = engine.aggregateBy("govId");
+  return engine.world.governorates.map((g) => {
+    const p = computeProfile(engine.world, { govId: g.id });
+    const a = byGov[g.id];
+    return {
+      governorate_id: g.id, iso: g.iso, name_en: g.name.en, name_ar: g.name.ar, area_km2: g.areaKm2,
+      reference_population: g.refPopulation, reference_year: g.refYear, reference_nature: g.refSourceId === "OFFICIAL_IMPORT" ? "OFFICIAL" : "REFERENCE",
+      districts: engine.world.districts.filter((d) => d.govId === g.id).length, enumeration_areas: a.eas, enumerators: a.enumerators,
+      simulated_population: Math.round(p.population), simulated_households: Math.round(p.households), avg_household_size: +p.avgHHSize.toFixed(2),
+      sex_ratio: +p.sexRatio.toFixed(1), median_age: +p.medianAge.toFixed(1), dependency_ratio: +p.dependencyRatio.toFixed(1),
+      fieldwork_completion: +a.completionPct.toFixed(4), response_rate: +a.responseRate.toFixed(4), persons_enumerated: a.persons, simulated_nature: "SIMULATED / SYNTHETIC_OPERATIONAL",
+    };
+  });
+}
+
+export function enumeratorPerformance(engine: CensusEngine) {
+  return engine.world.enumerators.map((e, i) => {
+    const s = engine.en[i];
+    const ad = engine.activeDays[i];
+    return { enumerator_id: e.id, name_synthetic: e.name.en, governorate: e.govId, district: e.districtId, eas: e.eaIds.join(" "), supervisor: e.supervisorId, assigned: s.assigned, completed: s.completed, pending: s.pending, refusals: s.refusals, avg_interview_min: s.durCount ? +(s.durSum / s.durCount).toFixed(1) : "", median_interview_min: +medianFromHist(s.durHist).toFixed(1), interviews_per_day: ad ? +(s.completed / ad).toFixed(2) : "", validation_score: s.validationScore, coverage_score: s.coverageScore, risk_score: s.riskScore, status: s.status, nature: "SYNTHETIC_OPERATIONAL" };
+  });
+}
+
+export function qualityIssues(engine: CensusEngine) {
+  return engine.issues.map((x) => ({ id: x.id, rule: x.ruleId, rule_title: RULE_INDEX[x.ruleId]?.title.en, severity: x.severity, entity_type: x.entityType, entity_id: x.entityId, ea: x.eaId ?? "", enumerator: x.enumeratorId ?? "", governorate: x.govId, detected: engine.timeOf(x.step).toISOString(), status: x.status, assignee: x.assignee ?? "", dismiss_reason: x.dismissReason ?? "", message: x.message.en, evidence: x.evidence.en, nature: "SYNTHETIC_OPERATIONAL" }));
+}
+
+export function anomalies(engine: CensusEngine) {
+  return engine.anomalies.map((x) => ({ id: x.id, kind: x.kind, severity: x.severity, subject_type: x.subjectType, subject: x.subjectId, governorate: x.govId, method: x.method, score: +x.score.toFixed(3), detected: engine.timeOf(x.step).toISOString(), what: x.what.en, why: x.why.en, recommendation: x.recommendation.en, status: x.status, decision: x.decision?.action ?? "", decided_by: x.decision?.by ?? "", nature: "SYNTHETIC_OPERATIONAL (AI-assisted anomaly simulation)" }));
+}
+
+export function scenarioResults(engine: CensusEngine, params: FullScenario, name: string) {
+  const run = runScenario(engine.world, engine.world.totals.population, params);
+  const base = runScenario(engine.world, engine.world.totals.population, DEFAULT_PARAMS);
+  return PROJECTION_YEARS.flatMap((y) => compareScenarios([{ name, run }, { name: "Baseline", run: base }], y).flatMap((c) => c.values.map((v) => ({ year: y, scenario: v.name, indicator: c.key, value: Math.round(v.value * 100) / 100, change_vs_base_year: Math.round(v.delta * 100) / 100, nature: "SIMULATED" }))));
+}
+
+export function pesResults(engine: CensusEngine) {
+  const r = engine.pesResult;
+  if (!r) return [];
+  const row = (level: string, gov: string, s: PESSummary) => ({ level, governorate: gov, areas: s.areas, census_count: s.census, pes_count: s.pes, matched: s.matched, omissions: s.omissions, erroneous_inclusions: s.erroneous, duplicates: s.duplicates, dual_system_estimate: Math.round(s.dualSystemEstimate), match_rate: +s.matchRate.toFixed(4), net_coverage_error: +s.netCoverageError.toFixed(4), gross_coverage_error: +s.grossCoverageError.toFixed(4), nature: "SIMULATED POST-ENUMERATION SURVEY" });
+  return [row("NATIONAL", "JOR", r.national), ...Object.entries(r.byGov).map(([g, s]) => row("GOVERNORATE", g, s))];
+}

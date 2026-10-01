@@ -251,6 +251,16 @@ export class CensusEngine {
     return this.phase === "FINISHED";
   }
 
+  start() {
+    if (this.phase !== "FINISHED") this.phase = "RUNNING";
+    this.version++;
+  }
+
+  pause() {
+    if (this.phase === "RUNNING") this.phase = "PAUSED";
+    this.version++;
+  }
+
   /** Runs one full simulated census day (4 shifts). */
   simulateCensusDay() {
     const target = (this.day + 1) * SHIFTS_PER_DAY;
@@ -834,7 +844,7 @@ export class CensusEngine {
   /** Questionnaire submission enters the same validation pipeline. */
   submitQuestionnaire(h: Household) {
     this.questionnaire.push(h);
-    this.checkHousehold(h);
+    if (h.members.length) this.checkHousehold(h);
     this.log("SUCCESS", { en: `Questionnaire ${h.id} submitted (${h.members.length} persons).`, ar: `أُرسلت الاستمارة ${h.id} (${h.members.length} أفراد).` }, h.govId);
     this.version++;
   }
@@ -861,18 +871,32 @@ export class CensusEngine {
   // ------------------------------------------------------------------ aggregation
 
   aggregate(filter?: (a: World["eas"][number]) => boolean): Aggregate {
-    const r: Aggregate = {
-      dwellings: 0, dwellingsTrue: 0, hhEstimate: 0, popEstimate: 0, visited: 0, completed: 0, persons: 0, refusals: 0, vacant: 0,
-      noContactPending: 0, noContactFinal: 0, revisitsScheduled: 0, revisitsDone: 0, validated: 0, failed: 0, eas: 0,
-      eaByStatus: { NOT_STARTED: 0, IN_PROGRESS: 0, COMPLETED: 0, COVERAGE_RISK: 0, REVISIT_REQUIRED: 0 },
-      enumerators: 0, activeEnumerators: 0, offline: 0, completionPct: 0, responseRate: 0, validationRate: 0, coverageRisk: 0, expectedPct: 0,
-    };
+    const key = filter ? null : "__all__";
+    const groups = this.groupAggregate((a) => (filter && !filter(a) ? null : key ?? "__all__"));
+    return groups["__all__"] ?? emptyAggregate();
+  }
+
+  /** Single pass aggregation by governorate or district. Memoised per engine version. */
+  aggregateBy(field: "govId" | "districtId"): Record<string, Aggregate> {
+    const k = `${field}#${this.version}#${this.step}`;
+    if (this.aggCache?.key === k) return this.aggCache.value;
+    const value = this.groupAggregate((a) => a[field]);
+    this.aggCache = { key: k, value };
+    return value;
+  }
+
+  private aggCache: { key: string; value: Record<string, Aggregate> } | null = null;
+
+  private groupAggregate(keyOf: (a: World["eas"][number]) => string | null): Record<string, Aggregate> {
+    const out: Record<string, Aggregate> = {};
+    const expected: Record<string, number> = {};
     const day = this.day;
-    let expected = 0;
     const eas = this.world.eas;
     for (let k = 0; k < eas.length; k++) {
       const a = eas[k];
-      if (filter && !filter(a)) continue;
+      const g = keyOf(a);
+      if (g === null) continue;
+      const r = (out[g] ??= emptyAggregate());
       const s = this.ea[k];
       r.eas++;
       r.dwellings += a.dwellings;
@@ -889,12 +913,13 @@ export class CensusEngine {
       r.revisitsScheduled += s.revisitsScheduled;
       r.revisitsDone += s.revisitsDone;
       r.eaByStatus[s.status]++;
-      expected += a.dwellingsTrue * clamp((day - a.startDay) / a.expectedDays, 0, 1);
+      expected[g] = (expected[g] ?? 0) + a.dwellingsTrue * clamp((day - a.startDay) / a.expectedDays, 0, 1);
     }
     const enumerators = this.world.enumerators;
     for (let i = 0; i < enumerators.length; i++) {
-      const e = enumerators[i];
-      if (filter && !filter(eas[this.world.eaIdx.get(e.eaIds[0])!])) continue;
+      const g = keyOf(eas[this.enumEas[i][0]]);
+      if (g === null || !out[g]) continue;
+      const r = out[g];
       const s = this.en[i];
       r.enumerators++;
       r.validated += s.validated;
@@ -902,18 +927,42 @@ export class CensusEngine {
       if (s.status === "ACTIVE" || s.status === "UNDER_REVIEW") r.activeEnumerators++;
       if (s.status === "OFFLINE") r.offline++;
     }
-    r.completionPct = r.dwellingsTrue ? r.visited / r.dwellingsTrue : 0;
-    r.expectedPct = r.dwellingsTrue ? expected / r.dwellingsTrue : 0;
-    const occ = r.completed + r.refusals + r.noContactFinal + r.noContactPending;
-    r.responseRate = occ ? r.completed / occ : 0;
-    r.validationRate = r.completed ? r.validated / r.completed : 0;
-    r.coverageRisk = r.eas ? (r.eaByStatus.COVERAGE_RISK + r.eaByStatus.REVISIT_REQUIRED * 0.3) / r.eas : 0;
-    return r;
+    for (const [g, r] of Object.entries(out)) {
+      r.completionPct = r.dwellingsTrue ? r.visited / r.dwellingsTrue : 0;
+      r.expectedPct = r.dwellingsTrue ? expected[g] / r.dwellingsTrue : 0;
+      const occ = r.completed + r.refusals + r.noContactFinal + r.noContactPending;
+      r.responseRate = occ ? r.completed / occ : 0;
+      r.validationRate = r.completed ? r.validated / r.completed : 0;
+      r.coverageRisk = r.eas ? (r.eaByStatus.COVERAGE_RISK + r.eaByStatus.REVISIT_REQUIRED * 0.3) / r.eas : 0;
+    }
+    return out;
+  }
+
+  /** Planned completion curve (share of dwellings) for days 0..lastDay for EAs matching the filter. */
+  planCurve(filter?: (a: World["eas"][number]) => boolean): number[] {
+    const days = this.lastDay + 1;
+    const out = new Array(days).fill(0);
+    let total = 0;
+    for (const a of this.world.eas) {
+      if (filter && !filter(a)) continue;
+      total += a.dwellingsTrue;
+      for (let d = 0; d < days; d++) out[d] += a.dwellingsTrue * clamp((d + 1 - a.startDay) / a.expectedDays, 0, 1);
+    }
+    return out.map((v) => (total ? v / total : 0));
   }
 
   enumeratorMedianDuration(i: number) {
     return medianFromHist(this.en[i].durHist);
   }
+}
+
+export function emptyAggregate(): Aggregate {
+  return {
+    dwellings: 0, dwellingsTrue: 0, hhEstimate: 0, popEstimate: 0, visited: 0, completed: 0, persons: 0, refusals: 0, vacant: 0,
+    noContactPending: 0, noContactFinal: 0, revisitsScheduled: 0, revisitsDone: 0, validated: 0, failed: 0, eas: 0,
+    eaByStatus: { NOT_STARTED: 0, IN_PROGRESS: 0, COMPLETED: 0, COVERAGE_RISK: 0, REVISIT_REQUIRED: 0 },
+    enumerators: 0, activeEnumerators: 0, offline: 0, completionPct: 0, responseRate: 0, validationRate: 0, coverageRisk: 0, expectedPct: 0,
+  };
 }
 
 export function isOpen(s: IssueStatus) {

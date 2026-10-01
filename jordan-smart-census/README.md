@@ -1,0 +1,195 @@
+# Jordan Smart Census — منصة التعداد الذكي للأردن
+
+**National Population, Housing & Decision Intelligence Platform** · منصة السكان والمساكن وذكاء القرار الوطني
+
+A working, bilingual (English / Arabic, LTR / RTL) prototype of a national census platform, covering the full chain:
+
+planning → GIS & enumeration areas → field operations → enumerators → digital questionnaire → coverage → data quality → AI-assisted anomaly detection → post-enumeration survey → final results → projections → scenario simulation → national decision intelligence.
+
+> **Data integrity rule.** Nothing in this prototype is presented as an official Jordanian statistic. Every KPI, chart, layer and table carries one of four badges — **Official**, **Reference**, **Simulated**, **Synthetic operational** — and an ⓘ provenance button. No official DoS file is bundled; the architecture lets one be imported (see *Replacing simulated data*).
+
+---
+
+## Quick start
+
+```bash
+cd jordan-smart-census
+npm install
+npm run dev            # http://localhost:3000
+# or production:
+npm run build && npm start
+```
+
+Requires Node ≥ 20.9. No API keys, no backend, no network access at runtime (an optional online basemap toggle uses CARTO tiles when available).
+
+| Script | What it does |
+| --- | --- |
+| `npm run dev` / `build` / `start` | Next.js (copies the MapLibre worker into `public/maplibre` first) |
+| `npm run typecheck` · `npm run lint` | TypeScript (strict) and ESLint (Next + React Compiler rules) |
+| `npm run geo` | Rebuilds `src/data/geo/*.json` from `data-raw/geoboundaries` |
+| `npm run verify:generator` · `verify:engine` · `verify:projections` | Headless checks of the synthetic world, a full fieldwork run (incl. PES) and the projection/scenario engines |
+| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route renders without console errors; 33 end-to-end workflow checks |
+
+## Presenting
+
+Click **Executive demo** (top right). A presenter bar walks through 13 steps, navigating and driving the real engine:
+
+1. National overview · 2. Census planning · 3. Administrative geography · 4. Enumeration areas (Irbid drill-down) · 5. Launch the simulation · 6. Fieldwork progress (fast-forward to day 9) · 7. Enumerator anomaly (`AMM-E0037`) · 8. Supervisor intervention (human decision recorded) · 9. Coverage completion (fieldwork closed) · 10. Post-Enumeration Survey · 11. Final census results · 12. 2040 projection · 13. National planning simulation (migration-shock scenario) → Decision Intelligence.
+
+Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10× · 20×** speed in the top bar (1× = one field shift per second; 4 shifts = 1 day); **عربي / EN** language switch; **alerts bell** (acknowledge / escalate / resolve); **database icon** = global provenance panel; **settings** = seed and acting-officer name.
+
+---
+
+## What is built (22 modules)
+
+| # | Module | Highlights |
+| --- | --- | --- |
+| 01 | National Overview | 10 live KPIs, interactive Jordan map (5 layers, drill-down), population by governorate, pyramid, age groups, sex, urban/rural, household size, nationality categories (simulation), completion trend vs plan, productivity, quality alerts, high-risk EAs, live feed. Selecting a governorate re-scopes the whole platform. |
+| 02 | Census Planning | Zod-validated inputs; enumerators, supervisors, reserves, devices, training cohorts, interviews/day, capacity ratio, completion date (Fridays optional); Lean/Base/Accelerated side by side; **Apply to simulation** regenerates the EA frame for that plan. |
+| 03 | GIS & Enumeration Areas | Jordan → governorate → district → EA → statistical block → dwelling; EA status/accessibility/workload layers; EA detail with blocks and sampled dwellings; administrative-unit table; **boundary QA report**. |
+| 04 | Field Operations | Simulation control room: day timeline, live counters, EA-status map, governorate progress vs plan, visit outcomes, regional completion curves, supervisor task queue, access-disruption notices, live feed. |
+| 05 | Enumerator Command Center | ~10.5k synthetic enumerators: search, filter, sort, pagination, CSV; detail sheet with daily productivity, geography map, animated route through statistical blocks, outcomes, anomalies, revisits and supervisor interventions (retrain / verify sample / suspend & reassign). |
+| 06 | Digital Census Questionnaire | Sections A (dwelling), B (roster), C (person) + review; skip logic by occupancy and age; Washington-Group-style functional difficulty; DOB→age; roster add/remove; mother/father line links; Zod + census edit rules live; hard errors vs warnings; save/load draft; submit into the quality pipeline. |
+| 07 | Coverage & Completion | S-curve actual vs plan, district completion map, EA status mix, districts sorted by gap, revisit queue. |
+| 08 | Data Quality | 17 deterministic rules (age range, child older than parent, parent–child gap, marital/employment/education vs age, duplicate IDs, missing head, large households, short interviews, identical rosters, productivity, refusal concentration, dwelling mismatch, GPS mismatch, coverage gap); assign / investigate / request revisit / resolve / dismiss-with-reason; audit trail. |
+| 09 | AI Anomaly Detection | *AI-assisted anomaly simulation* — z-scores vs district peers, IQR fences, heaping, GPS and roster-pattern tests. Each finding shows what happened, evidence, why flagged, method, affected records, severity, recommended action and the **human decision**. No LLM; nothing is auto-corrected. |
+| 10 | Post-Enumeration Survey | Stratified sample of completed EAs, independent re-enumeration, matching, omissions, erroneous inclusions, duplicates, dual-system estimate, match rate, net & gross coverage error with formulas; national and governorate results. Labelled **SIMULATED POST-ENUMERATION SURVEY**. |
+| 11–17 | Population · Housing · Labour · Education · Health & functional difficulty · Migration · Infrastructure | Drill-down (Jordan → governorate → district → EA), choropleths, governorate comparison tables; migration arc map, origin–destination matrix and Sankey; infrastructure pressure index. Labour figures are explicitly **not** Jordan's official unemployment rate. |
+| 18 | Population Projections | Annual cohort-component model to 2050 with adjustable fertility, life expectancy, migration, household size, urbanisation, employment ratio; pyramid vs base. |
+| 19 | Scenario Simulator | 6 presets + custom, 16 controls; 11 impact indicators (population, households, housing units, school seats, classrooms, schools, healthcare, water, electricity, jobs, elderly care); save / duplicate / compare / reset; CSV. |
+| 20 | National Decision Intelligence | Ministerial statements (education, water, housing, health, employment, energy, infrastructure) generated deterministically from the active scenario, each with its formula and assumptions; regional outlook; pressure map; priority governorates. |
+| 21 | Reports & Export | Six CSV exports (governorate summary, enumerator performance, quality issues, anomalies, scenario results, PES results) + a printable executive report. |
+| 22 | Methodology & Data Provenance | Data-nature legend, provenance registry, geography pipeline, reference cross-checks, simulation methodology, synthetic assumptions, limitations, and the **official-data import adapter**. |
+
+Global features: command-centre alerts (coverage gap, unusual performance, high refusal, potential duplicate, duration anomaly, district behind schedule, device offline, supervisor review, PES coverage) with severity, owner, timestamp, status, acknowledge / escalate / resolve; provenance popovers on every panel; full Arabic/RTL including charts (axes mirrored in options, not just page direction).
+
+---
+
+## Architecture
+
+```
+jordan-smart-census/
+├─ data-raw/geoboundaries/      raw geoBoundaries GeoJSON + metadata (licences)
+├─ scripts/
+│  ├─ build-geo.mjs             boundary reconciliation & label QA → src/data/geo
+│  ├─ copy-maplibre-worker.mjs  serves MapLibre's ES-module worker statically
+│  ├─ smoke*.ts                 headless engine checks (tsx)
+│  └─ qa-*.mjs                  Playwright route & workflow checks
+└─ src/
+   ├─ app/                      Next.js App Router — one thin route per module
+   ├─ components/
+   │  ├─ ui/                    shadcn-style primitives (Radix Dialog/Popover, cva), DataTable (TanStack)
+   │  ├─ charts/                ECharts wrapper (SVG renderer) + option builders (house style, RTL)
+   │  └─ shell/                 sidebar, top bar & simulation controls, alerts, provenance, demo tour, engine gate
+   ├─ features/<module>/        one folder per module (gis, planning, fieldwork, enumerators, questionnaire,
+   │                            coverage, quality, anomalies, pes, analytics, projections, scenarios,
+   │                            decision, reports, methodology, overview)
+   ├─ simulation/               pure TypeScript engine (no React):
+   │  ├─ rng.ts                 seeded mulberry32 + derived streams
+   │  ├─ generate.ts            generateGovernorates/Districts/EnumerationAreas/Enumerators/Households, blocks
+   │  ├─ population.ts          household & person generator, planted errors
+   │  ├─ engine.ts              CensusEngine: simulateStep/Day, visits, interviews, refusals, revisits,
+   │  │                         quality, alerts, tasks, human actions, aggregation
+   │  ├─ quality.ts             edit rules (shared with the questionnaire)
+   │  ├─ anomalies.ts           explainable statistical detection
+   │  ├─ pes.ts                 sample draw + dual-system estimation
+   │  ├─ analytics.ts           weighted profiles for any scope
+   │  ├─ projection.ts          cohort-component model, Siler life table
+   │  ├─ scenarios.ts           presets, infrastructure demand, comparison
+   │  └─ planning.ts            planning calculator (Zod schema)
+   ├─ data/                     geo JSON, reference baseline, provenance registry
+   ├─ store/                    Zustand app store (+ persisted prefs/scenarios), engine holder
+   ├─ hooks/ · lib/             i18n (dictionary + labels), formatting, CSV, exports
+   └─ types/census.ts           domain model (Governorate … DataSource)
+```
+
+**State model.** The engine is a mutable class living outside React (high-frequency state for ~10.5k EAs and enumerators). The Zustand store holds UI state and a `tick` counter; `useEngine()` re-renders subscribers after every advance or human action. The world is generated on the client (never during prerender), so all routes are static.
+
+**Stack.** Next.js 16 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS 4 · Radix + shadcn-style components · MapLibre GL 6 · Apache ECharts 6 · TanStack Table · Zustand · Zod 4 · date-fns · IBM Plex Sans / Sans Arabic (self-hosted via Fontsource).
+
+**Map.** MapLibre renders our own GeoJSON layers on a plain background — no tile server or glyph server is needed, so it works offline. Labels are HTML markers so Arabic shapes correctly without the RTL text plugin. Governorate/district choropleths are classified into 7 steps (quantile, or fixed domain for percentages).
+
+---
+
+## Geographic data
+
+| Layer | Source | Vintage / licence | Use |
+| --- | --- | --- | --- |
+| National boundary (ADM0) | geoBoundaries gbOpen JOR-ADM0 | 2016 · CC BY 4.0 | outer mask: every EA must fall inside |
+| Governorates (ADM1, 12) | geoBoundaries gbOpen JOR-ADM1 (via Wikimedia Commons) | 2006 · CC BY 2.5 | governorate layer |
+| Districts (ADM2, 52 → 50) | geoBoundaries gbOpen JOR-ADM2 | 2006 · Public domain | district layer after reconciliation |
+
+Download host: the geoBoundaries GitHub LFS mirror (`media.githubusercontent.com/media/wmgeolab/geoBoundaries/...`). Raw files and metadata are committed in `data-raw/geoboundaries/`.
+
+**Boundary QA (`scripts/build-geo.mjs`).** Governorates were validated with point-in-polygon tests of 60 town coordinates (59/60 correct; the miss is a coordinate on the Karak–Tafilah edge). The 2006 ADM2 layer has displaced labels (e.g. the polygon labelled "Irbid" does not contain Irbid city), so the pipeline:
+
+1. nests each ADM2 unit in the governorate it overlaps most and clips it (District ⊂ Governorate holds exactly);
+2. merges cross-governorate slivers into the nearest district of the receiving governorate;
+3. relabels districts by district-seat evidence (12 governorate-capital districts, 25 single-seat, 2 multi-seat), keeps the published label for 11 units without evidence (flagged "label unverified"), and merges 2 tiny unverified units;
+4. writes a QA report shown in module 03 (*Boundary QA report*).
+
+The result is indicative only: it does not match the current DoS structure of 51 liwas. Replace with DoS / OCHA COD-AB boundaries for production.
+
+## Reference statistics
+
+| Dataset | Status |
+| --- | --- |
+| Governorate population baseline, 2024 | **Reference** — DoS end-2024 estimates as reported in secondary sources (web search results citing DoS). 10 rows confirmed; Amman from a single source; Irbid derived as the residual of the reported ≈11.7 M total. Not ingested from a DoS file — verify before use. |
+| World Bank WDI SP.POP.TOTL (2020–2025) | **Reference** — national cross-check (via `github.com/datasets/population`, ODC-PDDL). |
+| 2015 census headline totals | **Reference** — context only. |
+
+---
+
+## Simulation methodology
+
+Everything below is deterministic for a seed (default `JORDAN-CENSUS-DEMO-2030`, changeable in Settings): every sub-process draws from an independent stream derived from `(seed, purpose, key)`, and each fieldwork shift from `(seed, step)`, so playback speed never changes results.
+
+**Frame.** District populations allocate the governorate baseline by district-seat weights and area. EAs are delineated to one enumerator workload under the applied plan (urban 95 %, rural 80 % of `interviews/day × efficiency × field days`), ~10.5k EAs, placed by rejection sampling around seats inside the district polygon **and** the national boundary. Each EA has hidden "truth" (actual households, vacant dwellings), including planted occupancy shortfalls (e.g. `IRB-0207`) and frame under-counts.
+
+**Workforce.** Workloads are contiguous and capped at 108 % of plan; supervisors at 1:8. ~1 % of enumerators carry hidden risk profiles (fabrication risk — e.g. `AMM-E0037` —, high refusal, device issues, GPS drift) that the UI never reveals; only their observable behaviour is shown.
+
+**Synthetic population** (~10k households, ~48k persons). Household type drives composition (single, couple, nuclear, single-parent, extended, composite); spouses near the head's age; children born to mothers aged 17–45 with realistic spacing and age-dependent home-leaving; education by cohort, sex, urban/rural and nationality; employment by age, sex, education and enrolment; WG-style difficulty rising with age; migration histories; urban/rural dwelling profiles. Household and person weights calibrate the sample to the frame. ~0.6 % of records carry planted errors so the edit rules have real work.
+
+**Fieldwork.** 4 shifts/day. Visit capacity = planned rate × personal speed × √accessibility × ramp-up × Friday factor × access disruptions (two seeded events) × reserve support. Each visit: vacant (hypergeometric) or occupied → completed / refusal / no-contact (revisit). Revisits succeed 64 %; failures may finalise. From day 7, enumerators projected to overrun receive reserve support; after the planned period, mop-up runs at boosted capacity; fieldwork closes after 4 mop-up days. End of each day: newly enumerated microdata are checked by the edit rules, operational rules run, anomalies are detected, alerts and supervisor tasks are raised, and daily snapshots are stored.
+
+**Quality & anomalies.** See modules 08–09. Human actions (assign, revisit, resolve, dismiss, confirm, escalate, interventions) are recorded with the acting officer and simulated timestamp; none edits a response.
+
+**PES.** Stratified sample of completed EAs; census count includes count imputation for non-responding occupied dwellings; erroneous inclusions and duplicates depend on EA and enumerator profile; independent PES coverage ~96–97 %; matching under independence; `N̂ = CE × P / M` per stratum.
+
+**Projections & scenarios.** Single-year, two-sex, annual cohort-component model from the simulated census base to 2050. Siler mortality calibrated by bisection to the target e₀ (±1.8 years by sex); TFR × standard age pattern (base 2.7 → 2.2 by 2050 in the baseline); net migration with a young-adult profile plus optional one-off shock; households = population ÷ average size. Infrastructure demand = projected segment × adjustable norm. Governorate apportionment uses base shares, synthetic growth differentials and a north-weighted shock share.
+
+## Assumptions
+
+All values below are illustrative defaults and adjustable in the UI:
+
+- Planning: 21 field days, 14 interviews/day, 85 % efficiency, 1 supervisor : 8 enumerators, 10 % reserve, 8 % device reserve, batch of 35, fieldwork start 1 Dec 2026, reference date 30 Nov 2026.
+- Governorate profiles (urban share, household size, vacancy, nationality mix, accessibility, growth differential): `src/data/reference.ts → GOV_PROFILES`.
+- Planning norms: 110 L/person/day, 1,500 kWh/person/year, 32 pupils/classroom, 640 pupils/school, 3.4 visits/person/year (×1.5 extra for 65+), 12 % care need among 65+, housing formation ratio 1.08, 95 % school enrolment.
+
+## Replacing simulated data
+
+The provenance registry (`src/data/sources.ts`) and the reference baseline (`src/data/reference.ts`) are the only entry points for real figures. Module 22 includes a working **import adapter**:
+
+1. Download the template CSV (`govId,population`, 12 rows).
+2. Upload an official DoS file; it is validated with Zod (all 12 governorates, unique, positive integers).
+3. Review the diff and **Apply & regenerate** — the frame, workforce, microdata weights and projections rebuild from it, and the provenance record switches to **Official**.
+
+The same pattern extends to boundaries (`npm run geo` with DoS/COD layers in `data-raw`), EA frames and microdata, because every module consumes the domain types in `src/types/census.ts` rather than the generator directly.
+
+## Known limitations
+
+- District geometry is the 2006 nahia layer, reconciled; 11 district labels remain unverified, and it differs from the current 51-liwa structure.
+- The governorate baseline was not ingested from an official DoS file.
+- All microdata, fieldwork, quality, anomaly, PES, projection and scenario outputs are synthetic.
+- EAs are centroids, not polygons; blocks and dwellings are generated on demand.
+- Client-side only: no authentication or server-side audit store, and fieldwork state resets on reload. Preferences and saved scenarios persist in `localStorage`.
+- The simulation runs on the main thread; at 20× a full census takes ~5 s and the UI stays responsive on a typical laptop.
+
+## Recommended next phase
+
+1. Load authoritative DoS/OCHA COD-AB boundaries (governorate, liwa, qada) and a real EA frame with EA polygons; switch to vector tiles for national EA layers.
+2. A backend (e.g. PostgreSQL/PostGIS + an API) with authentication, role-based access (HQ, governorate coordinator, supervisor, enumerator), an immutable audit log and an offline-first CAPI sync service.
+3. Ingest DoS reference tables (population estimates, 2015 census) through the adapter pattern, with versioning and approval workflow.
+4. Move the simulation to a Web Worker and add scenario persistence / sharing on the server.
+5. Calibrate the synthetic model and projection assumptions against DoS and UN WPP with demographers; add uncertainty bands.
+6. Accessibility audit (WCAG 2.2 AA), formal Arabic terminology review with DoS, and a security review before any pilot.

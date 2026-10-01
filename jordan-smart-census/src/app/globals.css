@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@theme {
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --color-navy-950: #0a1322;
+  --color-navy-900: #0f1c31;
+  --color-navy-850: #132440;
+  --color-navy-800: #182d4f;
+  --color-navy-700: #22406b;
+  --color-navy-600: #2f62a6;
+  --color-navy-500: #4a7cc0;
+  --color-navy-300: #9db4d6;
+  --color-navy-100: #e3eaf5;
+
+  --color-paper: #f6f4ef;
+  --color-card: #fffefb;
+  --color-sand-50: #faf7f0;
+  --color-sand-100: #f2ecdf;
+  --color-sand-200: #e7dcc6;
+  --color-sand-300: #d6c49f;
+  --color-sand-500: #a88a52;
+  --color-sand-700: #6e5a33;
+
+  --color-ink-900: #141a24;
+  --color-ink-700: #394252;
+  --color-ink-500: #5f6876;
+  --color-ink-400: #808896;
+  --color-line: #e3ddd0;
+  --color-line-strong: #cfc6b4;
+
+  --color-jordan: #b8232f;
+
+  --color-ok: #1f8a3b;
+  --color-ok-bg: #e5f3e8;
+  --color-warn: #a86b00;
+  --color-warn-bg: #fdf1d6;
+  --color-serious: #c25a2c;
+  --color-serious-bg: #fbe7dc;
+  --color-crit: #c0302f;
+  --color-crit-bg: #f9e1e0;
+
+  --color-nat-official: #1f6b45;
+  --color-nat-reference: #22406b;
+  --color-nat-simulated: #8a5a12;
+  --color-nat-synthetic: #5b4a8c;
+}
+
+:root {
+  --viz-1: #2f62a6;
+  --viz-2: #d07a1c;
+  --viz-3: #159a83;
+  --viz-4: #8a5cc0;
+  --viz-5: #d4a017;
+  --viz-6: #b5453a;
+}
+
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html[lang="ar"] body {
+  font-family: var(--font-arabic);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* scrollbars */
+.thin-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #cfc6b4;
+  border-radius: 8px;
+}
+.nav-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.nav-scroll::-webkit-scrollbar-thumb {
+  background: #2a3d5e;
+  border-radius: 6px;
+}
+
+/* range slider */
+input[type="range"].slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(to var(--slider-dir, right), var(--color-navy-600) 0%, var(--color-navy-600) var(--fill, 50%), var(--color-sand-200) var(--fill, 50%), var(--color-sand-200) 100%);
+  outline: none;
+}
+input[type="range"].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--color-navy-600);
+  box-shadow: 0 1px 3px rgba(15, 28, 49, 0.25);
+  cursor: pointer;
+}
+input[type="range"].slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--color-navy-600);
+  cursor: pointer;
+}
+html[dir="rtl"] input[type="range"].slider {
+  --slider-dir: left;
+}
+
+/* map */
+.maplibregl-ctrl-attrib {
+  font-size: 10px !important;
+}
+.map-label {
+  pointer-events: none;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  color: #14213a;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 2px #fff;
+  letter-spacing: 0.01em;
+}
+.map-label.small {
+  font-size: 10px;
+  font-weight: 500;
+  color: #2b3a55;
+}
+.map-label .sub {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: #4b5a73;
+  text-align: center;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(47, 98, 166, 0.45); }
+  100% { box-shadow: 0 0 0 10px rgba(47, 98, 166, 0); }
+}
+.demo-pulse {
+  animation: pulse-ring 1.4s ease-out infinite;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  .print-page {
+    box-shadow: none !important;
+    border: none !important;
+  }
+  aside,
+  header {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
