@@ -1,0 +1,139 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/source-serif-4';
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Insight AI design tokens
+   Warm white canvas · deep navy type · Insight magenta · electric purple · subtle blue
+------------------------------------------------------------------- */
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+
+  --color-canvas: #faf8f4;
+  --color-surface: #ffffff;
+  --color-mist: #f3f1ec;
+  --color-stone: #e9e5de;
+  --color-line: #dcd7ce;
+  --color-line-soft: #ebe7e0;
+
+  --color-ink: #0b1a3a;
+  --color-ink-2: #2e3a57;
+  --color-ink-3: #56607a;
+  --color-ink-4: #6b7289;
+
+  --color-magenta: #d4006f;
+  --color-magenta-deep: #a8005a;
+  --color-magenta-soft: #fce8f2;
+  --color-purple: #6b2bd9;
+  --color-purple-soft: #efe8fc;
+  --color-blue: #2f6fdb;
+  --color-blue-soft: #e8f0fc;
+  --color-navy: #1f3b7a;
+  --color-navy-soft: #e7ecf6;
+  --color-teal: #0f766e;
+  --color-teal-soft: #e3f3f1;
+  --color-copper: #9a5412;
+  --color-copper-soft: #f8eee3;
+  --color-slate: #475569;
+  --color-slate-soft: #eef1f5;
+
+  --color-go: #1c7c4a;
+  --color-go-soft: #e4f4ea;
+  --color-cond: #9a6a00;
+  --color-cond-soft: #fbf2d9;
+  --color-remediate: #c2410c;
+  --color-remediate-soft: #fdeadf;
+  --color-stop: #b42318;
+  --color-stop-soft: #fde8e6;
+
+  --shadow-card: 0 1px 2px rgba(11, 26, 58, 0.04), 0 4px 16px -6px rgba(11, 26, 58, 0.08);
+  --shadow-lift: 0 2px 4px rgba(11, 26, 58, 0.05), 0 18px 40px -16px rgba(11, 26, 58, 0.22);
+  --shadow-focus: 0 0 0 3px rgba(107, 43, 217, 0.22);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 116px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-magenta-soft);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-purple);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: default;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-3;
+  }
+  .card {
+    @apply rounded-xl border border-line-soft bg-surface;
+    box-shadow: var(--shadow-card);
+  }
+  .control-gradient {
+    background-image: linear-gradient(90deg, var(--color-magenta) 0%, #a3179f 48%, var(--color-purple) 100%);
+  }
+  .control-gradient-soft {
+    background-image: linear-gradient(90deg, #fdeef5 0%, #f6ecfb 50%, #f1ebfd 100%);
+  }
+  .text-control-gradient {
+    background-image: linear-gradient(90deg, var(--color-magenta) 0%, var(--color-purple) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hairline-grid {
+    background-image: linear-gradient(to right, rgba(11, 26, 58, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(11, 26, 58, 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+.connector-animated {
+  stroke-dasharray: 6 6;
+  animation: dash-flow 1.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .connector-animated {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

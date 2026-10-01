@@ -1,0 +1,176 @@
+import type { Play, PlayId } from './types';
+
+/**
+ * GO-TO-MARKET PLAYS: how Insight lands and expands commercially.
+ * Every step maps to an existing service offering. Plays never introduce new services.
+ */
+export const plays: Play[] = [
+  {
+    id: 'p01',
+    number: '01',
+    name: 'AI Transformation',
+    icon: 'Compass',
+    trigger: 'We need an AI strategy and roadmap.',
+    land: { label: 'AI Value & Readiness Sprint', service: 's01' },
+    expand: [
+      { label: 'Operating Model', service: 's02' },
+      { label: 'AI Control', service: 's03' },
+      { label: 'AI Factory', service: 's06' },
+      { label: 'AI CoE', service: 's02' },
+      { label: 'Managed AI', service: 's06' },
+    ],
+    operate: {
+      label: 'Managed AI & value tracking',
+      service: 's06',
+      description: 'AI runs as a managed service, with benefits tracked against the investment roadmap.',
+    },
+    accelerators: ['aro', 'radius'],
+    sponsors: ['CEO', 'Chief Strategy Officer', 'CDAO'],
+    questions: [
+      'Which business outcomes must AI move, and by when?',
+      'Where is AI already in use without a shared view of value or risk?',
+      'Who owns the AI investment portfolio today?',
+    ],
+  },
+  {
+    id: 'p02',
+    number: '02',
+    name: 'Agentic Enterprise',
+    icon: 'Bot',
+    trigger: 'We want agents or autonomous workflows.',
+    land: { label: 'Agentic Process Discovery + Lighthouse PoV', service: 's04' },
+    expand: [
+      { label: 'Process redesign', service: 's02' },
+      { label: 'Agent engineering', service: 's04' },
+      { label: 'Integration', service: 's05' },
+      { label: 'AI Control', service: 's03' },
+      { label: 'Agent Factory', service: 's06' },
+      { label: 'Scale', service: 's06' },
+    ],
+    operate: {
+      label: 'Managed agent operations',
+      service: 's06',
+      description: 'Agents are produced through an Agent Factory and run with continuous monitoring and control.',
+    },
+    accelerators: ['helios', 'apollo', 'agent-store', 'devshop'],
+    sponsors: ['COO', 'CIO', 'Process owners'],
+    questions: [
+      'Which end-to-end processes involve many rules-based decisions and hand-offs?',
+      'What authority would an agent need, and who would be accountable for it?',
+      'Which systems would agents need to read from and act in?',
+    ],
+  },
+  {
+    id: 'p03',
+    number: '03',
+    name: 'AI Control',
+    icon: 'ShieldCheck',
+    trigger: 'AI and agents are spreading faster than governance.',
+    land: { label: 'AI Control / Radius Assessment', service: 's03' },
+    expand: [
+      { label: 'Agent registry', service: 's03' },
+      { label: 'Policy-to-control', service: 's03' },
+      { label: 'Technical controls', service: 's05' },
+      { label: 'Monitoring', service: 's03' },
+      { label: 'Assurance', service: 's03' },
+      { label: 'Managed governance', service: 's06' },
+    ],
+    operate: {
+      label: 'Managed governance & assurance',
+      service: 's06',
+      description: 'Controls, monitoring and evidence run continuously as a managed governance service.',
+    },
+    accelerators: ['radius', 'policy-agent', 'tokenscope'],
+    sponsors: ['CRO', 'CISO', 'CDAO', 'General Counsel', 'Head of Internal Audit'],
+    questions: [
+      'Do you know every AI system and agent in use, and who owns each one?',
+      'Could you evidence how a specific AI-supported decision was made?',
+      'What happens today if an agent acts outside its authority?',
+    ],
+  },
+  {
+    id: 'p04',
+    number: '04',
+    name: 'Enterprise AI Platform',
+    icon: 'Server',
+    trigger: 'We need secure enterprise access to models, copilots and agents.',
+    land: { label: 'Enterprise AI Platform Blueprint', service: 's05' },
+    expand: [
+      { label: 'Data', service: 's05' },
+      { label: 'Platform', service: 's05' },
+      { label: 'Integration', service: 's05' },
+      { label: 'Sovereign / hybrid infrastructure', service: 's05' },
+      { label: 'Cyber', service: 's05' },
+      { label: 'Operations', service: 's06' },
+    ],
+    operate: {
+      label: 'Platform operations & AI FinOps',
+      service: 's06',
+      description: 'The platform is operated, secured and cost-optimised as AI consumption grows.',
+    },
+    accelerators: ['ai-hub', 'junkshon', 'tokenscope'],
+    sponsors: ['CIO', 'CTO', 'CISO', 'Chief Architect'],
+    questions: [
+      'How do employees access models today, and is that access governed?',
+      'Which data must stay in-country or on-premises?',
+      'How is AI consumption cost tracked and allocated?',
+    ],
+  },
+  {
+    id: 'p05',
+    number: '05',
+    name: 'AI Workforce',
+    icon: 'GraduationCap',
+    trigger: 'We invested in AI but adoption and productivity remain inconsistent.',
+    land: { label: 'AI Flight Academy / Workforce Assessment', service: 's06' },
+    expand: [
+      { label: 'Role redesign', service: 's02' },
+      { label: 'Human + AI operating model', service: 's02' },
+      { label: 'Department agents', service: 's04' },
+      { label: 'AI CoE', service: 's06' },
+      { label: 'Continuous adoption', service: 's06' },
+    ],
+    operate: {
+      label: 'Continuous adoption & CoE operations',
+      service: 's06',
+      description: 'Adoption, capability building and the AI CoE run as an ongoing programme.',
+    },
+    accelerators: ['flight-academy', 'agent-store'],
+    sponsors: ['CHRO', 'COO', 'CIO'],
+    questions: [
+      'Where has AI been deployed but usage is low or uneven?',
+      'Which roles change most as AI takes on tasks?',
+      'How is AI capability built, measured and recognised?',
+    ],
+  },
+  {
+    id: 'p06',
+    number: '06',
+    name: 'AI-Native Sector Transformation',
+    icon: 'Building2',
+    trigger: 'We want to redesign an entire domain around AI.',
+    land: { label: 'Domain Transformation Sprint', service: 's01' },
+    expand: [
+      { label: 'Operating model', service: 's02' },
+      { label: 'AI Control', service: 's03' },
+      { label: 'Agents', service: 's04' },
+      { label: 'Platform', service: 's05' },
+      { label: 'Scale', service: 's06' },
+      { label: 'Managed operations', service: 's06' },
+    ],
+    operate: {
+      label: 'Managed domain operations',
+      service: 's06',
+      description: 'The redesigned domain runs with Human + AI teams and continuous value realisation.',
+    },
+    accelerators: ['aro', 'apollo', 'helios', 'radius'],
+    sponsors: ['CEO or agency head', 'Domain executive'],
+    questions: [
+      'If this domain were designed today around AI, what would be different?',
+      'Which decisions and services define performance in this domain?',
+      'What must be true for the domain to run with Human + AI teams?',
+    ],
+  },
+];
+
+export const playById = Object.fromEntries(plays.map((p) => [p.id, p])) as Record<PlayId, Play>;
