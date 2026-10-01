@@ -62,7 +62,7 @@ export function summaryText(session: ClientSession) {
     ...(weakestPractices(session, 5).length ? ['Weakest practices:', ...weakestPractices(session, 5).map((w) => `- ${w.question.text} (${w.score})`)] : []),
     '',
     'Prioritised use cases',
-    ...rankedUseCases(session).map((u) => `${u.rank}. ${u.name} (value ${u.value}, readiness ${u.readiness}, ${u.risk} risk) · ${quadrants[u.quadrant].name}`),
+    ...rankedUseCases(session).map((u) => `${u.rank}. ${u.name} (value ${u.value}, readiness ${u.readiness}, ${u.risk} risk) · ${quadrants[u.quadrant].name}${u.ai ? ' · AI-assessed' : ''}`),
     '',
     'Roadmap',
     ...roadmap(session).map((c) => `${c.horizon}: ${c.items.map((u) => u.name).join('; ') || '-'}`),
@@ -167,6 +167,7 @@ export function SummaryDocument({ compact }: { compact?: boolean }) {
                     <span>
                       {u.name}
                       {u.risk === 'High' && <span className="ml-1.5 text-[11px] font-semibold text-stop">! High risk</span>}
+                      {u.ai && <span className="ml-1.5 text-[11px] font-semibold text-purple" title={u.ai.value}>✦</span>}
                     </span>
                   </span>
                   <span className="shrink-0 text-[12px] text-ink-3">
@@ -222,7 +223,7 @@ export function SummaryDocument({ compact }: { compact?: boolean }) {
         </Block>
       )}
       <p className="text-[11px] leading-snug text-ink-4">
-        Scores and use cases were provided by the client during the session. Indicative self-assessment; not a formal Radius assessment.
+        Scores and use cases were provided by the client during the session{ranked.some((u) => u.ai) ? '; scores marked ✦ were proposed by an AI agent and reviewed by the consultant' : ''}. Indicative self-assessment; not a formal Radius assessment.
       </p>
     </article>
   );

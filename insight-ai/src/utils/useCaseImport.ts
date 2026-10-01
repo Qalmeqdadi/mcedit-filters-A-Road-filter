@@ -95,6 +95,13 @@ export function mapUseCases(grid: string[][]): ImportResult {
     const rk = map.risk != null ? risk(r[map.risk]) : null;
     const needsScoring = v == null || rd == null;
     if (needsScoring) defaulted++;
+    const mapped = new Set(Object.values(map));
+    const extra: Record<string, string> = {};
+    if (headerIdx >= 0)
+      rows[headerIdx].forEach((h, i) => {
+        const v = (r[i] ?? '').toString().trim();
+        if (!mapped.has(i) && v && (h ?? '').toString().trim()) extra[(h ?? '').toString().trim().slice(0, 60)] = v.slice(0, 300);
+      });
     const get = (k: keyof UseCase) => (map[k] != null ? (r[map[k]!] ?? '').toString().trim() || undefined : undefined);
     items.push({
       id: newId(),
@@ -106,6 +113,7 @@ export function mapUseCases(grid: string[][]): ImportResult {
       owner: get('owner'),
       domain: get('domain'),
       needsScoring: needsScoring || undefined,
+      extra: Object.keys(extra).length ? extra : undefined,
     });
   }
   if (map.value == null) warnings.push('No value column found; value set to 3 for every use case.');

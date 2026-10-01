@@ -6,6 +6,6 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
-  // One self-contained bundle (~165 kB gzipped) suits an offline executive asset better than lazy chunks.
-  build: { chunkSizeWarningLimit: 700 },
+  // One self-contained bundle (~245 kB gzipped, including the Anthropic SDK) suits an offline executive asset better than lazy chunks.
+  build: { chunkSizeWarningLimit: 900 },
 });

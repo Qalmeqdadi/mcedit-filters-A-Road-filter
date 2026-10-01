@@ -1,8 +1,10 @@
-import { ArrowRight, Plus, ShieldAlert, Trash2 } from 'lucide-react';
+import { ArrowRight, Plus, ShieldAlert, Sparkles, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { sectorById } from '../data/sectors';
 import { quadrants } from '../data/workshop';
+import { AiAssessButton } from '../components/AiAssessDialog';
 import { ImportUseCases } from '../components/ImportUseCases';
+import { Tooltip } from '../components/Tooltip';
 import { Section } from '../components/Section';
 import { PriorityMatrix } from '../diagrams/PriorityMatrix';
 import { useClient, type Risk, type UseCase } from '../hooks/useClient';
@@ -61,6 +63,7 @@ export function UseCaseEditor({ compact }: { compact?: boolean }) {
           <Plus className="size-4" /> Add
         </button>
         {!compact && <ImportUseCases />}
+        {!compact && <AiAssessButton />}
         {sector && (
           <button type="button" onClick={addExamples} className="inline-flex items-center gap-1.5 rounded-lg border border-teal/30 bg-teal-soft px-3 py-2 text-[13px] font-medium text-ink hover:border-teal">
             Add {sector.name} examples
@@ -95,6 +98,24 @@ export function UseCaseEditor({ compact }: { compact?: boolean }) {
                   <td className={cn('px-2 text-ink', compact ? 'py-1' : 'py-1.5')}>
                     <span className="font-medium">{u.name}</span>
                     {u.needsScoring && <span className="ml-1.5 rounded bg-cond-soft px-1 text-[10.5px] font-semibold text-cond">needs scoring</span>}
+                    {u.ai && (
+                      <Tooltip
+                        width={360}
+                        content={
+                          <span className="block space-y-1">
+                            <span className="block"><strong>Value.</strong> {u.ai.value}</span>
+                            <span className="block"><strong>Readiness.</strong> {u.ai.readiness}</span>
+                            <span className="block"><strong>Risk.</strong> {u.ai.risk}</span>
+                            {u.ai.keyRisks.length > 0 && <span className="block text-white/70">{u.ai.keyRisks.join(' · ')}</span>}
+                            <span className="block text-white/60">AI-proposed ({u.ai.confidence} confidence), accepted by consultant.</span>
+                          </span>
+                        }
+                      >
+                        <span className="ml-1.5 inline-flex items-center gap-0.5 rounded bg-purple-soft px-1 text-[10.5px] font-semibold text-purple" data-testid="ai-badge">
+                          <Sparkles className="size-3" /> AI
+                        </span>
+                      </Tooltip>
+                    )}
                     {!compact && (u.owner || u.domain) && (
                       <span className="block text-[11.5px] text-ink-3">{[u.domain, u.owner].filter(Boolean).join(' · ')}</span>
                     )}

@@ -14,8 +14,9 @@ Insight leadership, sales teams and senior clients one coherent view of:
 - the competitive landscape
 - the client journey and outcomes
 
-Static React app (Vite, TypeScript, Tailwind CSS, Framer Motion, Lucide). There is no backend, no API keys and no
-runtime network calls: fonts are bundled, so it works offline once dependencies are installed.
+Static React app (Vite, TypeScript, Tailwind CSS, Framer Motion, Lucide). There is no backend and no runtime network
+calls: fonts are bundled, so it works offline once dependencies are installed. The one exception is the optional AI
+use-case agent, which calls the Anthropic API with a key the consultant enters.
 
 ## Single HTML file
 
@@ -55,6 +56,7 @@ Vite automatically (`vercel.json` pins the build command and the `dist` output).
 | **Client mode** | **Set up a client** in the sidebar: name, sector, meeting date and lead play. The Overview, Services, Industries, GTM Plays and Present title slide then open on that client's sector and lead play. |
 | **AI maturity self-check** | Step 1: the organisation's AI stage (not started, exploring, piloting, scaling, operating at scale). Step 2: a detailed questionnaire across 13 areas (5 readiness, 8 AI Control). Each practice is scored 1–5 or "don't know", and the questions adapt to the stage: 60 for organisations not yet using AI (control framed as readiness to govern), 64 once AI is in use, 94 distinct in total (`src/data/assessment.ts`). Step 3: results show area scores (averages), a radar against target, the biggest gaps, the weakest individual practices, unknowns, and a recommended starting point (foundations first before AI is in use). |
 | **Use-case prioritiser** | Type use cases, add sector examples, or **Import from Excel** (.xlsx or .csv, read in the browser). Columns are matched flexibly (e.g. "Initiative", "Impact", "Feasibility", "Risk level", "Sponsor", "Business unit"). Scores may be 1–5, 1–10 or High / Medium / Low; missing scores default to 3 and are flagged "needs scoring". A preview lets you add to or replace the current list. **Template** downloads a ready-made .xlsx. A value × readiness 2×2 places the use cases, the ranking feeds a Now / Next / Later roadmap, and high-risk items are flagged for an AI Control design gate. |
+| **AI use-case agent** | **Assess with AI agent** on the prioritiser. (1) Optionally researches the client on the web (Claude with the web search tool) and writes a short, sourced profile. (2) Assesses the use cases in batches of 10. Each gets value, readiness and risk with a one-line rationale per score, key risks and a confidence level. Inputs are the client profile, the consultant's context notes, the self-check area scores and every column from the imported sheet. (3) A person reviews proposed against current scores and ticks which to apply; nothing changes before that. Accepted rows carry an "AI" badge whose tooltip shows the rationale, and the summary marks them. Runs from the browser with the consultant's own Anthropic API key (session-only unless "remember" is ticked), model `claude-opus-5-5`, with refusal fallbacks enabled. Requires an explicit data-sharing confirmation before every run (`src/utils/aiAssessor.ts`). |
 | **Client summary** | A one-page leave-behind with the lead play and entry offer, self-check, prioritised use cases, roadmap, derived next steps and notes. Use **Print / Save as PDF** (fits one A4 page) or **Copy as text**. |
 
 The session is stored only in this browser (`localStorage`) and survives a reload. **Clear session** in the client
@@ -116,6 +118,7 @@ npm run qa:interactions   # architecture, drawers, filters, tabs, keyboard, dead
 npm run qa:present        # walks all scenes with the keyboard, checks overflow, Escape back to Explore
 npm run qa:sections       # per-page screenshots into qa-screens/
 npm run qa:workshop       # v2 client workshop end to end, including print and persistence
+npm run qa:ai             # AI agent against a mocked Anthropic API (requests, batching, review, errors)
 ```
 
 To test a production build, set `BASE=http://127.0.0.1:4173/` and run `npm run preview`.
