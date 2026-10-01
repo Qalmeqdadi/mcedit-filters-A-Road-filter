@@ -25,8 +25,8 @@ check('arch: layer connections drawn', (await pathCount('#architecture')) >= 2, 
 const dimmed = await arch.locator('[style*="opacity: 0.38"]').count();
 check('arch: unrelated layers dim', dimmed >= 3, `${dimmed} dimmed`);
 await page.keyboard.press('Escape');
-await page.waitForTimeout(400);
-check('arch: Escape closes drawer', !(await drawer().isVisible()));
+const closed = await drawer().waitFor({ state: 'hidden', timeout: 3000 }).then(() => true, () => false);
+check('arch: Escape closes drawer', closed);
 
 // --- Architecture: element selection
 await arch.locator('[data-node="svc:s03"]').click();
