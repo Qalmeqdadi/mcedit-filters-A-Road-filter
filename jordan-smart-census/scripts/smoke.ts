@@ -1,0 +1,16 @@
+import { generateWorld, DEFAULT_CONFIG } from "../src/simulation/generate";
+const w = generateWorld(DEFAULT_CONFIG);
+console.log("ms", w.generationMs, "govs", w.governorates.length, "districts", w.districts.length, "EAs", w.eas.length, "enum", w.enumerators.length, "sup", w.supervisors.length, "hh", w.households.length, "persons", w.households.reduce((s, h) => s + h.members.length, 0));
+console.log("totals", w.totals);
+const kinds: Record<string, number> = {};
+for (const e of w.enumerators) kinds[e.profile.kind] = (kinds[e.profile.kind] ?? 0) + 1;
+console.log(kinds);
+const byGov: Record<string, number> = {};
+for (const e of w.eas) byGov[e.govId] = (byGov[e.govId] ?? 0) + 1;
+console.log(byGov);
+const sizes: Record<number, number> = {};
+for (const h of w.households) sizes[h.members.length] = (sizes[h.members.length] ?? 0) + 1;
+console.log("hh sizes", sizes, "mean", w.households.reduce((s, h) => s + h.members.length, 0) / w.households.length);
+console.log(w.enumerators.find(e => e.id === "AMM-E0037")?.profile, w.eas.find(e=>e.id==="IRB-0207")?.planted);
+const w2 = generateWorld(DEFAULT_CONFIG);
+console.log("deterministic", JSON.stringify(w2.eas.slice(0,50)) === JSON.stringify(w.eas.slice(0,50)), w2.households[123].members[0].age === w.households[123].members[0].age);

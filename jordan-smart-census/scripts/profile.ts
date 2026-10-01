@@ -1,0 +1,12 @@
+import { CensusEngine } from "../src/simulation/engine";
+import { DEFAULT_CONFIG } from "../src/simulation/generate";
+const eng = new CensusEngine(DEFAULT_CONFIG);
+const anyEng = eng as unknown as { endOfDay: (d: number) => void };
+const orig = anyEng.endOfDay.bind(eng);
+let eod = 0;
+anyEng.endOfDay = (d: number) => { const t = performance.now(); orig(d); eod += performance.now() - t; };
+const t = performance.now();
+eng.advance(40);
+const total = performance.now() - t;
+console.log("40 steps", total.toFixed(0), "ms; endOfDay", eod.toFixed(0), "ms; per step (excl eod)", ((total - eod) / 40).toFixed(1));
+const t2 = performance.now(); for (let i = 0; i < 20; i++) eng.aggregate(); console.log("aggregate", ((performance.now() - t2) / 20).toFixed(1), "ms");

@@ -1,0 +1,1060 @@
+{
+ "generatedBy": "scripts/build-geo.mjs",
+ "source": "geoBoundaries gbOpen JOR (ADM0 2016, ADM1 2006, ADM2 2006); build Dec 12, 2023",
+ "sourceAdm2Units": 52,
+ "outputDistricts": 50,
+ "labelMethods": {
+  "seat-capital": 12,
+  "published-label": 11,
+  "seat": 25,
+  "seat-multiple": 2
+ },
+ "units": [
+  {
+   "id": "AJL-D01",
+   "govId": "AJL",
+   "nameEn": "Qasabat Ajloun",
+   "nameAr": "قصبة عجلون",
+   "sourceLabel": "Aljun",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Ajloun",
+    "Kufranjah"
+   ],
+   "majorityShare": 63.3,
+   "areaKm2": 337.3
+  },
+  {
+   "id": "AJL-D02",
+   "govId": "AJL",
+   "nameEn": "Kofranjah",
+   "nameAr": "كفرنجة",
+   "sourceLabel": "Kofranjah",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 93.4,
+   "areaKm2": 44.8
+  },
+  {
+   "id": "AMM-D01",
+   "govId": "AMM",
+   "nameEn": "Qasabat Amman",
+   "nameAr": "قصبة عمّان",
+   "sourceLabel": "Amman",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Amman",
+    "Al-Quwaysimah",
+    "Wadi as-Sir"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 283.8
+  },
+  {
+   "id": "AMM-D02",
+   "govId": "AMM",
+   "nameEn": "Al-Jami'a",
+   "nameAr": "الجامعة",
+   "sourceLabel": "Wadi al-Sayr",
+   "method": "seat",
+   "seats": [
+    "Al-Jami'a"
+   ],
+   "majorityShare": 75.2,
+   "areaKm2": 96.5
+  },
+  {
+   "id": "AMM-D03",
+   "govId": "AMM",
+   "nameEn": "Al-Jiza",
+   "nameAr": "الجيزة",
+   "sourceLabel": "Al-Jizah",
+   "method": "seat",
+   "seats": [
+    "Al-Jiza"
+   ],
+   "majorityShare": 97.3,
+   "areaKm2": 5439.2
+  },
+  {
+   "id": "AMM-D04",
+   "govId": "AMM",
+   "nameEn": "Al-Muwaqqar",
+   "nameAr": "الموقر",
+   "sourceLabel": "Al-Muwaqqar",
+   "method": "seat",
+   "seats": [
+    "Al-Muwaqqar"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 833.4
+  },
+  {
+   "id": "AMM-D05",
+   "govId": "AMM",
+   "nameEn": "Marka",
+   "nameAr": "ماركا",
+   "sourceLabel": "Sahab",
+   "method": "seat",
+   "seats": [
+    "Marka"
+   ],
+   "majorityShare": 98,
+   "areaKm2": 807.7
+  },
+  {
+   "id": "AMM-D06",
+   "govId": "AMM",
+   "nameEn": "Na'ur",
+   "nameAr": "ناعور",
+   "sourceLabel": "Um al-Basatin",
+   "method": "seat",
+   "seats": [
+    "Na'ur"
+   ],
+   "majorityShare": 92.8,
+   "areaKm2": 508.1
+  },
+  {
+   "id": "AMM-D07",
+   "govId": "AMM",
+   "nameEn": "Sahab",
+   "nameAr": "سحاب",
+   "sourceLabel": "Na'ur",
+   "method": "seat",
+   "seats": [
+    "Sahab"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 124.8
+  },
+  {
+   "id": "AQB-D01",
+   "govId": "AQB",
+   "nameEn": "Qasabat Al-Aqaba",
+   "nameAr": "قصبة العقبة",
+   "sourceLabel": "Al-Aqaba",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Al-Aqaba"
+   ],
+   "majorityShare": 98.9,
+   "areaKm2": 2075
+  },
+  {
+   "id": "AQB-D02",
+   "govId": "AQB",
+   "nameEn": "Al-Quwayra",
+   "nameAr": "القويرة",
+   "sourceLabel": "Al-Quwayra",
+   "method": "seat",
+   "seats": [
+    "Al-Quwayra"
+   ],
+   "majorityShare": 89.2,
+   "areaKm2": 2298.2
+  },
+  {
+   "id": "AQB-D03",
+   "govId": "AQB",
+   "nameEn": "Wadi Araba",
+   "nameAr": "وادي عربة",
+   "sourceLabel": "Wadi Araba",
+   "method": "seat",
+   "seats": [
+    "Wadi Araba"
+   ],
+   "majorityShare": 85.2,
+   "areaKm2": 1869.3
+  },
+  {
+   "id": "BAL-D01",
+   "govId": "BAL",
+   "nameEn": "Qasabat As-Salt",
+   "nameAr": "قصبة السلط",
+   "sourceLabel": "As-Salt",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat As-Salt"
+   ],
+   "majorityShare": 86.8,
+   "areaKm2": 210.5
+  },
+  {
+   "id": "BAL-D02",
+   "govId": "BAL",
+   "nameEn": "Ain al-Basha",
+   "nameAr": "عين الباشا",
+   "sourceLabel": "Ardhah",
+   "method": "seat",
+   "seats": [
+    "Ain al-Basha"
+   ],
+   "majorityShare": 90.4,
+   "areaKm2": 157.4
+  },
+  {
+   "id": "BAL-D03",
+   "govId": "BAL",
+   "nameEn": "Al-Balqa",
+   "nameAr": "البلقاء",
+   "sourceLabel": "Al-Balqa",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 88.4,
+   "areaKm2": 51.5
+  },
+  {
+   "id": "BAL-D04",
+   "govId": "BAL",
+   "nameEn": "Deir Alla",
+   "nameAr": "دير علا",
+   "sourceLabel": "Dair Alla",
+   "method": "seat",
+   "seats": [
+    "Deir Alla"
+   ],
+   "majorityShare": 73,
+   "areaKm2": 66.9
+  },
+  {
+   "id": "BAL-D05",
+   "govId": "BAL",
+   "nameEn": "Southern Shuna",
+   "nameAr": "الشونة الجنوبية",
+   "sourceLabel": "Shuna al-Jabiniyya",
+   "method": "seat",
+   "seats": [
+    "Southern Shuna"
+   ],
+   "majorityShare": 84.7,
+   "areaKm2": 521.4
+  },
+  {
+   "id": "IRB-D01",
+   "govId": "IRB",
+   "nameEn": "Qasabat Irbid",
+   "nameAr": "قصبة إربد",
+   "sourceLabel": "Wastiyyeh",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Irbid"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 249.2
+  },
+  {
+   "id": "IRB-D02",
+   "govId": "IRB",
+   "nameEn": "Al-Koura",
+   "nameAr": "الكورة",
+   "sourceLabel": "Mazar Shamaliyyeh",
+   "method": "seat",
+   "seats": [
+    "Al-Koura"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 300.2
+  },
+  {
+   "id": "IRB-D03",
+   "govId": "IRB",
+   "nameEn": "Ar-Ramtha",
+   "nameAr": "الرمثا",
+   "sourceLabel": "Ar Ramtha",
+   "method": "seat",
+   "seats": [
+    "Ar-Ramtha"
+   ],
+   "majorityShare": 98,
+   "areaKm2": 262.9
+  },
+  {
+   "id": "IRB-D04",
+   "govId": "IRB",
+   "nameEn": "At-Taybeh & Al-Wasatiyya",
+   "nameAr": "الطيبة والوسطية",
+   "sourceLabel": "Irbid",
+   "method": "seat-multiple",
+   "seats": [
+    "At-Taybeh",
+    "Al-Wasatiyya"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 109
+  },
+  {
+   "id": "IRB-D05",
+   "govId": "IRB",
+   "nameEn": "Bani Kinana & Northern Ghor",
+   "nameAr": "بني كنانة والأغوار الشمالية",
+   "sourceLabel": "Tayybeh",
+   "method": "seat-multiple",
+   "seats": [
+    "Bani Kinana",
+    "Northern Ghor"
+   ],
+   "majorityShare": 97.9,
+   "areaKm2": 526.8
+  },
+  {
+   "id": "IRB-D06",
+   "govId": "IRB",
+   "nameEn": "Bani Obeid",
+   "nameAr": "بني عبيد",
+   "sourceLabel": "Al-Aghwar Shamaliyyeh",
+   "method": "seat",
+   "seats": [
+    "Bani Obeid"
+   ],
+   "majorityShare": 97.9,
+   "areaKm2": 238.6
+  },
+  {
+   "id": "IRB-D07",
+   "govId": "IRB",
+   "nameEn": "Northern Mazar",
+   "nameAr": "المزار الشمالي",
+   "sourceLabel": "Bani Knana",
+   "method": "seat",
+   "seats": [
+    "Northern Mazar"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 87.1
+  },
+  {
+   "id": "JER-D01",
+   "govId": "JER",
+   "nameEn": "Qasabat Jerash",
+   "nameAr": "قصبة جرش",
+   "sourceLabel": "Jerash",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Jerash"
+   ],
+   "majorityShare": 52.7,
+   "areaKm2": 371.6
+  },
+  {
+   "id": "KAR-D01",
+   "govId": "KAR",
+   "nameEn": "Qasabat Al-Karak",
+   "nameAr": "قصبة الكرك",
+   "sourceLabel": "Al-Qasr",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Al-Karak",
+    "Al-Qatrana"
+   ],
+   "majorityShare": 82.8,
+   "areaKm2": 1707.3
+  },
+  {
+   "id": "KAR-D02",
+   "govId": "KAR",
+   "nameEn": "Al-Qasr",
+   "nameAr": "القصر",
+   "sourceLabel": "Faqqu",
+   "method": "seat",
+   "seats": [
+    "Al-Qasr"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 97.1
+  },
+  {
+   "id": "KAR-D03",
+   "govId": "KAR",
+   "nameEn": "Al-Safi",
+   "nameAr": "الصافي",
+   "sourceLabel": "Al-Safi",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 59.5,
+   "areaKm2": 51.8
+  },
+  {
+   "id": "KAR-D04",
+   "govId": "KAR",
+   "nameEn": "Ayy",
+   "nameAr": "عيّ",
+   "sourceLabel": "Al-Karak",
+   "method": "seat",
+   "seats": [
+    "Ayy"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 44.8
+  },
+  {
+   "id": "KAR-D05",
+   "govId": "KAR",
+   "nameEn": "Faqqu",
+   "nameAr": "فقوع",
+   "sourceLabel": "Al-Mazra'a",
+   "method": "seat",
+   "seats": [
+    "Faqqu"
+   ],
+   "majorityShare": 93.3,
+   "areaKm2": 693.1
+  },
+  {
+   "id": "KAR-D06",
+   "govId": "KAR",
+   "nameEn": "Southern Ghor",
+   "nameAr": "الأغوار الجنوبية",
+   "sourceLabel": "Ayy",
+   "method": "seat",
+   "seats": [
+    "Southern Ghor"
+   ],
+   "majorityShare": 71.4,
+   "areaKm2": 336.2
+  },
+  {
+   "id": "KAR-D07",
+   "govId": "KAR",
+   "nameEn": "Southern Mazar",
+   "nameAr": "المزار الجنوبي",
+   "sourceLabel": "Al-Mazar al-Janubiyya",
+   "method": "seat",
+   "seats": [
+    "Southern Mazar"
+   ],
+   "majorityShare": 96.6,
+   "areaKm2": 520
+  },
+  {
+   "id": "MAD-D01",
+   "govId": "MAD",
+   "nameEn": "Qasabat Madaba",
+   "nameAr": "قصبة مادبا",
+   "sourceLabel": "Madaba",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Madaba"
+   ],
+   "majorityShare": 90.7,
+   "areaKm2": 888.5
+  },
+  {
+   "id": "MAD-D02",
+   "govId": "MAD",
+   "nameEn": "Dhiban",
+   "nameAr": "ذيبان",
+   "sourceLabel": "Dhiban",
+   "method": "seat",
+   "seats": [
+    "Dhiban"
+   ],
+   "majorityShare": 88.8,
+   "areaKm2": 300.3
+  },
+  {
+   "id": "MAF-D01",
+   "govId": "MAF",
+   "nameEn": "Qasabat Al-Mafraq",
+   "nameAr": "قصبة المفرق",
+   "sourceLabel": "Al-Mafraq",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Al-Mafraq"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 666
+  },
+  {
+   "id": "MAF-D02",
+   "govId": "MAF",
+   "nameEn": "Ar-Ruwayshid",
+   "nameAr": "الرويشد",
+   "sourceLabel": "Ar-Ruwayshid",
+   "method": "seat",
+   "seats": [
+    "Ar-Ruwayshid"
+   ],
+   "majorityShare": 99.5,
+   "areaKm2": 23965.5
+  },
+  {
+   "id": "MAF-D03",
+   "govId": "MAF",
+   "nameEn": "Bal'ama",
+   "nameAr": "بلعما",
+   "sourceLabel": "Bal'ama",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 87.2,
+   "areaKm2": 495.5
+  },
+  {
+   "id": "MAF-D04",
+   "govId": "MAF",
+   "nameEn": "Sabha",
+   "nameAr": "صبحا",
+   "sourceLabel": "Sabha",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 96,
+   "areaKm2": 1069.3
+  },
+  {
+   "id": "MAF-D05",
+   "govId": "MAF",
+   "nameEn": "Sama as-Sarhan",
+   "nameAr": "سما السرحان",
+   "sourceLabel": "Sama as-Sarhan",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 82.7,
+   "areaKm2": 253.1
+  },
+  {
+   "id": "MAN-D01",
+   "govId": "MAN",
+   "nameEn": "Qasabat Ma'an",
+   "nameAr": "قصبة معان",
+   "sourceLabel": "Ma'an",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Ma'an"
+   ],
+   "majorityShare": 99.7,
+   "areaKm2": 30753.4
+  },
+  {
+   "id": "MAN-D02",
+   "govId": "MAN",
+   "nameEn": "Al-Husanyniyya",
+   "nameAr": "الحسينية",
+   "sourceLabel": "Al-Husanyniyya",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 97.4,
+   "areaKm2": 768.2
+  },
+  {
+   "id": "MAN-D03",
+   "govId": "MAN",
+   "nameEn": "Ash-Shobak",
+   "nameAr": "الشوبك",
+   "sourceLabel": "Ash-Shibek",
+   "method": "seat",
+   "seats": [
+    "Ash-Shobak"
+   ],
+   "majorityShare": 94.7,
+   "areaKm2": 344.2
+  },
+  {
+   "id": "MAN-D04",
+   "govId": "MAN",
+   "nameEn": "Ayi",
+   "nameAr": "آيي",
+   "sourceLabel": "Ayi",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 99.7,
+   "areaKm2": 889.9
+  },
+  {
+   "id": "MAN-D05",
+   "govId": "MAN",
+   "nameEn": "Petra (Wadi Musa)",
+   "nameAr": "البترا (وادي موسى)",
+   "sourceLabel": "Wadi Musa",
+   "method": "seat",
+   "seats": [
+    "Petra (Wadi Musa)"
+   ],
+   "majorityShare": 100,
+   "areaKm2": 722.3
+  },
+  {
+   "id": "TAF-D01",
+   "govId": "TAF",
+   "nameEn": "Qasabat At-Tafilah",
+   "nameAr": "قصبة الطفيلة",
+   "sourceLabel": "Al-Tafila",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat At-Tafilah",
+    "Busayra"
+   ],
+   "majorityShare": 99.1,
+   "areaKm2": 1173.2
+  },
+  {
+   "id": "TAF-D02",
+   "govId": "TAF",
+   "nameEn": "Al-Hasa",
+   "nameAr": "الحسا",
+   "sourceLabel": "Al-Hasa",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 78.6,
+   "areaKm2": 782.7
+  },
+  {
+   "id": "TAF-D03",
+   "govId": "TAF",
+   "nameEn": "Birsayra",
+   "nameAr": "بصيرا",
+   "sourceLabel": "Birsayra",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 99,
+   "areaKm2": 187.4
+  },
+  {
+   "id": "ZAR-D01",
+   "govId": "ZAR",
+   "nameEn": "Qasabat Az-Zarqa",
+   "nameAr": "قصبة الزرقاء",
+   "sourceLabel": "Az-Zarqa",
+   "method": "seat-capital",
+   "seats": [
+    "Qasabat Az-Zarqa",
+    "Ar-Rusayfa",
+    "Al-Hashimiyya"
+   ],
+   "majorityShare": 82.7,
+   "areaKm2": 602.6
+  },
+  {
+   "id": "ZAR-D02",
+   "govId": "ZAR",
+   "nameEn": "Al-Azraq",
+   "nameAr": "الأزرق",
+   "sourceLabel": "Al-Azraq",
+   "method": "seat",
+   "seats": [
+    "Al-Azraq"
+   ],
+   "majorityShare": 90.7,
+   "areaKm2": 3580.5
+  },
+  {
+   "id": "ZAR-D03",
+   "govId": "ZAR",
+   "nameEn": "Birin",
+   "nameAr": "بيرين",
+   "sourceLabel": "Birin",
+   "method": "published-label",
+   "seats": [],
+   "majorityShare": 75.1,
+   "areaKm2": 129.7
+  }
+ ],
+ "merges": [
+  {
+   "govId": "MAN",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Jizah",
+   "areaKm2": 107.2,
+   "into": "Al-Husanyniyya"
+  },
+  {
+   "govId": "MAN",
+   "kind": "cross-governorate sliver",
+   "from": "Wadi Araba",
+   "areaKm2": 219.2,
+   "into": "Petra (Wadi Musa)"
+  },
+  {
+   "govId": "MAN",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Quwayra",
+   "areaKm2": 278.6,
+   "into": "Ayi"
+  },
+  {
+   "govId": "MAN",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Qasr",
+   "areaKm2": 16.7,
+   "into": "Al-Husanyniyya"
+  },
+  {
+   "govId": "MAN",
+   "kind": "cross-governorate sliver",
+   "from": "Birsayra",
+   "areaKm2": 1.6,
+   "into": "Al-Husanyniyya"
+  },
+  {
+   "govId": "MAN",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Hasa",
+   "areaKm2": 76,
+   "into": "Al-Husanyniyya"
+  },
+  {
+   "govId": "KAR",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Jizah",
+   "areaKm2": 3.9,
+   "into": "Qasabat Al-Karak"
+  },
+  {
+   "govId": "KAR",
+   "kind": "cross-governorate sliver",
+   "from": "Dhiban",
+   "areaKm2": 13.1,
+   "into": "Al-Safi"
+  },
+  {
+   "govId": "KAR",
+   "kind": "cross-governorate sliver",
+   "from": "Ma'an",
+   "areaKm2": 23.7,
+   "into": "Qasabat Al-Karak"
+  },
+  {
+   "govId": "KAR",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Tafila",
+   "areaKm2": 9.6,
+   "into": "Southern Ghor"
+  },
+  {
+   "govId": "KAR",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Hasa",
+   "areaKm2": 131.1,
+   "into": "Qasabat Al-Karak"
+  },
+  {
+   "govId": "MAD",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Jizah",
+   "areaKm2": 36.7,
+   "into": "Dhiban"
+  },
+  {
+   "govId": "MAD",
+   "kind": "cross-governorate sliver",
+   "from": "Um al-Basatin",
+   "areaKm2": 10.1,
+   "into": "Qasabat Madaba"
+  },
+  {
+   "govId": "MAD",
+   "kind": "cross-governorate sliver",
+   "from": "Shuna al-Jabiniyya",
+   "areaKm2": 37.2,
+   "into": "Qasabat Madaba"
+  },
+  {
+   "govId": "MAD",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Safi",
+   "areaKm2": 17.2,
+   "into": "Dhiban"
+  },
+  {
+   "govId": "MAD",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Mazra'a",
+   "areaKm2": 45.4,
+   "into": "Dhiban"
+  },
+  {
+   "govId": "BAL",
+   "kind": "cross-governorate sliver",
+   "from": "Madaba",
+   "areaKm2": 36.6,
+   "into": "Southern Shuna"
+  },
+  {
+   "govId": "BAL",
+   "kind": "cross-governorate sliver",
+   "from": "Wadi al-Sayr",
+   "areaKm2": 20.6,
+   "into": "Ain al-Basha"
+  },
+  {
+   "govId": "BAL",
+   "kind": "cross-governorate sliver",
+   "from": "Birin",
+   "areaKm2": 2.1,
+   "into": "Ain al-Basha"
+  },
+  {
+   "govId": "BAL",
+   "kind": "cross-governorate sliver",
+   "from": "Jerash",
+   "areaKm2": 2.3,
+   "into": "Ain al-Basha"
+  },
+  {
+   "govId": "JER",
+   "kind": "cross-governorate sliver",
+   "from": "Birin",
+   "areaKm2": 37,
+   "into": "Qasabat Jerash"
+  },
+  {
+   "govId": "JER",
+   "kind": "cross-governorate sliver",
+   "from": "Ardhah",
+   "areaKm2": 14.2,
+   "into": "Qasabat Jerash"
+  },
+  {
+   "govId": "JER",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Balqa",
+   "areaKm2": 6.8,
+   "into": "Qasabat Jerash"
+  },
+  {
+   "govId": "JER",
+   "kind": "cross-governorate sliver",
+   "from": "Bal'ama",
+   "areaKm2": 41.2,
+   "into": "Qasabat Jerash"
+  },
+  {
+   "govId": "AJL",
+   "kind": "cross-governorate sliver",
+   "from": "Shuna al-Jabiniyya",
+   "areaKm2": 1.2,
+   "into": "Kofranjah"
+  },
+  {
+   "govId": "AJL",
+   "kind": "cross-governorate sliver",
+   "from": "Dair Alla",
+   "areaKm2": 1.5,
+   "into": "Kofranjah"
+  },
+  {
+   "govId": "AJL",
+   "kind": "cross-governorate sliver",
+   "from": "Jerash",
+   "areaKm2": 166,
+   "into": "Qasabat Ajloun"
+  },
+  {
+   "govId": "IRB",
+   "kind": "cross-governorate sliver",
+   "from": "Dair Alla",
+   "areaKm2": 23.2,
+   "into": "Al-Koura"
+  },
+  {
+   "govId": "IRB",
+   "kind": "cross-governorate sliver",
+   "from": "Kofranjah",
+   "areaKm2": 2.9,
+   "into": "Al-Koura"
+  },
+  {
+   "govId": "IRB",
+   "kind": "cross-governorate sliver",
+   "from": "Aljun",
+   "areaKm2": 99.3,
+   "into": "Al-Koura"
+  },
+  {
+   "govId": "IRB",
+   "kind": "cross-governorate sliver",
+   "from": "Jerash",
+   "areaKm2": 67.5,
+   "into": "Bani Obeid"
+  },
+  {
+   "govId": "IRB",
+   "kind": "cross-governorate sliver",
+   "from": "Sama as-Sarhan",
+   "areaKm2": 48,
+   "into": "Ar-Ramtha"
+  },
+  {
+   "govId": "IRB",
+   "kind": "cross-governorate sliver",
+   "from": "Bal'ama",
+   "areaKm2": 15.3,
+   "into": "Bani Obeid"
+  },
+  {
+   "govId": "MAF",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Azraq",
+   "areaKm2": 123.8,
+   "into": "Sabha"
+  },
+  {
+   "govId": "MAF",
+   "kind": "cross-governorate sliver",
+   "from": "Az-Zarqa",
+   "areaKm2": 39.6,
+   "into": "Bal'ama"
+  },
+  {
+   "govId": "MAF",
+   "kind": "cross-governorate sliver",
+   "from": "Ar Ramtha",
+   "areaKm2": 0.4,
+   "into": "Sama as-Sarhan"
+  },
+  {
+   "govId": "MAF",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Aghwar Shamaliyyeh",
+   "areaKm2": 3.3,
+   "into": "Sama as-Sarhan"
+  },
+  {
+   "govId": "MAF",
+   "kind": "cross-governorate sliver",
+   "from": "Jerash",
+   "areaKm2": 9,
+   "into": "Bal'ama"
+  },
+  {
+   "govId": "TAF",
+   "kind": "cross-governorate sliver",
+   "from": "Wadi Araba",
+   "areaKm2": 52,
+   "into": "Qasabat At-Tafilah"
+  },
+  {
+   "govId": "TAF",
+   "kind": "cross-governorate sliver",
+   "from": "Ayy",
+   "areaKm2": 119.1,
+   "into": "Qasabat At-Tafilah"
+  },
+  {
+   "govId": "TAF",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Mazar al-Janubiyya",
+   "areaKm2": 18.4,
+   "into": "Al-Hasa"
+  },
+  {
+   "govId": "TAF",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Husanyniyya",
+   "areaKm2": 15.3,
+   "into": "Birsayra"
+  },
+  {
+   "govId": "TAF",
+   "kind": "cross-governorate sliver",
+   "from": "Ash-Shibek",
+   "areaKm2": 19.2,
+   "into": "Birsayra"
+  },
+  {
+   "govId": "AQB",
+   "kind": "cross-governorate sliver",
+   "from": "Ayi",
+   "areaKm2": 1.5,
+   "into": "Al-Quwayra"
+  },
+  {
+   "govId": "AMM",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Azraq",
+   "areaKm2": 233.6,
+   "into": "Al-Muwaqqar"
+  },
+  {
+   "govId": "AMM",
+   "kind": "cross-governorate sliver",
+   "from": "Dhiban",
+   "areaKm2": 12.1,
+   "into": "Na'ur"
+  },
+  {
+   "govId": "AMM",
+   "kind": "cross-governorate sliver",
+   "from": "Madaba",
+   "areaKm2": 49.4,
+   "into": "Na'ur"
+  },
+  {
+   "govId": "AMM",
+   "kind": "cross-governorate sliver",
+   "from": "Az-Zarqa",
+   "areaKm2": 78.5,
+   "into": "Marka"
+  },
+  {
+   "govId": "AMM",
+   "kind": "cross-governorate sliver",
+   "from": "As-Salt",
+   "areaKm2": 32.1,
+   "into": "Qasabat Amman"
+  },
+  {
+   "govId": "AMM",
+   "kind": "cross-governorate sliver",
+   "from": "Shuna al-Jabiniyya",
+   "areaKm2": 49.4,
+   "into": "Qasabat Amman"
+  },
+  {
+   "govId": "AMM",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Qasr",
+   "areaKm2": 305.3,
+   "into": "Na'ur"
+  },
+  {
+   "govId": "AMM",
+   "kind": "cross-governorate sliver",
+   "from": "Al-Safi",
+   "areaKm2": 9.2,
+   "into": "Na'ur"
+  },
+  {
+   "govId": "ZAR",
+   "kind": "cross-governorate sliver",
+   "from": "Wadi al-Sayr",
+   "areaKm2": 11.3,
+   "into": "Birin"
+  },
+  {
+   "govId": "ZAR",
+   "kind": "cross-governorate sliver",
+   "from": "Sahab",
+   "areaKm2": 15.2,
+   "into": "Qasabat Az-Zarqa"
+  },
+  {
+   "govId": "ZAR",
+   "kind": "cross-governorate sliver",
+   "from": "Ar-Ruwayshid",
+   "areaKm2": 13.8,
+   "into": "Qasabat Az-Zarqa"
+  },
+  {
+   "govId": "ZAR",
+   "kind": "cross-governorate sliver",
+   "from": "Bal'ama",
+   "areaKm2": 9,
+   "into": "Qasabat Az-Zarqa"
+  },
+  {
+   "govId": "IRB",
+   "kind": "tiny unverified unit",
+   "from": "Kora",
+   "areaKm2": 29.4,
+   "into": "At-Taybeh & Al-Wasatiyya"
+  },
+  {
+   "govId": "IRB",
+   "kind": "tiny unverified unit",
+   "from": "Hariema",
+   "areaKm2": 9.8,
+   "into": "At-Taybeh & Al-Wasatiyya"
+  }
+ ],
+ "seatsTested": 48
+}
