@@ -137,3 +137,23 @@
     animation-duration: 0.01ms !important;
   }
 }
+
+/* Print: the client summary prints as a clean one-pager. */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  .card,
+  .summary-doc section {
+    box-shadow: none !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

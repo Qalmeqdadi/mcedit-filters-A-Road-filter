@@ -13,6 +13,8 @@ import { Icon } from '../components/Icon';
 import { Term } from '../components/Term';
 import { WorkedExample } from '../components/WorkedExample';
 import { useDetail } from '../hooks/useAppState';
+import { useClient } from '../hooks/useClient';
+import { sectorById } from '../data/sectors';
 import { LifecycleBand } from '../diagrams/LifecycleBand';
 import { categoryStyle } from '../utils/categoryStyle';
 import { cn } from '../utils/cn';
@@ -28,6 +30,7 @@ const glance = [
 
 export function OverviewSection({ onNavigate }: { onNavigate: (id: string) => void }) {
   const detail = useDetail();
+  const { session, active } = useClient();
   return (
     <section id="overview" aria-labelledby="overview-title" className="relative overflow-hidden">
       <div aria-hidden className="hairline-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_0%,black_10%,transparent_70%)]" />
@@ -43,6 +46,13 @@ export function OverviewSection({ onNavigate }: { onNavigate: (id: string) => vo
               {positioning.eyebrow}
             </div>
             <p className="mb-3 text-[15px] font-semibold tracking-[0.28em] text-ink uppercase">{brand.name}</p>
+            {active && (
+              <p className="mb-5 inline-flex flex-wrap items-center gap-2 rounded-full border border-magenta/25 bg-magenta-soft/70 px-3.5 py-1.5 text-[13px] text-ink">
+                <span className="font-semibold tracking-[0.12em] text-magenta uppercase">Prepared for</span>
+                <span className="font-semibold">{session.name || 'Client'}</span>
+                {session.sector && <span className="text-ink-3">· {sectorById[session.sector].name}</span>}
+              </p>
+            )}
             <h1 id="overview-title" className="text-[44px] leading-[1.02] font-semibold tracking-[-0.035em] text-ink sm:text-[60px] lg:text-[76px]">
               AI Transformation.
               <br />

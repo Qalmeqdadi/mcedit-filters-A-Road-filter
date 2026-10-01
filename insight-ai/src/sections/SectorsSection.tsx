@@ -11,6 +11,7 @@ import { Term } from '../components/Term';
 import { TypeBadge } from '../components/TypeBadge';
 import { OperatingSystemDiagram } from '../diagrams/OperatingSystemDiagram';
 import { useDetail } from '../hooks/useAppState';
+import { useClient } from '../hooks/useClient';
 import { cn } from '../utils/cn';
 
 export function SectorTabs({ active, onChange }: { active: SectorId; onChange: (id: SectorId) => void }) {
@@ -121,7 +122,8 @@ export function UnchangedStrip() {
 }
 
 export function SectorsSection() {
-  const [active, setActive] = useState<SectorId>('government');
+  const { session } = useClient();
+  const [active, setActive] = useState<SectorId>(session.sector ?? 'government');
   return (
     <Section
       id="sectors"

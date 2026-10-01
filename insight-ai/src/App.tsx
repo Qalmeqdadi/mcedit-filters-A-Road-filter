@@ -18,6 +18,9 @@ import { OverviewSection } from './sections/OverviewSection';
 import { PlaysSection } from './sections/PlaysSection';
 import { SectorsSection } from './sections/SectorsSection';
 import { ServicesSection } from './sections/ServicesSection';
+import { MaturitySection } from './sections/MaturitySection';
+import { PrioritiserSection } from './sections/PrioritiserSection';
+import { SummarySection } from './sections/SummarySection';
 
 const isSection = (id: string): id is SectionId => sections.some((s) => s.id === id);
 
@@ -65,13 +68,18 @@ export default function App() {
     landscape: <LandscapeSection />,
     journey: <JourneySection />,
     outcomes: <OutcomesSection onPresent={() => setMode('present')} />,
+    maturity: <MaturitySection onNavigate={go} />,
+    prioritiser: <PrioritiserSection onNavigate={go} />,
+    summary: <SummarySection />,
   };
 
   return (
     <>
       <div aria-hidden={mode === 'present'} className={mode === 'present' ? 'hidden' : undefined}>
-        <Sidebar active={active} onGo={go} />
-        <div className="lg:pl-[264px]">
+        <div className="print:hidden">
+          <Sidebar active={active} onGo={go} />
+        </div>
+        <div className="lg:pl-[264px] print:pl-0">
           <main>
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
@@ -85,8 +93,10 @@ export default function App() {
               </motion.div>
             </AnimatePresence>
           </main>
-          <PageNav active={active} onGo={go} />
-          <Footer />
+          <div className="print:hidden">
+            <PageNav active={active} onGo={go} />
+            <Footer />
+          </div>
         </div>
       </div>
       {mode === 'present' && <PresentMode />}

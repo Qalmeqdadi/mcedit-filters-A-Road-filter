@@ -9,7 +9,7 @@ page.on('console', (m) => (m.type() === 'error' || m.type() === 'warning') && er
 page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
 await page.goto(BASE, { waitUntil: 'networkidle' });
 if (level === 'detail') await page.getByRole('radio', { name: 'Detail' }).first().click({ force: true });
-const ids = ['overview', 'architecture', 'services', 'operating-system', 'ai-control', 'capabilities', 'accelerators', 'plays', 'sectors', 'landscape', 'journey', 'outcomes'];
+const ids = ['overview', 'architecture', 'services', 'operating-system', 'ai-control', 'capabilities', 'accelerators', 'plays', 'sectors', 'landscape', 'journey', 'outcomes', 'maturity', 'prioritiser', 'summary'];
 const overflow = [];
 for (const id of ids) {
   await page.evaluate((h) => (location.hash = h), id);

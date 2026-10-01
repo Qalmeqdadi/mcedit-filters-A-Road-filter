@@ -6,9 +6,11 @@ import { Section } from '../components/Section';
 import { TypeBadge } from '../components/TypeBadge';
 import { PlayFlow } from '../diagrams/PlayFlow';
 import { useDetail } from '../hooks/useAppState';
+import { useClient } from '../hooks/useClient';
+import { sessionPlay } from '../utils/workshop';
 import { cn } from '../utils/cn';
 
-export function PlayTabs({ active, onChange, compact }: { active: PlayId; onChange: (id: PlayId) => void; compact?: boolean }) {
+export function PlayTabs({ active, onChange, compact, leadId }: { active: PlayId; onChange: (id: PlayId) => void; compact?: boolean; leadId?: PlayId }) {
   return (
     <div role="tablist" aria-label="GTM plays" className={cn('grid gap-1.5', compact ? 'grid-cols-6' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1')}>
       {plays.map((p) => {
@@ -28,7 +30,10 @@ export function PlayTabs({ active, onChange, compact }: { active: PlayId; onChan
               <Icon name={p.icon} className="size-4" />
             </span>
             <span className="min-w-0">
-              <span className={cn('block font-mono text-[10.5px] font-semibold', on ? 'text-white/65' : 'text-copper')}>PLAY {p.number}</span>
+              <span className={cn('block font-mono text-[10.5px] font-semibold', on ? 'text-white/65' : 'text-copper')}>
+                PLAY {p.number}
+                {leadId === p.id && <span className={cn('ml-2 rounded px-1 py-px font-sans tracking-[0.08em]', on ? 'bg-white/15 text-white' : 'bg-magenta-soft text-magenta')}>CLIENT LEAD</span>}
+              </span>
               <span className={cn('block text-[14px] leading-tight font-semibold', on ? 'text-white' : 'text-ink')}>{p.name}</span>
               {!compact && (
                 <span className={cn('mt-1 hidden text-[12px] leading-snug lg:block', on ? 'text-white/70' : 'text-ink-3')}>{p.trigger}</span>
@@ -43,7 +48,8 @@ export function PlayTabs({ active, onChange, compact }: { active: PlayId; onChan
 
 export function PlaysSection() {
   const detail = useDetail();
-  const [active, setActive] = useState<PlayId>('p01');
+  const { session, active: clientActive } = useClient();
+  const [active, setActive] = useState<PlayId>(clientActive ? sessionPlay(session).id : 'p01');
   return (
     <Section
       id="plays"
@@ -54,7 +60,7 @@ export function PlaysSection() {
       aside={<TypeBadge category="play" />}
     >
       <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <PlayTabs active={active} onChange={setActive} />
+        <PlayTabs active={active} onChange={setActive} leadId={clientActive ? sessionPlay(session).id : undefined} />
         <div role="tabpanel" aria-label="Selected play">
           <PlayFlow id={active} detail={detail} />
         </div>

@@ -48,6 +48,18 @@ Vite automatically (`vercel.json` pins the build command and the `dist` output).
 | **Present mode** | Press **Present**. It shows 18 scenes on a 16:9 stage that scales to the screen. Use `←` `→` (also PageUp/PageDown, Space, Home/End) to move, `F` for fullscreen and `Esc` to return to Explore. Scenes can be deep-linked, e.g. `#present-6`. |
 | **Executive / Detail** | Executive shows major concepts with minimal text. Detail adds scope, outputs, definitions, the capability coverage matrix, sponsors and qualifying questions. |
 
+## Client workshop (v2)
+
+| | |
+|---|---|
+| **Client mode** | **Set up a client** in the sidebar: name, sector, meeting date and lead play. The Overview, Services, Industries, GTM Plays and Present title slide then open on that client's sector and lead play. |
+| **AI maturity self-check** | Score 12 dimensions (5 readiness, 7 AI Control) from 1 to 5 against an agreed target. A radar shows now against target, with the biggest gaps and a recommended starting point (service, entry offer, play, accelerators). |
+| **Use-case prioritiser** | Add the client's use cases (or sector examples) and score value, readiness and risk. A value × readiness 2×2 places them, the ranking feeds a Now / Next / Later roadmap, and high-risk items are flagged for an AI Control design gate. |
+| **Client summary** | A one-page leave-behind with the lead play and entry offer, self-check, prioritised use cases, roadmap, derived next steps and notes. Use **Print / Save as PDF** (fits one A4 page) or **Copy as text**. |
+
+The session is stored only in this browser (`localStorage`) and survives a reload. **Clear session** in the client
+dialog wipes it. Nothing leaves the device. All scores come from the client; the app supplies no benchmarks.
+
 ## Information architecture
 
 Every object belongs to exactly one category. Each category has its own colour and badge, and categories never mix:
@@ -102,7 +114,8 @@ With the dev server running (`npm run dev`):
 ```bash
 npm run qa:interactions   # architecture, drawers, filters, tabs, keyboard, dead-button sweep, network
 npm run qa:present        # walks all scenes with the keyboard, checks overflow, Escape back to Explore
-npm run qa:sections       # per-section screenshots into qa-screens/
+npm run qa:sections       # per-page screenshots into qa-screens/
+npm run qa:workshop       # v2 client workshop end to end, including print and persistence
 ```
 
 To test a production build, set `BASE=http://127.0.0.1:4173/` and run `npm run preview`.

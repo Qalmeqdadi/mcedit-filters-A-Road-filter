@@ -26,6 +26,13 @@ import { PlayTabs } from '../sections/PlaysSection';
 import { SectorBrief, SectorTabs, UnchangedStrip } from '../sections/SectorsSection';
 import { ServiceCard, ServiceDetail } from '../sections/ServicesSection';
 import { useDetail } from '../hooks/useAppState';
+import { useClient } from '../hooks/useClient';
+import { sessionPlay } from '../utils/workshop';
+import { MaturityInsights, MaturityScorer } from '../sections/MaturitySection';
+import { RoadmapColumns, UseCaseEditor } from '../sections/PrioritiserSection';
+import { SummaryDocument } from '../sections/SummarySection';
+import { PriorityMatrix } from '../diagrams/PriorityMatrix';
+import { rankedUseCases } from '../utils/workshop';
 import { categoryStyle } from '../utils/categoryStyle';
 import { cn } from '../utils/cn';
 
@@ -64,6 +71,7 @@ export function SceneFrame({ scene, index }: { scene: Scene; index: number }) {
 }
 
 function TitleScene() {
+  const { session, active } = useClient();
   return (
     <div className="relative flex h-full flex-col justify-center overflow-hidden">
       <div aria-hidden className="hairline-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_20%_30%,black_5%,transparent_65%)]" />
@@ -77,6 +85,13 @@ function TitleScene() {
           <span className="text-control-gradient">Built to Operate.</span>
         </h1>
         <p className="mt-12 max-w-[980px] text-[28px] leading-[1.4] text-ink-2">{positioning.primary}</p>
+        {active && (
+          <p className="mt-10 inline-flex items-center gap-3 rounded-full border border-magenta/25 bg-magenta-soft/70 px-5 py-2.5 text-[20px] text-ink">
+            <span className="font-semibold tracking-[0.14em] text-magenta uppercase">Prepared for</span>
+            <span className="font-semibold">{session.name || 'Client'}</span>
+            {session.sector && <span className="text-ink-3">· {sectorById[session.sector].name}</span>}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -178,7 +193,8 @@ function AcceleratorsScene() {
 
 function PlaysScene() {
   const detail = useDetail();
-  const [p, setP] = useState<PlayId>('p01');
+  const { session, active } = useClient();
+  const [p, setP] = useState<PlayId>(active ? sessionPlay(session).id : 'p01');
   return (
     <div className="space-y-5">
       <PlayTabs active={p} onChange={setP} compact />
@@ -188,7 +204,8 @@ function PlaysScene() {
 }
 
 function SectorsScene() {
-  const [s, setS] = useState<SectorId>('government');
+  const { session } = useClient();
+  const [s, setS] = useState<SectorId>(session.sector ?? 'government');
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="flex items-center justify-between gap-4">
@@ -236,6 +253,42 @@ function OutcomesScene() {
       </div>
       <OutcomeGrid lens={lens} compact />
     </>
+  );
+}
+
+function MaturityScene() {
+  return (
+    <div className="grid h-full grid-cols-[1fr_400px] gap-8">
+      <div className="min-h-0 overflow-y-auto pr-1">
+        <MaturityScorer compact />
+      </div>
+      <div className="min-h-0 overflow-y-auto pr-1">
+        <MaturityInsights compact />
+      </div>
+    </div>
+  );
+}
+
+function PrioritiserScene() {
+  const { session } = useClient();
+  return (
+    <div className="grid h-full grid-cols-[1fr_380px] gap-8">
+      <div className="min-h-0 space-y-4 overflow-y-auto pr-1">
+        <UseCaseEditor compact />
+        <RoadmapColumns compact />
+      </div>
+      <div className="card self-start p-4">
+        <PriorityMatrix items={rankedUseCases(session)} size={360} />
+      </div>
+    </div>
+  );
+}
+
+function SummaryScene() {
+  return (
+    <div className="h-full overflow-y-auto pr-1">
+      <SummaryDocument compact />
+    </div>
   );
 }
 
@@ -381,5 +434,22 @@ export const scenes: Scene[] = [
     Body: OutcomesScene,
     dense: true,
   },
+  {
+    id: 'maturity',
+    section: 'Client Workshop',
+    title: 'AI maturity self-check',
+    subtitle: 'Score each dimension with the client, 1 (ad hoc) to 5 (optimised), against an agreed target.',
+    Body: MaturityScene,
+    dense: true,
+  },
+  {
+    id: 'prioritiser',
+    section: 'Client Workshop',
+    title: 'Use-case prioritiser',
+    subtitle: 'Score value and readiness together; the ranking becomes a Now / Next / Later roadmap.',
+    Body: PrioritiserScene,
+    dense: true,
+  },
+  { id: 'summary', section: 'Client Workshop', Body: SummaryScene, dense: true },
   { id: 'close', section: 'Outcomes', Body: CloseScene },
 ];

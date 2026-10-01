@@ -11,6 +11,8 @@ import { AcceleratorTag, PlainList } from '../components/Tags';
 import { Term } from '../components/Term';
 import { TypeBadge } from '../components/TypeBadge';
 import { useDetail } from '../hooks/useAppState';
+import { useClient } from '../hooks/useClient';
+import { sectorById } from '../data/sectors';
 import { cn } from '../utils/cn';
 
 export function ServiceCard({
@@ -19,7 +21,9 @@ export function ServiceCard({
   onSelect,
   compact,
   detail,
+  lead,
 }: {
+  lead?: string;
   id: ServiceId;
   selected?: boolean;
   onSelect?: () => void;
@@ -39,7 +43,10 @@ export function ServiceCard({
     >
       <span className="absolute inset-x-0 top-0 h-[3px] bg-magenta" />
       <div className="mb-4 flex items-start justify-between">
-        <span className="font-mono text-[13px] font-semibold text-magenta">SERVICE {s.number}</span>
+        <span className="flex flex-wrap items-center gap-2">
+          <span className="font-mono text-[13px] font-semibold text-magenta">SERVICE {s.number}</span>
+          {lead && <span className="rounded bg-ink px-1.5 py-0.5 text-[10px] font-semibold tracking-[0.08em] text-white uppercase">Lead for {lead}</span>}
+        </span>
         <span className="flex size-9 items-center justify-center rounded-lg bg-magenta-soft text-magenta">
           <Icon name={s.icon} className="size-[18px]" />
         </span>
@@ -161,6 +168,8 @@ export function ServiceDetail({ id }: { id: ServiceId }) {
 export function ServicesSection() {
   const detail = useDetail();
   const [selected, setSelected] = useState<ServiceId | null>(null);
+  const { session } = useClient();
+  const sector = session.sector ? sectorById[session.sector] : null;
   return (
     <Section
       id="services"
@@ -177,7 +186,14 @@ export function ServicesSection() {
     >
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {services.map((s) => (
-          <ServiceCard key={s.id} id={s.id} detail={detail} selected={selected === s.id} onSelect={() => setSelected(s.id)} />
+          <ServiceCard
+            key={s.id}
+            id={s.id}
+            detail={detail}
+            selected={selected === s.id}
+            onSelect={() => setSelected(s.id)}
+            lead={sector?.leadServices.includes(s.id) ? sector.name : undefined}
+          />
         ))}
       </div>
       <Drawer
