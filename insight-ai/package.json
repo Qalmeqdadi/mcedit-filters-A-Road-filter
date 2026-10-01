@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Insight AI \u2014 AI Transformation. Built to Operate. Interactive executive GTM and services architecture.",
+  "description": "Insight AI — AI Transformation. Built to Operate. Interactive executive GTM and services architecture.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -29,6 +29,7 @@
     "playwright-core": "^1.63.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
-    "vite": "^8.3.1"
+    "vite": "^8.3.1",
+    "vite-plugin-singlefile": "^2.3.3"
   }
 }
