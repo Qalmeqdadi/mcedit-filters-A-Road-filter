@@ -15,6 +15,7 @@ import { fmt1, fmtCompact, fmtPct } from "@/lib/format";
 import { useApp } from "@/store/app";
 import { useScope } from "@/hooks/useScope";
 import type { GovId } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 export function Housing() {
   const engine = useEngine();
@@ -33,7 +34,7 @@ export function Housing() {
   const vehicles = useMemo(() => barV(["0", "1", "2", "3+"], [{ name: t("households"), data: H.vehicles.map((x) => x / hh), color: VIZ[2] }], { rtl: ar, fmt: (x) => fmtPct(x, 0) }), [H, hh, ar, t]);
   return (
     <div>
-      <PageHeader index="12" title={t("nav12")} subtitle={L("Dwelling characteristics, tenure, crowding, utilities and amenities. Vacancy comes from the live fieldwork (or the frame before fieldwork).", "خصائص المساكن والحيازة والاكتظاظ والمرافق والكماليات. نسبة الشواغر من العمل الميداني المباشر (أو من الإطار قبل بدئه).")} />
+      <PageHeader index={navIndex("/housing")} title={t("nav12")} subtitle={L("Dwelling characteristics, tenure, crowding, utilities and amenities. Vacancy comes from the live fieldwork (or the frame before fieldwork).", "خصائص المساكن والحيازة والاكتظاظ والمرافق والكماليات. نسبة الشواغر من العمل الميداني المباشر (أو من الإطار قبل بدئه).")} />
       <ScopeBar />
       <SmallSample p={p} />
       <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4 xl:grid-cols-8">

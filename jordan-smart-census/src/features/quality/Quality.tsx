@@ -20,6 +20,7 @@ import { isOpen } from "@/simulation/engine";
 import { downloadCsv } from "@/lib/csv";
 import { fmtDateTime, fmtInt, fmtPct } from "@/lib/format";
 import type { IssueStatus, QualityIssue, Severity } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 type Action = "ASSIGN" | "INVESTIGATE" | "REQUEST_REVISIT" | "RESOLVE" | "DISMISS";
 const SEVS: Severity[] = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
@@ -107,7 +108,7 @@ export function Quality() {
 
   return (
     <div>
-      <PageHeader index="08" title={t("nav08")} subtitle={L("Deterministic edit rules run on every enumerated record at the end of each field day. Every issue follows a human workflow: assign, investigate, request revisit, resolve or dismiss with a reason.", "تُطبّق قواعد تدقيق حتمية على كل سجل معدود في نهاية كل يوم ميداني. تتبع كل مسألة مساراً بشرياً: إسناد، تحقيق، طلب زيارة متابعة، حل أو استبعاد مع ذكر السبب.")}>
+      <PageHeader index={navIndex("/quality")} title={t("nav08")} subtitle={L("Deterministic edit rules run on every enumerated record at the end of each field day. Every issue follows a human workflow: assign, investigate, request revisit, resolve or dismiss with a reason.", "تُطبّق قواعد تدقيق حتمية على كل سجل معدود في نهاية كل يوم ميداني. تتبع كل مسألة مساراً بشرياً: إسناد، تحقيق، طلب زيارة متابعة، حل أو استبعاد مع ذكر السبب.")}>
         <Button onClick={() => downloadCsv("quality-issues.csv", scoped.map((x) => ({ id: x.id, rule: x.ruleId, rule_title: RULE_INDEX[x.ruleId]?.title.en, severity: x.severity, entity_type: x.entityType, entity_id: x.entityId, household: x.householdId ?? "", ea: x.eaId ?? "", enumerator: x.enumeratorId ?? "", governorate: x.govId, detected: engine.timeOf(x.step).toISOString(), status: x.status, assignee: x.assignee ?? "", dismiss_reason: x.dismissReason ?? "", message: x.message.en, evidence: x.evidence.en })))}>{t("exportCsv")} ({fmtInt(scoped.length)})</Button>
       </PageHeader>
 

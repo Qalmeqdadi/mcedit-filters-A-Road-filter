@@ -15,6 +15,7 @@ import { GovTable, MetricMap, ScopeBar, SmallSample, useProfiles } from "./share
 import { HH_TYPES, NATIONALITIES } from "@/simulation/analytics";
 import { downloadCsv } from "@/lib/csv";
 import { fmt1, fmtCompact, fmtInt, fmtPct } from "@/lib/format";
+import { navIndex } from "@/lib/nav";
 
 export function Population() {
   const engine = useEngine();
@@ -28,7 +29,7 @@ export function Population() {
 
   return (
     <div>
-      <PageHeader index="11" title={t("nav11")} subtitle={L("Census-style results with drill-down from Jordan to governorate, district and enumeration area.", "نتائج على نمط التعداد مع التعمق من الأردن إلى المحافظة واللواء ومنطقة العدّ.")}>
+      <PageHeader index={navIndex("/population")} title={t("nav11")} subtitle={L("Census-style results with drill-down from Jordan to governorate, district and enumeration area.", "نتائج على نمط التعداد مع التعمق من الأردن إلى المحافظة واللواء ومنطقة العدّ.")}>
         <Button onClick={() => downloadCsv("governorate-summary.csv", engine.world.governorates.map((g) => { const x = govProfiles[g.id]; return { governorate_id: g.id, governorate: g.name.en, governorate_ar: g.name.ar, reference_population_2024: g.refPopulation, simulated_population: Math.round(x.population), households: Math.round(x.households), avg_household_size: x.avgHHSize, density_per_km2: x.population / g.areaKm2, sex_ratio: x.sexRatio, median_age: x.medianAge, dependency_ratio: x.dependencyRatio, share_0_14: x.groups.a0_14 / x.population, share_65_plus: x.groups.a65 / x.population, urban_share: x.urban / x.population, data_nature: "SIMULATED (except reference_population_2024 = REFERENCE)" }; }))}>{L("Governorate summary CSV", "ملخص المحافظات CSV")}</Button>
       </PageHeader>
       <ScopeBar />

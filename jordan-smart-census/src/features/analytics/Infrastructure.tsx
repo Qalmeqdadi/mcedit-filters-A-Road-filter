@@ -13,6 +13,7 @@ import { ScopeBar, useProfiles } from "./shared";
 import { paramsForPreset, runScenario } from "@/simulation/scenarios";
 import { fmt1, fmtPct, fmtSignedPct } from "@/lib/format";
 import type { GovId } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 export function Infrastructure() {
   const engine = useEngine();
@@ -40,7 +41,7 @@ export function Infrastructure() {
   const ranked = world.governorates.map((g) => ({ g, pr: imp.byGov[g.id] })).sort((a, b) => b.pr.pressure - a.pr.pressure);
   return (
     <div>
-      <PageHeader index="17" title={t("nav17")} subtitle={L("Household access to networked services today, and a simulated infrastructure-pressure index combining projected growth in population, school-age and elderly populations (baseline scenario, 2040).", "وصول الأسر إلى الخدمات الشبكية حالياً، ومؤشر محاكى للضغط على البنية التحتية يجمع النمو المسقط في السكان وفي فئتي سن المدرسة وكبار السن (سيناريو خط الأساس، 2040).")} />
+      <PageHeader index={navIndex("/infrastructure")} title={t("nav17")} subtitle={L("Household access to networked services today, and a simulated infrastructure-pressure index combining projected growth in population, school-age and elderly populations (baseline scenario, 2040).", "وصول الأسر إلى الخدمات الشبكية حالياً، ومؤشر محاكى للضغط على البنية التحتية يجمع النمو المسقط في السكان وفي فئتي سن المدرسة وكبار السن (سيناريو خط الأساس، 2040).")} />
       <ScopeBar />
       <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
         <Kpi label={L("Public water network", "شبكة المياه العامة")} value={fmtPct(p.housing.water.PUBLIC_NETWORK / h)} nature="SIMULATED" sources={["SIM_MICRODATA"]} />

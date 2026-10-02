@@ -6,7 +6,7 @@ import { NAV } from "@/lib/nav";
 import { useI18n } from "@/hooks/useI18n";
 import { cn } from "@/lib/utils";
 
-const GROUPS = ["navOperations", "navResults", "navForesight", "navGovernance"] as const;
+const GROUPS = ["navOperations", "navResults", "navForesight", "navPlanning", "navGovernance"] as const;
 
 export function BrandMark({ size = 30 }: { size?: number }) {
   // Neutral geometric mark (not an official emblem): a seven-point star motif inside a census grid.

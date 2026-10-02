@@ -20,6 +20,7 @@ import { downloadCsv } from "@/lib/csv";
 import { fmtInt, fmtPct, fmtSignedPct } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { EAStatus, GovId } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 const STATUSES: EAStatus[] = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "COVERAGE_RISK", "REVISIT_REQUIRED"];
 
@@ -86,7 +87,7 @@ export function Coverage() {
 
   return (
     <div>
-      <PageHeader index="07" title={t("nav07")} subtitle={L("Coverage against plan at every level, the revisit queue and the areas falling behind. Coverage is measured on dwellings visited; response on occupied dwellings.", "التغطية مقابل الخطة على كل المستويات، وقائمة زيارات المتابعة، والمناطق المتأخرة. تُقاس التغطية بالمساكن المزارة، والاستجابة بالمساكن المشغولة.")}>
+      <PageHeader index={navIndex("/coverage")} title={t("nav07")} subtitle={L("Coverage against plan at every level, the revisit queue and the areas falling behind. Coverage is measured on dwellings visited; response on occupied dwellings.", "التغطية مقابل الخطة على كل المستويات، وقائمة زيارات المتابعة، والمناطق المتأخرة. تُقاس التغطية بالمساكن المزارة، والاستجابة بالمساكن المشغولة.")}>
         <Button onClick={() => downloadCsv("coverage-by-district.csv", districtRows.map((r) => ({ district_id: r.id, district: world.district[r.id].name.en, governorate: r.govId, completion: r.completion, plan: r.expected, gap: r.gap, response_rate: r.response, eas: r.eas, eas_completed: r.done, eas_risk: r.risk, eas_revisit: r.revisit })))}>{t("exportCsv")}</Button>
       </PageHeader>
 

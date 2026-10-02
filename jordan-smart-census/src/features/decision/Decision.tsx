@@ -16,6 +16,7 @@ import { CARE_NEED_SHARE, DEFAULT_PARAMS, PROJECTION_YEARS, runScenario, SCHOOL_
 import { fmt1, fmtInt, fmtPct, fmtSigned, fmtSignedPct } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { GovId, L as LText, Region } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 interface Statement {
   id: string;
@@ -116,7 +117,7 @@ export function Decision() {
   const regions: Region[] = ["North", "Central", "South"];
   return (
     <div>
-      <PageHeader index="20" title={t("nav20")} subtitle={L("Ministerial view: demographic change translated into planning implications. Every statement shows the assumptions and formula behind its number.", "العرض الوزاري: التغير الديموغرافي مترجماً إلى آثار تخطيطية. يعرض كل بيان الافتراضات والمعادلة وراء رقمه.")}>
+      <PageHeader index={navIndex("/decision")} title={t("nav20")} subtitle={L("Ministerial view: demographic change translated into planning implications. Every statement shows the assumptions and formula behind its number.", "العرض الوزاري: التغير الديموغرافي مترجماً إلى آثار تخطيطية. يعرض كل بيان الافتراضات والمعادلة وراء رقمه.")}>
         <Link href="/scenarios"><Button>{L("Adjust scenario", "تعديل السيناريو")}</Button></Link>
         <Link href="/reports"><Button variant="primary">{L("Executive report", "التقرير التنفيذي")}</Button></Link>
       </PageHeader>

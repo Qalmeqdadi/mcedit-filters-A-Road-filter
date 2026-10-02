@@ -77,7 +77,8 @@ export interface ScenarioRun {
 
 const NORTH: GovId[] = ["IRB", "MAF", "JER", "AJL"];
 
-export function runScenario(world: World, baseTotal: number, params: FullScenario): ScenarioRun {
+/** Projection inputs implied by a scenario (shared by the deterministic and probabilistic runs). */
+export function scenarioInputs(world: World, baseTotal: number, params: FullScenario) {
   const baseYear = Number(world.config.referenceDate.slice(0, 4));
   const bp = basePopulation(world, baseTotal);
   const inputs: ProjectionInputs = {
@@ -95,6 +96,11 @@ export function runScenario(world: World, baseTotal: number, params: FullScenari
     urbanEnd: params.urbanization,
   };
   if (params.fertilityMultiplier !== 1) inputs.tfrStart = BASE_TFR * (1 + (params.fertilityMultiplier - 1) * 0.25);
+  return { baseYear, bp, inputs };
+}
+
+export function runScenario(world: World, baseTotal: number, params: FullScenario): ScenarioRun {
+  const { baseYear, bp, inputs } = scenarioInputs(world, baseTotal, params);
   const series = projectPopulation({ year: baseYear, m: bp.m, f: bp.f }, inputs);
   const impacts: Record<number, InfrastructureImpact> = {};
   const base = series[0];

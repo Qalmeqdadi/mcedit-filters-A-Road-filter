@@ -14,6 +14,7 @@ import { LABELS } from "@/lib/i18n/labels";
 import { cn } from "@/lib/utils";
 import { downloadText } from "@/lib/csv";
 import { applies, emptyForm, newPerson, personAge, validateForm, WG_KEYS, type QForm, type QPerson } from "./schema";
+import { navIndex } from "@/lib/nav";
 
 const DRAFT_KEY = "jsc-questionnaire-draft";
 type Section = "ID" | "A" | "B" | "C" | "R";
@@ -99,7 +100,7 @@ export function Questionnaire() {
 
   return (
     <div>
-      <PageHeader index="06" title={t("nav06")} subtitle={L("A working household census form with skip logic, age and relationship validation, and the same edit rules used in fieldwork. Submissions enter the Data Quality pipeline.", "استمارة تعداد أسرية عاملة مع منطق التخطي والتحقق من العمر والعلاقات، وقواعد التدقيق نفسها المستخدمة ميدانياً. تدخل الاستمارات المرسلة مسار جودة البيانات.")}>
+      <PageHeader index={navIndex("/questionnaire")} title={t("nav06")} subtitle={L("A working household census form with skip logic, age and relationship validation, and the same edit rules used in fieldwork. Submissions enter the Data Quality pipeline.", "استمارة تعداد أسرية عاملة مع منطق التخطي والتحقق من العمر والعلاقات، وقواعد التدقيق نفسها المستخدمة ميدانياً. تدخل الاستمارات المرسلة مسار جودة البيانات.")}>
         <NatureBadge nature="SYNTHETIC_OPERATIONAL" />
       </PageHeader>
       {notice ? <Callout className="mb-3">{notice}</Callout> : null}

@@ -11,6 +11,7 @@ import { GovTable, MetricMap, ScopeBar, SmallSample, useProfiles } from "./share
 import { OCCUPATIONS, SECTORS } from "@/simulation/analytics";
 import { fmtCompact, fmtPct } from "@/lib/format";
 import type { Profile } from "@/simulation/analytics";
+import { navIndex } from "@/lib/nav";
 
 const lfpr = (p: Profile) => (p.labour.employed + p.labour.unemployed) / Math.max(1, p.labour.employed + p.labour.unemployed + p.labour.outside);
 const unemp = (p: Profile) => p.labour.unemployed / Math.max(1, p.labour.employed + p.labour.unemployed);
@@ -28,7 +29,7 @@ export function Labour() {
   }, [p, ar, L]);
   return (
     <div>
-      <PageHeader index="13" title={t("nav13")} subtitle={L("Synthetic census-derived labour indicators for the population aged 15+.", "مؤشرات عمل اصطناعية مشتقة من التعداد للسكان بعمر 15 سنة فأكثر.")} />
+      <PageHeader index={navIndex("/labour")} title={t("nav13")} subtitle={L("Synthetic census-derived labour indicators for the population aged 15+.", "مؤشرات عمل اصطناعية مشتقة من التعداد للسكان بعمر 15 سنة فأكثر.")} />
       <ScopeBar />
       <Callout tone="warn" className="mb-3">{L("The unemployment and participation figures below are SIMULATED proxies from synthetic microdata. They are not, and must never be quoted as, Jordan's official unemployment rate (published by DoS from the Employment & Unemployment Survey).", "أرقام البطالة والمشاركة أدناه مؤشرات محاكاة من بيانات جزئية اصطناعية. ليست معدل البطالة الرسمي في الأردن (الذي تنشره دائرة الإحصاءات العامة من مسح العمالة والبطالة) ولا يجوز اقتباسها على هذا الأساس.")}</Callout>
       <SmallSample p={p} />

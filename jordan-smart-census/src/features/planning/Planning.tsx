@@ -16,6 +16,7 @@ import { PlanInputSchema, planScenarios, type PlanInput, type PlanResult } from 
 import { fmt1, fmtDate, fmtInt, fmtPct } from "@/lib/format";
 import { downloadCsv } from "@/lib/csv";
 import { cn } from "@/lib/utils";
+import { navIndex } from "@/lib/nav";
 
 export function Planning() {
   const engine = useEngine();
@@ -85,7 +86,7 @@ export function Planning() {
 
   return (
     <div>
-      <PageHeader index="02" title={t("nav02")} subtitle={L("Operational sizing for national enumeration. All results recalculate instantly; a plan can be applied to the fieldwork simulation, which re-delineates EAs to one enumerator workload under that plan.", "تحديد الحجم التشغيلي للعدّ الوطني. تُعاد الحسابات فوراً، ويمكن تطبيق الخطة على محاكاة العمل الميداني لإعادة رسم مناطق العدّ وفق عبء عمل عدّاد واحد.")}>
+      <PageHeader index={navIndex("/planning")} title={t("nav02")} subtitle={L("Operational sizing for national enumeration. All results recalculate instantly; a plan can be applied to the fieldwork simulation, which re-delineates EAs to one enumerator workload under that plan.", "تحديد الحجم التشغيلي للعدّ الوطني. تُعاد الحسابات فوراً، ويمكن تطبيق الخطة على محاكاة العمل الميداني لإعادة رسم مناطق العدّ وفق عبء عمل عدّاد واحد.")}>
         <Button onClick={() => plans.length && downloadCsv("census-plan-scenarios.csv", plans.map((p) => ({ scenario: p.name, fieldDays: p.input.fieldDays, enumerators: p.enumerators, reserve: p.reserve, supervisors: p.supervisors, devices: p.devices, trainingCohorts: p.trainingCohorts, interviewsPerDay: Math.round(p.interviewsPerDay), capacityRatio: p.capacityRatio, completionDate: p.completionDate })))}>{t("exportCsv")}</Button>
       </PageHeader>
 

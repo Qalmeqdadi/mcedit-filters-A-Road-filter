@@ -17,6 +17,7 @@ import { BOUNDARY_QA } from "@/data/geo";
 import { downloadCsv } from "@/lib/csv";
 import { fmt1, fmtInt, fmtPct } from "@/lib/format";
 import type { EAStatus, EnumerationArea } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 type Row = { a: EnumerationArea; status: EAStatus; progress: number; risk: number };
 const STATUSES: EAStatus[] = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "COVERAGE_RISK", "REVISIT_REQUIRED"];
@@ -66,7 +67,7 @@ export function GIS() {
 
   return (
     <div>
-      <PageHeader index="03" title={t("nav03")} subtitle={L("Jordan → Governorate → District → Enumeration Area → Statistical block → Dwelling. Boundaries are reference data; EAs, blocks and dwellings are synthetic and always fall inside the official polygons.", "الأردن ← المحافظة ← اللواء ← منطقة العدّ ← البلوك الإحصائي ← المسكن. الحدود بيانات مرجعية؛ ومناطق العدّ والبلوكات والمساكن اصطناعية وتقع دائماً داخل المضلعات الرسمية.")}>
+      <PageHeader index={navIndex("/gis")} title={t("nav03")} subtitle={L("Jordan → Governorate → District → Enumeration Area → Statistical block → Dwelling. Boundaries are reference data; EAs, blocks and dwellings are synthetic and always fall inside the official polygons.", "الأردن ← المحافظة ← اللواء ← منطقة العدّ ← البلوك الإحصائي ← المسكن. الحدود بيانات مرجعية؛ ومناطق العدّ والبلوكات والمساكن اصطناعية وتقع دائماً داخل المضلعات الرسمية.")}>
         <Button onClick={() => downloadCsv(`enumeration-areas${govId ? "-" + govId : ""}.csv`, rows.map((r) => ({ ea_id: r.a.id, governorate: r.a.govId, district_id: r.a.districtId, district: world.district[r.a.districtId].name.en, urban: r.a.urban, lng: r.a.lng, lat: r.a.lat, population_estimate: r.a.popEstimate, household_estimate: r.a.hhEstimate, dwellings: r.a.dwellings, blocks: r.a.blocks, enumerator: r.a.enumeratorId, supervisor: r.a.supervisorId, accessibility: r.a.accessibility, status: r.status, progress: r.progress })))}>{t("exportCsv")} ({fmtInt(rows.length)})</Button>
       </PageHeader>
 

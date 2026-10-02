@@ -16,6 +16,7 @@ import { RULES } from "@/simulation/quality";
 import { fmtInt, fmtPct, fmtSignedPct } from "@/lib/format";
 import { downloadCsv } from "@/lib/csv";
 import type { DataNature, GovId } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 /** Import adapter contract for an official DoS governorate population file. */
 const OfficialRow = z.object({
@@ -89,7 +90,7 @@ export function Methodology() {
 
   return (
     <div>
-      <PageHeader index="22" title={t("nav22")} subtitle={L("How every number in the platform is produced, where real data come from, and how official datasets replace simulations without redesign.", "كيف يُنتج كل رقم في المنصة، ومن أين تأتي البيانات الحقيقية، وكيف تحل البيانات الرسمية محل المحاكاة دون إعادة تصميم.")} />
+      <PageHeader index={navIndex("/methodology")} title={t("nav22")} subtitle={L("How every number in the platform is produced, where real data come from, and how official datasets replace simulations without redesign.", "كيف يُنتج كل رقم في المنصة، ومن أين تأتي البيانات الحقيقية، وكيف تحل البيانات الرسمية محل المحاكاة دون إعادة تصميم.")} />
 
       <div className="grid gap-3 xl:grid-cols-2">
         <Panel title={L("Data nature labels", "تسميات طبيعة البيانات")}>

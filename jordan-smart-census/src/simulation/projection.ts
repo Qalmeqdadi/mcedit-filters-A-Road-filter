@@ -38,6 +38,8 @@ export interface ProjectionInputs {
   hhSizeEnd: number;
   urbanStart: number;
   urbanEnd: number;
+  /** round life expectancy to this step before building life tables (Monte-Carlo runs) */
+  e0Quantum?: number;
 }
 
 const lifeTableCache = new Map<string, number[]>();
@@ -133,7 +135,8 @@ export function projectPopulation(base: BasePopulation, inp: ProjectionInputs): 
   for (let y = 1; y <= span; y++) {
     const t = y / span;
     const tfr = lerp(inp.tfrStart, inp.tfrEnd, t);
-    const e0 = lerp(inp.e0Start, inp.e0End, t);
+    const e0raw = lerp(inp.e0Start, inp.e0End, t);
+    const e0 = inp.e0Quantum ? Math.round(e0raw / inp.e0Quantum) * inp.e0Quantum : e0raw;
     const Sm = survivalForE0(e0 - 1.8);
     const Sf = survivalForE0(e0 + 1.8);
     // births from women at start of year

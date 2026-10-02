@@ -17,6 +17,7 @@ import { JordanMap } from "@/features/gis/JordanMap";
 import { downloadCsv } from "@/lib/csv";
 import { fmtInt, fmtPct, fmtSignedPct } from "@/lib/format";
 import type { GovId, PESSummary } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 export function PES() {
   const engine = useEngine();
@@ -50,7 +51,7 @@ export function PES() {
 
   return (
     <div>
-      <PageHeader index="10" title={t("nav10")} subtitle={L("An independent re-enumeration of a stratified sample of completed EAs, matched to census records to estimate coverage error with the dual-system estimator.", "إعادة عدّ مستقلة لعينة طبقية من مناطق العدّ المكتملة، تُربط بسجلات التعداد لتقدير خطأ التغطية بمقدّر النظام المزدوج.")}>
+      <PageHeader index={navIndex("/pes")} title={t("nav10")} subtitle={L("An independent re-enumeration of a stratified sample of completed EAs, matched to census records to estimate coverage error with the dual-system estimator.", "إعادة عدّ مستقلة لعينة طبقية من مناطق العدّ المكتملة، تُربط بسجلات التعداد لتقدير خطأ التغطية بمقدّر النظام المزدوج.")}>
         {res ? <Button onClick={() => downloadCsv("pes-results.csv", [{ level: "NATIONAL", governorate: "JOR", ...rows(res.national) }, ...Object.entries(res.byGov).map(([g, s]) => ({ level: "GOVERNORATE", governorate: g, ...rows(s) }))])}>{t("exportCsv")}</Button> : null}
       </PageHeader>
       <div className="mb-3 rounded-lg border-2 border-dashed border-nat-simulated/50 bg-[#fbf3e4] px-4 py-2.5 text-center text-[13px] font-bold uppercase tracking-[0.14em] text-nat-simulated">{L("Simulated Post-Enumeration Survey", "مسح ما بعد العدّ — محاكاة")}</div>

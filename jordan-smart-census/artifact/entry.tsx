@@ -3,34 +3,78 @@ import type { ComponentType } from "react";
 import { AppShell } from "@/components/shell/AppShell";
 import { useLocation } from "./router";
 import Home from "@/app/page";
-import Planning from "@/app/planning/page";
-import Gis from "@/app/gis/page";
-import Field from "@/app/field/page";
-import Enumerators from "@/app/enumerators/page";
-import Questionnaire from "@/app/questionnaire/page";
-import Coverage from "@/app/coverage/page";
-import Quality from "@/app/quality/page";
-import Anomalies from "@/app/anomalies/page";
-import Pes from "@/app/pes/page";
-import Population from "@/app/population/page";
-import Housing from "@/app/housing/page";
-import Labour from "@/app/labour/page";
-import Education from "@/app/education/page";
-import Health from "@/app/health/page";
-import Migration from "@/app/migration/page";
-import Infrastructure from "@/app/infrastructure/page";
-import Projections from "@/app/projections/page";
-import Scenarios from "@/app/scenarios/page";
-import Decision from "@/app/decision/page";
-import Reports from "@/app/reports/page";
-import Methodology from "@/app/methodology/page";
+import R_ageing from "@/app/ageing/page";
+import R_anomalies from "@/app/anomalies/page";
+import R_ask from "@/app/ask/page";
+import R_capital from "@/app/capital/page";
+import R_climate from "@/app/climate/page";
+import R_coverage from "@/app/coverage/page";
+import R_decision from "@/app/decision/page";
+import R_early_warning from "@/app/early-warning/page";
+import R_education from "@/app/education/page";
+import R_enumerators from "@/app/enumerators/page";
+import R_field from "@/app/field/page";
+import R_gis from "@/app/gis/page";
+import R_health from "@/app/health/page";
+import R_housing from "@/app/housing/page";
+import R_housing_need from "@/app/housing-need/page";
+import R_infrastructure from "@/app/infrastructure/page";
+import R_jobs from "@/app/jobs/page";
+import R_labour from "@/app/labour/page";
+import R_methodology from "@/app/methodology/page";
+import R_migration from "@/app/migration/page";
+import R_mobility from "@/app/mobility/page";
+import R_nowcast from "@/app/nowcast/page";
+import R_pes from "@/app/pes/page";
+import R_planning from "@/app/planning/page";
+import R_population from "@/app/population/page";
+import R_projections from "@/app/projections/page";
+import R_quality from "@/app/quality/page";
+import R_questionnaire from "@/app/questionnaire/page";
+import R_reports from "@/app/reports/page";
+import R_scenarios from "@/app/scenarios/page";
+import R_shock from "@/app/shock/page";
+import R_siting from "@/app/siting/page";
+import R_urban_growth from "@/app/urban-growth/page";
+import R_water from "@/app/water/page";
 import NotFound from "@/app/not-found";
 
 const ROUTES: Record<string, ComponentType> = {
-  "/": Home, "/planning": Planning, "/gis": Gis, "/field": Field, "/enumerators": Enumerators, "/questionnaire": Questionnaire,
-  "/coverage": Coverage, "/quality": Quality, "/anomalies": Anomalies, "/pes": Pes, "/population": Population, "/housing": Housing,
-  "/labour": Labour, "/education": Education, "/health": Health, "/migration": Migration, "/infrastructure": Infrastructure,
-  "/projections": Projections, "/scenarios": Scenarios, "/decision": Decision, "/reports": Reports, "/methodology": Methodology,
+  "/": Home,
+  "/ageing": R_ageing,
+  "/anomalies": R_anomalies,
+  "/ask": R_ask,
+  "/capital": R_capital,
+  "/climate": R_climate,
+  "/coverage": R_coverage,
+  "/decision": R_decision,
+  "/early-warning": R_early_warning,
+  "/education": R_education,
+  "/enumerators": R_enumerators,
+  "/field": R_field,
+  "/gis": R_gis,
+  "/health": R_health,
+  "/housing": R_housing,
+  "/housing-need": R_housing_need,
+  "/infrastructure": R_infrastructure,
+  "/jobs": R_jobs,
+  "/labour": R_labour,
+  "/methodology": R_methodology,
+  "/migration": R_migration,
+  "/mobility": R_mobility,
+  "/nowcast": R_nowcast,
+  "/pes": R_pes,
+  "/planning": R_planning,
+  "/population": R_population,
+  "/projections": R_projections,
+  "/quality": R_quality,
+  "/questionnaire": R_questionnaire,
+  "/reports": R_reports,
+  "/scenarios": R_scenarios,
+  "/shock": R_shock,
+  "/siting": R_siting,
+  "/urban-growth": R_urban_growth,
+  "/water": R_water,
 };
 
 function App() {

@@ -9,6 +9,7 @@ import { barH, VIZ } from "@/components/charts/builders";
 import { GovTable, MetricMap, ScopeBar, SmallSample, useProfiles } from "./shared";
 import { ATTAINMENTS } from "@/simulation/analytics";
 import { fmtCompact, fmtPct } from "@/lib/format";
+import { navIndex } from "@/lib/nav";
 
 export function Education() {
   const { t, L, lb, ar, locale } = useI18n();
@@ -21,7 +22,7 @@ export function Education() {
   }, [E, ar, t, lb]);
   return (
     <div>
-      <PageHeader index="14" title={t("nav14")} subtitle={L("School-age and university-age populations, enrolment and educational attainment (population 25+).", "السكان في سن المدرسة وسن الجامعة، والالتحاق، والتحصيل العلمي (السكان 25 سنة فأكثر).")} />
+      <PageHeader index={navIndex("/education")} title={t("nav14")} subtitle={L("School-age and university-age populations, enrolment and educational attainment (population 25+).", "السكان في سن المدرسة وسن الجامعة، والالتحاق، والتحصيل العلمي (السكان 25 سنة فأكثر).")} />
       <ScopeBar />
       <SmallSample p={p} />
       <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 xl:grid-cols-6">

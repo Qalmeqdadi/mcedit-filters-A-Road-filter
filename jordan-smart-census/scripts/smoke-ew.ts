@@ -1,0 +1,17 @@
+import { CensusEngine, SHIFTS_PER_DAY } from "../src/simulation/engine";
+import { DEFAULT_CONFIG } from "../src/simulation/generate";
+import { predictLateness, backtest } from "../src/simulation/lab/earlyWarning";
+import { planResponse, DEFAULT_RESPONSE } from "../src/simulation/lab/responsePlan";
+const e = new CensusEngine(DEFAULT_CONFIG);
+e.start();
+e.advance(SHIFTS_PER_DAY * 5);
+let t = performance.now();
+const ew = predictLateness(e);
+console.log("day", ew.day, "ms", Math.round(performance.now() - t), ew.counts, "atRisk", Math.round(ew.dwellingsAtRisk), "reserves", ew.reservesLeft);
+for (const p of ew.predictions.slice(0, 3)) console.log(p.id, p.pLate.toFixed(2), p.remaining, p.pace.toFixed(1), p.required.toFixed(1), p.drivers.map((d) => d.key).join(","), p.helper);
+const top = ew.predictions[0];
+console.log("assign reserve", e.assignSupport(top.id, "RESERVE", "QA", "test"));
+e.advance(SHIFTS_PER_DAY * 30);
+console.log("phase", e.phase, "day", e.day);
+for (const d of [3, 5, 7, 10]) console.log(JSON.stringify(backtest(e, d)));
+console.log(planResponse({ households: 2400000, ...DEFAULT_RESPONSE }));

@@ -1,38 +1,59 @@
 import {
-  Activity, BarChart3, BookOpenCheck, Brain, Briefcase, ClipboardList, Compass, FileDown, GaugeCircle, GraduationCap, HeartPulse,
-  Home, Landmark, Map, MapPinned, Plane, ScanSearch, ShieldCheck, SlidersHorizontal, TrendingUp, Users, Wrench,
+  Activity, BarChart3, BookOpenCheck, Brain, Briefcase, BriefcaseBusiness, Building2, Bus, ClipboardList, Coins, Compass, Droplets, FileDown, GaugeCircle,
+  GraduationCap, HeartHandshake, HeartPulse, Home, HousePlus, Landmark, Map, MapPinned, MessageSquareText, Plane, Radar, ScanSearch, School, ShieldCheck,
+  Siren, SlidersHorizontal, Tent, ThermometerSun, TrendingUp, Users, Wrench,
 } from "lucide-react";
 import type { DictKey } from "@/lib/i18n/dict";
+
+export type NavGroup = "navOperations" | "navResults" | "navForesight" | "navPlanning" | "navGovernance";
 
 export interface NavItem {
   href: string;
   index: string;
   key: DictKey;
-  group: "navOperations" | "navResults" | "navForesight" | "navGovernance";
+  group: NavGroup;
   icon: typeof Home;
 }
 
-export const NAV: NavItem[] = [
-  { href: "/", index: "01", key: "nav01", group: "navOperations", icon: Landmark },
-  { href: "/planning", index: "02", key: "nav02", group: "navOperations", icon: Compass },
-  { href: "/gis", index: "03", key: "nav03", group: "navOperations", icon: Map },
-  { href: "/field", index: "04", key: "nav04", group: "navOperations", icon: Activity },
-  { href: "/enumerators", index: "05", key: "nav05", group: "navOperations", icon: Users },
-  { href: "/questionnaire", index: "06", key: "nav06", group: "navOperations", icon: ClipboardList },
-  { href: "/coverage", index: "07", key: "nav07", group: "navOperations", icon: GaugeCircle },
-  { href: "/quality", index: "08", key: "nav08", group: "navOperations", icon: ShieldCheck },
-  { href: "/anomalies", index: "09", key: "nav09", group: "navOperations", icon: ScanSearch },
-  { href: "/pes", index: "10", key: "nav10", group: "navOperations", icon: BookOpenCheck },
-  { href: "/population", index: "11", key: "nav11", group: "navResults", icon: BarChart3 },
-  { href: "/housing", index: "12", key: "nav12", group: "navResults", icon: Home },
-  { href: "/labour", index: "13", key: "nav13", group: "navResults", icon: Briefcase },
-  { href: "/education", index: "14", key: "nav14", group: "navResults", icon: GraduationCap },
-  { href: "/health", index: "15", key: "nav15", group: "navResults", icon: HeartPulse },
-  { href: "/migration", index: "16", key: "nav16", group: "navResults", icon: Plane },
-  { href: "/infrastructure", index: "17", key: "nav17", group: "navResults", icon: Wrench },
-  { href: "/projections", index: "18", key: "nav18", group: "navForesight", icon: TrendingUp },
-  { href: "/scenarios", index: "19", key: "nav19", group: "navForesight", icon: SlidersHorizontal },
-  { href: "/decision", index: "20", key: "nav20", group: "navForesight", icon: Brain },
-  { href: "/reports", index: "21", key: "nav21", group: "navGovernance", icon: FileDown },
-  { href: "/methodology", index: "22", key: "nav22", group: "navGovernance", icon: MapPinned },
+const ITEMS: Omit<NavItem, "index">[] = [
+  { href: "/", key: "nav01", group: "navOperations", icon: Landmark },
+  { href: "/planning", key: "nav02", group: "navOperations", icon: Compass },
+  { href: "/gis", key: "nav03", group: "navOperations", icon: Map },
+  { href: "/field", key: "nav04", group: "navOperations", icon: Activity },
+  { href: "/enumerators", key: "nav05", group: "navOperations", icon: Users },
+  { href: "/questionnaire", key: "nav06", group: "navOperations", icon: ClipboardList },
+  { href: "/coverage", key: "nav07", group: "navOperations", icon: GaugeCircle },
+  { href: "/quality", key: "nav08", group: "navOperations", icon: ShieldCheck },
+  { href: "/anomalies", key: "nav09", group: "navOperations", icon: ScanSearch },
+  { href: "/early-warning", key: "navEarly", group: "navOperations", icon: Siren },
+  { href: "/pes", key: "nav10", group: "navOperations", icon: BookOpenCheck },
+  { href: "/population", key: "nav11", group: "navResults", icon: BarChart3 },
+  { href: "/housing", key: "nav12", group: "navResults", icon: Home },
+  { href: "/labour", key: "nav13", group: "navResults", icon: Briefcase },
+  { href: "/education", key: "nav14", group: "navResults", icon: GraduationCap },
+  { href: "/health", key: "nav15", group: "navResults", icon: HeartPulse },
+  { href: "/migration", key: "nav16", group: "navResults", icon: Plane },
+  { href: "/infrastructure", key: "nav17", group: "navResults", icon: Wrench },
+  { href: "/projections", key: "nav18", group: "navForesight", icon: TrendingUp },
+  { href: "/nowcast", key: "navNowcast", group: "navForesight", icon: Radar },
+  { href: "/scenarios", key: "nav19", group: "navForesight", icon: SlidersHorizontal },
+  { href: "/decision", key: "nav20", group: "navForesight", icon: Brain },
+  { href: "/ask", key: "navAsk", group: "navForesight", icon: MessageSquareText },
+  { href: "/siting", key: "navSiting", group: "navPlanning", icon: School },
+  { href: "/urban-growth", key: "navGrowth", group: "navPlanning", icon: Building2 },
+  { href: "/housing-need", key: "navHousingNeed", group: "navPlanning", icon: HousePlus },
+  { href: "/water", key: "navWater", group: "navPlanning", icon: Droplets },
+  { href: "/mobility", key: "navMobility", group: "navPlanning", icon: Bus },
+  { href: "/climate", key: "navClimate", group: "navPlanning", icon: ThermometerSun },
+  { href: "/jobs", key: "navJobs", group: "navPlanning", icon: BriefcaseBusiness },
+  { href: "/ageing", key: "navAgeing", group: "navPlanning", icon: HeartHandshake },
+  { href: "/capital", key: "navCapital", group: "navPlanning", icon: Coins },
+  { href: "/shock", key: "navShock", group: "navPlanning", icon: Tent },
+  { href: "/reports", key: "nav21", group: "navGovernance", icon: FileDown },
+  { href: "/methodology", key: "nav22", group: "navGovernance", icon: MapPinned },
 ];
+
+export const NAV: NavItem[] = ITEMS.map((n, i) => ({ ...n, index: String(i + 1).padStart(2, "0") }));
+
+/** Module number shown in page headers, derived from the navigation order. */
+export const navIndex = (href: string) => NAV.find((n) => n.href === href)?.index ?? "";

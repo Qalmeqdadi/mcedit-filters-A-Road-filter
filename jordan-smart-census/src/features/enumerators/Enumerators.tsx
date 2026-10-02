@@ -25,6 +25,7 @@ import { downloadCsv } from "@/lib/csv";
 import { fmt1, fmtInt, fmtPct, fmtDateTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { EnumeratorStatus } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 interface Row {
   i: number;
@@ -107,7 +108,7 @@ export function Enumerators() {
 
   return (
     <div>
-      <PageHeader index="05" title={t("nav05")} subtitle={L("Every synthetic enumerator with live performance. Names are synthetic pseudonyms — no real persons. Risk profiles are never shown; only observed behaviour is.", "جميع العدّادين الاصطناعيين مع أداء مباشر. الأسماء مستعارة اصطناعية — لا أشخاص حقيقيون. لا تُعرض ملفات المخاطر المخفية، بل السلوك المرصود فقط.")}>
+      <PageHeader index={navIndex("/enumerators")} title={t("nav05")} subtitle={L("Every synthetic enumerator with live performance. Names are synthetic pseudonyms — no real persons. Risk profiles are never shown; only observed behaviour is.", "جميع العدّادين الاصطناعيين مع أداء مباشر. الأسماء مستعارة اصطناعية — لا أشخاص حقيقيون. لا تُعرض ملفات المخاطر المخفية، بل السلوك المرصود فقط.")}>
         <Button onClick={() => downloadCsv(`enumerator-performance${govId ? "-" + govId : ""}.csv`, rows.map((r) => ({ enumerator_id: r.id, name_synthetic: world.enumerators[r.i].name.en, governorate: world.enumerators[r.i].govId, district: world.enumerators[r.i].districtId, eas: r.eas, supervisor: r.supervisor, assigned: r.assigned, completed: r.completed, pending: r.pending, refusals: r.refusals, avg_interview_min: r.duration, interviews_per_day: r.perDay, validation_score: r.validation, coverage_score: r.coverage, risk_score: r.risk, status: r.status })))}>{t("exportCsv")} ({fmtInt(rows.length)})</Button>
       </PageHeader>
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.3fr)]">

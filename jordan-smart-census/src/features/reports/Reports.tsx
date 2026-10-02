@@ -21,6 +21,7 @@ import { DEFAULT_PARAMS, PROJECTION_YEARS, runScenario } from "@/simulation/scen
 import { isOpen } from "@/simulation/engine";
 import { fmtCompact, fmtDate, fmtInt, fmtPct, fmtSigned, fmtSignedPct } from "@/lib/format";
 import type { DataNature } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 export function Reports() {
   const engine = useEngine();
@@ -52,7 +53,7 @@ export function Reports() {
   return (
     <div>
       <div className="no-print">
-        <PageHeader index="21" title={t("nav21")} subtitle={L("Download datasets as CSV (UTF-8 with BOM: Excel-compatible and Arabic-safe) or print the executive report below. Every file carries a data-nature column.", "نزّل مجموعات البيانات بصيغة CSV (UTF-8 متوافقة مع Excel وتدعم العربية) أو اطبع التقرير التنفيذي أدناه. يحمل كل ملف عموداً لطبيعة البيانات.")}>
+        <PageHeader index={navIndex("/reports")} title={t("nav21")} subtitle={L("Download datasets as CSV (UTF-8 with BOM: Excel-compatible and Arabic-safe) or print the executive report below. Every file carries a data-nature column.", "نزّل مجموعات البيانات بصيغة CSV (UTF-8 متوافقة مع Excel وتدعم العربية) أو اطبع التقرير التنفيذي أدناه. يحمل كل ملف عموداً لطبيعة البيانات.")}>
           {isHosted() ? null : <Button variant="primary" onClick={() => window.print()}><Printer size={14} />{L("Print / save as PDF", "طباعة / حفظ PDF")}</Button>}
         </PageHeader>
         <div className="mb-4 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-3">

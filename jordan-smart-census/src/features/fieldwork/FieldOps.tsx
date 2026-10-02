@@ -16,6 +16,7 @@ import { SimControls } from "@/components/shell/Topbar";
 import { fmtCompact, fmtDateTime, fmtInt, fmtPct } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { EAStatus, GovId } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 const STATUSES: EAStatus[] = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "COVERAGE_RISK", "REVISIT_REQUIRED"];
 
@@ -63,7 +64,7 @@ export function FieldOps() {
 
   return (
     <div>
-      <PageHeader index="04" title={t("nav04")} subtitle={L("National fieldwork simulation. Four shifts per field day; enumerators complete households, meet refusals and vacant dwellings, schedule revisits, and supervisors receive tasks. Seeded and reproducible.", "محاكاة العمل الميداني الوطني. أربع فترات يومياً؛ يكمل العدّادون الأسر ويواجهون الرفض والمساكن الشاغرة ويجدولون زيارات المتابعة، ويتلقى المشرفون المهام. حتمية وقابلة لإعادة الإنتاج.")} />
+      <PageHeader index={navIndex("/field")} title={t("nav04")} subtitle={L("National fieldwork simulation. Four shifts per field day; enumerators complete households, meet refusals and vacant dwellings, schedule revisits, and supervisors receive tasks. Seeded and reproducible.", "محاكاة العمل الميداني الوطني. أربع فترات يومياً؛ يكمل العدّادون الأسر ويواجهون الرفض والمساكن الشاغرة ويجدولون زيارات المتابعة، ويتلقى المشرفون المهام. حتمية وقابلة لإعادة الإنتاج.")} />
 
       <div className="mb-3 rounded-lg border border-navy-700 bg-navy-900 p-3 text-white">
         <div className="flex flex-wrap items-center gap-4">

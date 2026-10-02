@@ -70,6 +70,10 @@ interface AppState {
   deleteScenario: (id: string) => void;
   activeScenario: { preset: ScenarioPreset; params: FullScenario; name: string } | null;
   setActiveScenario: (s: { preset: ScenarioPreset; params: FullScenario; name: string } | null) => void;
+
+  /** scenario driving the Planning Lab: a preset, "SIMULATOR" (Scenario Simulator's current) or a saved scenario id */
+  labScenario: string;
+  setLabScenario: (id: string) => void;
 }
 
 export const useApp = create<AppState>()(
@@ -124,12 +128,15 @@ export const useApp = create<AppState>()(
       deleteScenario: (id) => set((s) => ({ scenarios: s.scenarios.filter((x) => x.id !== id) })),
       activeScenario: null,
       setActiveScenario: (activeScenario) => set({ activeScenario }),
+
+      labScenario: "BASELINE",
+      setLabScenario: (labScenario) => set({ labScenario }),
     }),
     {
       name: "jsc-app",
       version: 1,
       skipHydration: true,
-      partialize: (s) => ({ locale: s.locale, config: s.config, speed: s.speed, actor: s.actor, scenarios: s.scenarios, projectionYear: s.projectionYear }),
+      partialize: (s) => ({ locale: s.locale, config: s.config, speed: s.speed, actor: s.actor, scenarios: s.scenarios, projectionYear: s.projectionYear, labScenario: s.labScenario }),
     },
   ),
 );

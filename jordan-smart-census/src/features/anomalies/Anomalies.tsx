@@ -20,6 +20,7 @@ import { fmtDateTime, fmtInt } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { AnomalyDecision, AnomalyKind, Severity } from "@/types/census";
 import { LABELS } from "@/lib/i18n/labels";
+import { navIndex } from "@/lib/nav";
 
 const SEVS: Severity[] = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
 
@@ -81,7 +82,7 @@ export function Anomalies() {
 
   return (
     <div>
-      <PageHeader index="09" title={t("nav09")} subtitle={L("Explainable, rule-based and statistical detection: z-scores against district peers, IQR fences, heaping and pattern tests. No LLM or external AI service is used. The engine never alters census responses — every finding waits for a human decision.", "كشف قابل للتفسير قائم على القواعد والإحصاء: درجات معيارية مقارنة بأقران اللواء، وحدود المدى الربيعي، واختبارات التكدّس والأنماط. لا يُستخدم نموذج لغوي أو خدمة ذكاء اصطناعي خارجية. لا يغيّر المحرك إجابات التعداد — كل نتيجة تنتظر قراراً بشرياً.")}>
+      <PageHeader index={navIndex("/anomalies")} title={t("nav09")} subtitle={L("Explainable, rule-based and statistical detection: z-scores against district peers, IQR fences, heaping and pattern tests. No LLM or external AI service is used. The engine never alters census responses — every finding waits for a human decision.", "كشف قابل للتفسير قائم على القواعد والإحصاء: درجات معيارية مقارنة بأقران اللواء، وحدود المدى الربيعي، واختبارات التكدّس والأنماط. لا يُستخدم نموذج لغوي أو خدمة ذكاء اصطناعي خارجية. لا يغيّر المحرك إجابات التعداد — كل نتيجة تنتظر قراراً بشرياً.")}>
         <Button onClick={() => downloadCsv("anomalies.csv", scoped.map((x) => ({ id: x.id, kind: x.kind, severity: x.severity, subject_type: x.subjectType, subject: x.subjectId, governorate: x.govId, method: x.method, score: x.score, detected: engine.timeOf(x.step).toISOString(), what: x.what.en, why: x.why.en, recommendation: x.recommendation.en, affected_records: x.affectedRecords.join(" "), status: x.status, decision: x.decision?.action ?? "", decided_by: x.decision?.by ?? "", decision_note: x.decision?.note ?? "" })))}>{t("exportCsv")} ({fmtInt(scoped.length)})</Button>
       </PageHeader>
       <Callout tone="sim" className="mb-3 flex items-center gap-2"><Brain size={15} /><b>{L("AI-assisted anomaly simulation.", "محاكاة كشف الشذوذ بمساعدة الذكاء الاصطناعي.")}</b> {L("Detection is statistical and rule-based on synthetic operational data. Human authority remains final.", "الكشف إحصائي وقائم على القواعد ويعمل على بيانات تشغيلية اصطناعية. تبقى السلطة النهائية للإنسان.")}</Callout>

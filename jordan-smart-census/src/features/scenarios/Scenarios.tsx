@@ -19,6 +19,7 @@ import { downloadCsv } from "@/lib/csv";
 import { fmt1, fmtCompact, fmtInt, fmtPct, fmtSigned } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { L as LText, ScenarioPreset } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 const PRESETS: ScenarioPreset[] = ["BASELINE", "HIGH_GROWTH", "LOW_GROWTH", "MIGRATION_SHOCK", "YOUTH_PRESSURE", "AGEING", "CUSTOM"];
 
@@ -110,7 +111,7 @@ export function Scenarios() {
 
   return (
     <div>
-      <PageHeader index="19" title={t("nav19")} subtitle={L("Translate demographic scenarios into national service and infrastructure requirements. Choose a preset, adjust any assumption or planning norm, then save, duplicate and compare.", "حوّل السيناريوهات الديموغرافية إلى متطلبات وطنية من الخدمات والبنية التحتية. اختر نموذجاً جاهزاً وعدّل أي افتراض أو معيار تخطيط، ثم احفظ وانسخ وقارن.")}>
+      <PageHeader index={navIndex("/scenarios")} title={t("nav19")} subtitle={L("Translate demographic scenarios into national service and infrastructure requirements. Choose a preset, adjust any assumption or planning norm, then save, duplicate and compare.", "حوّل السيناريوهات الديموغرافية إلى متطلبات وطنية من الخدمات والبنية التحتية. اختر نموذجاً جاهزاً وعدّل أي افتراض أو معيار تخطيط، ثم احفظ وانسخ وقارن.")}>
         <Button onClick={() => downloadCsv("scenario-results.csv", comparison.flatMap((c) => c.values.map((v) => ({ scenario: v.name, year, indicator: c.key, value: v.value, change_vs_base_year: v.delta, data_nature: "SIMULATED" }))))}>{t("exportCsv")}</Button>
         <Link href="/decision"><Button variant="primary">{t("nav20")} →</Button></Link>
       </PageHeader>

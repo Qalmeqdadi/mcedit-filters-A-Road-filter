@@ -59,6 +59,23 @@ export interface EAPoint {
   label?: string;
 }
 
+export interface MapMarker {
+  id: string;
+  lng: number;
+  lat: number;
+  color: string;
+  radius?: number;
+  stroke?: string;
+  label?: string;
+}
+
+export interface MapPolygon {
+  coords: [number, number][];
+  color: string;
+  opacity?: number;
+  outline?: string;
+}
+
 export interface MapLine {
   coords: [number, number][];
   width: number;
@@ -100,6 +117,14 @@ interface Props {
   className?: string;
   fitTo?: [number, number, number, number] | null;
   showLabelsDefault?: boolean;
+  markers?: MapMarker[];
+  polygons?: MapPolygon[];
+  /** "place": every click returns map coordinates through onMapClick */
+  clickMode?: "select" | "place";
+  onMapClick?: (lng: number, lat: number) => void;
+  onSelectMarker?: (id: string) => void;
+  /** extra legend rows (e.g. facility symbols) */
+  legendExtra?: { color: string; label: string; ring?: boolean }[];
 }
 
 export function JordanMap(props: Props) {
@@ -108,7 +133,7 @@ export function JordanMap(props: Props) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const [ready, setReady] = useState(false);
-  const [hover, setHover] = useState<{ x: number; y: number; w: number; kind: "gov" | "district" | "ea"; id: string } | null>(null);
+  const [hover, setHover] = useState<{ x: number; y: number; w: number; kind: "gov" | "district" | "ea" | "marker"; id: string } | null>(null);
   const [showLabels, setShowLabels] = useState(props.showLabelsDefault ?? true);
   const [basemap, setBasemap] = useState(false);
   const markers = useRef<maplibregl.Marker[]>([]);
@@ -160,11 +185,15 @@ export function JordanMap(props: Props) {
       m.addSource("eas", { type: "geojson", data: { type: "FeatureCollection", features: [] }, promoteId: "id" });
       m.addSource("lines", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       m.addSource("route", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+      m.addSource("polys", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+      m.addSource("markers", { type: "geojson", data: { type: "FeatureCollection", features: [] }, promoteId: "id" });
 
       m.addLayer({ id: "country-shadow", type: "line", source: "country", paint: { "line-color": "#0f1c31", "line-width": 6, "line-opacity": 0.06, "line-blur": 4 } });
       m.addLayer({ id: "gov-fill", type: "fill", source: "govs", paint: { "fill-color": ["coalesce", ["get", "__c"], "#f2ecdf"], "fill-opacity": ["case", ["boolean", ["feature-state", "dim"], false], 0.35, 0.92] } });
       m.addLayer({ id: "district-fill", type: "fill", source: "districts", paint: { "fill-color": ["coalesce", ["get", "__c"], "#f2ecdf"], "fill-opacity": 0.92 }, filter: ["==", ["get", "govId"], "__none__"] });
       m.addLayer({ id: "district-line", type: "line", source: "districts", paint: { "line-color": "#ffffff", "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.2, 0.8], "line-opacity": 0.95 }, filter: ["==", ["get", "govId"], "__none__"] });
+      m.addLayer({ id: "polys-fill", type: "fill", source: "polys", paint: { "fill-color": ["get", "color"], "fill-opacity": ["get", "opacity"] } });
+      m.addLayer({ id: "polys-line", type: "line", source: "polys", filter: ["has", "outline"], paint: { "line-color": ["get", "outline"], "line-width": 1.2, "line-dasharray": [2, 1.5] } });
       m.addLayer({ id: "gov-line", type: "line", source: "govs", paint: { "line-color": "#ffffff", "line-width": 1.4 } });
       m.addLayer({ id: "gov-hover", type: "line", source: "govs", paint: { "line-color": "#0f1c31", "line-width": ["case", ["boolean", ["feature-state", "selected"], false], 2.4, ["boolean", ["feature-state", "hover"], false], 1.6, 0], "line-opacity": 0.9 } });
       m.addLayer({ id: "district-hover", type: "line", source: "districts", paint: { "line-color": "#0f1c31", "line-width": ["case", ["boolean", ["feature-state", "selected"], false], 2.2, ["boolean", ["feature-state", "hover"], false], 1.4, 0] } });
@@ -183,6 +212,16 @@ export function JordanMap(props: Props) {
         },
       });
 
+      m.addLayer({
+        id: "markers", type: "circle", source: "markers",
+        paint: {
+          "circle-color": ["get", "color"],
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 6, ["*", ["get", "r"], 0.7], 9, ["get", "r"], 12, ["*", ["get", "r"], 1.6]],
+          "circle-stroke-color": ["case", ["boolean", ["feature-state", "hover"], false], "#0f1c31", ["get", "stroke"]],
+          "circle-stroke-width": 1.5,
+        },
+      });
+
       const setHoverState = (src: string, id: string | number | undefined, on: boolean) => {
         if (id !== undefined) m.setFeatureState({ source: src, id }, { hover: on });
       };
@@ -192,7 +231,7 @@ export function JordanMap(props: Props) {
         hovered = null;
       };
       m.on("mousemove", (e: MapMouseEvent) => {
-        const layers = ["ea-pts", "district-fill", "gov-fill"].filter((l) => m.getLayer(l));
+        const layers = ["markers", "ea-pts", "district-fill", "gov-fill"].filter((l) => m.getLayer(l));
         const feats: MapGeoJSONFeature[] = m.queryRenderedFeatures(e.point, { layers });
         const f = feats[0];
         clearHover();
@@ -204,8 +243,8 @@ export function JordanMap(props: Props) {
         const src = f.source;
         hovered = { src, id: f.id as string };
         setHoverState(src, f.id, true);
-        m.getCanvas().style.cursor = "pointer";
-        setHover({ x: e.point.x, y: e.point.y, w: m.getContainer().clientWidth, kind: src === "eas" ? "ea" : src === "districts" ? "district" : "gov", id: String(f.properties.id ?? f.id) });
+        m.getCanvas().style.cursor = propsRef.current.clickMode === "place" ? "crosshair" : "pointer";
+        setHover({ x: e.point.x, y: e.point.y, w: m.getContainer().clientWidth, kind: src === "markers" ? "marker" : src === "eas" ? "ea" : src === "districts" ? "district" : "gov", id: String(f.properties.id ?? f.id) });
       });
       m.on("mouseout", () => {
         clearHover();
@@ -213,10 +252,18 @@ export function JordanMap(props: Props) {
       });
       m.on("click", (e: MapMouseEvent) => {
         const p = propsRef.current;
-        const layers = ["ea-pts", "district-fill", "gov-fill"].filter((l) => m.getLayer(l));
+        if (p.clickMode === "place" && p.onMapClick) {
+          p.onMapClick(e.lngLat.lng, e.lngLat.lat);
+          return;
+        }
+        const layers = ["markers", "ea-pts", "district-fill", "gov-fill"].filter((l) => m.getLayer(l));
         const f = m.queryRenderedFeatures(e.point, { layers })[0];
-        if (!f) return;
-        if (f.source === "eas") p.onSelectEA?.(String(f.properties.id));
+        if (!f) {
+          p.onMapClick?.(e.lngLat.lng, e.lngLat.lat);
+          return;
+        }
+        if (f.source === "markers") p.onSelectMarker?.(String(f.properties.id));
+        else if (f.source === "eas") p.onSelectEA?.(String(f.properties.id));
         else if (f.source === "districts") p.onSelectDistrict?.(String(f.properties.id));
         else if (f.source === "govs") p.onSelectGov?.(f.properties.id as GovId);
       });
@@ -280,6 +327,24 @@ export function JordanMap(props: Props) {
   useEffect(() => {
     const m = map.current;
     if (!m || !ready) return;
+    (m.getSource("polys") as GeoJSONSource).setData({
+      type: "FeatureCollection",
+      features: (props.polygons ?? []).map((p) => ({ type: "Feature", properties: { color: p.color, opacity: p.opacity ?? 0.6, ...(p.outline ? { outline: p.outline } : {}) }, geometry: { type: "Polygon", coordinates: [p.coords] } })),
+    } as never);
+  }, [ready, props.polygons]);
+
+  useEffect(() => {
+    const m = map.current;
+    if (!m || !ready) return;
+    (m.getSource("markers") as GeoJSONSource).setData({
+      type: "FeatureCollection",
+      features: (props.markers ?? []).map((p) => ({ type: "Feature", id: p.id, properties: { id: p.id, color: p.color, r: p.radius ?? 5, stroke: p.stroke ?? "#ffffff" }, geometry: { type: "Point", coordinates: [p.lng, p.lat] } })),
+    } as never);
+  }, [ready, props.markers]);
+
+  useEffect(() => {
+    const m = map.current;
+    if (!m || !ready) return;
     const pts = props.routePoints ?? [];
     (m.getSource("route") as GeoJSONSource).setData({
       type: "FeatureCollection",
@@ -316,7 +381,7 @@ export function JordanMap(props: Props) {
   }, [ready, props.selectedGov, props.selectedDistrict, districtMode, props.fitTo]);
 
   // ------------------------------------------------------------ labels (HTML so Arabic shapes correctly offline)
-  const { selectedGov, govValues: labelValues, format: labelFormat, tooltipExtra, districtValues: tipDistrictValues, eaPoints: tipEaPoints } = props;
+  const { selectedGov, govValues: labelValues, format: labelFormat, tooltipExtra, districtValues: tipDistrictValues, eaPoints: tipEaPoints, markers: tipMarkers } = props;
   useEffect(() => {
     const m = map.current;
     if (!m || !ready) return;
@@ -354,9 +419,13 @@ export function JordanMap(props: Props) {
       const gov = GOVERNORATE_GEO.features.find((x) => x.properties.id === d.govId)!.properties;
       return { title: ar ? d.nameAr : d.nameEn, sub: `${ar ? gov.nameAr : gov.nameEn} · ${d.id}`, value: v !== undefined && labelFormat ? labelFormat(v) : undefined, extra: tooltipExtra?.("district", d.id) };
     }
+    if (hover.kind === "marker") {
+      const mk = tipMarkers?.find((x) => x.id === hover.id);
+      return { title: mk?.label ?? hover.id, sub: undefined, value: undefined, extra: null };
+    }
     const p = tipEaPoints?.find((x) => x.id === hover.id);
     return { title: `${t("ea")} ${hover.id}`, sub: p?.label, value: undefined, extra: null };
-  }, [hover, labelValues, tipDistrictValues, tipEaPoints, labelFormat, tooltipExtra, ar, L, t]);
+  }, [hover, labelValues, tipDistrictValues, tipEaPoints, tipMarkers, labelFormat, tooltipExtra, ar, L, t]);
 
   const reset = () => {
     props.onSelectGov?.(null);
@@ -392,7 +461,7 @@ export function JordanMap(props: Props) {
         </div>
       </div>
       {/* legend */}
-      {(props.govValues || props.districtValues || props.eaLegend) && (
+      {(props.govValues || props.districtValues || props.eaLegend || props.legendExtra) && (
         <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-card/95 px-2.5 py-2 shadow-sm">
           {props.legendTitle && (props.govValues || props.districtValues) ? <div className="mb-1 text-[10.5px] font-semibold uppercase tracking-wide text-ink-500">{props.legendTitle}</div> : null}
           {props.govValues || props.districtValues ? (
@@ -408,6 +477,13 @@ export function JordanMap(props: Props) {
             <div className="mt-0.5 flex justify-between gap-2 text-[9.5px] text-ink-500 tabular" dir="ltr">
               <span>{breaksLabels.length ? `< ${fmt(breaksLabels[0])}` : ""}</span>
               <span>{breaksLabels.length ? `≥ ${fmt(breaksLabels[breaksLabels.length - 1])}` : ""}</span>
+            </div>
+          ) : null}
+          {props.legendExtra ? (
+            <div className="mt-1.5 flex flex-wrap gap-x-2.5 gap-y-1">
+              {props.legendExtra.map((l) => (
+                <span key={l.label} className="flex items-center gap-1 text-[10.5px] text-ink-700"><span className={cn("h-2.5 w-2.5 rounded-full", l.ring && "border-2 bg-transparent")} style={l.ring ? { borderColor: l.color } : { background: l.color }} />{l.label}</span>
+              ))}
             </div>
           ) : null}
           {props.eaLegend ? (

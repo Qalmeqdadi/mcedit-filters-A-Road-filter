@@ -151,6 +151,8 @@ export class CensusEngine {
   readonly boost: Float32Array;
   readonly reservePool: number;
   reservesDeployed = 0;
+  /** enumerators already redeployed as helpers */
+  readonly helping = new Set<number>();
 
   constructor(config: SimConfig) {
     this.world = generateWorld(config);
@@ -830,6 +832,32 @@ export class CensusEngine {
     if (action === "SUSPEND_REASSIGN") s.status = "UNDER_REVIEW";
     this.log("INFO", { en: `Supervisor intervention on ${enumId}: ${action.replace(/_/g, " ").toLowerCase()}.`, ar: `تدخل إشرافي على ${enumId}: ${action}.` }, e.govId);
     this.version++;
+  }
+
+  /**
+   * Human-approved field support from the Predictive Field Control screen. RESERVE draws on the reserve pool;
+   * HELPER pairs an enumerator who has finished with one predicted to overrun. Never touches responses.
+   */
+  assignSupport(enumId: string, kind: "RESERVE" | "HELPER", by: string, note: string, helperId?: string): boolean {
+    const i = this.world.enumIdx.get(enumId);
+    if (i === undefined || this.phase === "FINISHED") return false;
+    if (kind === "RESERVE" && this.reservesDeployed >= this.reservePool) return false;
+    const e = this.world.enumerators[i];
+    const s = this.en[i];
+    if (kind === "RESERVE") {
+      this.reservesDeployed++;
+      this.boost[i] = Math.max(this.boost[i], 1.8);
+    } else {
+      const h = helperId ? this.world.enumIdx.get(helperId) : undefined;
+      if (h === undefined || this.helping.has(h)) return false;
+      this.helping.add(h);
+      this.boost[i] = Math.max(this.boost[i], 1.6);
+      this.en[h].interventions.push({ step: this.step, by, action: "HELPER_REDEPLOYED", note: `Supporting ${enumId}. ${note}` });
+    }
+    s.interventions.push({ step: this.step, by, action: kind === "RESERVE" ? "RESERVE_DEPLOYED" : "HELPER_ASSIGNED", note: helperId ? `${helperId} — ${note}` : note });
+    this.log("INFO", { en: `${kind === "RESERVE" ? "Reserve enumerator" : `Helper ${helperId}`} assigned to ${enumId} (${by}).`, ar: `${kind === "RESERVE" ? "عدّاد احتياطي" : `مساند ${helperId}`} أُسند إلى ${enumId} (${by}).` }, e.govId);
+    this.version++;
+    return true;
   }
 
   alertAction(id: string, action: "ACKNOWLEDGE" | "ESCALATE" | "RESOLVE", by: string) {

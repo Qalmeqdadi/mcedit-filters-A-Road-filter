@@ -14,6 +14,7 @@ import { PyramidChart } from "@/components/charts/common";
 import { BASE_E0, BASE_TFR, DEFAULT_PARAMS, PROJECTION_YEARS, runScenario, TFR_2050_TREND, type FullScenario } from "@/simulation/scenarios";
 import { downloadCsv } from "@/lib/csv";
 import { fmt1, fmtCompact, fmtInt, fmtPct, fmtSignedPct } from "@/lib/format";
+import { navIndex } from "@/lib/nav";
 
 interface Assump { tfr2050: number; e02050: number; netMigration: number; hh2050: number; urban2050: number; employmentChange: number }
 const DEFAULT_ASSUMP: Assump = { tfr2050: TFR_2050_TREND, e02050: BASE_E0 + DEFAULT_PARAMS.lifeExpectancyGain, netMigration: DEFAULT_PARAMS.netMigration, hh2050: DEFAULT_PARAMS.householdSize, urban2050: DEFAULT_PARAMS.urbanization, employmentChange: 0 };
@@ -57,7 +58,7 @@ export function Projections() {
   const tableYears = [baseYear, ...PROJECTION_YEARS];
   return (
     <div>
-      <PageHeader index="18" title={t("nav18")} subtitle={L("Annual cohort-component projection from the simulated census base (single years of age, by sex) to 2050. Adjust the assumptions; every chart recomputes.", "إسقاط سنوي بطريقة المكونات العمرية من قاعدة التعداد المحاكى (عمر بعمر حسب الجنس) حتى 2050. عدّل الافتراضات لتُعاد الحسابات في كل الرسوم.")}>
+      <PageHeader index={navIndex("/projections")} title={t("nav18")} subtitle={L("Annual cohort-component projection from the simulated census base (single years of age, by sex) to 2050. Adjust the assumptions; every chart recomputes.", "إسقاط سنوي بطريقة المكونات العمرية من قاعدة التعداد المحاكى (عمر بعمر حسب الجنس) حتى 2050. عدّل الافتراضات لتُعاد الحسابات في كل الرسوم.")}>
         <Button onClick={() => downloadCsv("population-projection.csv", run.series.map((s) => ({ year: s.year, population: Math.round(s.population), male: Math.round(s.male), female: Math.round(s.female), households: Math.round(s.households), age_0_5: Math.round(s.age0_5), age_6_17: Math.round(s.age6_17), age_18_23: Math.round(s.age18_23), age_15_64: Math.round(s.age15_64), age_65_plus: Math.round(s.age65plus), births: Math.round(s.births), deaths: Math.round(s.deaths), urban_share: s.urbanShare, data_nature: "SIMULATED" })))}>{t("exportCsv")}</Button>
       </PageHeader>
       <Callout tone="sim" className="mb-3">{L("Illustrative projection on synthetic base data — not an official DoS projection.", "إسقاط توضيحي على بيانات أساس اصطناعية — ليس إسقاطاً رسمياً لدائرة الإحصاءات العامة.")}</Callout>

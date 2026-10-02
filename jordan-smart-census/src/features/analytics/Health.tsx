@@ -9,6 +9,7 @@ import { barH, barV, VIZ } from "@/components/charts/builders";
 import { GovTable, MetricMap, ScopeBar, SmallSample, useProfiles } from "./shared";
 import { WG_DOMAINS } from "@/simulation/analytics";
 import { fmtCompact, fmtPct } from "@/lib/format";
+import { navIndex } from "@/lib/nav";
 
 export function Health() {
   const { t, L, lb, ar, locale } = useI18n();
@@ -18,7 +19,7 @@ export function Health() {
   const ageChart = useMemo(() => barV(Hh.byBand.map((b) => b.band), [{ name: L("Disability prevalence", "انتشار الإعاقة"), data: Hh.byBand.map((b) => b.disabled / Math.max(1, b.pop)), color: VIZ[3] }], { rtl: ar, fmt: (v) => fmtPct(v, 0) }), [Hh, ar, L]);
   return (
     <div>
-      <PageHeader index="15" title={t("nav15")} subtitle={L("Health insurance coverage and functional difficulty in six domains, following the Washington Group short-set approach (population aged 5+).", "التغطية بالتأمين الصحي وصعوبات الأداء الوظيفي في ستة مجالات وفق نهج مجموعة واشنطن المختصر (السكان 5 سنوات فأكثر).")} />
+      <PageHeader index={navIndex("/health")} title={t("nav15")} subtitle={L("Health insurance coverage and functional difficulty in six domains, following the Washington Group short-set approach (population aged 5+).", "التغطية بالتأمين الصحي وصعوبات الأداء الوظيفي في ستة مجالات وفق نهج مجموعة واشنطن المختصر (السكان 5 سنوات فأكثر).")} />
       <ScopeBar />
       <SmallSample p={p} />
       <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">

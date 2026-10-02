@@ -14,6 +14,7 @@ import { ScopeBar, SmallSample, useProfiles } from "./shared";
 import { MOVE_REASONS, PREV_COUNTRIES } from "@/simulation/analytics";
 import { fmtCompact, fmtInt, fmtPct } from "@/lib/format";
 import type { GovId } from "@/types/census";
+import { navIndex } from "@/lib/nav";
 
 /** quadratic Bézier arc between two points */
 function arc(a: [number, number], b: [number, number]): [number, number][] {
@@ -57,7 +58,7 @@ export function Migration() {
   const movers = M.internal + M.abroad;
   return (
     <div>
-      <PageHeader index="16" title={t("nav16")} subtitle={L("Current residence, previous governorate or country, years since move and reason for move. Flows are synthetic and illustrative.", "مكان الإقامة الحالي، والمحافظة أو الدولة السابقة، والسنوات منذ الانتقال، وسبب الانتقال. التدفقات اصطناعية وتوضيحية.")} />
+      <PageHeader index={navIndex("/migration")} title={t("nav16")} subtitle={L("Current residence, previous governorate or country, years since move and reason for move. Flows are synthetic and illustrative.", "مكان الإقامة الحالي، والمحافظة أو الدولة السابقة، والسنوات منذ الانتقال، وسبب الانتقال. التدفقات اصطناعية وتوضيحية.")} />
       <ScopeBar />
       <SmallSample p={p} />
       <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
