@@ -325,6 +325,32 @@ await step("planning lab", async () => {
   await page.waitForSelector("[data-testid=slide]");
   for (let k = 0; k < 6; k++) await page.click("[data-testid=slide-next]");
   check("briefing mode walks 7 slides", (await page.locator("[data-testid=slide]").textContent()).includes("7 / 7"));
+  for (const r of ["/economy", "/land", "/energy", "/municipal-finance"]) {
+    await nav(r);
+    await page.waitForSelector("main [data-kpi-value]", { timeout: 60000 });
+    check(`${r} renders KPIs`, (await page.locator("main [data-kpi-value]").count()) >= 6);
+  }
+  await nav("/equity");
+  await page.waitForSelector("[data-testid=sdg-row]", { timeout: 60000 });
+  check("equity: SDG dashboard with 16 indicators", (await page.locator("[data-testid=sdg-row]").count()) === 16);
+  check("equity: lagging districts listed", (await page.locator("[data-testid=lagging-district]").count()) === 10);
+  await nav("/connectors");
+  check("connectors registry lists sources", (await page.locator("[data-testid=connector]").count()) >= 13);
+  await page.fill("[data-testid=import-text-imp-revenue]", "governorate,value\nAMM,70\nIRB,52\nZAR,50\nMAF,30\nBAL,47\nJER,44\nAJL,41\nMAD,46\nKAR,43\nTAF,39\nMAN,40\nAQB,95");
+  await page.click("[data-testid=import-validate-imp-revenue]");
+  await page.waitForTimeout(300);
+  check("import validates 12 governorates", (await page.locator("[data-testid=import-report-imp-revenue]").textContent()).includes("12"));
+  await page.click("[data-testid=import-apply-imp-revenue]");
+  await page.waitForTimeout(300);
+  check("import applied", (await page.locator("[data-testid=import-imp-revenue]").textContent()).includes("Applied"));
+  await page.fill("[data-testid=import-text-imp-peak]", "AMM,abc\nXYZ,10");
+  await page.click("[data-testid=import-validate-imp-peak]");
+  await page.waitForTimeout(300);
+  check("import rejects bad rows", (await page.locator("[data-testid=import-report-imp-peak]").textContent()).includes("Not valid"));
+  await nav("/municipal-finance");
+  await page.waitForSelector("main [data-kpi-value]", { timeout: 60000 });
+  await page.waitForTimeout(2500);
+  check("imported revenue flows into municipal finance", (await page.textContent("main")).includes("JOD 95"));
   await nav("/projections");
   check("probabilistic projection panel", (await page.locator("#uncertainty").count()) === 1);
   for (const r of ["/housing-need", "/jobs", "/ageing", "/nowcast", "/mobility", "/climate"]) {

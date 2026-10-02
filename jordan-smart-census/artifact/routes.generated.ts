@@ -9,12 +9,16 @@ import R_briefing from "@/app/briefing/page";
 import R_capital from "@/app/capital/page";
 import R_census from "@/app/census/page";
 import R_climate from "@/app/climate/page";
+import R_connectors from "@/app/connectors/page";
 import R_coverage from "@/app/coverage/page";
 import R_decision from "@/app/decision/page";
 import R_delivery from "@/app/delivery/page";
 import R_early_warning from "@/app/early-warning/page";
+import R_economy from "@/app/economy/page";
 import R_education from "@/app/education/page";
+import R_energy from "@/app/energy/page";
 import R_enumerators from "@/app/enumerators/page";
+import R_equity from "@/app/equity/page";
 import R_field from "@/app/field/page";
 import R_futures from "@/app/futures/page";
 import R_gis from "@/app/gis/page";
@@ -24,9 +28,11 @@ import R_housing_need from "@/app/housing-need/page";
 import R_infrastructure from "@/app/infrastructure/page";
 import R_jobs from "@/app/jobs/page";
 import R_labour from "@/app/labour/page";
+import R_land from "@/app/land/page";
 import R_methodology from "@/app/methodology/page";
 import R_migration from "@/app/migration/page";
 import R_mobility from "@/app/mobility/page";
+import R_municipal_finance from "@/app/municipal-finance/page";
 import R_nowcast from "@/app/nowcast/page";
 import R_pes from "@/app/pes/page";
 import R_planning from "@/app/planning/page";
@@ -53,12 +59,16 @@ export const ROUTES: Record<string, ComponentType> = {
   "/capital": R_capital,
   "/census": R_census,
   "/climate": R_climate,
+  "/connectors": R_connectors,
   "/coverage": R_coverage,
   "/decision": R_decision,
   "/delivery": R_delivery,
   "/early-warning": R_early_warning,
+  "/economy": R_economy,
   "/education": R_education,
+  "/energy": R_energy,
   "/enumerators": R_enumerators,
+  "/equity": R_equity,
   "/field": R_field,
   "/futures": R_futures,
   "/gis": R_gis,
@@ -68,9 +78,11 @@ export const ROUTES: Record<string, ComponentType> = {
   "/infrastructure": R_infrastructure,
   "/jobs": R_jobs,
   "/labour": R_labour,
+  "/land": R_land,
   "/methodology": R_methodology,
   "/migration": R_migration,
   "/mobility": R_mobility,
+  "/municipal-finance": R_municipal_finance,
   "/nowcast": R_nowcast,
   "/pes": R_pes,
   "/planning": R_planning,

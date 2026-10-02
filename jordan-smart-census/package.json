@@ -23,6 +23,8 @@
     "verify:ask": "tsx scripts/smoke-ask.ts",
     "verify:actions": "tsx scripts/smoke-actions.ts",
     "verify:futures": "tsx scripts/smoke-futures.ts",
+    "verify:layers": "tsx scripts/smoke-layers.ts",
+    "data:open": "node scripts/fetch-open-data.mjs",
     "qa:hosted": "node scripts/qa-hosted.mjs"
   },
   "dependencies": {

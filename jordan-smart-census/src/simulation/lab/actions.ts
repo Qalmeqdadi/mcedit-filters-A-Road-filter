@@ -27,10 +27,16 @@ import { assessClimate, DEFAULT_CLIMATE, type ClimateParams, type ClimateResult 
 import { calibrateMobility, CORRIDORS, DEFAULT_MOBILITY, simulateMobility, type MobilityResult } from "./mobility";
 import { buildGrid, GROWTH_REGIONS, simulateGrowth, type GrowthPolicy, type GrowthResult } from "./urbanGrowth";
 import { runNowcast, type NowcastResult } from "./nowcast";
+import { assessEconomy, DEFAULT_ECONOMY, type EconomyResult } from "./economy";
+import { assessLand, DEFAULT_LAND, type LandResult } from "./land";
+import { assessEnergy, DEFAULT_ENERGY, type EnergyResult } from "./energy";
+import { assessEquity, DIMENSION_LABEL, type EquityResult } from "./equity";
+import { assessFinance, DEFAULT_FINANCE, type FinanceResult } from "./finance";
+import { openData } from "@/data/openData";
 import { buildNetwork, pathLinks, shortestFrom } from "./network";
 
-export type ActionSector = "EDUCATION" | "HEALTH" | "HOUSING" | "WATER" | "JOBS" | "AGEING" | "CLIMATE" | "MOBILITY" | "URBAN" | "DATA";
-export const ACTION_SECTORS: ActionSector[] = ["EDUCATION", "HEALTH", "HOUSING", "WATER", "JOBS", "AGEING", "CLIMATE", "MOBILITY", "URBAN", "DATA"];
+export type ActionSector = "EDUCATION" | "HEALTH" | "HOUSING" | "WATER" | "JOBS" | "AGEING" | "CLIMATE" | "MOBILITY" | "URBAN" | "DATA" | "ECONOMY" | "LAND" | "ENERGY" | "FINANCE" | "EQUITY";
+export const ACTION_SECTORS: ActionSector[] = ["EDUCATION", "HEALTH", "HOUSING", "WATER", "JOBS", "ECONOMY", "AGEING", "CLIMATE", "MOBILITY", "URBAN", "LAND", "ENERGY", "EQUITY", "FINANCE", "DATA"];
 export type Horizon = "IMMEDIATE" | "SHORT" | "LONG";
 
 export const SECTOR_LABEL: Record<ActionSector, L> = {
@@ -44,6 +50,11 @@ export const SECTOR_LABEL: Record<ActionSector, L> = {
   MOBILITY: { en: "Mobility", ar: "التنقل" },
   URBAN: { en: "Urban growth", ar: "النمو العمراني" },
   DATA: { en: "Census & data", ar: "التعداد والبيانات" },
+  ECONOMY: { en: "Economy & investment", ar: "الاقتصاد والاستثمار" },
+  LAND: { en: "Land & terrain", ar: "الأراضي والتضاريس" },
+  ENERGY: { en: "Energy & utilities", ar: "الطاقة والمرافق" },
+  FINANCE: { en: "Municipal finance", ar: "المالية المحلية" },
+  EQUITY: { en: "Equity & inclusion", ar: "العدالة والشمول" },
 };
 
 export const LEAD: Record<ActionSector, L> = {
@@ -57,9 +68,14 @@ export const LEAD: Record<ActionSector, L> = {
   MOBILITY: { en: "Ministry of Transport", ar: "وزارة النقل" },
   URBAN: { en: "Ministry of Local Administration", ar: "وزارة الإدارة المحلية" },
   DATA: { en: "Department of Statistics", ar: "دائرة الإحصاءات العامة" },
+  ECONOMY: { en: "Ministry of Investment", ar: "وزارة الاستثمار" },
+  LAND: { en: "Department of Lands & Survey", ar: "دائرة الأراضي والمساحة" },
+  ENERGY: { en: "Ministry of Energy & Mineral Resources", ar: "وزارة الطاقة والثروة المعدنية" },
+  FINANCE: { en: "Ministry of Local Administration", ar: "وزارة الإدارة المحلية" },
+  EQUITY: { en: "Ministry of Planning & International Cooperation", ar: "وزارة التخطيط والتعاون الدولي" },
 };
 
-export const SECTOR_HREF: Record<ActionSector, string> = { EDUCATION: "/siting", HEALTH: "/siting", HOUSING: "/housing-need", WATER: "/water", JOBS: "/jobs", AGEING: "/ageing", CLIMATE: "/climate", MOBILITY: "/mobility", URBAN: "/urban-growth", DATA: "/nowcast" };
+export const SECTOR_HREF: Record<ActionSector, string> = { EDUCATION: "/siting", HEALTH: "/siting", HOUSING: "/housing-need", WATER: "/water", JOBS: "/jobs", AGEING: "/ageing", CLIMATE: "/climate", MOBILITY: "/mobility", URBAN: "/urban-growth", DATA: "/nowcast", ECONOMY: "/economy", LAND: "/land", ENERGY: "/energy", FINANCE: "/municipal-finance", EQUITY: "/equity" };
 
 // ------------------------------------------------------------------ snapshot
 
@@ -77,6 +93,19 @@ export interface PlanSnapshot {
   mobility: MobilityResult;
   growth: Record<string, { trend: GrowthResult; compact: GrowthResult }>;
   nowcast: NowcastResult;
+  economy: EconomyResult;
+  land: LandResult;
+  energy: EnergyResult;
+  equity: EquityResult;
+  ownRevenuePc?: Partial<Record<GovId, number>>;
+}
+
+/** Values imported through the Data Connectors (replace modelled values where present). */
+export interface DataOverrides {
+  grpShare?: Partial<Record<GovId, number>>;
+  peakMW?: Partial<Record<GovId, number>>;
+  capacityMW?: Partial<Record<GovId, number>>;
+  ownRevenuePc?: Partial<Record<GovId, number>>;
 }
 
 const snapCache = new WeakMap<ScenarioRun, Map<string, PlanSnapshot>>();
@@ -87,6 +116,7 @@ export interface SnapshotOptions {
   jobs?: JobsParams;
   climate?: ClimateParams;
   urbanPolicy?: GrowthPolicy;
+  data?: DataOverrides;
 }
 
 export function planSnapshot(world: World, run: ScenarioRun, areaFor: (y: number) => SmallArea, year: number, opts: SnapshotOptions = {}): PlanSnapshot {
@@ -95,7 +125,7 @@ export function planSnapshot(world: World, run: ScenarioRun, areaFor: (y: number
     m = new Map();
     snapCache.set(run, m);
   }
-  const ck = `${year}|${JSON.stringify(opts)}`;
+  const ck = `${year}|${openData().fetchedAt}|${JSON.stringify(opts)}`;
   const hit = m.get(ck);
   if (hit) return hit;
   const baseYear = run.baseYear;
@@ -113,21 +143,32 @@ export function planSnapshot(world: World, run: ScenarioRun, areaFor: (y: number
     };
   }
   const pt = run.series[1];
+  const water = simulateWater(world, areaFor, baseYear, 2050, opts.water ?? DEFAULT_WATER, year);
+  const climate = assessClimate(world, saH, opts.climate ?? DEFAULT_CLIMATE);
+  const housing = forecastHousing(world, areaFor, baseYear, 2050, DEFAULT_HOUSING);
+  const jobsP = opts.jobs ?? DEFAULT_JOBS;
+  const economy = assessEconomy(world, areaFor, baseYear, year, { ...DEFAULT_ECONOMY, gdpGrowth: jobsP.gdpGrowth, grpShare: opts.data?.grpShare });
+  const energy = assessEnergy(world, areaFor, baseYear, year, { ...DEFAULT_ENERGY, peakMW: opts.data?.peakMW, capacityMW: opts.data?.capacityMW });
   const snap: PlanSnapshot = {
     year,
     baseYear,
     sa0,
     saH,
     siting,
-    housing: forecastHousing(world, areaFor, baseYear, 2050, DEFAULT_HOUSING),
-    water: simulateWater(world, areaFor, baseYear, 2050, opts.water ?? DEFAULT_WATER, year),
-    jobs: forecastJobs(world, run.series, areaFor, opts.jobs ?? DEFAULT_JOBS),
+    housing,
+    water,
+    jobs: forecastJobs(world, run.series, areaFor, jobsP),
     ageing: forecastAgeing(world, run.series, areaFor, DEFAULT_AGEING),
-    climate: assessClimate(world, saH, opts.climate ?? DEFAULT_CLIMATE),
+    climate,
     mobility: simulateMobility(world, saH, DEFAULT_MOBILITY, cal.asc, cal.capacity),
     growth,
     nowcast: runNowcast(world, sa0, pt.births / pt.population, pt.deaths / pt.population, run.params.netMigration, world.config.referenceDate),
-  };
+    economy,
+    land: assessLand(world, sa0, saH, DEFAULT_LAND),
+    energy,
+    equity: assessEquity(world, year, { school: siting.SCHOOL.h, phc: siting.PHC.h, water, climate, housing, economy, energy }),
+    ownRevenuePc: opts.data?.ownRevenuePc,
+  } as PlanSnapshot;
   m.set(ck, snap);
   return snap;
 }
@@ -182,6 +223,7 @@ export interface NationalPlan {
   bySector: Record<ActionSector, { actions: number; costM: number; critical: number }>;
   themes: L[];
   totalCostM: number;
+  finance: FinanceResult;
 }
 
 const SEV_W: Record<Severity, number> = { CRITICAL: 4, HIGH: 3, MEDIUM: 2, LOW: 1 };
@@ -425,6 +467,68 @@ export function buildPlans(world: World, s: PlanSnapshot, live: LiveCensus): Nat
       add({ sector: "DATA", severity: "HIGH", horizon: "IMMEDIATE", title: { en: "Coverage adjustment and follow-up for net undercount", ar: "تعديل التغطية ومتابعة النقص الصافي" }, rationale: { en: `The Post-Enumeration Survey estimates a ${pct(live.pesUndercount[id], 1)} net undercount.`, ar: `يقدّر مسح ما بعد العدّ نقصاً صافياً بنسبة ${pct(live.pesUndercount[id], 1)}.` }, steps: [{ en: "Review omitted dwelling types and hard-to-count groups", ar: "مراجعة أنواع المساكن المحذوفة والفئات صعبة العدّ" }], kpi: { en: "Adjusted counts published with methodology note", ar: "نشر الأعداد المعدلة مع مذكرة منهجية" }, costM: 0.3, beneficiaries: s.sa0.gov[id].pop * live.pesUndercount[id], districts: [], sources: ["SIM_PES"], href: "/pes" });
     }
 
+    // ---------------- ECONOMY
+    const ec = s.economy.byGov[id];
+    ind.push({ key: "grpIndex", sector: "ECONOMY", label: { en: `Output per resident ${Y} (Jordan = 100%)`, ar: `الناتج للفرد ${Y} (الأردن = 100%)` }, value: ec.index, national: 1, unit: "pct", severity: grade(1 - ec.index, [0.1, 0.25, 0.4]) });
+    ind.push({ key: "publicShare", sector: "ECONOMY", label: { en: "Jobs in the public sector, education and health", ar: "الوظائف في القطاع العام والتعليم والصحة" }, value: ec.publicShare, national: s.economy.national.publicShare, unit: "pct", severity: grade(ec.publicShare / Math.max(0.05, s.economy.national.publicShare), [1.15, 1.35, 1.6]) });
+    if (ec.index < 0.85) {
+      const jobsTarget = Math.round(s.saH.gov[id].a15_64 * 0.01 * (1 - ec.index) * 10);
+      add({ sector: "ECONOMY", severity: grade(1 - ec.index, [0.1, 0.25, 0.4]), horizon: "SHORT", title: { en: `Regional growth programme: development zone and SME finance for ${f0(jobsTarget)} jobs`, ar: `برنامج نمو إقليمي: منطقة تنموية وتمويل للمشاريع الصغيرة لـ ${f0(jobsTarget)} وظيفة` }, rationale: { en: `Output per resident in ${gn.en} is ${pct(ec.index)} of the national level in ${Y}; ${pct(ec.tradableShare)} of jobs are in tradable sectors.`, ar: `يبلغ الناتج للفرد في ${gn.ar} ${pct(ec.index)} من المستوى الوطني في ${Y}؛ و${pct(ec.tradableShare)} من الوظائف في قطاعات قابلة للتصدير.` }, steps: [{ en: "Serviced industrial and logistics land with one-stop licensing", ar: "أراضٍ صناعية ولوجستية مخدومة مع ترخيص من نافذة واحدة" }, { en: "Credit guarantees and matching grants for small firms", ar: "ضمانات ائتمانية ومنح مقابلة للمنشآت الصغيرة" }, { en: "Link vocational training to the anchor investors", ar: "ربط التدريب المهني بالمستثمرين الرئيسيين" }], kpi: { en: `Output per resident ≥ ${pct(Math.min(1, ec.index + 0.1))} of national by ${Y}`, ar: `الناتج للفرد ≥ ${pct(Math.min(1, ec.index + 0.1))} من الوطني بحلول ${Y}` }, costM: 15 + jobsTarget * 0.004, beneficiaries: jobsTarget * 4, districts: [], sources: ["SIM_ECONOMY", "OPEN_WB_GDP"] });
+    }
+    if (ec.publicShare > s.economy.national.publicShare * 1.25) {
+      add({ sector: "ECONOMY", severity: "MEDIUM", horizon: "LONG", title: { en: "Diversify private employment: investment promotion and start-up support", ar: "تنويع التشغيل الخاص: ترويج الاستثمار ودعم الشركات الناشئة" }, rationale: { en: `${pct(ec.publicShare)} of jobs depend on public administration, education and health (Jordan ${pct(s.economy.national.publicShare)}).`, ar: `${pct(ec.publicShare)} من الوظائف تعتمد على الإدارة العامة والتعليم والصحة (الأردن ${pct(s.economy.national.publicShare)}).` }, steps: [{ en: "Target two sectors with local advantage (e.g. agri-food, tourism, logistics)", ar: "استهداف قطاعين بميزة محلية (مثل الصناعات الغذائية والسياحة واللوجستيات)" }, { en: "Business incubator with the local university", ar: "حاضنة أعمال مع الجامعة المحلية" }], kpi: { en: "Private-sector share of new jobs ≥ 70%", ar: "حصة القطاع الخاص من الوظائف الجديدة ≥ 70%" }, costM: 6, beneficiaries: ec.employed * 0.1, districts: [], sources: ["SIM_ECONOMY", "SIM_MICRODATA"] });
+    }
+
+    // ---------------- LAND
+    const ld = s.land.byGov[id];
+    const tightD = ds.map((d) => ({ d: d.id, x: s.land.byDistrict[d.id] })).filter((r) => r.x.demandKm2 > 0.5 && r.x.sufficiency < 1.5).sort((a, b) => a.x.sufficiency - b.x.sufficiency).slice(0, 3).map((r) => r.d);
+    ind.push({ key: "landYears", sector: "LAND", label: { en: "Years of serviceable land supply", ar: "سنوات المعروض من الأراضي القابلة للخدمة" }, value: Math.min(99, ld.yearsSupply), national: Math.min(99, s.land.national.developableKm2 / Math.max(0.01, s.land.national.demandKm2 / Math.max(1, Y - B))), unit: "int", severity: ld.demandKm2 < 1 ? "LOW" : grade(1 / Math.max(0.01, ld.yearsSupply / 30), [1, 2, 4]) });
+    if (tightD.length) {
+      const relKm2 = tightD.reduce((a, d) => a + Math.max(0, s.land.byDistrict[d].demandKm2 * 1.5 - s.land.byDistrict[d].developableKm2), 0);
+      add({ sector: "LAND", severity: grade(1 / Math.max(0.05, ld.sufficiency), [0.4, 0.8, 1.5]), horizon: "SHORT", title: { en: `Land-supply plan: release and service ${f0(Math.max(1, relKm2))} km² and densify existing areas`, ar: `خطة معروض الأراضي: طرح وتخديم ${f0(Math.max(1, relKm2))} كم² وتكثيف المناطق القائمة` }, rationale: { en: `Serviceable land in ${dn(tightD).en} covers less than 1.5 × the land needed for growth to ${Y}.`, ar: `تغطي الأراضي القابلة للخدمة في ${dn(tightD).ar} أقل من 1.5 ضعف الأراضي اللازمة للنمو حتى ${Y}.` }, steps: [{ en: "Inventory state land and land readjustment opportunities", ar: "حصر أراضي الخزينة وفرص إعادة التنظيم" }, { en: "Raise permitted densities near transit and services", ar: "رفع الكثافات المسموحة قرب النقل والخدمات" }, { en: "Phase trunk infrastructure ahead of development", ar: "تنفيذ البنية التحتية الرئيسية على مراحل قبل التطوير" }], kpi: { en: "≥ 15 years of serviced land supply in every district", ar: "≥ 15 سنة من الأراضي المخدومة في كل لواء" }, costM: 2 + relKm2 * 1.2, beneficiaries: s.saH.gov[id].pop - s.sa0.gov[id].pop, districts: tightD, sources: ["SIM_LAND", "SIM_SMALL_AREA"] });
+    }
+    if (ld.agriAtRiskKm2 > 3) {
+      add({ sector: "LAND", severity: grade(ld.agriAtRiskKm2, [10, 40, 120]), horizon: "SHORT", title: { en: `Protect ${f0(ld.agriAtRiskKm2)} km² of farmland from urban expansion`, ar: `حماية ${f0(ld.agriAtRiskKm2)} كم² من الأراضي الزراعية من التوسع العمراني` }, rationale: { en: `Under current trends, growth to ${Y} would take about ${f0(ld.agriAtRiskKm2)} km² of agricultural land in ${gn.en}.`, ar: `وفق الاتجاهات الحالية سيستهلك النمو حتى ${Y} نحو ${f0(ld.agriAtRiskKm2)} كم² من الأراضي الزراعية في ${gn.ar}.` }, steps: [{ en: "Designate agricultural protection zones in the land-use plan", ar: "تحديد مناطق حماية زراعية في مخطط استعمالات الأراضي" }, { en: "Steer growth to non-agricultural serviceable land", ar: "توجيه النمو إلى الأراضي غير الزراعية القابلة للخدمة" }], kpi: { en: "Net loss of prime farmland ≤ 10% of trend", ar: "صافي فقدان الأراضي الزراعية الجيدة ≤ 10% من الاتجاه" }, costM: 1.5, beneficiaries: s.sa0.gov[id].pop * 0.05, districts: [], sources: ["SIM_LAND"] });
+    }
+
+    // ---------------- ENERGY & UTILITIES
+    const en = s.energy.byGov[id];
+    ind.push({ key: "gridHeadroom", sector: "ENERGY", label: { en: `Grid capacity ÷ peak demand ${Y}`, ar: `سعة الشبكة ÷ حمل الذروة ${Y}` }, value: en.headroomH, national: s.energy.national.peakH > 0 ? world.governorates.reduce((a, x) => a + s.energy.byGov[x.id].capacity, 0) / s.energy.national.peakH : 1, unit: "ratio", severity: !en.capacityYear || en.capacityYear > Y ? "LOW" : en.capacityYear <= B + 4 ? "HIGH" : en.capacityYear <= B + 9 ? "MEDIUM" : "LOW" });
+    ind.push({ key: "sewer", sector: "ENERGY", label: { en: "Households on the public sewer", ar: "الأسر الموصولة بالصرف الصحي" }, value: en.sewerShare, national: s.energy.national.sewerShare, unit: "pct", severity: grade(0.75 - en.sewerShare, [0, 0.2, 0.4]) });
+    if (en.reinforceMVA > 5) {
+      add({ sector: "ENERGY", severity: !en.capacityYear || en.capacityYear > Y ? "LOW" : en.capacityYear <= B + 4 ? "HIGH" : en.capacityYear <= B + 9 ? "MEDIUM" : "LOW", horizon: en.capacityYear && en.capacityYear <= B + 4 ? "IMMEDIATE" : "SHORT", title: { en: `Grid reinforcement: +${f0(en.reinforceMVA)} MVA of substation capacity${en.capacityYear ? ` before ${en.capacityYear}` : ""}`, ar: `تعزيز الشبكة: +${f0(en.reinforceMVA)} ميغافولت أمبير من سعة المحطات${en.capacityYear ? ` قبل ${en.capacityYear}` : ""}` }, rationale: { en: `Peak demand reaches ${f0(en.peakH)} MW by ${Y} against ${f0(en.capacity)} MW of capacity.`, ar: `يبلغ حمل الذروة ${f0(en.peakH)} ميغاواط بحلول ${Y} مقابل سعة ${f0(en.capacity)} ميغاواط.` }, steps: [{ en: "Upgrade or add 132/33 kV substations in growth areas", ar: "تحديث أو إضافة محطات 132/33 ك.ف في مناطق النمو" }, { en: "Demand response and storage to shave the summer peak", ar: "الاستجابة للطلب والتخزين لخفض ذروة الصيف" }], kpi: { en: "Capacity ≥ 1.15 × peak demand throughout", ar: "السعة ≥ 1.15 × حمل الذروة باستمرار" }, costM: en.reinforceMVA * 0.12, beneficiaries: s.saH.gov[id].pop, districts: [], sources: ["SIM_ENERGY", "OPEN_OWID_ENERGY"] });
+    }
+    if (en.rooftopMW > 20) {
+      const mw = en.rooftopMW * 0.4;
+      add({ sector: "ENERGY", severity: en.headroomH < 1.15 ? "MEDIUM" : "LOW", horizon: "SHORT", title: { en: `Rooftop solar programme: ${f0(mw)} MW on public and residential roofs`, ar: `برنامج الطاقة الشمسية على الأسطح: ${f0(mw)} ميغاواط على المباني العامة والسكنية` }, rationale: { en: `About ${f0(en.rooftopMW)} MW of suitable rooftop potential; solar output peaks with summer cooling demand.`, ar: `إمكانات أسطح مناسبة بنحو ${f0(en.rooftopMW)} ميغاواط؛ ويتزامن إنتاج الطاقة الشمسية مع ذروة التبريد الصيفية.` }, steps: [{ en: "Start with schools, health centres and municipal buildings", ar: "البدء بالمدارس والمراكز الصحية ومباني البلديات" }, { en: "Net-metering and a low-interest loan window for households", ar: "صافي القياس ونافذة قروض ميسرة للأسر" }], kpi: { en: `${f0(mw)} MW installed; public-building bills −30%`, ar: `${f0(mw)} ميغاواط مركبة؛ فواتير المباني العامة −30%` }, costM: mw * 0.65, beneficiaries: s.saH.gov[id].households * 0.1, districts: [], sources: ["SIM_ENERGY"] });
+    }
+    if (en.landfillFullYear && en.landfillFullYear <= Y) {
+      add({ sector: "ENERGY", severity: en.landfillFullYear <= B + 4 ? "HIGH" : "MEDIUM", horizon: en.landfillFullYear <= B + 4 ? "IMMEDIATE" : "SHORT", title: { en: `Solid waste: new sanitary landfill cell and transfer station before ${en.landfillFullYear}`, ar: `النفايات الصلبة: خلية مكب صحي جديدة ومحطة تحويل قبل ${en.landfillFullYear}` }, rationale: { en: `Landfill capacity is used up around ${en.landfillFullYear} at ${f0(en.wasteTpdH)} tonnes a day.`, ar: `تنفد سعة المكب نحو ${en.landfillFullYear} بمعدل ${f0(en.wasteTpdH)} طن يومياً.` }, steps: [{ en: "Source separation and composting to cut landfill volume", ar: "الفرز من المصدر والتسميد لخفض حجم الطمر" }, { en: "Joint service council for neighbouring municipalities", ar: "مجلس خدمات مشترك للبلديات المجاورة" }], kpi: { en: "≥ 10 years of landfill capacity; diversion ≥ 25%", ar: "≥ 10 سنوات من سعة الطمر؛ تحويل ≥ 25%" }, costM: 6 + en.wasteTpdH * 0.02, beneficiaries: s.saH.gov[id].pop, districts: [], sources: ["SIM_ENERGY"] });
+    }
+    if (en.sewerShare < 0.6) {
+      const hh = en.noSewerHhH * 0.5;
+      add({ sector: "ENERGY", severity: grade(0.75 - en.sewerShare, [0, 0.2, 0.4]), horizon: "LONG", title: { en: `Extend the sewer network to ${f0(hh)} households`, ar: `مد شبكة الصرف الصحي إلى ${f0(hh)} أسرة` }, rationale: { en: `Only ${pct(en.sewerShare)} of households are on the public sewer; cesspits risk groundwater pollution.`, ar: `${pct(en.sewerShare)} فقط من الأسر موصولة بالصرف الصحي؛ وتهدد الحفر الامتصاصية المياه الجوفية.` }, steps: [{ en: "Prioritise dense areas above aquifer recharge zones", ar: "إعطاء الأولوية للمناطق الكثيفة فوق مناطق تغذية الأحواض" }, { en: "Decentralised treatment for small towns; reuse treated water", ar: "معالجة لامركزية للبلدات الصغيرة وإعادة استخدام المياه المعالجة" }], kpi: { en: "Sewer coverage +15 points", ar: "تغطية الصرف الصحي +15 نقطة" }, costM: hh * 0.0035, beneficiaries: hh * (s.saH.gov[id].pop / Math.max(1, s.saH.gov[id].households)), districts: [], sources: ["SIM_ENERGY", "SIM_MICRODATA"] });
+    }
+
+    // ---------------- EQUITY
+    const eqI = s.equity.index[id];
+    const lag = s.equity.districts.filter((d) => d.govId === id).slice(0, 3);
+    ind.push({ key: "opportunity", sector: "EQUITY", label: { en: "Opportunity Index (0–100, relative)", ar: "مؤشر الفرص (0–100، نسبي)" }, value: eqI, national: s.equity.nationalIndex, unit: "int", severity: grade((s.equity.nationalIndex - eqI) / Math.max(1, s.equity.nationalIndex), [0.1, 0.25, 0.4]) });
+    if (eqI < s.equity.nationalIndex * 0.85 && lag.length) {
+      const weakest = DIMENSION_LABEL[Object.entries(s.equity.dims[id]).sort((a, b) => a[1] - b[1])[0][0] as keyof typeof DIMENSION_LABEL];
+      add({ sector: "EQUITY", severity: grade((s.equity.nationalIndex - eqI) / Math.max(1, s.equity.nationalIndex), [0.1, 0.25, 0.4]), horizon: "SHORT", title: { en: `Area-based programme for lagging districts: ${dn(lag.map((d) => d.id)).en}`, ar: `برنامج تنمية مناطقية للألوية الأقل حظاً: ${dn(lag.map((d) => d.id)).ar}` }, rationale: { en: `${gn.en} scores ${f0(eqI)} on the Opportunity Index against ${f0(s.equity.nationalIndex)} nationally; weakest dimension: ${weakest.en.toLowerCase()}.`, ar: `يسجل ${gn.ar} ${f0(eqI)} على مؤشر الفرص مقابل ${f0(s.equity.nationalIndex)} وطنياً؛ وأضعف بُعد: ${weakest.ar}.` }, steps: [{ en: "One integrated package per district: services, jobs and housing upgrades", ar: "حزمة متكاملة لكل لواء: الخدمات والوظائف وتحسين المساكن" }, { en: "Earmark a share of capital budgets for the lowest-scoring districts", ar: "تخصيص حصة من الموازنات الرأسمالية للألوية الأدنى" }, { en: "Track progress with the SDG dashboard", ar: "متابعة التقدم عبر لوحة أهداف التنمية المستدامة" }], kpi: { en: "Gap to the national Opportunity Index halved by 2030", ar: "خفض الفجوة عن مؤشر الفرص الوطني إلى النصف بحلول 2030" }, costM: 8 + lag.reduce((a, d) => a + d.pop, 0) * 0.00004, beneficiaries: lag.reduce((a, d) => a + d.pop, 0), districts: lag.map((d) => d.id), sources: ["SIM_EQUITY", "SIM_MICRODATA"] });
+    }
+
+    // ---------------- MUNICIPAL FINANCE
+    const fin = assessFinance(world, s.sa0, Y, { [id]: acts } as Record<GovId, ActionItem[]>, s.economy, s.land, { ...DEFAULT_FINANCE, ownRevenueImported: s.ownRevenuePc }).byGov[id];
+    ind.push({ key: "fundingCoverage", sector: "FINANCE", label: { en: `Fiscal space ÷ investment need to ${Y}`, ar: `الحيز المالي ÷ الاحتياج الاستثماري حتى ${Y}` }, value: Math.min(9, fin.coverage), national: 1, unit: "ratio", severity: grade(1 - Math.min(1, fin.coverage), [0.2, 0.45, 0.7]) });
+    if (fin.coverage < 0.8 && fin.gapM > 5) {
+      add({ sector: "FINANCE", severity: grade(1 - fin.coverage, [0.2, 0.45, 0.7]), horizon: "IMMEDIATE", title: { en: `Close a JOD ${f0(fin.gapM)}M funding gap: phasing, land-value capture and PPP`, ar: `سد فجوة تمويلية بقيمة ${f0(fin.gapM)} مليون دينار: المرحلية واستعادة قيمة الأراضي والشراكة` }, rationale: { en: `Planned actions cost about JOD ${f0(fin.needM)}M; central and municipal capital budgets cover ${pct(Math.min(1, fin.coverage))} by ${Y}.`, ar: `تكلف الإجراءات المخططة نحو ${f0(fin.needM)} مليون دينار؛ وتغطي الموازنات الرأسمالية المركزية والبلدية ${pct(Math.min(1, fin.coverage))} حتى ${Y}.` }, steps: [{ en: `Land-value capture on new urban land (≈ JOD ${f0(fin.lvcM)}M)`, ar: `استعادة قيمة الأراضي الحضرية الجديدة (≈ ${f0(fin.lvcM)} مليون دينار)` }, { en: `Public–private partnerships for revenue-earning projects (≈ JOD ${f0(fin.pppM)}M)`, ar: `شراكات للمشاريع المدرة للدخل (≈ ${f0(fin.pppM)} مليون دينار)` }, { en: "Phase the long-term actions against the robustness classes", ar: "جدولة الإجراءات طويلة المدى وفق فئات المتانة" }], kpi: { en: "Funded share of the approved portfolio ≥ 90%", ar: "الحصة الممولة من المحفظة المعتمدة ≥ 90%" }, costM: 0.6, beneficiaries: s.sa0.gov[id].pop, districts: [], sources: ["SIM_FINANCE"] });
+    }
+    if (fin.ownRevenuePc < DEFAULT_FINANCE.ownRevenuePc * 0.8) {
+      add({ sector: "FINANCE", severity: "MEDIUM", horizon: "SHORT", title: { en: "Municipal revenue reform: property revaluation and fee collection", ar: "إصلاح الإيرادات البلدية: إعادة تقييم العقارات وتحصيل الرسوم" }, rationale: { en: `Own-source revenue is about JOD ${f0(fin.ownRevenuePc)} per resident against a JOD ${f0(DEFAULT_FINANCE.ownRevenuePc)} average.`, ar: `تبلغ الإيرادات الذاتية نحو ${f0(fin.ownRevenuePc)} ديناراً للفرد مقابل متوسط ${f0(DEFAULT_FINANCE.ownRevenuePc)} ديناراً.` }, steps: [{ en: "Update the property register from the census dwelling frame", ar: "تحديث سجل العقارات من إطار المساكن في التعداد" }, { en: "Digital billing and payment for municipal fees", ar: "الفوترة والدفع الرقمي للرسوم البلدية" }], kpi: { en: "Own-source revenue per resident +25% in 3 years", ar: "الإيرادات الذاتية للفرد +25% خلال 3 سنوات" }, costM: 1, beneficiaries: s.sa0.gov[id].pop, districts: [], sources: ["SIM_FINANCE"] });
+    }
+
     // strategy & sector severity
     const sectorSeverity = Object.fromEntries(ACTION_SECTORS.map((sec) => [sec, null])) as Record<ActionSector, Severity | null>;
     for (const i of ind) sectorSeverity[i.sector] = maxSev(sectorSeverity[i.sector], i.severity);
@@ -463,7 +567,8 @@ export function buildPlans(world: World, s: PlanSnapshot, live: LiveCensus): Nat
     top.push(a);
     if (top.length >= 15) break;
   }
-  return { year: Y, plans, top, bySector, themes, totalCostM: all.reduce((a, x) => a + x.costM, 0) };
+  const finance = assessFinance(world, s.sa0, Y, Object.fromEntries(world.governorates.map((g) => [g.id, plans[g.id].actions])) as Record<GovId, ActionItem[]>, s.economy, s.land, { ...DEFAULT_FINANCE, ownRevenueImported: s.ownRevenuePc });
+  return { year: Y, plans, top, bySector, themes, totalCostM: all.reduce((a, x) => a + x.costM, 0), finance };
 }
 
 /** Plain-text briefing for one governorate (copy / export). */

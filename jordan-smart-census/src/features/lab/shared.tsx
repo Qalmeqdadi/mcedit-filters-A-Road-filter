@@ -1,5 +1,6 @@
 "use client";
 
+import { useDataOverrides } from "@/store/connectors";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { useApp } from "@/store/app";
@@ -130,12 +131,13 @@ export function usePlans() {
   const { engine, world, run, areaFor, year } = useLab();
   const v = engine.version;
   const [state, setState] = useState<{ key: string; snap: PlanSnapshot } | null>(null);
-  const key = `${JSON.stringify(run.params)}|${year}`;
+  const { overrides, key: dataKey } = useDataOverrides();
+  const key = `${JSON.stringify(run.params)}|${year}|${dataKey}`;
   useEffect(() => {
     if (state?.key === key) return;
-    const h = setTimeout(() => setState({ key, snap: planSnapshot(world, run, areaFor, year) }), 30);
+    const h = setTimeout(() => setState({ key, snap: planSnapshot(world, run, areaFor, year, Object.keys(overrides).length ? { data: overrides } : {}) }), 30);
     return () => clearTimeout(h);
-  }, [key, world, run, areaFor, year, state?.key]);
+  }, [key, world, run, areaFor, year, state?.key, overrides]);
   const snap = state?.key === key ? state.snap : null;
   const plans = useMemo(() => (snap ? buildPlans(world, snap, liveCensus(engine)) : null), [snap, world, engine, v]); // eslint-disable-line react-hooks/exhaustive-deps
   return { plans, snap, loading: !plans, year };

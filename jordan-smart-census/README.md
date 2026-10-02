@@ -35,13 +35,14 @@ Requires Node ≥ 20.9. No API keys, no backend, no network access at runtime (a
 | `npm run geo` | Rebuilds `src/data/geo/*.json` from `data-raw/geoboundaries` |
 | `npm run verify:generator` · `verify:engine` · `verify:projections` | Headless checks of the synthetic world, a full fieldwork run (incl. PES) and the projection/scenario engines |
 | `npm run verify:lab` · `verify:early-warning` · `verify:ask` · `verify:actions` | Headless checks of every Planning Lab model, the field early-warning backtest and the question engine |
-| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (42, English and Arabic) renders without console errors; 65 end-to-end workflow checks |
+| `npm run data:open` | Re-fetch the open-data snapshot (World Bank WDI and Our World in Data mirrors) into `src/data/openData.generated.ts` |
+| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (48, English and Arabic) renders without console errors; 76 end-to-end workflow checks |
 
 ## Presenting
 
-Click **Executive demo** (top right). A presenter bar walks through 22 steps, navigating and driving the real engine:
+Click **Executive demo** (top right). A presenter bar walks through 23 steps, navigating and driving the real engine:
 
-1. UFUQ home · 2. Census command overview · 3. Census planning · 4. Administrative geography · 5. Enumeration areas (Irbid drill-down) · 6. Launch the simulation · 7. Fieldwork progress (fast-forward to day 9) · 8. Predictive field control · 9. Enumerator anomaly (`AMM-E0037`) · 10. Supervisor intervention (human decision recorded) · 11. Coverage completion (fieldwork closed) · 12. Post-Enumeration Survey · 13. Final census results · 14. 2040 projection · 15. National planning simulation (migration-shock scenario) · 16. Area action plans (Mafraq) · 17. Four futures for Jordan (2 × 2) · 18. Robustness test · 19. Delivery tracker · 20. Planning Lab — facility siting · 21. Urban growth to 2050 · 22. Capital investment portfolio → Decision Intelligence.
+1. UFUQ home · 2. Census command overview · 3. Census planning · 4. Administrative geography · 5. Enumeration areas (Irbid drill-down) · 6. Launch the simulation · 7. Fieldwork progress (fast-forward to day 9) · 8. Predictive field control · 9. Enumerator anomaly (`AMM-E0037`) · 10. Supervisor intervention (human decision recorded) · 11. Coverage completion (fieldwork closed) · 12. Post-Enumeration Survey · 13. Final census results · 14. 2040 projection · 15. National planning simulation (migration-shock scenario) · 16. Area action plans (Mafraq) · 17. Four futures for Jordan (2 × 2) · 18. Robustness test · 19. Equity & SDGs · 20. Delivery tracker · 21. Planning Lab — facility siting · 22. Urban growth to 2050 · 23. Capital investment portfolio → Decision Intelligence.
 
 Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10× · 20×** speed in the top bar (1× = one field shift per second; 4 shifts = 1 day); **عربي / EN** language switch; **alerts bell** (acknowledge / escalate / resolve); **database icon** = global provenance panel; **settings** = seed and acting-officer name.
 
@@ -57,7 +58,7 @@ The same command also writes `artifact/dist/ufuq-jordan.html`, an offline copy f
 
 `node scripts/qa-mobile.mjs [base]` checks every route at 390 px for horizontal overflow.
 
-## What is built (41 modules)
+## What is built (47 modules)
 
 | # | Module | Highlights |
 | --- | --- | --- |
@@ -95,6 +96,12 @@ The same command also writes `artifact/dist/ufuq-jordan.html`, an offline copy f
 | F3 | Robustness Test | Every corrective action generated in each of the four futures and classed no-regret (4/4), robust (3/4) or contingent (1–2/4, with trigger signposts); cost range across futures; filters and CSV. |
 | D1 | Delivery Tracker | Corrective actions are **proposed** from any action card, **approved or returned** by an approver with a decision note, then given a responsible unit, milestones, spend and a progress target; health (on track / at risk / off track) is rule-based from overdue milestones and progress vs time elapsed. Board, table, activity feed (full audit trail), per-item discussion, saved **versions** with change comparison, CSV. Local workspace in the app and offline file (demo role switch); on the hosted page a **shared live workspace** (artifact database) where editors approve, members propose and update, viewers read — approvals and versions are write-protected by database rules. Optional demo portfolio, flagged “Demo”. |
 | D2 | Briefing Mode | Seven-slide briefing for Jordan or a governorate, built live from the plans and the portfolio: situation, strategy, top priorities, delivery status, decisions needed, next 90 days; keyboard navigation and full screen. |
+| L1 | Regional Economy | Governorate output from census employment by sector × illustrative productivity, calibrated to Jordan's GDP (World Bank, open-data connector, at the 0.709 JOD/USD peg); projection with GDP growth; output per resident vs Jordan, diversification (HHI), public-sector dependency, Theil index of spatial inequality; imported official GRP shares replace modelled shares. |
+| L2 | Land & Terrain | Districts in three physiographic zones (Jordan Valley / Wadi Araba, western highlands, Badia) with illustrative steep, agricultural, protected and serviceable shares; built-up land, serviceable developable land, land needed for new households and jobs, years of supply, farmland at risk; district land-pressure map. |
+| L3 | Energy & Utilities | Household electricity from census (urban/rural, air-conditioning) calibrated to Jordan's observed demand (Our World in Data); appliance and warming growth, peak MW, grid headroom and year exceeded, reinforcement MVA, rooftop solar potential, renewable share vs target, solid waste and landfill life, sewer coverage; imported peak and capacity replace synthetic values. |
+| L4 | Municipal Finance | Each governorate's action-plan cost vs fiscal space (central capital budget with equalisation + municipal own-source revenue) to the horizon; funding gap closed by land-value capture, PPP and grants; residual unfunded; imported municipal revenue replaces modelled values. |
+| L5 | Equity & SDGs | Opportunity Index (income, work, education, health, housing, basic services, environment) by governorate and district; 16 localised SDG indicators with on-track / moderate / off-track status against illustrative targets; ten districts furthest behind. |
+| C1 | Data Connectors | Registry of 18 connectors: embedded reference data, four open-data connectors (World Bank GDP, population and inflation; Our World in Data electricity) fetched by `scripts/fetch-open-data.mjs` with licence, rows and checksum and refreshable from the browser, four CSV imports of official tables (validated with Zod; GRP, peak demand, grid capacity, municipal revenue) applied to the models, and six production connectors defined with what they need. |
 | 35 | Reports & Export | Eight CSV exports (governorate summary, enumerator performance, quality issues, anomalies, scenario results, PES results, **area action plans**, **Planning Lab indicators**) + a printable executive report. Every Planning Lab module also exports its own CSV. |
 | 36 | Methodology & Data Provenance | Data-nature legend, provenance registry, geography pipeline, reference cross-checks, simulation methodology, synthetic assumptions, limitations, and the **official-data import adapter**. |
 

@@ -1,7 +1,7 @@
 import {
   Activity, BarChart3, BookOpenCheck, Brain, Briefcase, BriefcaseBusiness, Building2, Bus, ClipboardList, Coins, Compass, Droplets, FileDown, GaugeCircle,
   GraduationCap, HeartHandshake, HeartPulse, Home, HousePlus, Landmark, ListChecks, Map, MapPinned, MessageSquareText, Plane, Radar, ScanSearch, School, ShieldCheck,
-  Siren, SlidersHorizontal, Sunrise, Grid2x2, Telescope, KanbanSquare, Presentation, Tent, ThermometerSun, TrendingUp, Users, Wrench,
+  Siren, SlidersHorizontal, Sunrise, Grid2x2, Telescope, KanbanSquare, Presentation, Plug, Scale, Factory, Mountain, Zap, Banknote, Tent, ThermometerSun, TrendingUp, Users, Wrench,
 } from "lucide-react";
 import type { DictKey } from "@/lib/i18n/dict";
 
@@ -30,6 +30,7 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/early-warning", key: "navEarly", group: "navFoundation", icon: Siren },
   { href: "/pes", key: "nav10", group: "navFoundation", icon: BookOpenCheck },
   { href: "/nowcast", key: "navNowcast", group: "navFoundation", icon: Radar },
+  { href: "/connectors", key: "navConnectors", group: "navFoundation", icon: Plug },
   { href: "/methodology", key: "nav22", group: "navFoundation", icon: MapPinned },
   // 2 · Jordan today
   { href: "/population", key: "nav11", group: "navToday", icon: BarChart3 },
@@ -38,6 +39,7 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/education", key: "nav14", group: "navToday", icon: GraduationCap },
   { href: "/health", key: "nav15", group: "navToday", icon: HeartPulse },
   { href: "/migration", key: "nav16", group: "navToday", icon: Plane },
+  { href: "/equity", key: "navEquity", group: "navToday", icon: Scale },
   { href: "/infrastructure", key: "nav17", group: "navToday", icon: Wrench },
   // 3 · Futures
   { href: "/projections", key: "nav18", group: "navFutures", icon: TrendingUp },
@@ -49,10 +51,14 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/water", key: "navWater", group: "navFutures", icon: Droplets },
   { href: "/mobility", key: "navMobility", group: "navFutures", icon: Bus },
   { href: "/climate", key: "navClimate", group: "navFutures", icon: ThermometerSun },
+  { href: "/economy", key: "navEconomy", group: "navFutures", icon: Factory },
+  { href: "/land", key: "navLand", group: "navFutures", icon: Mountain },
+  { href: "/energy", key: "navEnergy", group: "navFutures", icon: Zap },
   { href: "/jobs", key: "navJobs", group: "navFutures", icon: BriefcaseBusiness },
   { href: "/ageing", key: "navAgeing", group: "navFutures", icon: HeartHandshake },
   // 4 · Plan & decide
   { href: "/action-plans", key: "navActions", group: "navDecide", icon: ListChecks },
+  { href: "/municipal-finance", key: "navFinance", group: "navDecide", icon: Banknote },
   { href: "/robustness", key: "navRobust", group: "navDecide", icon: ShieldCheck },
   { href: "/siting", key: "navSiting", group: "navDecide", icon: School },
   { href: "/capital", key: "navCapital", group: "navDecide", icon: Coins },
