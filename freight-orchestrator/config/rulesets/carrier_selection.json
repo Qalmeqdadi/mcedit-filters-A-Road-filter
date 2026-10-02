@@ -1,0 +1,1 @@
+{ "maxCarriersPerRfq": 6, "minReliabilityScore": 60, "requireLiveOnboarding": true, "excludeOnSanctionsHit": true, "honourCustomerAvoidList": true }

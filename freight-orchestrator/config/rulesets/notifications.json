@@ -1,0 +1,12 @@
+{
+  "triggers": [
+    { "on": "request.request_info", "notify": ["shipper"], "channels": ["portal", "email"] },
+    { "on": "bid.chase", "notify": ["carrier"], "channels": ["email", "chat"] },
+    { "on": "quote.submit_for_approval", "notify": ["desk"], "channels": ["portal"] },
+    { "on": "quote.publish", "notify": ["shipper"], "channels": ["portal", "email"] },
+    { "on": "quote.approve", "notify": ["shipper"], "channels": ["portal", "email"] },
+    { "on": "quote.accept", "notify": ["desk"], "channels": ["portal", "email"] },
+    { "on": "booking.confirm", "notify": ["desk", "shipper"], "channels": ["portal", "email"] },
+    { "on": "exception.assign", "notify": ["desk"], "channels": ["portal"] }
+  ]
+}

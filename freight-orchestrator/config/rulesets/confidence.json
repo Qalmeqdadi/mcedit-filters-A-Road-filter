@@ -1,0 +1,5 @@
+{
+  "defaultThreshold": 0.85,
+  "perField": { "rate": 0.95, "currency": 0.95, "equipment": 0.9, "cutoff": 0.9, "validity": 0.9, "transitDays": 0.85, "routing": 0.8, "conditions": 0.75 },
+  "templateFlagAccuracy": 0.8
+}

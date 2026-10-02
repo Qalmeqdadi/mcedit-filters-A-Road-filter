@@ -1,0 +1,8 @@
+{
+  "rules": [
+    { "id": "all-ocean-quote", "when": { "mode": ["ocean_fcl", "ocean_lcl"] }, "required": ["packing_list"], "neededBy": "rfq" },
+    { "id": "all-booking", "when": {}, "required": ["commercial_invoice", "packing_list"], "neededBy": "booking" },
+    { "id": "dg-quote", "when": { "dangerousGoods": true }, "required": ["dg_declaration", "safety_data_sheet"], "neededBy": "rfq" },
+    { "id": "origin-cert-gcc", "when": { "incoterm": ["CIF", "CFR", "DAP", "DDP"] }, "required": ["certificate_of_origin"], "neededBy": "booking" }
+  ]
+}
