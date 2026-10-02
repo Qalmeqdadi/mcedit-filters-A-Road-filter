@@ -16,6 +16,7 @@ export const DICT = {
   navEarly: ["Predictive Field Control", "التحكم الميداني التنبؤي"],
   navNowcast: ["Inter-censal Nowcast", "التقدير الآني بين التعدادين"],
   navAsk: ["Ask the Data", "اسأل البيانات"],
+  navActions: ["Area Action Plans", "خطط العمل للمناطق"],
   navSiting: ["Facility Siting Planner", "مخطط مواقع المرافق"],
   navGrowth: ["Urban Growth Forecast", "التنبؤ بالنمو العمراني"],
   navHousingNeed: ["Housing Need Forecast", "التنبؤ بالحاجة إلى المساكن"],

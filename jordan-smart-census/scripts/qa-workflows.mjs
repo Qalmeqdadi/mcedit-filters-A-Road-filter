@@ -181,7 +181,7 @@ await step("decision", async () => {
 
 await step("exports", async () => {
   await nav("/reports");
-  for (const name of ["governorate-summary.csv", "enumerator-performance.csv", "quality-issues.csv", "anomalies.csv", "scenario-results.csv", "pes-results.csv", "planning-lab-indicators.csv"]) {
+  for (const name of ["governorate-summary.csv", "enumerator-performance.csv", "quality-issues.csv", "anomalies.csv", "scenario-results.csv", "pes-results.csv", "area-action-plans.csv", "planning-lab-indicators.csv"]) {
     const [d] = await Promise.all([page.waitForEvent("download", { timeout: 15000 }), page.locator("main div.rounded-lg", { hasText: name }).locator("button").click()]);
     check(`export ${name}`, d.suggestedFilename() === name);
   }
@@ -255,6 +255,23 @@ await step("planning lab", async () => {
   await page.click("[data-testid=ask-submit]");
   await page.waitForTimeout(800);
   check("ask the data answers from the models", /grows fastest/.test(await page.locator("[data-testid=ask-answer]").first().textContent()));
+  await nav("/action-plans");
+  await page.waitForSelector("[data-testid=matrix-row]", { timeout: 60000 });
+  check("action plans: national matrix", (await page.locator("[data-testid=matrix-row]").count()) === 12);
+  await page.locator("[data-testid=matrix-row]").nth(3).click();
+  await page.waitForTimeout(1500);
+  check("action plans: governorate plan with actions", (await page.locator("[data-testid=action-card]").count()) >= 5);
+  const [d2] = await Promise.all([page.waitForEvent("download", { timeout: 15000 }), page.click("main button:has-text('Export CSV')")]);
+  check("action plan CSV export", d2.suggestedFilename().startsWith("action-plan-MAF"));
+  await page.selectOption("[data-testid=plan-area]", "");
+  await nav("/water");
+  await page.waitForTimeout(2500);
+  check("recommended actions panel in modules", (await page.locator("[data-testid=action-card]").count()) > 0);
+  await nav("/ask");
+  await page.fill("[data-testid=ask-input]", "What should we do in Mafraq?");
+  await page.click("[data-testid=ask-submit]");
+  await page.waitForTimeout(2500);
+  check("ask: action plan question", /corrective actions/.test(await page.locator("[data-testid=ask-answer]").first().textContent()));
   await nav("/projections");
   check("probabilistic projection panel", (await page.locator("#uncertainty").count()) === 1);
   for (const r of ["/housing-need", "/jobs", "/ageing", "/nowcast", "/mobility", "/climate"]) {

@@ -16,6 +16,7 @@ import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmtCompact, fmtInt, fmtPct, fmtSignedPct } from "@/lib/format";
 import type { GovId } from "@/types/census";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 export function Nowcast() {
@@ -110,6 +111,7 @@ export function Nowcast() {
       <Panel className="mt-3" title={L("Method accuracy by governorate (60 months)", "دقة الطرق حسب المحافظة (60 شهراً)")} subtitle={L("Mean absolute percentage error against the synthetic truth", "متوسط الخطأ النسبي المطلق مقابل الحقيقة الاصطناعية")} nature="SIMULATED" sources={["SIM_NOWCAST"]}>
         <SimpleTable minWidth={560} head={[t("governorate"), L("Accounting", "المحاسبة"), L("Indicator", "المؤشر"), L("Blended", "المدمج"), L("Flagged", "إشارة")]} rows={world.governorates.map((g) => { const s = res.byGov[g.id]; return [<b key="g">{tx(g.name)}</b>, fmtPct(s.mape.accounting, 2), fmtPct(s.mape.indicator, 2), <b key="b">{fmtPct(s.mape.nowcast, 2)}</b>, s.detectedMonth !== null ? s.points[s.detectedMonth].label : "—"]; })} />
       </Panel>
+      <AreaActions sectors={["DATA"]} />
       <Method>
         <Formula>{"state:   x(t) = x(t−1) + births/0.97 − deaths/0.88 + assumed migration        (registration completeness-adjusted)"}</Formula>
         <Formula>{"measure: z(t) = census + Σ connections ÷ 0.7 × persons per household         K = P⁻ ÷ (P⁻ + R),  x = x⁻ + K (z − x⁻)"}</Formula>

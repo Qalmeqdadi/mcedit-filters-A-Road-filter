@@ -11,6 +11,7 @@ import { DEFAULT_HOUSING, forecastHousing } from "@/simulation/lab/housingNeed";
 import { DEFAULT_JOBS, forecastJobs } from "@/simulation/lab/jobs";
 import { DEFAULT_WATER, simulateWater } from "@/simulation/lab/water";
 import { assessClimate, DEFAULT_CLIMATE } from "@/simulation/lab/climate";
+import { buildPlans, liveCensus, planSnapshot } from "@/simulation/lab/actions";
 
 export function governorateSummary(engine: CensusEngine) {
   const byGov = engine.aggregateBy("govId");
@@ -86,4 +87,12 @@ export function planningLabIndicators(engine: CensusEngine) {
       scenario: "BASELINE", data_nature: "SIMULATED",
     };
   });
+}
+
+/** All corrective actions for all governorates (baseline scenario, 2040 horizon). */
+export function areaActionPlans(engine: CensusEngine) {
+  const world = engine.world;
+  const run = runScenario(world, world.totals.population, DEFAULT_PARAMS);
+  const np = buildPlans(world, planSnapshot(world, run, (y) => smallArea(world, run, y), 2040), liveCensus(engine));
+  return world.governorates.flatMap((g) => np.plans[g.id].actions.map((a, i) => ({ governorate: g.name.en, rank_in_governorate: i + 1, sector: a.sector, severity: a.severity, horizon: a.horizon, action: a.title.en, action_ar: a.title.ar, rationale: a.rationale.en, kpi_target: a.kpi.en, lead_agency: a.lead.en, indicative_cost_jod_m: a.costM.toFixed(2), people_reached: Math.round(a.beneficiaries), districts: a.districts.map((d) => world.district[d].name.en).join(" | "), priority_score: a.score.toFixed(2), scenario: "BASELINE", horizon_year: 2040, data_nature: "SIMULATED" })));
 }

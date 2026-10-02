@@ -15,7 +15,7 @@ import { EChart } from "@/components/charts/echart";
 import { barH, VIZ } from "@/components/charts/builders";
 import { downloadCsv } from "@/lib/csv";
 import { isHosted } from "@/lib/hosted";
-import { anomalies, enumeratorPerformance, governorateSummary, pesResults, qualityIssues, scenarioResults, planningLabIndicators } from "@/lib/exports";
+import { anomalies, enumeratorPerformance, governorateSummary, pesResults, qualityIssues, scenarioResults, planningLabIndicators, areaActionPlans } from "@/lib/exports";
 import { computeProfile } from "@/simulation/analytics";
 import { DEFAULT_PARAMS, PROJECTION_YEARS, runScenario } from "@/simulation/scenarios";
 import { isOpen } from "@/simulation/engine";
@@ -46,6 +46,7 @@ export function Reports() {
     { key: "an", label: L("Anomalies", "حالات الشذوذ"), nature: "SYNTHETIC_OPERATIONAL", rows: () => anomalies(engine), file: "anomalies.csv", disabled: !engine.anomalies.length },
     { key: "sc", label: `${L("Scenario results", "نتائج السيناريو")} — ${name}`, nature: "SIMULATED", rows: () => scenarioResults(engine, params, name), file: "scenario-results.csv" },
     { key: "pes", label: L("PES results", "نتائج مسح ما بعد العدّ"), nature: "SIMULATED", rows: () => pesResults(engine), file: "pes-results.csv", disabled: !engine.pesResult },
+    { key: "plans", label: L("Area action plans (all governorates)", "خطط العمل للمناطق (جميع المحافظات)"), nature: "SIMULATED", rows: () => areaActionPlans(engine), file: "area-action-plans.csv" },
     { key: "lab", label: L("Planning Lab indicators by governorate", "مؤشرات مختبر التخطيط حسب المحافظة"), nature: "SIMULATED", rows: () => planningLabIndicators(engine), file: "planning-lab-indicators.csv" },
   ];
 

@@ -28,14 +28,14 @@ Requires Node ≥ 20.9. No API keys, no backend, no network access at runtime (a
 | `npm run typecheck` · `npm run lint` | TypeScript (strict) and ESLint (Next + React Compiler rules) |
 | `npm run geo` | Rebuilds `src/data/geo/*.json` from `data-raw/geoboundaries` |
 | `npm run verify:generator` · `verify:engine` · `verify:projections` | Headless checks of the synthetic world, a full fieldwork run (incl. PES) and the projection/scenario engines |
-| `npm run verify:lab` · `verify:early-warning` · `verify:ask` | Headless checks of every Planning Lab model, the field early-warning backtest and the question engine |
-| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (35, English and Arabic) renders without console errors; 48 end-to-end workflow checks |
+| `npm run verify:lab` · `verify:early-warning` · `verify:ask` · `verify:actions` | Headless checks of every Planning Lab model, the field early-warning backtest and the question engine |
+| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (36, English and Arabic) renders without console errors; 54 end-to-end workflow checks |
 
 ## Presenting
 
-Click **Executive demo** (top right). A presenter bar walks through 17 steps, navigating and driving the real engine:
+Click **Executive demo** (top right). A presenter bar walks through 18 steps, navigating and driving the real engine:
 
-1. National overview · 2. Census planning · 3. Administrative geography · 4. Enumeration areas (Irbid drill-down) · 5. Launch the simulation · 6. Fieldwork progress (fast-forward to day 9) · 7. Predictive field control · 8. Enumerator anomaly (`AMM-E0037`) · 9. Supervisor intervention (human decision recorded) · 10. Coverage completion (fieldwork closed) · 11. Post-Enumeration Survey · 12. Final census results · 13. 2040 projection · 14. National planning simulation (migration-shock scenario) · 15. Planning Lab — facility siting · 16. Urban growth to 2050 · 17. Capital investment portfolio → Decision Intelligence.
+1. National overview · 2. Census planning · 3. Administrative geography · 4. Enumeration areas (Irbid drill-down) · 5. Launch the simulation · 6. Fieldwork progress (fast-forward to day 9) · 7. Predictive field control · 8. Enumerator anomaly (`AMM-E0037`) · 9. Supervisor intervention (human decision recorded) · 10. Coverage completion (fieldwork closed) · 11. Post-Enumeration Survey · 12. Final census results · 13. 2040 projection · 14. National planning simulation (migration-shock scenario) · 15. Area action plans (Mafraq) · 16. Planning Lab — facility siting · 17. Urban growth to 2050 · 18. Capital investment portfolio → Decision Intelligence.
 
 Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10× · 20×** speed in the top bar (1× = one field shift per second; 4 shifts = 1 day); **عربي / EN** language switch; **alerts bell** (acknowledge / escalate / resolve); **database icon** = global provenance panel; **settings** = seed and acting-officer name.
 
@@ -51,7 +51,7 @@ The same command also writes `artifact/dist/jordan-smart-census.html`, an offlin
 
 `node scripts/qa-mobile.mjs [base]` checks every route at 390 px for horizontal overflow.
 
-## What is built (35 modules)
+## What is built (36 modules)
 
 | # | Module | Highlights |
 | --- | --- | --- |
@@ -72,19 +72,20 @@ The same command also writes `artifact/dist/jordan-smart-census.html`, an offlin
 | 21 | Scenario Simulator | 6 presets + custom, 16 controls; 11 impact indicators (population, households, housing units, school seats, classrooms, schools, healthcare, water, electricity, jobs, elderly care); save / duplicate / compare / reset; CSV. |
 | 22 | National Decision Intelligence | Ministerial statements (education, water, housing, health, employment, energy, infrastructure) generated deterministically from the active scenario, each with its formula and assumptions; regional outlook; pressure map; priority governorates. |
 | 23 | Ask the Data | Rule-based English / Arabic question engine (no language model): questions are parsed into topic · operation · geography · year, answered by the platform's own models, with table, chart, formula, provenance and a link to the module. Unmatched questions get suggestions, never invented numbers. |
-| **Planning Lab** | | Shared scenario + horizon selector (presets, the Scenario Simulator's current scenario, or saved scenarios) and a small-area (district) projection layer. |
-| 24 | Facility Siting Planner | Schools, primary health centres, hospitals: projected demand vs a synthetic inventory for access (distance standard) and capacity; **greedy maximal-covering optimiser** that explains every pick; manual placement by clicking the map; catchment rings; district gap table; CSV. |
-| 25 | Urban Growth Forecast | Constrained cellular automaton (~0.46 km² cells) for Greater Amman, Irbid, Mafraq and Aqaba; compact / trend / dispersed policies, green belt and growth boundary; new land, density, distance to centre, road and pipe km, network cost; policy comparison. |
-| 26 | Housing Need Forecast | New households + replacement + overcrowding / tents backlog − vacancy release, vs completions; cumulative shortfall; need per 1,000 households by governorate and district; dwelling mix and land. |
-| 27 | Water Security | Municipal requirement vs supply by governorate to 2050 (NRW, decline, desalination, demand management), drought Monte-Carlo, first stress year, and a cheapest-first lever package. |
-| 28 | Mobility & Commuting | Gravity model + car / public-transport logit + congested assignment on a schematic district network; rapid-transit corridors with riders, mode shift, car-km, vehicle-hours and CO₂ effects. |
-| 29 | Climate Risk | Census vulnerability (65+, under 5, no cooling, outdoor work, disability, tents) × illustrative heat classes and synthetic flood-susceptible EAs; people at risk, cooling centres, priority actions. |
-| 30 | Jobs & Labour Entry | Labour force from projected ages × census participation; jobs to hold / reach a target unemployment rate vs jobs created from GDP growth × elasticity; women's participation path; sector strategies. |
-| 31 | Ageing & Care | 65+ / 80+, old-age dependency, median age, long-term-care beds, home care, care workforce, functional difficulty. |
-| 32 | Capital Investment Planner | Projects generated from all lab models compete for one budget: weighted efficiency (within sector) · equity (deprivation) · urgency, sector priorities, greedy knapsack, budget frontier, "what the next JOD 250M buys", investment per resident. |
-| 33 | Shock Response Simulator | Week-by-week inflow (arrival curve, destination pattern, camps) against housing (vacant dwellings from the frame), schools, primary care and water; shock-attributable breaches; proposed actions that can be added to the plan; play-through. |
-| 34 | Reports & Export | Seven CSV exports (governorate summary, enumerator performance, quality issues, anomalies, scenario results, PES results, **Planning Lab indicators**) + a printable executive report. Every Planning Lab module also exports its own CSV. |
-| 35 | Methodology & Data Provenance | Data-nature legend, provenance registry, geography pipeline, reference cross-checks, simulation methodology, synthetic assumptions, limitations, and the **official-data import adapter**. |
+| **Planning Lab** | | Shared scenario + horizon selector (presets, the Scenario Simulator's current scenario, or saved scenarios) and a small-area (district) projection layer. Every Planning Lab module ends with a **Recommended actions** panel for the selected governorate (or the top national ones). |
+| 24 | Area Action Plans | Corrective actions and strategies for every governorate: diagnosis (~20 indicators vs Jordan, graded LOW → CRITICAL), strategy by sector, and sized actions grouped immediate / 1–3 yrs / 3–10 yrs — each with evidence, steps, KPI target, lead agency, indicative cost, people reached and hotspot districts. National view: governorate × sector severity matrix, strategic themes, top priorities, cost by sector. Copy-briefing text and CSV export. |
+| 25 | Facility Siting Planner | Schools, primary health centres, hospitals: projected demand vs a synthetic inventory for access (distance standard) and capacity; **greedy maximal-covering optimiser** that explains every pick; manual placement by clicking the map; catchment rings; district gap table; CSV. |
+| 26 | Urban Growth Forecast | Constrained cellular automaton (~0.46 km² cells) for Greater Amman, Irbid, Mafraq and Aqaba; compact / trend / dispersed policies, green belt and growth boundary; new land, density, distance to centre, road and pipe km, network cost; policy comparison. |
+| 27 | Housing Need Forecast | New households + replacement + overcrowding / tents backlog − vacancy release, vs completions; cumulative shortfall; need per 1,000 households by governorate and district; dwelling mix and land. |
+| 28 | Water Security | Municipal requirement vs supply by governorate to 2050 (NRW, decline, desalination, demand management), drought Monte-Carlo, first stress year, and a cheapest-first lever package. |
+| 29 | Mobility & Commuting | Gravity model + car / public-transport logit + congested assignment on a schematic district network; rapid-transit corridors with riders, mode shift, car-km, vehicle-hours and CO₂ effects. |
+| 30 | Climate Risk | Census vulnerability (65+, under 5, no cooling, outdoor work, disability, tents) × illustrative heat classes and synthetic flood-susceptible EAs; people at risk, cooling centres, priority actions. |
+| 31 | Jobs & Labour Entry | Labour force from projected ages × census participation; jobs to hold / reach a target unemployment rate vs jobs created from GDP growth × elasticity; women's participation path; sector strategies. |
+| 32 | Ageing & Care | 65+ / 80+, old-age dependency, median age, long-term-care beds, home care, care workforce, functional difficulty. |
+| 33 | Capital Investment Planner | Projects generated from all lab models compete for one budget: weighted efficiency (within sector) · equity (deprivation) · urgency, sector priorities, greedy knapsack, budget frontier, "what the next JOD 250M buys", investment per resident. |
+| 34 | Shock Response Simulator | Week-by-week inflow (arrival curve, destination pattern, camps) against housing (vacant dwellings from the frame), schools, primary care and water; shock-attributable breaches; proposed actions that can be added to the plan; play-through. |
+| 35 | Reports & Export | Eight CSV exports (governorate summary, enumerator performance, quality issues, anomalies, scenario results, PES results, **area action plans**, **Planning Lab indicators**) + a printable executive report. Every Planning Lab module also exports its own CSV. |
+| 36 | Methodology & Data Provenance | Data-nature legend, provenance registry, geography pipeline, reference cross-checks, simulation methodology, synthetic assumptions, limitations, and the **official-data import adapter**. |
 
 Census Planning also includes **non-response & revisit planning** (final response by number of callbacks, follow-up team size, "use live fieldwork rates"), and the enumerator detail sheet shows an **optimised visiting route** (nearest-neighbour + 2-opt) with km and walking time saved vs the listed order.
 

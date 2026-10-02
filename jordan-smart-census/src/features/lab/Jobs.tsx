@@ -16,6 +16,7 @@ import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmtCompact, fmtInt, fmtPct } from "@/lib/format";
 import type { GovId } from "@/types/census";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 export function Jobs() {
@@ -89,6 +90,7 @@ export function Jobs() {
         />
       </Panel>
       <Callout tone="sim" className="mt-3">{L("Participation and unemployment are from the synthetic census microdata, not the DoS Employment & Unemployment Survey. GDP growth and elasticity are user assumptions.", "المشاركة والبطالة من البيانات الجزئية الاصطناعية للتعداد، وليست من مسح العمالة والبطالة. نمو الناتج والمرونة افتراضات المستخدم.")}</Callout>
+      <AreaActions sectors={["JOBS"]} />
       <Method>
         <Formula>{"LF(t) = Σ_age,sex population(t) × participation(band, sex) [× women's participation path]"}</Formula>
         <Formula>{"hold: E = LF × (1 − u₀)   ·   target: E = LF × (1 − u(t)), u linear to target   ·   created: E(t) = E(t−1) × (1 + g × ε)"}</Formula>

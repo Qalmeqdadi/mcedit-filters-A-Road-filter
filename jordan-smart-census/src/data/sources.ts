@@ -448,6 +448,20 @@ export const DATA_SOURCES: DataSource[] = [
     lastUpdated: "runtime",
     notes: { en: "Support actions require human approval.", ar: "تتطلب إجراءات الدعم موافقة بشرية." },
   },
+  {
+    id: "SIM_ACTIONS",
+    name: { en: "Area action plans (rule-based)", ar: "خطط العمل للمناطق (قائمة على القواعد)" },
+    source: "Planning Lab — src/simulation/lab/actions.ts",
+    year: "Runtime",
+    geography: { en: "12 governorates, hotspot districts", ar: "12 محافظة والألوية ذات الأولوية" },
+    nature: "SIMULATED",
+    methodology: {
+      en: "~20 indicators per governorate from the Planning Lab models are graded against thresholds (mostly relative to the national value). Deterministic rules size each corrective action (e.g. schools = seat gap ÷ 640), assign horizon, indicative cost, lead agency and KPI. Priority = severity × log10(people reached + 10) × urgency.",
+      ar: "تُصنَّف نحو 20 مؤشراً لكل محافظة من نماذج مختبر التخطيط وفق عتبات (نسبية للقيمة الوطنية غالباً). تحدد قواعد ثابتة حجم كل إجراء تصحيحي (مثل المدارس = فجوة المقاعد ÷ 640) وأفقه وكلفته التقديرية والجهة القائدة ومؤشر الأداء. الأولوية = الخطورة × log10(المستفيدون + 10) × الإلحاح.",
+    },
+    lastUpdated: "runtime",
+    notes: { en: "Proposals for review by the responsible ministries; unit costs are illustrative.", ar: "مقترحات للمراجعة من الجهات المسؤولة؛ تكاليف الوحدة توضيحية." },
+  },
 ];
 
 export const SOURCE_INDEX: Record<string, DataSource> = Object.fromEntries(DATA_SOURCES.map((s) => [s.id, s]));

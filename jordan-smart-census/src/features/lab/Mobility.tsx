@@ -12,6 +12,7 @@ import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmt1, fmtCompact, fmtInt, fmtPct, fmtSigned } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 const vcColor = (vc: number) => (vc < 0.7 ? "#1f8a3b" : vc < 0.9 ? "#d4a017" : vc < 1.1 ? "#d07a1c" : "#b5453a");
@@ -117,6 +118,7 @@ export function Mobility() {
         </div>
       </div>
       <Callout tone="sim" className="mt-3">{L("Links connect district centres — they are not the road network. Behavioural parameters, the base public-transport share and capacities are calibration assumptions. Use for corridor comparison, not traffic engineering.", "تربط الروابط مراكز الألوية — وليست شبكة الطرق. المعاملات السلوكية وحصة النقل العام الأساسية والطاقات افتراضات معايرة. يُستخدم لمقارنة المحاور لا لهندسة المرور.")}</Callout>
+      <AreaActions sectors={["MOBILITY"]} />
       <Method>
         <Formula>{"T_ij = workers_i × jobs_j e^(−β t_ij) ÷ Σ_k jobs_k e^(−β t_ik)          jobs_j ∝ pop_j^1.15 × (2.2 if governorate seat)"}</Formula>
         <Formula>{"P(PT) = 1 ÷ (1 + e^(U_car − U_pt)),  U_car = −0.03 t − 0.25 cost,  U_pt = ASC − 0.03 (t + wait) − 0.25 fare"}</Formula>

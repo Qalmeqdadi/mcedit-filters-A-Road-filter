@@ -13,6 +13,7 @@ import { buildGrid, cellPolygon, CELL_H, CELL_W, GROWTH_REGIONS, POLICIES, simul
 import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmt1, fmtInt, fmtPct } from "@/lib/format";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 const POLICY_KEYS: GrowthPolicy[] = ["COMPACT", "TREND", "SPRAWL"];
@@ -147,6 +148,7 @@ export function UrbanGrowth() {
         <Panel title={L("Network infrastructure cost", "كلفة البنية التحتية الشبكية")} nature="SIMULATED"><EChart option={costChart} height={220} /></Panel>
       </div>
       <Callout tone="sim" className="mt-3">{L("Illustrative land-use model: corridors are the schematic district network (not roads), there is no terrain, land-ownership or zoning data, and unit costs are assumptions. Use it to compare growth policies, not to predict individual parcels.", "نموذج استخدام أراضٍ توضيحي: المحاور هي الشبكة التخطيطية للألوية (وليست طرقاً)، ولا تتوفر بيانات التضاريس أو ملكية الأراضي أو التنظيم، وتكاليف الوحدة افتراضات. استخدمه لمقارنة سياسات النمو لا للتنبؤ بقطع أراضٍ بعينها.")}</Callout>
+      <AreaActions sectors={["URBAN"]} />
       <Method>
         <Formula>{"greenfield km² per year = Δpopulation × (1 − infill share) ÷ new-area density"}</Formula>
         <Formula>{"P(cell) = (N + f)^wN · e^(−d_corridor / 3 km · wRoad) · e^(−d_centre / λ) · (1 + ε)"}</Formula>

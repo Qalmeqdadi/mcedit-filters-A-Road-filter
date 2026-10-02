@@ -13,6 +13,7 @@ import { assessClimate, DEFAULT_CLIMATE, type ClimateParams, type HeatClass } fr
 import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmtCompact, fmtInt, fmtPct } from "@/lib/format";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 export function Climate() {
@@ -104,6 +105,7 @@ export function Climate() {
           ])}
         />
       </Panel>
+      <AreaActions sectors={["CLIMATE"]} />
       <Method>
         <Formula>{"heat risk = ∛( hot days ÷ max · √(pop ÷ max pop) · vulnerability )      vulnerability = mean of min–max normalised indicators"}</Formula>
         <Formula>{"people at heat risk = pop × min(1, hot days ÷ 45) × (1 − (1 − s65)(1 − s5)(1 − 0.6 · s_noCooling))"}</Formula>

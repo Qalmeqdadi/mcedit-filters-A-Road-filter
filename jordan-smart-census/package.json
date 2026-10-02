@@ -20,7 +20,8 @@
     "qa:workflows": "node scripts/qa-workflows.mjs http://localhost:3000 qa-screens",
     "verify:lab": "tsx scripts/smoke-lab.ts",
     "verify:early-warning": "tsx scripts/smoke-ew.ts",
-    "verify:ask": "tsx scripts/smoke-ask.ts"
+    "verify:ask": "tsx scripts/smoke-ask.ts",
+    "verify:actions": "tsx scripts/smoke-actions.ts"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",

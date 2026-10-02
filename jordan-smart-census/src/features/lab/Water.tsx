@@ -15,6 +15,7 @@ import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmt1, fmtInt, fmtPct } from "@/lib/format";
 import type { GovId } from "@/types/census";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 export function Water() {
@@ -106,6 +107,7 @@ export function Water() {
           />
         </Panel>
       </div>
+      <AreaActions sectors={["WATER"]} />
       <Method>
         <Formula>{"requirement = population × l/p/d × 365 ÷ 10⁹ ÷ (1 − NRW)          supply = conventional × (1 − decline)^t + new supply (3-year ramp)"}</Formula>
         <Formula>{"delivered l/p/d = supply × (1 − NRW) ÷ population   ·   drought: P(year) = p, conventional × (1 − severity × U(0.6, 1.4))"}</Formula>

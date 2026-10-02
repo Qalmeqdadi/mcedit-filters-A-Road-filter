@@ -5,7 +5,7 @@ const base = process.argv[2] ?? "http://localhost:3000";
 const out = process.argv[3] ?? "qa-screens";
 const only = process.argv[4] ? process.argv[4].split(",") : null;
 mkdirSync(out, { recursive: true });
-const routes = (only ?? ["/", "/planning", "/gis", "/field", "/enumerators", "/questionnaire", "/coverage", "/quality", "/anomalies", "/early-warning", "/pes", "/population", "/housing", "/labour", "/education", "/health", "/migration", "/infrastructure", "/projections", "/nowcast", "/scenarios", "/decision", "/ask", "/siting", "/urban-growth", "/housing-need", "/water", "/mobility", "/climate", "/jobs", "/ageing", "/capital", "/shock", "/reports", "/methodology"]);
+const routes = (only ?? ["/", "/planning", "/gis", "/field", "/enumerators", "/questionnaire", "/coverage", "/quality", "/anomalies", "/early-warning", "/pes", "/population", "/housing", "/labour", "/education", "/health", "/migration", "/infrastructure", "/projections", "/nowcast", "/scenarios", "/decision", "/ask", "/action-plans", "/siting", "/urban-growth", "/housing-need", "/water", "/mobility", "/climate", "/jobs", "/ageing", "/capital", "/shock", "/reports", "/methodology"]);
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium", args: ["--no-sandbox", "--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 const errors = [];

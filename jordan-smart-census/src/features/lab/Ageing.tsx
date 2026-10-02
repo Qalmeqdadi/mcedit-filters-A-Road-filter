@@ -17,6 +17,7 @@ import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmt1, fmtCompact, fmtInt, fmtPct } from "@/lib/format";
 import type { GovId } from "@/types/census";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 export function Ageing() {
@@ -92,6 +93,7 @@ export function Ageing() {
         </Panel>
       </div>
       <Callout tone="sim" className="mt-3">{L("Care-need shares, residential share and staffing ratios are adjustable planning norms, not Ministry of Social Development standards.", "نسب الحاجة للرعاية ونسبة الرعاية الإيوائية ونسب الكوادر معايير تخطيطية قابلة للتعديل وليست معايير وزارة التنمية الاجتماعية.")}</Callout>
+      <AreaActions sectors={["AGEING"]} />
       <Method>
         <Formula>{"care need = (65–79) × need₆₅ + (80+) × need₈₀   ·   beds = need × residential share   ·   home clients = need × (1 − residential) × coverage"}</Formula>
         <Formula>{"workforce = beds ÷ 2.5 + home clients ÷ 8   ·   functional difficulty = Σ population(band) × prevalence(band)   ·   OADR = 65+ ÷ 15–64 × 100"}</Formula>

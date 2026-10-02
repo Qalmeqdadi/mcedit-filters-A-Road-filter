@@ -118,6 +118,7 @@ export function Decision() {
   return (
     <div>
       <PageHeader index={navIndex("/decision")} title={t("nav20")} subtitle={L("Ministerial view: demographic change translated into planning implications. Every statement shows the assumptions and formula behind its number.", "العرض الوزاري: التغير الديموغرافي مترجماً إلى آثار تخطيطية. يعرض كل بيان الافتراضات والمعادلة وراء رقمه.")}>
+        <Link href="/action-plans"><Button>{L("Corrective actions by area", "الإجراءات التصحيحية حسب المنطقة")}</Button></Link>
         <Link href="/scenarios"><Button>{L("Adjust scenario", "تعديل السيناريو")}</Button></Link>
         <Link href="/reports"><Button variant="primary">{L("Executive report", "التقرير التنفيذي")}</Button></Link>
       </PageHeader>

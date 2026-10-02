@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { useApp } from "@/store/app";
 import { useEngine } from "@/store/engine";
@@ -11,6 +11,7 @@ import { paramsForPreset, runScenario, type FullScenario, type ScenarioRun } fro
 import type { World } from "@/simulation/generate";
 import { LAB_YEARS, smallArea } from "@/simulation/lab/common";
 import type { ScenarioPreset } from "@/types/census";
+import { buildPlans, liveCensus, planSnapshot, type PlanSnapshot } from "@/simulation/lab/actions";
 
 const PRESETS: Exclude<ScenarioPreset, "CUSTOM">[] = ["BASELINE", "HIGH_GROWTH", "LOW_GROWTH", "MIGRATION_SHOCK", "YOUTH_PRESSURE", "AGEING"];
 
@@ -122,4 +123,20 @@ export function SimpleTable({ head, rows, minWidth = 560, highlight }: { head: R
       </table>
     </div>
   );
+}
+
+/** Action plans for the current Planning Lab scenario and horizon, computed after first paint (heavy). */
+export function usePlans() {
+  const { engine, world, run, areaFor, year } = useLab();
+  const v = engine.version;
+  const [state, setState] = useState<{ key: string; snap: PlanSnapshot } | null>(null);
+  const key = `${JSON.stringify(run.params)}|${year}`;
+  useEffect(() => {
+    if (state?.key === key) return;
+    const h = setTimeout(() => setState({ key, snap: planSnapshot(world, run, areaFor, year) }), 30);
+    return () => clearTimeout(h);
+  }, [key, world, run, areaFor, year, state?.key]);
+  const snap = state?.key === key ? state.snap : null;
+  const plans = useMemo(() => (snap ? buildPlans(world, snap, liveCensus(engine)) : null), [snap, world, engine, v]); // eslint-disable-line react-hooks/exhaustive-deps
+  return { plans, loading: !plans, year };
 }

@@ -15,6 +15,7 @@ import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmtCompact, fmtInt, fmtPct } from "@/lib/format";
 import type { GovId } from "@/types/census";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 export function HousingNeed() {
@@ -93,6 +94,7 @@ export function HousingNeed() {
         />
       </Panel>
       <Callout tone="sim" className="mt-3">{L("Stock, vacancy, crowding and dwelling types come from the synthetic census frame and microdata. Completions, replacement and clearance targets are adjustable assumptions.", "الرصيد والشواغر والاكتظاظ وأنواع المساكن من إطار التعداد الاصطناعي وبياناته الجزئية. أما الإنجاز والإحلال وأهداف المعالجة فافتراضات قابلة للتعديل.")}</Callout>
+      <AreaActions sectors={["HOUSING"]} />
       <Method>
         <Formula>{"need(t) = Δhouseholds + stock × replacement + (crowded × share + tents/caravans) ÷ clearance years − excess vacancy × release ÷ years to 2040"}</Formula>
         <Formula>{"land (ha) = units × (apartment share ÷ 60 + house share ÷ 20)   ·   apartment share ≈ 0.85 × urban share"}</Formula>

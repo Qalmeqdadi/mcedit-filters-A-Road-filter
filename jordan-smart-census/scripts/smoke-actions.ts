@@ -1,0 +1,19 @@
+import { CensusEngine, SHIFTS_PER_DAY } from "../src/simulation/engine";
+import { DEFAULT_CONFIG } from "../src/simulation/generate";
+import { runScenario, DEFAULT_PARAMS } from "../src/simulation/scenarios";
+import { smallArea } from "../src/simulation/lab/common";
+import { planSnapshot, buildPlans, liveCensus, briefing } from "../src/simulation/lab/actions";
+const engine = new CensusEngine(DEFAULT_CONFIG);
+engine.start(); engine.advance(SHIFTS_PER_DAY * 6);
+const run = runScenario(engine.world, engine.world.totals.population, DEFAULT_PARAMS);
+const af = (y: number) => smallArea(engine.world, run, y);
+let t = performance.now();
+const snap = planSnapshot(engine.world, run, af, 2040);
+console.log("snapshot ms", Math.round(performance.now() - t));
+t = performance.now();
+const np = buildPlans(engine.world, snap, liveCensus(engine));
+console.log("plans ms", Math.round(performance.now() - t), "total actions", Object.values(np.plans).reduce((a, p) => a + p.actions.length, 0), "cost", Math.round(np.totalCostM));
+for (const g of engine.world.governorates) { const p = np.plans[g.id]; console.log(g.id, p.actions.length, "actions", Math.round(p.totalCostM) + "M", Object.entries(p.sectorSeverity).map(([k, v]) => `${k[0]}${k[1]}:${v?.[0] ?? "-"}`).join(" ")); }
+console.log("themes", np.themes.map((x) => x.en));
+console.log("top", np.top.slice(0, 6).map((a) => `${a.govId} ${a.severity} ${a.title.en}`));
+console.log(briefing(engine.world, np.plans.MAF, 2040, false));

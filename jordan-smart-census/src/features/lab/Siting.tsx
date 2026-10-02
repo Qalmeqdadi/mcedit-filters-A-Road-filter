@@ -17,6 +17,7 @@ import { downloadCsv } from "@/lib/csv";
 import { navIndex } from "@/lib/nav";
 import { fmt1, fmtCompact, fmtInt, fmtPct } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { AreaActions } from "./ActionCard";
 import { Formula, LabBar, Method, SimpleTable, useLab } from "./shared";
 
 const KINDS: FacilityKind[] = ["SCHOOL", "PHC", "HOSPITAL"];
@@ -181,6 +182,7 @@ export function Siting() {
         />
       </Panel>
 
+      <AreaActions sectors={["EDUCATION", "HEALTH"]} />
       <Method>
         <Formula>{kind === "SCHOOL" ? "demand = node population × (6–17 share of district) × 0.95 enrolment" : "demand = node population (residents)"}</Formula>
         <Formula>{"access = nearest facility ≤ standard (urban / rural radius)   ·   gap = max(0, district demand − capacity located in district)"}</Formula>
