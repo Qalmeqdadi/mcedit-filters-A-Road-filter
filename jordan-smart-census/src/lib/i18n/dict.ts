@@ -1,18 +1,21 @@
 /** UI dictionary: key → [English, Arabic]. */
 export const DICT = {
   // brand
-  appName: ["Jordan Smart Census", "منصة التعداد الذكي للأردن"],
-  appSubtitle: ["National Population, Housing & Decision Intelligence Platform", "منصة السكان والمساكن وذكاء القرار الوطني"],
+  appName: ["UFUQ", "أفق"],
+  appLongName: ["UFUQ — Jordan National Foresight & Planning Platform", "أفق — المنصة الوطنية للاستشراف والتخطيط"],
+  appSubtitle: ["Jordan National Foresight & Planning Platform", "المنصة الوطنية للاستشراف والتخطيط"],
   prototypeNotice: ["Prototype — operational figures are simulated", "نموذج أولي — الأرقام التشغيلية محاكاة"],
-  loadingWorld: ["Generating synthetic national census frame…", "جارٍ توليد إطار التعداد الوطني الاصطناعي…"],
-  loadingDetail: ["Placing enumeration areas inside official boundaries, assigning field staff and building the synthetic population.", "وضع مناطق العدّ داخل الحدود الرسمية، وإسناد الكوادر الميدانية، وبناء السكان الاصطناعيين."],
+  loadingWorld: ["Building the national data foundation…", "جارٍ بناء قاعدة البيانات الوطنية…"],
+  loadingDetail: ["Placing enumeration areas inside official boundaries and building the synthetic population that every forecast starts from.", "وضع مناطق العدّ داخل الحدود الرسمية وبناء السكان الاصطناعيين الذين ينطلق منهم كل تنبؤ."],
 
   // nav groups
-  navOperations: ["Census operations", "عمليات التعداد"],
-  navResults: ["Census results", "نتائج التعداد"],
-  navForesight: ["Foresight & decisions", "الاستشراف والقرار"],
-  navPlanning: ["Planning Lab", "مختبر التخطيط"],
-  navGovernance: ["Governance", "الحوكمة"],
+  navHome: ["Home", "الرئيسية"],
+  navFoundation: ["1 · Data foundation", "1 · قاعدة البيانات"],
+  navToday: ["2 · Jordan today", "2 · الأردن اليوم"],
+  navFutures: ["3 · Futures", "3 · المستقبلات"],
+  navDecide: ["4 · Plan & decide", "4 · التخطيط والقرار"],
+  navDeliver: ["5 · Deliver & monitor", "5 · التنفيذ والمتابعة"],
+  navUfuqHome: ["UFUQ home", "الصفحة الرئيسية لأفق"],
   navEarly: ["Predictive Field Control", "التحكم الميداني التنبؤي"],
   navNowcast: ["Inter-censal Nowcast", "التقدير الآني بين التعدادين"],
   navAsk: ["Ask the Data", "اسأل البيانات"],
@@ -27,7 +30,7 @@ export const DICT = {
   navAgeing: ["Ageing & Care", "الشيخوخة والرعاية"],
   navCapital: ["Capital Investment Planner", "مخطط الاستثمار الرأسمالي"],
   navShock: ["Shock Response Simulator", "محاكي الاستجابة للصدمات"],
-  nav01: ["National Overview", "النظرة الوطنية العامة"],
+  nav01: ["Census Command Overview", "النظرة العامة لقيادة التعداد"],
   nav02: ["Census Planning", "تخطيط التعداد"],
   nav03: ["GIS & Enumeration Areas", "نظم المعلومات الجغرافية ومناطق العدّ"],
   nav04: ["Field Operations", "العمليات الميدانية"],
@@ -178,7 +181,7 @@ export const DICT = {
   kEAsAtRisk: ["EAs at risk", "مناطق معرضة للخطر"],
 
   // overview
-  ovTitle: ["National command overview", "النظرة العامة لمركز القيادة الوطني"],
+  ovTitle: ["Census command overview", "النظرة العامة لقيادة التعداد"],
   ovSubtitle: ["Live national census operations, coverage and quality. Click a governorate to focus every panel.", "عمليات التعداد الوطنية المباشرة والتغطية والجودة. انقر على محافظة لتركيز جميع اللوحات."],
   popByGov: ["Population by governorate", "السكان حسب المحافظة"],
   agePyramid: ["Age pyramid", "الهرم السكاني"],

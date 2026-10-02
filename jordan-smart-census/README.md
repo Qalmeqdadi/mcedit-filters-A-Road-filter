@@ -1,10 +1,16 @@
-# Jordan Smart Census — منصة التعداد الذكي للأردن
+# UFUQ — أفق
 
-**National Population, Housing & Decision Intelligence Platform** · منصة السكان والمساكن وذكاء القرار الوطني
+**Jordan National Foresight & Planning Platform** · المنصة الوطنية للاستشراف والتخطيط
 
-A working, bilingual (English / Arabic, LTR / RTL) prototype of a national census platform, covering the full chain:
+A working, bilingual (English / Arabic, LTR / RTL) prototype of a national foresight and urban-planning platform for Jordan, built on a census-grade data foundation. It is organised in five pillars:
 
-planning → GIS & enumeration areas → field operations → enumerators → digital questionnaire → coverage → data quality → AI-assisted anomaly detection → post-enumeration survey → final results → projections → scenario simulation → national decision intelligence.
+1. **Data foundation** — census planning, GIS & enumeration areas, field operations, quality, anomaly detection, post-enumeration survey, inter-censal nowcast, provenance.
+2. **Jordan today** — population, housing, labour, education, health, migration, infrastructure.
+3. **Futures** — probabilistic projections, scenarios, urban growth, housing need, water, mobility, climate, jobs, ageing.
+4. **Plan & decide** — area action plans, facility siting, capital investment planner, shock response, decision intelligence, Ask the Data.
+5. **Deliver & monitor** — delivery tracking and reports.
+
+UFUQ is a prototype and **not an official government product**.
 
 > **Data integrity rule.** Nothing in this prototype is presented as an official Jordanian statistic. Every KPI, chart, layer and table carries one of four badges — **Official**, **Reference**, **Simulated**, **Synthetic operational** — and an ⓘ provenance button. No official DoS file is bundled; the architecture lets one be imported (see *Replacing simulated data*).
 
@@ -47,7 +53,7 @@ Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10
 - CSV/JSON exports are copied to the clipboard (a text box appears if the clipboard is also blocked).
 - The Print button and the online basemap toggle are hidden.
 
-The same command also writes `artifact/dist/jordan-smart-census.html`, an offline copy for computers where nothing can be installed. Double-click it to open it in any browser. Downloads and printing work in this copy.
+The same command also writes `artifact/dist/ufuq-jordan.html`, an offline copy for computers where nothing can be installed. Double-click it to open it in any browser. Downloads and printing work in this copy.
 
 `node scripts/qa-mobile.mjs [base]` checks every route at 390 px for horizontal overflow.
 

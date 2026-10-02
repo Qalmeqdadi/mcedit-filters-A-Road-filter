@@ -4,7 +4,7 @@ import { chromium } from "playwright-core";
 const base = process.argv[2] ?? "http://localhost:3100";
 const out = process.argv[3] ?? "qa-screens";
 const locale = process.argv[4] ?? "en";
-const routes = ["/", "/planning", "/gis", "/field", "/enumerators", "/questionnaire", "/coverage", "/quality", "/anomalies", "/early-warning", "/pes", "/population", "/housing", "/labour", "/education", "/health", "/migration", "/infrastructure", "/projections", "/nowcast", "/scenarios", "/decision", "/ask", "/action-plans", "/siting", "/urban-growth", "/housing-need", "/water", "/mobility", "/climate", "/jobs", "/ageing", "/capital", "/shock", "/reports", "/methodology"];
+const routes = ["/", "/census", "/planning", "/gis", "/field", "/enumerators", "/questionnaire", "/coverage", "/quality", "/anomalies", "/early-warning", "/pes", "/population", "/housing", "/labour", "/education", "/health", "/migration", "/infrastructure", "/projections", "/nowcast", "/scenarios", "/decision", "/ask", "/action-plans", "/siting", "/urban-growth", "/housing-need", "/water", "/mobility", "/climate", "/jobs", "/ageing", "/capital", "/shock", "/reports", "/methodology"];
 mkdirSync(process.argv[3] ?? "qa-screens", { recursive: true });
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium", args: ["--no-sandbox", "--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
 const ctx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
@@ -20,7 +20,7 @@ for (const r of routes) {
   await page.goto(base + r, { waitUntil: "networkidle", timeout: 120000 });
   await page.waitForSelector("main h1", { timeout: 60000 });
   await page.waitForTimeout(1200);
-  const name = r === "/" ? "overview" : r.slice(1);
+  const name = r === "/" ? "home" : r.slice(1);
   await page.screenshot({ path: `${out}/${locale}-${name}.png`, fullPage: false });
   const h1 = await page.textContent("main h1");
   console.log(`${r.padEnd(16)} ${String(Date.now() - t).padStart(5)}ms  h1="${h1}"  errors=${errors.length}${errors.length ? "\n   " + errors.join("\n   ") : ""}`);

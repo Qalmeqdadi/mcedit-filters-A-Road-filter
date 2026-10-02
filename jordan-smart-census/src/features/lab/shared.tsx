@@ -138,5 +138,5 @@ export function usePlans() {
   }, [key, world, run, areaFor, year, state?.key]);
   const snap = state?.key === key ? state.snap : null;
   const plans = useMemo(() => (snap ? buildPlans(world, snap, liveCensus(engine)) : null), [snap, world, engine, v]); // eslint-disable-line react-hooks/exhaustive-deps
-  return { plans, loading: !plans, year };
+  return { plans, snap, loading: !plans, year };
 }

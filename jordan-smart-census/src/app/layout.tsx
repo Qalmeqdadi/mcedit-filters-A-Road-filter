@@ -13,8 +13,8 @@ import "./globals.css";
 import { AppShell } from "@/components/shell/AppShell";
 
 export const metadata: Metadata = {
-  title: "Jordan Smart Census — منصة التعداد الذكي للأردن",
-  description: "National Population, Housing & Decision Intelligence Platform (prototype; operational data simulated).",
+  title: "UFUQ — Jordan National Foresight & Planning Platform · أفق",
+  description: "Jordan national foresight and urban planning platform built on a census data foundation (prototype; operational data simulated).",
   icons: { icon: "/icon.svg" },
 };
 

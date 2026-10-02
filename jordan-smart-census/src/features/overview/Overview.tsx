@@ -90,7 +90,7 @@ export function Overview() {
 
   return (
     <div>
-      <PageHeader index={navIndex("/")} title={t("ovTitle")} subtitle={t("ovSubtitle")} />
+      <PageHeader index={navIndex("/census")} title={t("ovTitle")} subtitle={t("ovSubtitle")} />
       {!started ? <Callout className="mb-3" tone="info">{t("censusNotStarted")} {L("Use “Start census” in the top bar or the Executive demo.", "استخدم «بدء التعداد» في الشريط العلوي أو العرض التنفيذي.")}</Callout> : null}
 
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-10">

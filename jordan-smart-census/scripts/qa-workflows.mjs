@@ -35,6 +35,9 @@ const nav = async (href) => {
 const headerBtn = (label) => page.locator("header").first().locator(`button:has-text("${label}")`).first();
 
 await page.goto(base + "/", { waitUntil: "networkidle", timeout: 120000 });
+await page.waitForSelector("[data-testid=pillar]", { timeout: 60000 });
+check("UFUQ home shows five pillars", (await page.locator("[data-testid=pillar]").count()) === 5);
+await page.goto(base + "/census", { waitUntil: "networkidle", timeout: 120000 });
 await page.waitForSelector("main h1", { timeout: 60000 });
 await page.waitForTimeout(1500);
 

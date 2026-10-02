@@ -6,6 +6,7 @@ import R_ageing from "@/app/ageing/page";
 import R_anomalies from "@/app/anomalies/page";
 import R_ask from "@/app/ask/page";
 import R_capital from "@/app/capital/page";
+import R_census from "@/app/census/page";
 import R_climate from "@/app/climate/page";
 import R_coverage from "@/app/coverage/page";
 import R_decision from "@/app/decision/page";
@@ -44,6 +45,7 @@ export const ROUTES: Record<string, ComponentType> = {
   "/anomalies": R_anomalies,
   "/ask": R_ask,
   "/capital": R_capital,
+  "/census": R_census,
   "/climate": R_climate,
   "/coverage": R_coverage,
   "/decision": R_decision,

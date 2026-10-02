@@ -3,7 +3,7 @@
 import { chromium } from "playwright-core";
 import path from "node:path";
 
-const file = "file://" + path.resolve("artifact/dist/jordan-smart-census.html");
+const file = "file://" + path.resolve("artifact/dist/ufuq-jordan.html");
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium", args: ["--no-sandbox", "--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 let fail = 0;
 for (const lang of ["en", "ar"]) {

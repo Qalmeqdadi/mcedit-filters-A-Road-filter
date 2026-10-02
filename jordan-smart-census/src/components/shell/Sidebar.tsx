@@ -6,16 +6,18 @@ import { NAV } from "@/lib/nav";
 import { useI18n } from "@/hooks/useI18n";
 import { cn } from "@/lib/utils";
 
-const GROUPS = ["navOperations", "navResults", "navForesight", "navPlanning", "navGovernance"] as const;
+const GROUPS = ["navHome", "navFoundation", "navToday", "navFutures", "navDecide", "navDeliver"] as const;
 
 export function BrandMark({ size = 30 }: { size?: number }) {
-  // Neutral geometric mark (not an official emblem): a seven-point star motif inside a census grid.
+  // UFUQ mark (not an official emblem): a sun rising over a horizon line drawn on a planning grid.
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden>
       <rect x="1" y="1" width="30" height="30" rx="7" fill="#132440" stroke="#2f62a6" strokeWidth="1" />
-      <path d="M7 11h18M7 16h18M7 21h18M11 7v18M16 7v18M21 7v18" stroke="#2a3f63" strokeWidth="0.8" />
-      <polygon points="16,7.5 17.7,12.4 22.9,11.4 19.4,15.3 22.2,19.8 17.1,18.5 16,23.6 14.9,18.5 9.8,19.8 12.6,15.3 9.1,11.4 14.3,12.4" fill="#f2ecdf" />
-      <circle cx="16" cy="15.6" r="2" fill="#b8232f" />
+      <path d="M7 9h18M7 13h18M11 6v14M16 6v14M21 6v14" stroke="#22406b" strokeWidth="0.7" />
+      <path d="M8.5 20a7.5 7.5 0 0 1 15 0z" fill="#d6c49f" />
+      <path d="M16 9.5v2.2M10.2 12l1.5 1.5M21.8 12l-1.5 1.5" stroke="#d6c49f" strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M5.5 20.5h21" stroke="#f2ecdf" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M9 24.5h14" stroke="#4a7cc0" strokeWidth="1.2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -29,13 +31,13 @@ export function Sidebar({ open, onNavigate }: { open: boolean; onNavigate: () =>
         <BrandMark />
         <div className="min-w-0">
           <div className="truncate text-[13.5px] font-semibold leading-tight text-white">{t("appName")}</div>
-          <div className="truncate text-[10.5px] leading-tight text-navy-300">{ar ? "Jordan Smart Census" : "منصة التعداد الذكي للأردن"}</div>
+          <div className="truncate text-[10.5px] leading-tight text-navy-300">{t("appSubtitle")}</div>
         </div>
       </div>
       <nav className="nav-scroll flex-1 overflow-y-auto px-2 py-3">
         {GROUPS.map((g) => (
           <div key={g} className="mb-3">
-            <div className="px-2.5 pb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-navy-300/70">{t(g)}</div>
+            {g === "navHome" ? null : <div className="px-2.5 pb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-navy-300/70">{t(g)}</div>}
             {NAV.filter((n) => n.group === g).map((n) => {
               const active = n.href === "/" ? path === "/" : path === n.href || path.startsWith(`${n.href}/`);
               const Icon = n.icon;
