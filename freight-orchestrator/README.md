@@ -79,6 +79,7 @@ You need Node 20 or later. The tests use in-process Postgres (PGlite), so no ser
 
 ```bash
 npm install
+npm run playground  # builds playground/dist/freight-playground.html: open it in any browser
 npm run demo        # walkthrough: one quote through the direct-to-shipper flow, per persona, with its audit trail
 npm test
 npm run typecheck
