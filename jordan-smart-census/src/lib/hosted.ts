@@ -1,7 +1,7 @@
 /**
  * Hosted single-file build support. The shared/hosted page runs in a sandbox
- * where file downloads and printing are blocked, so exports copy to the
- * clipboard instead. In the normal Next.js app these helpers are no-ops.
+ * where file downloads and printing are blocked, so exports go through the
+ * platform's download prompt (or, failing that, the clipboard). In the normal Next.js app these helpers are no-ops.
  */
 declare global {
   interface Window {
@@ -21,6 +21,27 @@ export interface ToastDetail {
 
 export function toast(detail: ToastDetail) {
   window.dispatchEvent(new CustomEvent<ToastDetail>("jsc-toast", { detail }));
+}
+
+type SaveCap = { save(r: { filename: string; data: string }): Promise<unknown> };
+
+/**
+ * Hosted mode: offer the file through the platform's download capability (the viewer confirms the
+ * save); when that is unavailable, copy it to the clipboard instead.
+ */
+export async function hostedExport(filename: string, text: string) {
+  const c = (window as unknown as { claude?: { use(n: string): Promise<unknown> } }).claude;
+  const dl = c?.use ? ((await c.use("downloads").catch(() => null)) as SaveCap | null) : null;
+  if (dl) {
+    try {
+      await dl.save({ filename, data: text });
+      return;
+    } catch (e) {
+      const code = (e as { code?: string }).code;
+      if (code === "declined" || code === "rate_limited") return;
+    }
+  }
+  await copyExport(filename, text.replace(/^\uFEFF/, ""));
 }
 
 /** Copy text to the clipboard (hosted mode) and tell the user what happened. */

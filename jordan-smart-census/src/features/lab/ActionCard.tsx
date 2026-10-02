@@ -12,6 +12,7 @@ import { useEngine } from "@/store/engine";
 import { fmt1, fmtCompact } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { usePlans } from "./shared";
+import { AddToPortfolio } from "@/features/delivery/parts";
 
 export const HORIZON_LABEL: Record<Horizon, { en: string; ar: string }> = {
   IMMEDIATE: { en: "Immediate · < 1 year", ar: "فوري · أقل من سنة" },
@@ -46,6 +47,7 @@ export function ActionCard({ a, compact, showGov }: { a: ActionItem; compact?: b
       )}
       <div className="mt-2 flex items-center gap-2 text-[11.5px]">
         <ProvenanceButton ids={["SIM_ACTIONS", ...a.sources]} />
+        <AddToPortfolio a={a} />
         <Link href={a.href} className="ms-auto inline-flex items-center gap-1 font-medium text-navy-600 hover:underline">{L("Open the model", "افتح النموذج")}<ArrowRight size={12} className="rtl:rotate-180" /></Link>
       </div>
     </article>

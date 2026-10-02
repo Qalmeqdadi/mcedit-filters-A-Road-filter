@@ -25,7 +25,7 @@ import { Formula, LabBar, Method, usePlans, useLab } from "./shared";
 
 const SEV_CELL: Record<Severity, string> = { CRITICAL: "bg-crit text-white", HIGH: "bg-serious text-white", MEDIUM: "bg-warn-bg text-warn", LOW: "bg-ok-bg text-ok" };
 
-function fmtInd(i: Indicator, v: number) {
+export function fmtInd(i: Indicator, v: number) {
   switch (i.unit) {
     case "pct": return fmtPct(v, Math.abs(v) < 0.1 ? 1 : 0);
     case "year": return v ? String(Math.round(v)) : "—";

@@ -5,11 +5,13 @@ import R_action_plans from "@/app/action-plans/page";
 import R_ageing from "@/app/ageing/page";
 import R_anomalies from "@/app/anomalies/page";
 import R_ask from "@/app/ask/page";
+import R_briefing from "@/app/briefing/page";
 import R_capital from "@/app/capital/page";
 import R_census from "@/app/census/page";
 import R_climate from "@/app/climate/page";
 import R_coverage from "@/app/coverage/page";
 import R_decision from "@/app/decision/page";
+import R_delivery from "@/app/delivery/page";
 import R_early_warning from "@/app/early-warning/page";
 import R_education from "@/app/education/page";
 import R_enumerators from "@/app/enumerators/page";
@@ -47,11 +49,13 @@ export const ROUTES: Record<string, ComponentType> = {
   "/ageing": R_ageing,
   "/anomalies": R_anomalies,
   "/ask": R_ask,
+  "/briefing": R_briefing,
   "/capital": R_capital,
   "/census": R_census,
   "/climate": R_climate,
   "/coverage": R_coverage,
   "/decision": R_decision,
+  "/delivery": R_delivery,
   "/early-warning": R_early_warning,
   "/education": R_education,
   "/enumerators": R_enumerators,

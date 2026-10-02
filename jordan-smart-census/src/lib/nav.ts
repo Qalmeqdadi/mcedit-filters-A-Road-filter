@@ -1,7 +1,7 @@
 import {
   Activity, BarChart3, BookOpenCheck, Brain, Briefcase, BriefcaseBusiness, Building2, Bus, ClipboardList, Coins, Compass, Droplets, FileDown, GaugeCircle,
   GraduationCap, HeartHandshake, HeartPulse, Home, HousePlus, Landmark, ListChecks, Map, MapPinned, MessageSquareText, Plane, Radar, ScanSearch, School, ShieldCheck,
-  Siren, SlidersHorizontal, Sunrise, Grid2x2, Telescope, Tent, ThermometerSun, TrendingUp, Users, Wrench,
+  Siren, SlidersHorizontal, Sunrise, Grid2x2, Telescope, KanbanSquare, Presentation, Tent, ThermometerSun, TrendingUp, Users, Wrench,
 } from "lucide-react";
 import type { DictKey } from "@/lib/i18n/dict";
 
@@ -60,6 +60,8 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/decision", key: "nav20", group: "navDecide", icon: Brain },
   { href: "/ask", key: "navAsk", group: "navDecide", icon: MessageSquareText },
   // 5 · Deliver & monitor
+  { href: "/delivery", key: "navDelivery", group: "navDeliver", icon: KanbanSquare },
+  { href: "/briefing", key: "navBriefing", group: "navDeliver", icon: Presentation },
   { href: "/reports", key: "nav21", group: "navDeliver", icon: FileDown },
 ];
 

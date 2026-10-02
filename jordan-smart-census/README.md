@@ -35,13 +35,13 @@ Requires Node ≥ 20.9. No API keys, no backend, no network access at runtime (a
 | `npm run geo` | Rebuilds `src/data/geo/*.json` from `data-raw/geoboundaries` |
 | `npm run verify:generator` · `verify:engine` · `verify:projections` | Headless checks of the synthetic world, a full fieldwork run (incl. PES) and the projection/scenario engines |
 | `npm run verify:lab` · `verify:early-warning` · `verify:ask` · `verify:actions` | Headless checks of every Planning Lab model, the field early-warning backtest and the question engine |
-| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (40, English and Arabic) renders without console errors; 59 end-to-end workflow checks |
+| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (42, English and Arabic) renders without console errors; 65 end-to-end workflow checks |
 
 ## Presenting
 
-Click **Executive demo** (top right). A presenter bar walks through 21 steps, navigating and driving the real engine:
+Click **Executive demo** (top right). A presenter bar walks through 22 steps, navigating and driving the real engine:
 
-1. UFUQ home · 2. Census command overview · 3. Census planning · 4. Administrative geography · 5. Enumeration areas (Irbid drill-down) · 6. Launch the simulation · 7. Fieldwork progress (fast-forward to day 9) · 8. Predictive field control · 9. Enumerator anomaly (`AMM-E0037`) · 10. Supervisor intervention (human decision recorded) · 11. Coverage completion (fieldwork closed) · 12. Post-Enumeration Survey · 13. Final census results · 14. 2040 projection · 15. National planning simulation (migration-shock scenario) · 16. Area action plans (Mafraq) · 17. Four futures for Jordan (2 × 2) · 18. Robustness test · 19. Planning Lab — facility siting · 20. Urban growth to 2050 · 21. Capital investment portfolio → Decision Intelligence.
+1. UFUQ home · 2. Census command overview · 3. Census planning · 4. Administrative geography · 5. Enumeration areas (Irbid drill-down) · 6. Launch the simulation · 7. Fieldwork progress (fast-forward to day 9) · 8. Predictive field control · 9. Enumerator anomaly (`AMM-E0037`) · 10. Supervisor intervention (human decision recorded) · 11. Coverage completion (fieldwork closed) · 12. Post-Enumeration Survey · 13. Final census results · 14. 2040 projection · 15. National planning simulation (migration-shock scenario) · 16. Area action plans (Mafraq) · 17. Four futures for Jordan (2 × 2) · 18. Robustness test · 19. Delivery tracker · 20. Planning Lab — facility siting · 21. Urban growth to 2050 · 22. Capital investment portfolio → Decision Intelligence.
 
 Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10× · 20×** speed in the top bar (1× = one field shift per second; 4 shifts = 1 day); **عربي / EN** language switch; **alerts bell** (acknowledge / escalate / resolve); **database icon** = global provenance panel; **settings** = seed and acting-officer name.
 
@@ -57,7 +57,7 @@ The same command also writes `artifact/dist/ufuq-jordan.html`, an offline copy f
 
 `node scripts/qa-mobile.mjs [base]` checks every route at 390 px for horizontal overflow.
 
-## What is built (39 modules)
+## What is built (41 modules)
 
 | # | Module | Highlights |
 | --- | --- | --- |
@@ -93,6 +93,8 @@ The same command also writes `artifact/dist/ufuq-jordan.html`, an offline copy f
 | F1 | Scenario Futures (2×2) | Strategic-foresight matrix: pick two of six uncertainties (migration, water, economy, climate, fertility, urban development); each pole sets explicit parameters; the four futures re-run projection, small-area, siting, housing, water, jobs, climate, urban-growth and action-plan models; outcome comparison (best / worst), narratives and signposts. |
 | F2 | Horizon Scanning | STEEP register of 19 emerging signals, rated by impact × likelihood × time to impact (editable workshop ratings, custom signals, saved in the browser); urgency ranking; promote a signal's uncertainty to a scenario axis. |
 | F3 | Robustness Test | Every corrective action generated in each of the four futures and classed no-regret (4/4), robust (3/4) or contingent (1–2/4, with trigger signposts); cost range across futures; filters and CSV. |
+| D1 | Delivery Tracker | Corrective actions are **proposed** from any action card, **approved or returned** by an approver with a decision note, then given a responsible unit, milestones, spend and a progress target; health (on track / at risk / off track) is rule-based from overdue milestones and progress vs time elapsed. Board, table, activity feed (full audit trail), per-item discussion, saved **versions** with change comparison, CSV. Local workspace in the app and offline file (demo role switch); on the hosted page a **shared live workspace** (artifact database) where editors approve, members propose and update, viewers read — approvals and versions are write-protected by database rules. Optional demo portfolio, flagged “Demo”. |
+| D2 | Briefing Mode | Seven-slide briefing for Jordan or a governorate, built live from the plans and the portfolio: situation, strategy, top priorities, delivery status, decisions needed, next 90 days; keyboard navigation and full screen. |
 | 35 | Reports & Export | Eight CSV exports (governorate summary, enumerator performance, quality issues, anomalies, scenario results, PES results, **area action plans**, **Planning Lab indicators**) + a printable executive report. Every Planning Lab module also exports its own CSV. |
 | 36 | Methodology & Data Provenance | Data-nature legend, provenance registry, geography pipeline, reference cross-checks, simulation methodology, synthetic assumptions, limitations, and the **official-data import adapter**. |
 

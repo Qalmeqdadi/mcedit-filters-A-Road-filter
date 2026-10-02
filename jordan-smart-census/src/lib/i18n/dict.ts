@@ -23,6 +23,8 @@ export const DICT = {
   navScenarioFutures: ["Scenario Futures (2×2)", "مستقبلات السيناريو (2×2)"],
   navSignals: ["Horizon Scanning", "رصد الإشارات المستقبلية"],
   navRobust: ["Robustness Test", "اختبار المتانة"],
+  navDelivery: ["Delivery Tracker", "متابعة التنفيذ"],
+  navBriefing: ["Briefing Mode", "وضع الإحاطة"],
   navSiting: ["Facility Siting Planner", "مخطط مواقع المرافق"],
   navGrowth: ["Urban Growth Forecast", "التنبؤ بالنمو العمراني"],
   navHousingNeed: ["Housing Need Forecast", "التنبؤ بالحاجة إلى المساكن"],

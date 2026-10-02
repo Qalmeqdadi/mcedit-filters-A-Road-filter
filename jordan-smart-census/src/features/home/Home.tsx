@@ -1,5 +1,6 @@
 "use client";
 
+import { useDelivery } from "@/delivery/store";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, Loader2, MessageSquareText, PresentationIcon } from "lucide-react";
 import { useApp } from "@/store/app";
@@ -34,13 +35,14 @@ export function Home() {
   const all = plans ? Object.values(plans.plans).flatMap((p) => p.actions) : [];
   const urgent = all.filter((a) => sevRank(a.severity) >= 3).length;
   const agg = engine.aggregate();
+  const portfolio = Object.keys(useDelivery().data.items).length;
   const metric = (g: (typeof PILLARS)[number]["group"]) => {
     switch (g) {
       case "navFoundation": return engine.phase === "READY" ? L("Census not started — run the simulation", "لم يبدأ التعداد — شغّل المحاكاة") : `${L("Fieldwork", "العمل الميداني")} ${fmtPct(agg.completionPct, 0)} ${L("complete", "منجز")}`;
       case "navToday": return `${fmtCompact(base.population, locale)} ${L("people", "نسمة")} · ${fmtCompact(base.households, locale)} ${L("households", "أسرة")}`;
       case "navFutures": return `${fmtCompact(pt.population, locale)} ${L("people in", "نسمة في")} ${year} (${fmtSignedPct(pt.population / base.population - 1, 0)})`;
       case "navDecide": return plans ? `${all.length} ${L("actions", "إجراء")} · ${urgent} ${L("high / critical", "مرتفع / حرج")}` : L("Preparing plans…", "جارٍ إعداد الخطط…");
-      case "navDeliver": return L("Delivery tracker & reports", "متابعة التنفيذ والتقارير");
+      case "navDeliver": return portfolio ? `${portfolio} ${L("actions in the delivery portfolio", "إجراء في محفظة التنفيذ")}` : L("Delivery tracker, briefings & reports", "متابعة التنفيذ والإحاطات والتقارير");
     }
   };
   const homes = snap ? snap.housing.national.filter((x) => x.year <= 2035).reduce((a, x) => a + x.need, 0) : null;
