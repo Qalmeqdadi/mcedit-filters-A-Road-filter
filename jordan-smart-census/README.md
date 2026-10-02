@@ -43,7 +43,7 @@ Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10
 
 ## Single-file hosted build (phones)
 
-`npm run build:artifact` bundles the whole app into one self-contained page, `artifact/dist/index.html` (about 3.8 MB): the CSS, the JS and the MapLibre worker (served as a `blob:` URL) are all inlined, and fonts come from Google Fonts. Next.js routing is replaced by an in-memory router with deep links such as `#gis` or `#scenarios`. Use this build to share or open the platform on a phone without a server. Some behaviour differs because the hosting sandbox blocks downloads and printing:
+`npm run build:artifact` (which also runs `npm run qa:hosted`, opening every menu item of the built file in English and Arabic) bundles the whole app into one self-contained page, `artifact/dist/index.html` (about 3.8 MB): the CSS, the JS and the MapLibre worker (served as a `blob:` URL) are all inlined, and fonts come from Google Fonts. Next.js routing is replaced by an in-memory router with deep links such as `#gis` or `#scenarios`. Use this build to share or open the platform on a phone without a server. Some behaviour differs because the hosting sandbox blocks downloads and printing:
 - CSV/JSON exports are copied to the clipboard (a text box appears if the clipboard is also blocked).
 - The Print button and the online basemap toggle are hidden.
 
