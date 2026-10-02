@@ -17,3 +17,4 @@ for (const g of engine.world.governorates) { const p = np.plans[g.id]; console.l
 console.log("themes", np.themes.map((x) => x.en));
 console.log("top", np.top.slice(0, 6).map((a) => `${a.govId} ${a.severity} ${a.title.en}`));
 console.log(briefing(engine.world, np.plans.MAF, 2040, false));
+console.log([...new Set(Object.values(np.plans).flatMap((p) => p.actions.map((a) => a.kind)))].sort().join("\n"));

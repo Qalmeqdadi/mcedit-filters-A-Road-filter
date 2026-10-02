@@ -22,6 +22,7 @@
     "verify:early-warning": "tsx scripts/smoke-ew.ts",
     "verify:ask": "tsx scripts/smoke-ask.ts",
     "verify:actions": "tsx scripts/smoke-actions.ts",
+    "verify:futures": "tsx scripts/smoke-futures.ts",
     "qa:hosted": "node scripts/qa-hosted.mjs"
   },
   "dependencies": {

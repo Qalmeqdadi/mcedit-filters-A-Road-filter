@@ -35,13 +35,13 @@ Requires Node ≥ 20.9. No API keys, no backend, no network access at runtime (a
 | `npm run geo` | Rebuilds `src/data/geo/*.json` from `data-raw/geoboundaries` |
 | `npm run verify:generator` · `verify:engine` · `verify:projections` | Headless checks of the synthetic world, a full fieldwork run (incl. PES) and the projection/scenario engines |
 | `npm run verify:lab` · `verify:early-warning` · `verify:ask` · `verify:actions` | Headless checks of every Planning Lab model, the field early-warning backtest and the question engine |
-| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (36, English and Arabic) renders without console errors; 54 end-to-end workflow checks |
+| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (40, English and Arabic) renders without console errors; 59 end-to-end workflow checks |
 
 ## Presenting
 
-Click **Executive demo** (top right). A presenter bar walks through 18 steps, navigating and driving the real engine:
+Click **Executive demo** (top right). A presenter bar walks through 21 steps, navigating and driving the real engine:
 
-1. National overview · 2. Census planning · 3. Administrative geography · 4. Enumeration areas (Irbid drill-down) · 5. Launch the simulation · 6. Fieldwork progress (fast-forward to day 9) · 7. Predictive field control · 8. Enumerator anomaly (`AMM-E0037`) · 9. Supervisor intervention (human decision recorded) · 10. Coverage completion (fieldwork closed) · 11. Post-Enumeration Survey · 12. Final census results · 13. 2040 projection · 14. National planning simulation (migration-shock scenario) · 15. Area action plans (Mafraq) · 16. Planning Lab — facility siting · 17. Urban growth to 2050 · 18. Capital investment portfolio → Decision Intelligence.
+1. UFUQ home · 2. Census command overview · 3. Census planning · 4. Administrative geography · 5. Enumeration areas (Irbid drill-down) · 6. Launch the simulation · 7. Fieldwork progress (fast-forward to day 9) · 8. Predictive field control · 9. Enumerator anomaly (`AMM-E0037`) · 10. Supervisor intervention (human decision recorded) · 11. Coverage completion (fieldwork closed) · 12. Post-Enumeration Survey · 13. Final census results · 14. 2040 projection · 15. National planning simulation (migration-shock scenario) · 16. Area action plans (Mafraq) · 17. Four futures for Jordan (2 × 2) · 18. Robustness test · 19. Planning Lab — facility siting · 20. Urban growth to 2050 · 21. Capital investment portfolio → Decision Intelligence.
 
 Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10× · 20×** speed in the top bar (1× = one field shift per second; 4 shifts = 1 day); **عربي / EN** language switch; **alerts bell** (acknowledge / escalate / resolve); **database icon** = global provenance panel; **settings** = seed and acting-officer name.
 
@@ -57,7 +57,7 @@ The same command also writes `artifact/dist/ufuq-jordan.html`, an offline copy f
 
 `node scripts/qa-mobile.mjs [base]` checks every route at 390 px for horizontal overflow.
 
-## What is built (36 modules)
+## What is built (39 modules)
 
 | # | Module | Highlights |
 | --- | --- | --- |
@@ -90,6 +90,9 @@ The same command also writes `artifact/dist/ufuq-jordan.html`, an offline copy f
 | 32 | Ageing & Care | 65+ / 80+, old-age dependency, median age, long-term-care beds, home care, care workforce, functional difficulty. |
 | 33 | Capital Investment Planner | Projects generated from all lab models compete for one budget: weighted efficiency (within sector) · equity (deprivation) · urgency, sector priorities, greedy knapsack, budget frontier, "what the next JOD 250M buys", investment per resident. |
 | 34 | Shock Response Simulator | Week-by-week inflow (arrival curve, destination pattern, camps) against housing (vacant dwellings from the frame), schools, primary care and water; shock-attributable breaches; proposed actions that can be added to the plan; play-through. |
+| F1 | Scenario Futures (2×2) | Strategic-foresight matrix: pick two of six uncertainties (migration, water, economy, climate, fertility, urban development); each pole sets explicit parameters; the four futures re-run projection, small-area, siting, housing, water, jobs, climate, urban-growth and action-plan models; outcome comparison (best / worst), narratives and signposts. |
+| F2 | Horizon Scanning | STEEP register of 19 emerging signals, rated by impact × likelihood × time to impact (editable workshop ratings, custom signals, saved in the browser); urgency ranking; promote a signal's uncertainty to a scenario axis. |
+| F3 | Robustness Test | Every corrective action generated in each of the four futures and classed no-regret (4/4), robust (3/4) or contingent (1–2/4, with trigger signposts); cost range across futures; filters and CSV. |
 | 35 | Reports & Export | Eight CSV exports (governorate summary, enumerator performance, quality issues, anomalies, scenario results, PES results, **area action plans**, **Planning Lab indicators**) + a printable executive report. Every Planning Lab module also exports its own CSV. |
 | 36 | Methodology & Data Provenance | Data-nature legend, provenance registry, geography pipeline, reference cross-checks, simulation methodology, synthetic assumptions, limitations, and the **official-data import adapter**. |
 

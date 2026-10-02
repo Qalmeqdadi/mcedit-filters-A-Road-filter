@@ -1,0 +1,10 @@
+import { CensusEngine } from "../src/simulation/engine";
+import { DEFAULT_CONFIG } from "../src/simulation/generate";
+import { buildFutures, runFuture, robustness } from "../src/simulation/lab/futures";
+const engine = new CensusEngine(DEFAULT_CONFIG);
+const fs = buildFutures("MIGRATION", "WATER");
+const runs = fs.map((f) => { const t = performance.now(); const r = runFuture(engine.world, engine, f, 2040); console.log(f.name.en, Math.round(performance.now() - t) + "ms", JSON.stringify(r.outcome, (k, v) => (typeof v === "number" ? +v.toFixed(3) : v))); return r; });
+const rb = robustness(runs);
+const c = { NO_REGRET: 0, ROBUST: 0, CONTINGENT: 0 } as Record<string, number>;
+for (const r of rb) c[r.robustness]++;
+console.log(c, rb.slice(0, 4).map((r) => `${r.robustness} ${r.govId} ${r.title.en}`), rb.filter((r) => r.robustness === "CONTINGENT").slice(0, 4).map((r) => `${r.govId} ${r.title.en} in ${r.presentIn.length} → ${r.triggers.map((x) => x.en).join("; ")}`));

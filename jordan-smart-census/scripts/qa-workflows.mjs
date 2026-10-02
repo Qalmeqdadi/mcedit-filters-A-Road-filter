@@ -275,6 +275,23 @@ await step("planning lab", async () => {
   await page.click("[data-testid=ask-submit]");
   await page.waitForTimeout(2500);
   check("ask: action plan question", /corrective actions/.test(await page.locator("[data-testid=ask-answer]").first().textContent()));
+  await nav("/futures");
+  await page.waitForSelector("[data-testid=future-card]", { timeout: 90000 });
+  check("scenario futures: four futures", (await page.locator("[data-testid=future-card]").count()) === 4);
+  await page.selectOption("[data-testid=axis-b]", "ECONOMY");
+  await page.waitForSelector("[data-testid=future-card]", { timeout: 90000 });
+  check("scenario futures: axis change rebuilds matrix", /Economy|economy|growth/i.test(await page.locator("[data-testid=future-card]").first().textContent()));
+  await page.selectOption("[data-testid=axis-b]", "WATER");
+  await nav("/robustness");
+  await page.waitForSelector("[data-testid=robust-item]", { timeout: 90000 });
+  check("robustness test classifies actions", (await page.locator("[data-testid=robust-item]").count()) > 10, `${await page.locator("[data-testid=robust-item]").count()} items`);
+  await nav("/signals");
+  const s0 = await page.locator("[data-testid=signal-row]").count();
+  await page.fill("[data-testid=signal-title]", "QA test signal");
+  await page.click("[data-testid=signal-add]");
+  await page.waitForTimeout(400);
+  check("horizon scanning: add a signal", (await page.locator("[data-testid=signal-row]").count()) === s0 + 1, `${s0} → ${await page.locator("[data-testid=signal-row]").count()}`);
+  await page.click("main button:has-text('Restore defaults')");
   await nav("/projections");
   check("probabilistic projection panel", (await page.locator("#uncertainty").count()) === 1);
   for (const r of ["/housing-need", "/jobs", "/ageing", "/nowcast", "/mobility", "/climate"]) {

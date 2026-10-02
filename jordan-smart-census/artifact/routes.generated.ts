@@ -14,6 +14,7 @@ import R_early_warning from "@/app/early-warning/page";
 import R_education from "@/app/education/page";
 import R_enumerators from "@/app/enumerators/page";
 import R_field from "@/app/field/page";
+import R_futures from "@/app/futures/page";
 import R_gis from "@/app/gis/page";
 import R_health from "@/app/health/page";
 import R_housing from "@/app/housing/page";
@@ -32,8 +33,10 @@ import R_projections from "@/app/projections/page";
 import R_quality from "@/app/quality/page";
 import R_questionnaire from "@/app/questionnaire/page";
 import R_reports from "@/app/reports/page";
+import R_robustness from "@/app/robustness/page";
 import R_scenarios from "@/app/scenarios/page";
 import R_shock from "@/app/shock/page";
+import R_signals from "@/app/signals/page";
 import R_siting from "@/app/siting/page";
 import R_urban_growth from "@/app/urban-growth/page";
 import R_water from "@/app/water/page";
@@ -53,6 +56,7 @@ export const ROUTES: Record<string, ComponentType> = {
   "/education": R_education,
   "/enumerators": R_enumerators,
   "/field": R_field,
+  "/futures": R_futures,
   "/gis": R_gis,
   "/health": R_health,
   "/housing": R_housing,
@@ -71,8 +75,10 @@ export const ROUTES: Record<string, ComponentType> = {
   "/quality": R_quality,
   "/questionnaire": R_questionnaire,
   "/reports": R_reports,
+  "/robustness": R_robustness,
   "/scenarios": R_scenarios,
   "/shock": R_shock,
+  "/signals": R_signals,
   "/siting": R_siting,
   "/urban-growth": R_urban_growth,
   "/water": R_water,

@@ -137,7 +137,7 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
         <button type="button" onClick={onMenu} className="rounded p-1.5 text-navy-100 hover:bg-white/10 lg:hidden" aria-label="Menu"><Menu size={18} /></button>
         <div className="hidden min-w-0 flex-col md:flex">
           <span className="truncate text-[12.5px] font-semibold leading-tight">{t("appSubtitle")}</span>
-          <span className="truncate text-[10.5px] leading-tight text-navy-300">{ar ? "National Population, Housing & Decision Intelligence Platform" : "منصة السكان والمساكن وذكاء القرار الوطني"}</span>
+          <span className="truncate text-[10.5px] leading-tight text-navy-300">{ar ? "Jordan National Foresight & Planning Platform" : "المنصة الوطنية للاستشراف والتخطيط"}</span>
         </div>
         <span className="truncate text-[13px] font-semibold md:hidden">{t("appName")}</span>
         <div className="flex-1" />

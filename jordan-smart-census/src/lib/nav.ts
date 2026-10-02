@@ -1,7 +1,7 @@
 import {
   Activity, BarChart3, BookOpenCheck, Brain, Briefcase, BriefcaseBusiness, Building2, Bus, ClipboardList, Coins, Compass, Droplets, FileDown, GaugeCircle,
   GraduationCap, HeartHandshake, HeartPulse, Home, HousePlus, Landmark, ListChecks, Map, MapPinned, MessageSquareText, Plane, Radar, ScanSearch, School, ShieldCheck,
-  Siren, SlidersHorizontal, Sunrise, Tent, ThermometerSun, TrendingUp, Users, Wrench,
+  Siren, SlidersHorizontal, Sunrise, Grid2x2, Telescope, Tent, ThermometerSun, TrendingUp, Users, Wrench,
 } from "lucide-react";
 import type { DictKey } from "@/lib/i18n/dict";
 
@@ -41,6 +41,8 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/infrastructure", key: "nav17", group: "navToday", icon: Wrench },
   // 3 · Futures
   { href: "/projections", key: "nav18", group: "navFutures", icon: TrendingUp },
+  { href: "/futures", key: "navScenarioFutures", group: "navFutures", icon: Grid2x2 },
+  { href: "/signals", key: "navSignals", group: "navFutures", icon: Telescope },
   { href: "/scenarios", key: "nav19", group: "navFutures", icon: SlidersHorizontal },
   { href: "/urban-growth", key: "navGrowth", group: "navFutures", icon: Building2 },
   { href: "/housing-need", key: "navHousingNeed", group: "navFutures", icon: HousePlus },
@@ -51,6 +53,7 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/ageing", key: "navAgeing", group: "navFutures", icon: HeartHandshake },
   // 4 · Plan & decide
   { href: "/action-plans", key: "navActions", group: "navDecide", icon: ListChecks },
+  { href: "/robustness", key: "navRobust", group: "navDecide", icon: ShieldCheck },
   { href: "/siting", key: "navSiting", group: "navDecide", icon: School },
   { href: "/capital", key: "navCapital", group: "navDecide", icon: Coins },
   { href: "/shock", key: "navShock", group: "navDecide", icon: Tent },

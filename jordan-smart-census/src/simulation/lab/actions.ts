@@ -20,12 +20,12 @@ import { computeProfile } from "../analytics";
 import type { SmallArea } from "./common";
 import { analyseSiting, DEFAULT_NORMS, facilityInventory, type FacilityKind, type SitingAnalysis } from "./facilities";
 import { DEFAULT_HOUSING, forecastHousing, type HousingResult } from "./housingNeed";
-import { DEFAULT_WATER, simulateWater, type WaterResult } from "./water";
-import { DEFAULT_JOBS, forecastJobs, type JobsResult } from "./jobs";
+import { DEFAULT_WATER, simulateWater, type WaterParams, type WaterResult } from "./water";
+import { DEFAULT_JOBS, forecastJobs, type JobsParams, type JobsResult } from "./jobs";
 import { DEFAULT_AGEING, forecastAgeing, type AgeingResult } from "./ageing";
-import { assessClimate, DEFAULT_CLIMATE, type ClimateResult } from "./climate";
+import { assessClimate, DEFAULT_CLIMATE, type ClimateParams, type ClimateResult } from "./climate";
 import { calibrateMobility, CORRIDORS, DEFAULT_MOBILITY, simulateMobility, type MobilityResult } from "./mobility";
-import { buildGrid, GROWTH_REGIONS, simulateGrowth, type GrowthResult } from "./urbanGrowth";
+import { buildGrid, GROWTH_REGIONS, simulateGrowth, type GrowthPolicy, type GrowthResult } from "./urbanGrowth";
 import { runNowcast, type NowcastResult } from "./nowcast";
 import { buildNetwork, pathLinks, shortestFrom } from "./network";
 
@@ -79,15 +79,24 @@ export interface PlanSnapshot {
   nowcast: NowcastResult;
 }
 
-const snapCache = new WeakMap<ScenarioRun, Map<number, PlanSnapshot>>();
+const snapCache = new WeakMap<ScenarioRun, Map<string, PlanSnapshot>>();
 
-export function planSnapshot(world: World, run: ScenarioRun, areaFor: (y: number) => SmallArea, year: number): PlanSnapshot {
+/** Optional assumption overrides used by the Scenario Futures (foresight) module. */
+export interface SnapshotOptions {
+  water?: WaterParams;
+  jobs?: JobsParams;
+  climate?: ClimateParams;
+  urbanPolicy?: GrowthPolicy;
+}
+
+export function planSnapshot(world: World, run: ScenarioRun, areaFor: (y: number) => SmallArea, year: number, opts: SnapshotOptions = {}): PlanSnapshot {
   let m = snapCache.get(run);
   if (!m) {
     m = new Map();
     snapCache.set(run, m);
   }
-  const hit = m.get(year);
+  const ck = `${year}|${JSON.stringify(opts)}`;
+  const hit = m.get(ck);
   if (hit) return hit;
   const baseYear = run.baseYear;
   const sa0 = areaFor(baseYear);
@@ -99,7 +108,7 @@ export function planSnapshot(world: World, run: ScenarioRun, areaFor: (y: number
   for (const r of GROWTH_REGIONS) {
     const grid = buildGrid(world, r.id);
     growth[r.id] = {
-      trend: simulateGrowth(world, grid, areaFor, baseYear, year, { policy: "TREND", greenBelt: false, boundaryKm: null }),
+      trend: simulateGrowth(world, grid, areaFor, baseYear, year, { policy: opts.urbanPolicy ?? "TREND", greenBelt: false, boundaryKm: null }),
       compact: simulateGrowth(world, grid, areaFor, baseYear, year, { policy: "COMPACT", greenBelt: false, boundaryKm: 3 }),
     };
   }
@@ -111,15 +120,15 @@ export function planSnapshot(world: World, run: ScenarioRun, areaFor: (y: number
     saH,
     siting,
     housing: forecastHousing(world, areaFor, baseYear, 2050, DEFAULT_HOUSING),
-    water: simulateWater(world, areaFor, baseYear, 2050, DEFAULT_WATER, year),
-    jobs: forecastJobs(world, run.series, areaFor, DEFAULT_JOBS),
+    water: simulateWater(world, areaFor, baseYear, 2050, opts.water ?? DEFAULT_WATER, year),
+    jobs: forecastJobs(world, run.series, areaFor, opts.jobs ?? DEFAULT_JOBS),
     ageing: forecastAgeing(world, run.series, areaFor, DEFAULT_AGEING),
-    climate: assessClimate(world, saH, DEFAULT_CLIMATE),
+    climate: assessClimate(world, saH, opts.climate ?? DEFAULT_CLIMATE),
     mobility: simulateMobility(world, saH, DEFAULT_MOBILITY, cal.asc, cal.capacity),
     growth,
     nowcast: runNowcast(world, sa0, pt.births / pt.population, pt.deaths / pt.population, run.params.netMigration, world.config.referenceDate),
   };
-  m.set(year, snap);
+  m.set(ck, snap);
   return snap;
 }
 
@@ -137,6 +146,8 @@ export interface Indicator {
 
 export interface ActionItem {
   id: string;
+  /** stable action type, used to match the same action across futures */
+  kind: string;
   govId: GovId;
   sector: ActionSector;
   severity: Severity;
@@ -205,6 +216,11 @@ export function liveCensus(engine: CensusEngine): LiveCensus {
   };
 }
 
+/** Stable action type from sector + the action's title template (numbers removed). */
+export function kindOf(sector: ActionSector, title: string) {
+  return `${sector}:${title.replace(/[\d,.≈()+×−-]+/g, "").replace(/\s+/g, " ").split(":")[0].split(" for ")[0].trim().slice(0, 40)}`;
+}
+
 export function buildPlans(world: World, s: PlanSnapshot, live: LiveCensus): NationalPlan {
   const plans = {} as Record<GovId, AreaPlan>;
   const Y = s.year;
@@ -225,7 +241,7 @@ export function buildPlans(world: World, s: PlanSnapshot, live: LiveCensus): Nat
     const acts: ActionItem[] = [];
     const ds = world.districts.filter((d) => d.govId === id);
     const dn = (dids: string[]) => ({ en: dids.map((x) => world.district[x].name.en).join(", "), ar: dids.map((x) => world.district[x].name.ar).join("، ") });
-    const add = (a: Omit<ActionItem, "id" | "govId" | "score" | "lead" | "href"> & { href?: string }) => acts.push({ ...a, id: `${id}-${a.sector}-${acts.length + 1}`, govId: id, lead: LEAD[a.sector], href: a.href ?? SECTOR_HREF[a.sector], score: SEV_W[a.severity] * Math.log10(a.beneficiaries + 10) * HOR_W[a.horizon] });
+    const add = (a: Omit<ActionItem, "id" | "govId" | "score" | "lead" | "href" | "kind"> & { href?: string; kind?: string }) => acts.push({ ...a, kind: a.kind ?? kindOf(a.sector, a.title.en), id: `${id}-${a.sector}-${acts.length + 1}`, govId: id, lead: LEAD[a.sector], href: a.href ?? SECTOR_HREF[a.sector], score: SEV_W[a.severity] * Math.log10(a.beneficiaries + 10) * HOR_W[a.horizon] });
     const gn = g.name;
 
     // ---------------- EDUCATION

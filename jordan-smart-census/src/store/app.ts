@@ -6,6 +6,7 @@ import type { GovId, Locale } from "@/types/census";
 import { DEFAULT_CONFIG, type SimConfig } from "@/simulation/generate";
 import type { FullScenario } from "@/simulation/scenarios";
 import type { ScenarioPreset } from "@/types/census";
+import type { Signal } from "@/simulation/lab/signals";
 
 export type Speed = 1 | 5 | 10 | 20;
 
@@ -74,6 +75,12 @@ interface AppState {
   /** scenario driving the Planning Lab: a preset, "SIMULATOR" (Scenario Simulator's current) or a saved scenario id */
   labScenario: string;
   setLabScenario: (id: string) => void;
+
+  /** foresight: the two scenario-matrix axes and the horizon-scanning register (null = defaults) */
+  futureAxes: [string, string];
+  setFutureAxes: (a: [string, string]) => void;
+  signals: Signal[] | null;
+  setSignals: (s: Signal[] | null) => void;
 }
 
 export const useApp = create<AppState>()(
@@ -131,12 +138,17 @@ export const useApp = create<AppState>()(
 
       labScenario: "BASELINE",
       setLabScenario: (labScenario) => set({ labScenario }),
+
+      futureAxes: ["MIGRATION", "WATER"],
+      setFutureAxes: (futureAxes) => set({ futureAxes }),
+      signals: null,
+      setSignals: (signals) => set({ signals }),
     }),
     {
       name: "jsc-app",
       version: 1,
       skipHydration: true,
-      partialize: (s) => ({ locale: s.locale, config: s.config, speed: s.speed, actor: s.actor, scenarios: s.scenarios, projectionYear: s.projectionYear, labScenario: s.labScenario }),
+      partialize: (s) => ({ locale: s.locale, config: s.config, speed: s.speed, actor: s.actor, scenarios: s.scenarios, projectionYear: s.projectionYear, labScenario: s.labScenario, futureAxes: s.futureAxes, signals: s.signals }),
     },
   ),
 );
