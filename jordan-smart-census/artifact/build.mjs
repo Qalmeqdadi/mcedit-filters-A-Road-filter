@@ -20,6 +20,12 @@ const worker = await build({
   bundle: true, minify: true, format: "esm", target: "es2022", write: false, logLevel: "warning",
 });
 const workerSrc = worker.outputFiles[0].text;
+// Classic (non-module) worker for the offline file: Chrome refuses module workers from file:// pages.
+const classicWorker = await build({
+  entryPoints: [path.join(root, "node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs")],
+  bundle: true, minify: true, format: "iife", target: "es2022", write: false, logLevel: "error",
+});
+const classicWorkerSrc = classicWorker.outputFiles[0].text;
 
 // 3. App bundle with Next.js routing swapped for an in-memory router
 const app = await build({
@@ -46,3 +52,8 @@ const html = `<title>Jordan Smart Census</title>
 `;
 writeFileSync(path.join(out, "index.html"), html);
 console.log(`artifact/dist/index.html: ${(html.length / 1024 / 1024).toFixed(2)} MB`);
+
+// Offline copy for a laptop: double-click to open, no install. Real downloads and printing work there.
+const offline = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${html.replace("window.__JSC_HOSTED__=true;", "").replace(safe(JSON.stringify(workerSrc)), () => safe(JSON.stringify(classicWorkerSrc))).replace(',{type:"text/javascript"}));', ',{type:"text/javascript"}))+"#.cjs";')}</body></html>`.replace('<div id="root">', '</head><body><div id="root">');
+writeFileSync(path.join(out, "jordan-smart-census.html"), offline);
+console.log(`artifact/dist/jordan-smart-census.html: ${(offline.length / 1024 / 1024).toFixed(2)} MB (offline, double-click to open)`);

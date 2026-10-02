@@ -46,6 +46,8 @@ Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10
 - CSV/JSON exports are copied to the clipboard (a text box appears if the clipboard is also blocked).
 - The Print button and the online basemap toggle are hidden.
 
+The same command also writes `artifact/dist/jordan-smart-census.html`, an offline copy for computers where nothing can be installed. Double-click it to open it in any browser. Downloads and printing work in this copy.
+
 `node scripts/qa-mobile.mjs [base]` checks every route at 390 px for horizontal overflow.
 
 ## What is built (22 modules)
