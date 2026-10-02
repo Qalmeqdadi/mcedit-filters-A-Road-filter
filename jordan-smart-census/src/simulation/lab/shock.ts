@@ -68,6 +68,7 @@ export interface ShockResult {
   params: ShockParams;
   weeks: ShockWeek[];
   firstBreach: Record<string, Partial<Record<ShockSector, number>>>;
+  /** largest increase in stress caused by the shock (any sector), in ratio points */
   peakStress: Record<string, number>;
   baseStress: Record<string, Record<ShockSector, number>>;
   actions: ShockAction[];
@@ -129,7 +130,7 @@ export function simulateShock(world: World, sa: SmallArea, schools: SitingAnalys
       };
       stress[g] = s;
       for (const sec of SHOCK_SECTORS) {
-        peakStress[g] = Math.max(peakStress[g], host[g] > 0 || campGov[g] > 0 ? s[sec] : 0);
+        peakStress[g] = Math.max(peakStress[g], s[sec] - baseStress[g][sec]);
         // a breach is caused by the shock: over capacity AND at least 5 points above the pre-shock level
         if (s[sec] >= Math.max(1, baseStress[g][sec] + 0.05) && (host[g] > 1000 || campGov[g] > 1000) && firstBreach[g][sec] === undefined) {
           firstBreach[g][sec] = w;
@@ -138,10 +139,10 @@ export function simulateShock(world: World, sa: SmallArea, schools: SitingAnalys
           proposed.add(key);
           const gn = world.gov[g].name;
           if (sec === "EDUCATION") {
-            const extra = schoolDemand - schoolCap;
+            const extra = Math.min(schoolDemand - schoolCap, host[g] * 0.3 * 0.95);
             actions.push({ week: w, govId: g, sector: sec, text: { en: `${gn.en}: school places exceeded by ${fmt(extra)} — propose double shifts in about ${fmt(extra / 400)} schools and temporary classrooms.`, ar: `${gn.ar}: تجاوز الطلب على المقاعد المدرسية بمقدار ${fmt(extra)} — يُقترح نظام الفترتين في نحو ${fmt(extra / 400)} مدرسة وغرف صفية مؤقتة.` } });
           } else if (sec === "HEALTH") {
-            const extra = phcDemand - phcCap;
+            const extra = Math.min(phcDemand - phcCap, host[g] + campGov[g] - clinics);
             actions.push({ week: w, govId: g, sector: sec, text: { en: `${gn.en}: primary-care demand over capacity by ${fmt(extra)} residents — propose ${fmt(Math.ceil(extra / 6000))} mobile clinics.`, ar: `${gn.ar}: الطلب على الرعاية الأولية يفوق الطاقة بـ ${fmt(extra)} ساكن — يُقترح ${fmt(Math.ceil(extra / 6000))} عيادة متنقلة.` } });
           } else if (sec === "WATER") {
             actions.push({ week: w, govId: g, sector: sec, text: { en: `${gn.en}: delivered water falls below ${MIN_LPCD} l/person/day — propose water trucking and network pressure management.`, ar: `${gn.ar}: تنخفض المياه الموزعة دون ${MIN_LPCD} لتر/فرد/يوم — يُقترح نقل المياه بالصهاريج وإدارة ضغط الشبكة.` } });

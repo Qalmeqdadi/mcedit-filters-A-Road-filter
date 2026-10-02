@@ -87,7 +87,23 @@ export interface MobilityCalibration {
  * Base-year calibration: ASC is solved so the public-transport share equals the assumed base share, and
  * link capacities are set to max(type capacity, base peak volume ÷ 0.9) so no link starts above V/C 0.9.
  */
+const calCache = new WeakMap<World, Map<string, MobilityCalibration>>();
+
 export function calibrateMobility(world: World, sa0: SmallArea, p: MobilityParams): MobilityCalibration {
+  const key = `${sa0.year}|${p.beta}|${p.baseTransitShare}|${p.fare}|${p.carCostPerKm}`;
+  let m = calCache.get(world);
+  if (!m) {
+    m = new Map();
+    calCache.set(world, m);
+  }
+  const hit = m.get(key);
+  if (hit) return hit;
+  const out = calibrateMobilityRaw(world, sa0, p);
+  m.set(key, out);
+  return out;
+}
+
+function calibrateMobilityRaw(world: World, sa0: SmallArea, p: MobilityParams): MobilityCalibration {
   const net = buildNetwork(world);
   const typeCap = new Map(net.links.map((l) => [l.id, l.speed > 70 ? CAP_RURAL : CAP_URBAN]));
   const first = simulateMobility(world, sa0, { ...p, corridors: [] }, undefined, typeCap);

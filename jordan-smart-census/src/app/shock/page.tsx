@@ -1,5 +1,5 @@
-import { ComingNext } from "@/features/lab/ComingNext";
+import { Shock } from "@/features/lab/Shock";
 
 export default function Page() {
-  return <ComingNext href="/shock" />;
+  return <Shock />;
 }

@@ -58,7 +58,7 @@ export interface ClimateResult {
   districts: DistrictClimate[];
   floodPoints: { id: string; lng: number; lat: number; pop: number; districtId: string }[];
   totals: { atRisk: number; floodExposed: number; coolingCentres: number; hotDaysPopWeighted: number };
-  actions: { districtId: string; text: L; priority: number }[];
+  actions: { districtId: string; kind: "HEAT" | "FLOOD"; text: L; priority: number }[];
 }
 
 export function heatClass(world: World, districtId: string): HeatClass {
@@ -156,12 +156,12 @@ export function assessClimate(world: World, sa: SmallArea, p: ClimateParams): Cl
   const ranked = [...rows].sort((a, b) => b.heatRisk - a.heatRisk);
   for (const r of ranked.slice(0, 8)) {
     const d = world.district[r.id];
-    actions.push({ districtId: r.id, priority: r.heatRisk, text: { en: `${d.name.en}: ${Math.round(r.hotDays)} days > 40 °C in this scenario; ${Math.round(r.atRisk).toLocaleString("en-US")} people at heat risk — ${r.coolingCentres} cooling centres, heat-health alerts for the 65+ and outdoor-work hour limits.`, ar: `${d.name.ar}: ${Math.round(r.hotDays)} يوماً فوق 40 درجة مئوية في هذا السيناريو؛ ${Math.round(r.atRisk).toLocaleString("en-US")} شخصاً معرضون لخطر الحر — ${r.coolingCentres} مراكز تبريد، وتنبيهات صحية لكبار السن، وتحديد ساعات العمل في الخارج.` } });
+    actions.push({ districtId: r.id, kind: "HEAT", priority: r.heatRisk, text: { en: `${d.name.en}: ${Math.round(r.hotDays)} days > 40 °C in this scenario; ${Math.round(r.atRisk).toLocaleString("en-US")} people at heat risk — ${r.coolingCentres} cooling centres, heat-health alerts for the 65+ and outdoor-work hour limits.`, ar: `${d.name.ar}: ${Math.round(r.hotDays)} يوماً فوق 40 درجة مئوية في هذا السيناريو؛ ${Math.round(r.atRisk).toLocaleString("en-US")} شخصاً معرضون لخطر الحر — ${r.coolingCentres} مراكز تبريد، وتنبيهات صحية لكبار السن، وتحديد ساعات العمل في الخارج.` } });
   }
   for (const r of [...rows].sort((a, b) => b.floodExposed - a.floodExposed).slice(0, 4)) {
     if (r.floodExposed <= 0) continue;
     const d = world.district[r.id];
-    actions.push({ districtId: r.id, priority: 0.5, text: { en: `${d.name.en}: ${r.floodEAs} flood-susceptible EAs (${Math.round(r.floodExposed).toLocaleString("en-US")} residents) — flash-flood early warning, drainage maintenance before the rainy season.`, ar: `${d.name.ar}: ${r.floodEAs} منطقة عدّ معرضة للسيول (${Math.round(r.floodExposed).toLocaleString("en-US")} ساكن) — إنذار مبكر من السيول المفاجئة وصيانة التصريف قبل موسم الأمطار.` } });
+    actions.push({ districtId: r.id, kind: "FLOOD", priority: 0.5, text: { en: `${d.name.en}: ${r.floodEAs} flood-susceptible EAs (${Math.round(r.floodExposed).toLocaleString("en-US")} residents) — flash-flood early warning, drainage maintenance before the rainy season.`, ar: `${d.name.ar}: ${r.floodEAs} منطقة عدّ معرضة للسيول (${Math.round(r.floodExposed).toLocaleString("en-US")} ساكن) — إنذار مبكر من السيول المفاجئة وصيانة التصريف قبل موسم الأمطار.` } });
   }
   const totalPop = rows.reduce((s, r) => s + r.pop, 0);
   return {

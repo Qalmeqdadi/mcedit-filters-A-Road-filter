@@ -61,7 +61,7 @@ export function barH(categories: string[], series: { name: string; data: number[
   const multi = series.length > 1;
   return {
     ...base(o.rtl),
-    grid: { left: 8, right: 16, top: multi && o.legend !== false ? 28 : 6, bottom: 4, containLabel: true },
+    grid: { left: o.showLabels && o.rtl ? 48 : 8, right: o.showLabels && !o.rtl ? 48 : 16, top: multi && o.legend !== false ? 28 : 6, bottom: 4, containLabel: true },
     legend: multi && o.legend !== false ? { top: 0, [o.rtl ? "right" : "left"]: 0, itemWidth: 10, itemHeight: 10, textStyle: { color: INK.secondary, fontSize: 11 } } : undefined,
     tooltip: { ...tooltipBase, trigger: "axis", axisPointer: { type: "shadow", shadowStyle: { color: "rgba(47,98,166,0.06)" } }, valueFormatter: o.fmt },
     xAxis: { ...valueAxis(o.fmt), inverse: o.rtl },
