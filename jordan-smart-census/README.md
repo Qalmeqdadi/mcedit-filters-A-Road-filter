@@ -28,13 +28,14 @@ Requires Node ≥ 20.9. No API keys, no backend, no network access at runtime (a
 | `npm run typecheck` · `npm run lint` | TypeScript (strict) and ESLint (Next + React Compiler rules) |
 | `npm run geo` | Rebuilds `src/data/geo/*.json` from `data-raw/geoboundaries` |
 | `npm run verify:generator` · `verify:engine` · `verify:projections` | Headless checks of the synthetic world, a full fieldwork run (incl. PES) and the projection/scenario engines |
+| `npm run verify:lab` · `verify:early-warning` · `verify:ask` | Headless checks of every Planning Lab model, the field early-warning backtest and the question engine |
 | `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route renders without console errors; 33 end-to-end workflow checks |
 
 ## Presenting
 
-Click **Executive demo** (top right). A presenter bar walks through 13 steps, navigating and driving the real engine:
+Click **Executive demo** (top right). A presenter bar walks through 17 steps, navigating and driving the real engine:
 
-1. National overview · 2. Census planning · 3. Administrative geography · 4. Enumeration areas (Irbid drill-down) · 5. Launch the simulation · 6. Fieldwork progress (fast-forward to day 9) · 7. Enumerator anomaly (`AMM-E0037`) · 8. Supervisor intervention (human decision recorded) · 9. Coverage completion (fieldwork closed) · 10. Post-Enumeration Survey · 11. Final census results · 12. 2040 projection · 13. National planning simulation (migration-shock scenario) → Decision Intelligence.
+1. National overview · 2. Census planning · 3. Administrative geography · 4. Enumeration areas (Irbid drill-down) · 5. Launch the simulation · 6. Fieldwork progress (fast-forward to day 9) · 7. Predictive field control · 8. Enumerator anomaly (`AMM-E0037`) · 9. Supervisor intervention (human decision recorded) · 10. Coverage completion (fieldwork closed) · 11. Post-Enumeration Survey · 12. Final census results · 13. 2040 projection · 14. National planning simulation (migration-shock scenario) · 15. Planning Lab — facility siting · 16. Urban growth to 2050 · 17. Capital investment portfolio → Decision Intelligence.
 
 Other controls: **Start census / Pause / Resume / Reset** and **1× · 5× · 10× · 20×** speed in the top bar (1× = one field shift per second; 4 shifts = 1 day); **عربي / EN** language switch; **alerts bell** (acknowledge / escalate / resolve); **database icon** = global provenance panel; **settings** = seed and acting-officer name.
 
@@ -50,7 +51,7 @@ The same command also writes `artifact/dist/jordan-smart-census.html`, an offlin
 
 `node scripts/qa-mobile.mjs [base]` checks every route at 390 px for horizontal overflow.
 
-## What is built (22 modules)
+## What is built (35 modules)
 
 | # | Module | Highlights |
 | --- | --- | --- |
@@ -63,13 +64,29 @@ The same command also writes `artifact/dist/jordan-smart-census.html`, an offlin
 | 07 | Coverage & Completion | S-curve actual vs plan, district completion map, EA status mix, districts sorted by gap, revisit queue. |
 | 08 | Data Quality | 17 deterministic rules (age range, child older than parent, parent–child gap, marital/employment/education vs age, duplicate IDs, missing head, large households, short interviews, identical rosters, productivity, refusal concentration, dwelling mismatch, GPS mismatch, coverage gap); assign / investigate / request revisit / resolve / dismiss-with-reason; audit trail. |
 | 09 | AI Anomaly Detection | *AI-assisted anomaly simulation* — z-scores vs district peers, IQR fences, heaping, GPS and roster-pattern tests. Each finding shows what happened, evidence, why flagged, method, affected records, severity, recommended action and the **human decision**. No LLM; nothing is auto-corrected. |
-| 10 | Post-Enumeration Survey | Stratified sample of completed EAs, independent re-enumeration, matching, omissions, erroneous inclusions, duplicates, dual-system estimate, match rate, net & gross coverage error with formulas; national and governorate results. Labelled **SIMULATED POST-ENUMERATION SURVEY**. |
-| 11–17 | Population · Housing · Labour · Education · Health & functional difficulty · Migration · Infrastructure | Drill-down (Jordan → governorate → district → EA), choropleths, governorate comparison tables; migration arc map, origin–destination matrix and Sankey; infrastructure pressure index. Labour figures are explicitly **not** Jordan's official unemployment rate. |
-| 18 | Population Projections | Annual cohort-component model to 2050 with adjustable fertility, life expectancy, migration, household size, urbanisation, employment ratio; pyramid vs base. |
-| 19 | Scenario Simulator | 6 presets + custom, 16 controls; 11 impact indicators (population, households, housing units, school seats, classrooms, schools, healthcare, water, electricity, jobs, elderly care); save / duplicate / compare / reset; CSV. |
-| 20 | National Decision Intelligence | Ministerial statements (education, water, housing, health, employment, energy, infrastructure) generated deterministically from the active scenario, each with its formula and assumptions; regional outlook; pressure map; priority governorates. |
-| 21 | Reports & Export | Six CSV exports (governorate summary, enumerator performance, quality issues, anomalies, scenario results, PES results) + a printable executive report. |
-| 22 | Methodology & Data Provenance | Data-nature legend, provenance registry, geography pipeline, reference cross-checks, simulation methodology, synthetic assumptions, limitations, and the **official-data import adapter**. |
+| 10 | Predictive Field Control | From census day 2, P(late) for every enumerator workload from a log-normal pace model, with explained drivers (pace, refusals, access, disruption, device, late start); reserve or nearby-helper support proposed and **approved by a supervisor** (engine `assignSupport`, logged as an intervention); backtest (precision, recall, Brier) once fieldwork closes. |
+| 11 | Post-Enumeration Survey | Stratified sample of completed EAs, independent re-enumeration, matching, omissions, erroneous inclusions, duplicates, dual-system estimate, match rate, net & gross coverage error with formulas; national and governorate results. Labelled **SIMULATED POST-ENUMERATION SURVEY**. |
+| 12–18 | Population · Housing · Labour · Education · Health & functional difficulty · Migration · Infrastructure | Drill-down (Jordan → governorate → district → EA), choropleths, governorate comparison tables; migration arc map, origin–destination matrix and Sankey; infrastructure pressure index. Labour figures are explicitly **not** Jordan's official unemployment rate. |
+| 19 | Population Projections | Annual cohort-component model to 2050 with adjustable fertility, life expectancy, migration, household size, urbanisation, employment ratio; pyramid vs base; **probabilistic projection** — 300 Monte-Carlo runs, 80 % / 95 % fan chart, probability above a threshold. |
+| 20 | Inter-censal Nowcast | Kalman-filter blend of demographic accounting (registered births / deaths) and an electricity-connection indicator, 60 months by governorate; unexplained-growth flags; error of each method against the synthetic truth. |
+| 21 | Scenario Simulator | 6 presets + custom, 16 controls; 11 impact indicators (population, households, housing units, school seats, classrooms, schools, healthcare, water, electricity, jobs, elderly care); save / duplicate / compare / reset; CSV. |
+| 22 | National Decision Intelligence | Ministerial statements (education, water, housing, health, employment, energy, infrastructure) generated deterministically from the active scenario, each with its formula and assumptions; regional outlook; pressure map; priority governorates. |
+| 23 | Ask the Data | Rule-based English / Arabic question engine (no language model): questions are parsed into topic · operation · geography · year, answered by the platform's own models, with table, chart, formula, provenance and a link to the module. Unmatched questions get suggestions, never invented numbers. |
+| **Planning Lab** | | Shared scenario + horizon selector (presets, the Scenario Simulator's current scenario, or saved scenarios) and a small-area (district) projection layer. |
+| 24 | Facility Siting Planner | Schools, primary health centres, hospitals: projected demand vs a synthetic inventory for access (distance standard) and capacity; **greedy maximal-covering optimiser** that explains every pick; manual placement by clicking the map; catchment rings; district gap table; CSV. |
+| 25 | Urban Growth Forecast | Constrained cellular automaton (~0.46 km² cells) for Greater Amman, Irbid, Mafraq and Aqaba; compact / trend / dispersed policies, green belt and growth boundary; new land, density, distance to centre, road and pipe km, network cost; policy comparison. |
+| 26 | Housing Need Forecast | New households + replacement + overcrowding / tents backlog − vacancy release, vs completions; cumulative shortfall; need per 1,000 households by governorate and district; dwelling mix and land. |
+| 27 | Water Security | Municipal requirement vs supply by governorate to 2050 (NRW, decline, desalination, demand management), drought Monte-Carlo, first stress year, and a cheapest-first lever package. |
+| 28 | Mobility & Commuting | Gravity model + car / public-transport logit + congested assignment on a schematic district network; rapid-transit corridors with riders, mode shift, car-km, vehicle-hours and CO₂ effects. |
+| 29 | Climate Risk | Census vulnerability (65+, under 5, no cooling, outdoor work, disability, tents) × illustrative heat classes and synthetic flood-susceptible EAs; people at risk, cooling centres, priority actions. |
+| 30 | Jobs & Labour Entry | Labour force from projected ages × census participation; jobs to hold / reach a target unemployment rate vs jobs created from GDP growth × elasticity; women's participation path; sector strategies. |
+| 31 | Ageing & Care | 65+ / 80+, old-age dependency, median age, long-term-care beds, home care, care workforce, functional difficulty. |
+| 32 | Capital Investment Planner | Projects generated from all lab models compete for one budget: weighted efficiency (within sector) · equity (deprivation) · urgency, sector priorities, greedy knapsack, budget frontier, "what the next JOD 250M buys", investment per resident. |
+| 33 | Shock Response Simulator | Week-by-week inflow (arrival curve, destination pattern, camps) against housing (vacant dwellings from the frame), schools, primary care and water; shock-attributable breaches; proposed actions that can be added to the plan; play-through. |
+| 34 | Reports & Export | Seven CSV exports (governorate summary, enumerator performance, quality issues, anomalies, scenario results, PES results, **Planning Lab indicators**) + a printable executive report. Every Planning Lab module also exports its own CSV. |
+| 35 | Methodology & Data Provenance | Data-nature legend, provenance registry, geography pipeline, reference cross-checks, simulation methodology, synthetic assumptions, limitations, and the **official-data import adapter**. |
+
+Census Planning also includes **non-response & revisit planning** (final response by number of callbacks, follow-up team size, "use live fieldwork rates"), and the enumerator detail sheet shows an **optimised visiting route** (nearest-neighbour + 2-opt) with km and walking time saved vs the listed order.
 
 Global features: command-centre alerts (coverage gap, unusual performance, high refusal, potential duplicate, duration anomaly, district behind schedule, device offline, supervisor review, PES coverage) with severity, owner, timestamp, status, acknowledge / escalate / resolve; provenance popovers on every panel; full Arabic/RTL including charts (axes mirrored in options, not just page direction).
 
@@ -193,6 +210,7 @@ The same pattern extends to boundaries (`npm run geo` with DoS/COD layers in `da
 - All microdata, fieldwork, quality, anomaly, PES, projection and scenario outputs are synthetic.
 - EAs are centroids, not polygons; blocks and dwellings are generated on demand.
 - Client-side only: no authentication or server-side audit store, and fieldwork state resets on reload. Preferences and saved scenarios persist in `localStorage`.
+- Planning Lab hazard layers (heat classes, flood flags), the facility inventory, water supply, unit costs and the schematic transport network are **illustrative stand-ins** — each is labelled and listed in the provenance registry with what should replace it.
 - The simulation runs on the main thread; at 20× a full census takes ~5 s and the UI stays responsive on a typical laptop.
 
 ## Recommended next phase
@@ -201,5 +219,7 @@ The same pattern extends to boundaries (`npm run geo` with DoS/COD layers in `da
 2. A backend (e.g. PostgreSQL/PostGIS + an API) with authentication, role-based access (HQ, governorate coordinator, supervisor, enumerator), an immutable audit log and an offline-first CAPI sync service.
 3. Ingest DoS reference tables (population estimates, 2015 census) through the adapter pattern, with versioning and approval workflow.
 4. Move the simulation to a Web Worker and add scenario persistence / sharing on the server.
-5. Calibrate the synthetic model and projection assumptions against DoS and UN WPP with demographers; add uncertainty bands.
-6. Accessibility audit (WCAG 2.2 AA), formal Arabic terminology review with DoS, and a security review before any pilot.
+5. Calibrate the synthetic model and projection assumptions against DoS and UN WPP with demographers.
+6. Replace Planning Lab stand-ins with ministry data: MoE / MoH facility registers, MWI water balance, the national road network and GTFS, Jordan Meteorological Department climate layers and national flood-hazard maps, and real administrative feeds (civil registry, utilities, school enrolment) for the nowcast.
+7. Optional language-model front end for Ask the Data that only translates free text into the existing structured queries, so every number still comes from the models.
+8. Accessibility audit (WCAG 2.2 AA), formal Arabic terminology review with DoS, and a security review before any pilot.

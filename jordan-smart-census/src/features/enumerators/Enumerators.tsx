@@ -19,7 +19,7 @@ import { barV, barH, VIZ } from "@/components/charts/builders";
 import { StatRow } from "@/components/charts/common";
 import { JordanMap } from "@/features/gis/JordanMap";
 import { generateBlocks } from "@/simulation/generate";
-import { kmBetween } from "@/simulation/geo";
+import { optimiseRoute } from "@/simulation/lab/routing";
 import { medianFromHist } from "@/simulation/anomalies";
 import { downloadCsv } from "@/lib/csv";
 import { fmt1, fmtInt, fmtPct, fmtDateTime } from "@/lib/format";
@@ -173,21 +173,13 @@ function EnumeratorSheet({ id, onClose }: { id: string | null; onClose: () => vo
   const e = i !== undefined ? engine.world.enumerators[i] : null;
   const s = i !== undefined ? engine.en[i] : null;
 
-  const route = useMemo(() => {
-    if (!e) return [] as [number, number][];
-    const ea = engine.world.eas[engine.world.eaIdx.get(e.eaIds[0])!];
-    const blocks = generateBlocks(engine.world.config.seed, ea);
-    // nearest-neighbour ordering starting from the EA centroid
-    const left = blocks.map((b) => [b.lng, b.lat] as [number, number]);
-    const out: [number, number][] = [[ea.lng, ea.lat]];
-    while (left.length) {
-      const cur = out[out.length - 1];
-      let bi = 0;
-      for (let k = 1; k < left.length; k++) if (kmBetween(cur, left[k]) < kmBetween(cur, left[bi])) bi = k;
-      out.push(left.splice(bi, 1)[0]);
-    }
-    return out;
+  const plan = useMemo(() => {
+    if (!e) return null;
+    const first = engine.world.eas[engine.world.eaIdx.get(e.eaIds[0])!];
+    const stops = e.eaIds.flatMap((id) => generateBlocks(engine.world.config.seed, engine.world.eas[engine.world.eaIdx.get(id)!]).map((b) => [b.lng, b.lat] as [number, number]));
+    return optimiseRoute([first.lng, first.lat], stops);
   }, [e, engine.world]);
+  const route = plan?.optimised ?? ([] as [number, number][]);
 
   useEffect(() => {
     if (!playing) return;
@@ -234,7 +226,14 @@ function EnumeratorSheet({ id, onClose }: { id: string | null; onClose: () => vo
           <div className="mt-2 flex flex-wrap gap-2">
             {eaStates.map((x) => <span key={x.id} className="flex items-center gap-1.5 rounded border border-line px-2 py-0.5 text-[12px]"><span className="font-mono">{x.id}</span><EAStatusChip s={x.s.status} /><span className="text-ink-500 tabular">{fmtPct(x.s.visited / x.a.dwellingsTrue, 0)}</span></span>)}
           </div>
-          <p className="mt-1.5 text-[11.5px] text-ink-500">{L("Route: nearest-neighbour sequence through the statistical blocks of the first assigned EA (synthetic).", "المسار: تسلسل أقرب جار عبر البلوكات الإحصائية لأول منطقة عدّ مسندة (اصطناعي).")}</p>
+          {plan ? (
+            <div className="mt-2 grid grid-cols-3 gap-2 rounded-md bg-sand-50 px-3 py-2 text-[12px]">
+              <div><div className="text-ink-500">{L("Listed order", "الترتيب المدرج")}</div><div className="font-semibold tabular">{fmt1(plan.listedKm)} km</div></div>
+              <div><div className="text-ink-500">{L("Optimised (2-opt)", "المحسَّن (2-opt)")}</div><div className="font-semibold tabular text-ok">{fmt1(plan.optimisedKm)} km</div></div>
+              <div><div className="text-ink-500">{L("Saved", "الوفر")}</div><div className="font-semibold tabular">{fmtPct(plan.savedPct, 0)} · {fmtInt(plan.savedMinutes)} {L("min walking", "دقيقة مشي")}</div></div>
+            </div>
+          ) : null}
+          <p className="mt-1.5 text-[11.5px] text-ink-500">{L("Route through all statistical blocks of the assignment: nearest-neighbour start improved by 2-opt; straight-line distance × 1.3 street detour, 4.5 km/h walking (synthetic block positions).", "المسار عبر جميع البلوكات الإحصائية للمهمة: بداية بأقرب جار ثم تحسين 2-opt؛ المسافة المستقيمة × 1.3 لتعرج الشوارع، والمشي 4.5 كم/س (مواقع بلوكات اصطناعية).")}</p>
         </Panel>
 
         <div className="grid gap-3 md:grid-cols-2">

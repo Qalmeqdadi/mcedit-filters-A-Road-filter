@@ -2,6 +2,7 @@
 
 import { CalendarCheck2, CheckCircle2 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { ResponsePlanning } from "./ResponsePlanning";
 import { useApp } from "@/store/app";
 import { useEngine } from "@/store/engine";
 import { useI18n } from "@/hooks/useI18n";
@@ -187,6 +188,8 @@ export function Planning() {
           </Panel>
         </div>
       </div>
+
+      <div className="mt-3"><ResponsePlanning households={input.households} /></div>
 
       <Modal open={!!pending} onOpenChange={(o) => !o && setPending(null)} title={L("Apply plan to the fieldwork simulation?", "تطبيق الخطة على محاكاة العمل الميداني؟")} footer={<><Button onClick={() => setPending(null)}>{t("cancel")}</Button><Button variant="primary" onClick={() => pending && apply(pending)}><CheckCircle2 size={14} />{t("apply")}</Button></>}>
         {pending ? (

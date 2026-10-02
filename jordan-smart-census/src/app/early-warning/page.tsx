@@ -1,5 +1,5 @@
-import { ComingNext } from "@/features/lab/ComingNext";
+import { EarlyWarning } from "@/features/lab/EarlyWarning";
 
 export default function Page() {
-  return <ComingNext href="/early-warning" />;
+  return <EarlyWarning />;
 }

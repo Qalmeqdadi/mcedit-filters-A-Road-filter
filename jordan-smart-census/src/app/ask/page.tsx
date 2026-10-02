@@ -1,5 +1,5 @@
-import { ComingNext } from "@/features/lab/ComingNext";
+import { Ask } from "@/features/lab/Ask";
 
 export default function Page() {
-  return <ComingNext href="/ask" />;
+  return <Ask />;
 }

@@ -5,6 +5,12 @@ import { RULE_INDEX } from "@/simulation/quality";
 import { medianFromHist } from "@/simulation/anomalies";
 import { compareScenarios, DEFAULT_PARAMS, PROJECTION_YEARS, runScenario, type FullScenario } from "@/simulation/scenarios";
 import type { PESSummary } from "@/types/census";
+import { smallArea } from "@/simulation/lab/common";
+import { analyseSiting, DEFAULT_NORMS, facilityInventory } from "@/simulation/lab/facilities";
+import { DEFAULT_HOUSING, forecastHousing } from "@/simulation/lab/housingNeed";
+import { DEFAULT_JOBS, forecastJobs } from "@/simulation/lab/jobs";
+import { DEFAULT_WATER, simulateWater } from "@/simulation/lab/water";
+import { assessClimate, DEFAULT_CLIMATE } from "@/simulation/lab/climate";
 
 export function governorateSummary(engine: CensusEngine) {
   const byGov = engine.aggregateBy("govId");
@@ -49,4 +55,35 @@ export function pesResults(engine: CensusEngine) {
   if (!r) return [];
   const row = (level: string, gov: string, s: PESSummary) => ({ level, governorate: gov, areas: s.areas, census_count: s.census, pes_count: s.pes, matched: s.matched, omissions: s.omissions, erroneous_inclusions: s.erroneous, duplicates: s.duplicates, dual_system_estimate: Math.round(s.dualSystemEstimate), match_rate: +s.matchRate.toFixed(4), net_coverage_error: +s.netCoverageError.toFixed(4), gross_coverage_error: +s.grossCoverageError.toFixed(4), nature: "SIMULATED POST-ENUMERATION SURVEY" });
   return [row("NATIONAL", "JOR", r.national), ...Object.entries(r.byGov).map(([g, s]) => row("GOVERNORATE", g, s))];
+}
+
+/** One row per governorate with the headline Planning Lab indicators (baseline scenario, 2035/2040 horizons). */
+export function planningLabIndicators(engine: CensusEngine) {
+  const world = engine.world;
+  const run = runScenario(world, world.totals.population, DEFAULT_PARAMS);
+  const areaFor = (y: number) => smallArea(world, run, y);
+  const base = run.baseYear;
+  const sa0 = areaFor(base);
+  const sa35 = areaFor(2035);
+  const sa40 = areaFor(2040);
+  const inv = facilityInventory(world, sa0);
+  const schools = analyseSiting(world, sa35, "SCHOOL", inv.SCHOOL, DEFAULT_NORMS.SCHOOL);
+  const phc = analyseSiting(world, sa35, "PHC", inv.PHC, DEFAULT_NORMS.PHC);
+  const housing = forecastHousing(world, areaFor, base, 2050, DEFAULT_HOUSING);
+  const jobs = forecastJobs(world, run.series, areaFor, DEFAULT_JOBS);
+  const water = simulateWater(world, areaFor, base, 2050, DEFAULT_WATER, 2040);
+  const climate = assessClimate(world, sa40, DEFAULT_CLIMATE);
+  return world.governorates.map((g) => {
+    const cl = climate.districts.filter((d) => world.district[d.id].govId === g.id);
+    return {
+      governorate: g.name.en, governorate_ar: g.name.ar,
+      population_base: Math.round(sa0.gov[g.id].pop), population_2035: Math.round(sa35.gov[g.id].pop), population_2040: Math.round(sa40.gov[g.id].pop),
+      pop_65_plus_growth_to_2040: +(sa40.gov[g.id].a65 / sa0.gov[g.id].a65 - 1).toFixed(3),
+      school_seat_gap_2035: Math.round(schools.byGov[g.id].gap), phc_capacity_gap_2035: Math.round(phc.byGov[g.id].gap),
+      homes_needed_to_2035: Math.round(housing.byGov[g.id].need2035), jobs_needed_to_2035: Math.round(jobs.byGov[g.id].jobsNeeded2035),
+      water_first_stress_year: water.stressYear[g.id] ?? "", water_supply_ratio_2040: +(water.byGov[g.id].find((x) => x.year === 2040)!.ratio).toFixed(3),
+      people_at_heat_risk_2040: Math.round(cl.reduce((s, d) => s + d.atRisk, 0)), flood_exposed_2040: Math.round(cl.reduce((s, d) => s + d.floodExposed, 0)),
+      scenario: "BASELINE", data_nature: "SIMULATED",
+    };
+  });
 }

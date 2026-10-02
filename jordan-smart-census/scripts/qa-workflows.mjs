@@ -181,7 +181,7 @@ await step("decision", async () => {
 
 await step("exports", async () => {
   await nav("/reports");
-  for (const name of ["governorate-summary.csv", "enumerator-performance.csv", "quality-issues.csv", "anomalies.csv", "scenario-results.csv", "pes-results.csv"]) {
+  for (const name of ["governorate-summary.csv", "enumerator-performance.csv", "quality-issues.csv", "anomalies.csv", "scenario-results.csv", "pes-results.csv", "planning-lab-indicators.csv"]) {
     const [d] = await Promise.all([page.waitForEvent("download", { timeout: 15000 }), page.locator("main div.rounded-lg", { hasText: name }).locator("button").click()]);
     check(`export ${name}`, d.suggestedFilename() === name);
   }
@@ -219,14 +219,60 @@ await step("reset", async () => {
   check("simulation resets to day 0", (await day()) === 0);
 });
 
+await step("planning lab", async () => {
+  await nav("/siting");
+  const access = async () => (await page.locator("main [data-kpi-value]").nth(1).textContent()).trim();
+  const a0 = await access();
+  await page.click("[data-testid=suggest-sites]");
+  await page.waitForTimeout(1500);
+  check("siting optimiser proposes sites", (await page.locator("main ol li").count()) >= 5, `access ${a0} → ${await access()}`);
+  const [d1] = await Promise.all([page.waitForEvent("download", { timeout: 15000 }), page.click("main button:has-text('Export CSV')")]);
+  check("siting CSV export", d1.suggestedFilename().startsWith("facility-siting"));
+  await nav("/urban-growth");
+  const area = () => page.locator("main [data-kpi-value]").first().textContent();
+  const t0 = await area();
+  await page.click("main button:has-text('Dispersed growth')");
+  await page.waitForTimeout(1200);
+  check("urban growth policy changes outcome", (await area()) !== t0, `${t0} → ${await area()}`);
+  await nav("/water");
+  check("water balance renders", (await page.locator("main [data-kpi-value]").count()) >= 6);
+  await nav("/capital");
+  const funded = () => page.locator("main [data-kpi-value]").nth(2).textContent();
+  const f0 = await funded();
+  await page.locator("main input[type=range]").first().evaluate((el) => {
+    const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set;
+    set.call(el, "3000");
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await page.waitForTimeout(1200);
+  check("capital budget changes portfolio", (await funded()) !== f0, `${f0} → ${await funded()}`);
+  await nav("/shock");
+  await page.click("main button:has-text('Play weeks')");
+  await page.waitForTimeout(2500);
+  check("shock simulator plays and proposes actions", (await page.locator("main button:has-text('Add to plan')").count()) > 0);
+  await nav("/ask");
+  await page.fill("[data-testid=ask-input]", "Which governorates will grow fastest by 2040?");
+  await page.click("[data-testid=ask-submit]");
+  await page.waitForTimeout(800);
+  check("ask the data answers from the models", /grows fastest/.test(await page.locator("[data-testid=ask-answer]").first().textContent()));
+  await nav("/projections");
+  check("probabilistic projection panel", (await page.locator("#uncertainty").count()) === 1);
+  for (const r of ["/housing-need", "/jobs", "/ageing", "/nowcast", "/mobility", "/climate"]) {
+    await nav(r);
+    check(`${r} renders KPIs`, (await page.locator("main [data-kpi-value]").count()) >= 6);
+  }
+});
+
 await step("demo", async () => {
   await headerBtn("Executive demo").click();
-  for (let i = 0; i < 12; i++) {
+  await page.waitForTimeout(800);
+  const total = Number((await page.textContent("body")).match(/Step 1 \/ (\d+)/)[1]);
+  for (let i = 0; i < total - 1; i++) {
     await page.waitForTimeout(i === 4 ? 2500 : 1500);
     await page.locator("button", { hasText: /^Next/ }).last().click();
   }
   await page.waitForTimeout(1800);
-  check("executive demo walks 13 steps", (await page.textContent("body")).includes("Step 13 / 13"));
+  check(`executive demo walks ${total} steps`, (await page.textContent("body")).includes(`Step ${total} / ${total}`));
   await page.screenshot({ path: `${shots}/wf-demo-final.png` });
 });
 
