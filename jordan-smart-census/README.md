@@ -29,7 +29,7 @@ Requires Node ≥ 20.9. No API keys, no backend, no network access at runtime (a
 | `npm run geo` | Rebuilds `src/data/geo/*.json` from `data-raw/geoboundaries` |
 | `npm run verify:generator` · `verify:engine` · `verify:projections` | Headless checks of the synthetic world, a full fieldwork run (incl. PES) and the projection/scenario engines |
 | `npm run verify:lab` · `verify:early-warning` · `verify:ask` | Headless checks of every Planning Lab model, the field early-warning backtest and the question engine |
-| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route renders without console errors; 33 end-to-end workflow checks |
+| `npm run qa:routes` · `qa:workflows` | Playwright checks against a running server: every route (35, English and Arabic) renders without console errors; 48 end-to-end workflow checks |
 
 ## Presenting
 
