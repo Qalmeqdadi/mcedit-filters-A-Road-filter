@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
-    "process-map": "tsx scripts/process-map.ts"
+    "process-map": "tsx scripts/process-map.ts",
+    "demo": "tsx scripts/demo.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.3",

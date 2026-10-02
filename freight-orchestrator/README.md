@@ -79,6 +79,7 @@ You need Node 20 or later. The tests use in-process Postgres (PGlite), so no ser
 
 ```bash
 npm install
+npm run demo        # walkthrough: one quote through the direct-to-shipper flow, per persona, with its audit trail
 npm test
 npm run typecheck
 npm run process-map # regenerate docs/PROCESS-MAP.md
