@@ -11,6 +11,7 @@ import { Segmented, Slider } from "@/components/ui/form";
 import { EChart } from "@/components/charts/echart";
 import { line, VIZ } from "@/components/charts/builders";
 import { PyramidChart } from "@/components/charts/common";
+import { Uncertainty } from "./Uncertainty";
 import { BASE_E0, BASE_TFR, DEFAULT_PARAMS, PROJECTION_YEARS, runScenario, TFR_2050_TREND, type FullScenario } from "@/simulation/scenarios";
 import { downloadCsv } from "@/lib/csv";
 import { fmt1, fmtCompact, fmtInt, fmtPct, fmtSignedPct } from "@/lib/format";
@@ -32,7 +33,8 @@ export function Projections() {
   const da = useDeferredValue(a);
   const world = engine.world;
   const baseTotal = world.totals.population;
-  const run = useMemo(() => runScenario(world, baseTotal, toScenario(da)), [world, baseTotal, da]);
+  const scenario = useMemo(() => toScenario(da), [da]);
+  const run = useMemo(() => runScenario(world, baseTotal, scenario), [world, baseTotal, scenario]);
   const baseline = useMemo(() => runScenario(world, baseTotal, DEFAULT_PARAMS), [world, baseTotal]);
   const baseYear = run.baseYear;
   const yr = year === baseYear ? baseYear : year;
@@ -92,6 +94,7 @@ export function Projections() {
             <Panel title={L("Service-relevant age groups", "الفئات العمرية ذات الصلة بالخدمات")} nature="SIMULATED"><EChart option={segChart} height={240} /></Panel>
             <Panel title={L("Working-age population and households", "السكان في سن العمل والأسر")} nature="SIMULATED"><EChart option={waChart} height={240} /></Panel>
           </div>
+          <Uncertainty params={scenario} central={run.series} year={yr} />
           <Panel title={L("Projection table", "جدول الإسقاط")} nature="SIMULATED">
             <div className="thin-scroll overflow-x-auto">
               <table className="w-full min-w-[640px] text-[12.5px]">

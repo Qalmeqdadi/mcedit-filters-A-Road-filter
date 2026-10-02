@@ -37,7 +37,7 @@ export function Sidebar({ open, onNavigate }: { open: boolean; onNavigate: () =>
           <div key={g} className="mb-3">
             <div className="px-2.5 pb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-navy-300/70">{t(g)}</div>
             {NAV.filter((n) => n.group === g).map((n) => {
-              const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
+              const active = n.href === "/" ? path === "/" : path === n.href || path.startsWith(`${n.href}/`);
               const Icon = n.icon;
               return (
                 <Link key={n.href} href={n.href} onClick={onNavigate} className={cn("group relative flex items-center gap-2.5 rounded-md px-2.5 py-[7px] text-[12.75px] leading-tight transition-colors", active ? "bg-white/10 font-medium text-white" : "text-navy-100/80 hover:bg-white/5 hover:text-white")}>

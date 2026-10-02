@@ -41,7 +41,7 @@ export function Slider({ label, value, min, max, step, onChange, format, hint }:
 
 export function Segmented<T extends string | number>({ value, options, onChange, size = "sm", dark }: { value: T; options: { value: T; label: ReactNode }[]; onChange: (v: T) => void; size?: "xs" | "sm"; dark?: boolean }) {
   return (
-    <div className={cn("inline-flex rounded-md p-0.5", dark ? "bg-white/10" : "border border-line bg-sand-50")}>
+    <div className={cn("inline-flex max-w-full overflow-x-auto rounded-md p-0.5 [scrollbar-width:none]", dark ? "bg-white/10" : "border border-line bg-sand-50")}>
       {options.map((o) => (
         <button
           key={String(o.value)}
