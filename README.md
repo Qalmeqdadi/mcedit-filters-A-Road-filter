@@ -2,6 +2,8 @@
 
 An illustrative Proof of Value (PoV) prepared for **Etihad Credit Bureau**, with Insight. It is a clickable enterprise demo: seven specialist AI agents orchestrate a procurement lifecycle end to end, and humans stay accountable for every material decision.
 
+> **Also in this repo:** [`freight-orchestrator/`](freight-orchestrator/README.md), the carrier module of Freight Orchestrator: an isometric, game-like capacity console (separate app, `cd freight-orchestrator && npm install && npm run dev`).
+
 > **All data is synthetic.** The suppliers, people, figures, contracts and events are fictional. No ECB systems or credit data are connected. External / credit-risk information is only shown as an example of use *where legally permitted and authorised*. Value figures are illustrative hypotheses to be validated during the PoV.
 
 ## Hosted version (no install)
