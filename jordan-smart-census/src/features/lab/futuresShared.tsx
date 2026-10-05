@@ -53,7 +53,7 @@ export function FuturesBar() {
         {AXES.map((a) => <option key={a.id} value={a.id}>{tx(a.name)}</option>)}
       </Select>
       <span className="ms-1 text-[11px] font-semibold uppercase tracking-wider text-ink-500">{L("Horizon", "الأفق")}</span>
-      <Segmented value={year} onChange={setYear} options={LAB_YEARS.map((y) => ({ value: y, label: String(y) }))} />
+      <Segmented value={year} onChange={setYear} options={LAB_YEARS.map((y) => ({ value: y, label: y === LAB_YEARS[0] ? L(`Today ${y}`, `اليوم ${y}`) : String(y) }))} />
       <div className="flex-1" />
       <NatureBadge nature="SIMULATED" />
     </div>

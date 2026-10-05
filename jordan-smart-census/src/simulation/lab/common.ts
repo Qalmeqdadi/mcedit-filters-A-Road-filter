@@ -18,7 +18,9 @@ import { calculateInfrastructureDemand, type ScenarioRun } from "../scenarios";
 import { MAX_AGE } from "../projection";
 import { derive, type Rng } from "../rng";
 
-export const LAB_YEARS = [2030, 2035, 2040, 2045, 2050];
+/** Planning horizons; the first is the census base year (the as-is view). */
+export const LAB_YEARS = [2026, 2030, 2035, 2040, 2045, 2050];
+export const BASE_LAB_YEAR = LAB_YEARS[0];
 
 export interface AreaStats {
   pop: number;

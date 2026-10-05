@@ -55,7 +55,8 @@ export interface FinanceResult {
 const PPP_SECTORS = new Set(["WATER", "ENERGY", "MOBILITY"]);
 
 export function assessFinance(world: World, sa0: SmallArea, year: number, actionsByGov: Record<GovId, ActionItem[]>, economy: EconomyResult, land: LandResult, p: FinanceParams = DEFAULT_FINANCE): FinanceResult {
-  const years = Math.max(1, year - sa0.year);
+  // a capital programme spans at least five years (also in the as-is view, where the horizon is the base year)
+  const years = Math.max(5, year - sa0.year);
   const byGov = {} as Record<GovId, GovFinance>;
   for (const g of world.governorates) {
     const acts = (actionsByGov[g.id] ?? []).filter((a) => a.sector !== "FINANCE");

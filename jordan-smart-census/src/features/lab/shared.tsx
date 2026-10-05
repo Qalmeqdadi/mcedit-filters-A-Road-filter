@@ -76,7 +76,7 @@ export function LabBar({ children, hideYear }: { children?: ReactNode; hideYear?
       {hideYear ? null : (
         <>
           <span className="ms-1 text-[11px] font-semibold uppercase tracking-wider text-ink-500">{L("Horizon", "الأفق")}</span>
-          <Segmented value={year} onChange={setYear} options={LAB_YEARS.map((y) => ({ value: y, label: String(y) }))} />
+          <Segmented value={year} onChange={setYear} options={LAB_YEARS.map((y) => ({ value: y, label: y === LAB_YEARS[0] ? L(`Today ${y}`, `اليوم ${y}`) : String(y) }))} />
         </>
       )}
       {children}
