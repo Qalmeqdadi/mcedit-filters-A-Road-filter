@@ -30,6 +30,7 @@ export const DICT = {
   navFinance: ["Municipal Finance", "المالية المحلية"],
   navEquity: ["Equity & SDGs", "العدالة وأهداف التنمية المستدامة"],
   navConnectors: ["Data Connectors", "موصلات البيانات"],
+  navValidation: ["Model Validation", "التحقق من النماذج"],
   navBriefing: ["Briefing Mode", "وضع الإحاطة"],
   navSiting: ["Facility Siting Planner", "مخطط مواقع المرافق"],
   navGrowth: ["Urban Growth Forecast", "التنبؤ بالنمو العمراني"],

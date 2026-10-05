@@ -1,5 +1,6 @@
 "use client";
 
+import { AiAnalyst } from "./AiAnalyst";
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
 import { ArrowRight, MessageSquareText, Send, X } from "lucide-react";
@@ -48,6 +49,7 @@ export function Ask() {
       <PageHeader index={navIndex("/ask")} title={t("navAsk")} subtitle={L("Ask a planning question in English or Arabic. The question is matched to one of the platform's own models, which computes the answer; every number shows how it was calculated and where it comes from.", "اطرح سؤالاً تخطيطياً بالعربية أو الإنجليزية. يُطابَق السؤال مع أحد نماذج المنصة الذي يحسب الإجابة؛ ويظهر لكل رقم طريقة حسابه ومصدره.")} />
       <LabBar hideYear />
       <Callout className="mb-3">{L("Rule-based query engine: it runs entirely in your browser and does not use a language model. It never invents numbers — if a question cannot be matched to a model, it says so and suggests what it can answer.", "محرك استعلام قائم على القواعد: يعمل بالكامل في متصفحك ولا يستخدم نموذجاً لغوياً. لا يختلق أرقاماً أبداً — إذا تعذرت مطابقة السؤال مع نموذج يوضح ذلك ويقترح ما يمكنه الإجابة عنه.")}</Callout>
+      <AiAnalyst />
       <Panel>
         <form onSubmit={submit} className="flex gap-2">
           <div className="relative min-w-0 flex-1">

@@ -6,6 +6,7 @@ import { useApp } from "@/store/app";
 import { useEngine } from "@/store/engine";
 import { useI18n } from "@/hooks/useI18n";
 import { PageHeader, Panel, Callout } from "@/components/ui/panel";
+import { ProfileButton } from "./ProfileButton";
 import { Kpi } from "@/components/ui/kpi";
 import { Button } from "@/components/ui/button";
 import { Segmented, Select } from "@/components/ui/form";
@@ -75,6 +76,7 @@ export function ActionPlans() {
     <div>
       <PageHeader index={navIndex("/action-plans")} title={t("navActions")} subtitle={L("Corrective actions and strategies for every governorate. Each finding from the Planning Lab models is turned into a sized action — what, how much, by when, at what indicative cost, led by whom and measured how — with the evidence and hotspot districts.", "إجراءات تصحيحية واستراتيجيات لكل محافظة. تتحول كل نتيجة من نماذج مختبر التخطيط إلى إجراء محدد الحجم — ماذا وكم ومتى وبأي كلفة تقديرية ومن يقوده وكيف يُقاس — مع الأدلة والألوية الأكثر حاجة.")}>
         {plan ? <Button onClick={copyBriefing} data-testid="copy-briefing"><ClipboardCopy size={14} />{L("Copy briefing", "نسخ الموجز")}</Button> : null}
+        <ProfileButton />
         <Button onClick={exportCsv} disabled={!plans}>{t("exportCsv")}</Button>
       </PageHeader>
       <LabBar>

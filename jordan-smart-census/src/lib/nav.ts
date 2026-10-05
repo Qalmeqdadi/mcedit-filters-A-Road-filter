@@ -1,7 +1,7 @@
 import {
   Activity, BarChart3, BookOpenCheck, Brain, Briefcase, BriefcaseBusiness, Building2, Bus, ClipboardList, Coins, Compass, Droplets, FileDown, GaugeCircle,
   GraduationCap, HeartHandshake, HeartPulse, Home, HousePlus, Landmark, ListChecks, Map, MapPinned, MessageSquareText, Plane, Radar, ScanSearch, School, ShieldCheck,
-  Siren, SlidersHorizontal, Sunrise, Grid2x2, Telescope, KanbanSquare, Presentation, Plug, Scale, Factory, Mountain, Zap, Banknote, Tent, ThermometerSun, TrendingUp, Users, Wrench,
+  Siren, SlidersHorizontal, Sunrise, Grid2x2, Telescope, KanbanSquare, Presentation, Plug, Scale, Factory, Mountain, Zap, Banknote, Target, Tent, ThermometerSun, TrendingUp, Users, Wrench,
 } from "lucide-react";
 import type { DictKey } from "@/lib/i18n/dict";
 
@@ -31,6 +31,7 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/pes", key: "nav10", group: "navFoundation", icon: BookOpenCheck },
   { href: "/nowcast", key: "navNowcast", group: "navFoundation", icon: Radar },
   { href: "/connectors", key: "navConnectors", group: "navFoundation", icon: Plug },
+  { href: "/validation", key: "navValidation", group: "navFoundation", icon: Target },
   { href: "/methodology", key: "nav22", group: "navFoundation", icon: MapPinned },
   // 2 · Jordan today
   { href: "/population", key: "nav11", group: "navToday", icon: BarChart3 },

@@ -2,7 +2,7 @@
   "name": "ufuq-jordan-foresight",
   "version": "0.1.0",
   "private": true,
-  "description": "Jordan Smart Census \u2014 National Population, Housing & Decision Intelligence Platform (prototype; simulated operational data)",
+  "description": "Jordan Smart Census — National Population, Housing & Decision Intelligence Platform (prototype; simulated operational data)",
   "scripts": {
     "predev": "node scripts/copy-maplibre-worker.mjs",
     "dev": "next dev -p 3000",
@@ -39,6 +39,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
+    "docx": "^9.8.1",
     "echarts": "^6.1.0",
     "lucide-react": "^1.49.0",
     "maplibre-gl": "^6.11.2",

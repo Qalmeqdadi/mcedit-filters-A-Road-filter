@@ -351,6 +351,18 @@ await step("planning lab", async () => {
   await page.waitForSelector("main [data-kpi-value]", { timeout: 60000 });
   await page.waitForTimeout(2500);
   check("imported revenue flows into municipal finance", (await page.textContent("main")).includes("JOD 95"));
+  await nav("/validation");
+  await page.waitForSelector("main [data-kpi-value]", { timeout: 60000 });
+  check("model validation backtest renders", (await page.locator("main [data-kpi-value]").count()) >= 6 && (await page.textContent("main")).includes("2025"));
+  await nav("/water");
+  await page.waitForSelector("[data-testid=horizon-ribbon] .tabular", { timeout: 60000 });
+  check("today → horizon ribbon on planning pages", (await page.locator("[data-testid=horizon-ribbon]").textContent()).includes("Today"));
+  await nav("/action-plans");
+  await page.waitForSelector("[data-testid=profile-docx]:not([disabled])", { timeout: 60000 });
+  const [dp] = await Promise.all([page.waitForEvent("download", { timeout: 30000 }), page.click("[data-testid=profile-docx]")]);
+  check("governorate profile exports as Word", dp.suggestedFilename().endsWith(".docx"), dp.suggestedFilename());
+  await nav("/ask");
+  check("AI analyst panel present (hosted-only notice offline)", (await page.locator("[data-testid=ai-analyst]").count()) === 1);
   await nav("/projections");
   check("probabilistic projection panel", (await page.locator("#uncertainty").count()) === 1);
   for (const r of ["/housing-need", "/jobs", "/ageing", "/nowcast", "/mobility", "/climate"]) {

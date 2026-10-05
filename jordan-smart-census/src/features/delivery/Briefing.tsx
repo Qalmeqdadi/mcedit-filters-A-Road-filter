@@ -19,6 +19,7 @@ import { useDelivery } from "@/delivery/store";
 import { usePlans } from "@/features/lab/shared";
 import { fmtInd } from "@/features/lab/ActionPlans";
 import { HealthBadge, StageBadge, jod } from "./parts";
+import { ProfileButton } from "@/features/lab/ProfileButton";
 
 function Slide({ kicker, title, children, n, total }: { kicker: string; title: string; children: ReactNode; n: number; total: number }) {
   return (
@@ -163,6 +164,7 @@ export function Briefing() {
     <div>
       <PageHeader index={navIndex("/briefing")} title={t("navBriefing")} subtitle={L("A ready-to-present briefing for a minister, governor or council, built live from the plans and the delivery portfolio. Use the arrow keys to move between slides.", "إحاطة جاهزة للعرض على وزير أو محافظ أو مجلس، مبنية مباشرة من الخطط ومحفظة التنفيذ. استخدم مفاتيح الأسهم للتنقل بين الشرائح.")}>
         <Select value={govId ?? ""} onChange={(e) => { selectGov((e.target.value || null) as GovId | null); setI(0); }} aria-label={t("governorate")}><option value="">{t("allJordan")}</option>{engine.world.governorates.map((g) => <option key={g.id} value={g.id}>{tx(g.name)}</option>)}</Select>
+        <ProfileButton />
         <Button onClick={() => { void stage.current?.requestFullscreen?.().catch(() => undefined); }}><Maximize2 size={13} />{L("Full screen", "ملء الشاشة")}</Button>
       </PageHeader>
       <div ref={stage} className="mx-auto flex max-w-[1100px] flex-col bg-paper [&:fullscreen]:max-w-none [&:fullscreen]:justify-center [&:fullscreen]:p-6">

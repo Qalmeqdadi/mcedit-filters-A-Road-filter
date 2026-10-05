@@ -44,6 +44,25 @@ export async function hostedExport(filename: string, text: string) {
   await copyExport(filename, text.replace(/^\uFEFF/, ""));
 }
 
+/** Save a binary file: the platform's download prompt in hosted mode, a normal download otherwise. */
+export async function saveBlob(filename: string, blob: Blob) {
+  if (isHosted()) {
+    const c = (window as unknown as { claude?: { use(n: string): Promise<unknown> } }).claude;
+    const dl = c?.use ? ((await c.use("downloads").catch(() => null)) as { save(r: { filename: string; data: Blob }): Promise<unknown> } | null) : null;
+    if (!dl) { toast({ message: `${filename} cannot be downloaded in this view — open the offline file or the app.` }); return; }
+    try { await dl.save({ filename, data: blob }); } catch { /* declined */ }
+    return;
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
 /** Copy text to the clipboard (hosted mode) and tell the user what happened. */
 export async function copyExport(filename: string, text: string) {
   try {

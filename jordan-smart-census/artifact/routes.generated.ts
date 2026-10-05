@@ -47,6 +47,7 @@ import R_shock from "@/app/shock/page";
 import R_signals from "@/app/signals/page";
 import R_siting from "@/app/siting/page";
 import R_urban_growth from "@/app/urban-growth/page";
+import R_validation from "@/app/validation/page";
 import R_water from "@/app/water/page";
 
 export const ROUTES: Record<string, ComponentType> = {
@@ -97,5 +98,6 @@ export const ROUTES: Record<string, ComponentType> = {
   "/signals": R_signals,
   "/siting": R_siting,
   "/urban-growth": R_urban_growth,
+  "/validation": R_validation,
   "/water": R_water,
 };

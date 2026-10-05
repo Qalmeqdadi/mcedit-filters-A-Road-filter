@@ -1,5 +1,6 @@
 "use client";
 
+import { HorizonRibbon } from "./HorizonRibbon";
 import { useDataOverrides } from "@/store/connectors";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
@@ -66,6 +67,7 @@ export function LabBar({ children, hideYear }: { children?: ReactNode; hideYear?
   const setYear = useApp((s) => s.setProjectionYear);
   const year = LAB_YEARS.includes(storeYear) ? storeYear : 2040;
   return (
+    <>
     <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-line bg-card px-3 py-2">
       <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-500">{L("Planning scenario", "سيناريو التخطيط")}</span>
       <Select value={labScenario} onChange={(e) => setLabScenario(e.target.value)} aria-label={L("Planning scenario", "سيناريو التخطيط")} className="max-w-[230px]">
@@ -83,6 +85,8 @@ export function LabBar({ children, hideYear }: { children?: ReactNode; hideYear?
       <div className="flex-1" />
       <NatureBadge nature="SIMULATED" />
     </div>
+    {hideYear ? null : <HorizonRibbon />}
+    </>
   );
 }
 
