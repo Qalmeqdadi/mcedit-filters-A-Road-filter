@@ -25,7 +25,8 @@
     "verify:futures": "tsx scripts/smoke-futures.ts",
     "verify:layers": "tsx scripts/smoke-layers.ts",
     "data:open": "node scripts/fetch-open-data.mjs",
-    "qa:hosted": "node scripts/qa-hosted.mjs"
+    "qa:hosted": "node scripts/qa-hosted.mjs",
+    "qa:click-all": "node scripts/qa-click-all.mjs en"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",

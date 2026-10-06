@@ -9,7 +9,7 @@ import { bbox, bboxOfCollection, type GeoFeature } from "@/simulation/geo";
 import type { GovId } from "@/types/census";
 import { useI18n } from "@/hooks/useI18n";
 import { cn } from "@/lib/utils";
-import { hostedWorkerUrl, isHosted } from "@/lib/hosted";
+import { hostedWorkerUrl, isHosted, toast } from "@/lib/hosted";
 import { ProvenanceButton } from "@/components/ui/provenance";
 
 export type Scale = "seq" | "risk" | "pct";
@@ -136,6 +136,7 @@ export function JordanMap(props: Props) {
   const [hover, setHover] = useState<{ x: number; y: number; w: number; kind: "gov" | "district" | "ea" | "marker"; id: string } | null>(null);
   const [showLabels, setShowLabels] = useState(props.showLabelsDefault ?? true);
   const [basemap, setBasemap] = useState(false);
+  const baseWarned = useRef(false);
   const markers = useRef<maplibregl.Marker[]>([]);
   const propsRef = useRef(props);
   useEffect(() => {
@@ -177,7 +178,16 @@ export function JordanMap(props: Props) {
     m.touchZoomRotate.disableRotation();
     map.current = m;
     if (process.env.NODE_ENV !== "production") (window as unknown as { __jsc_map?: maplibregl.Map }).__jsc_map = m;
-    m.on("error", (e) => console.error("map error", e.error?.message ?? e));
+    m.on("error", (e) => {
+      const msg = String(e.error?.message ?? e);
+      // basemap tiles need internet: switch the basemap off quietly instead of flooding the console
+      if (/cartocdn|basemaps/.test(msg) || /Failed to fetch/.test(msg)) {
+        setBasemap(false);
+        if (!baseWarned.current) { baseWarned.current = true; toast({ message: "The online basemap could not be loaded (no internet connection). The map works without it." }); }
+        return;
+      }
+      console.error("map error", msg);
+    });
     m.on("load", () => {
       m.addSource("country", { type: "geojson", data: COUNTRY as never });
       m.addSource("govs", { type: "geojson", data: GOVERNORATE_GEO as never, promoteId: "id" });

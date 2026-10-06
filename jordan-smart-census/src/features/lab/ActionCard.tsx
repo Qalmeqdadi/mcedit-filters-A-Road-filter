@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowRight, ListChecks } from "lucide-react";
 import { useApp } from "@/store/app";
 import { useI18n } from "@/hooks/useI18n";
@@ -23,6 +24,8 @@ export const HORIZON_LABEL: Record<Horizon, { en: string; ar: string }> = {
 export function ActionCard({ a, compact, showGov }: { a: ActionItem; compact?: boolean; showGov?: boolean }) {
   const engine = useEngine();
   const { tx, L, locale } = useI18n();
+  const path = usePathname();
+  const here = path === a.href;
   return (
     <article className={cn("rounded-lg border border-line bg-card px-3.5 py-3", a.severity === "CRITICAL" && "border-crit/40", a.severity === "HIGH" && "border-serious/30")} data-testid="action-card">
       <div className="flex flex-wrap items-center gap-1.5">
@@ -48,7 +51,7 @@ export function ActionCard({ a, compact, showGov }: { a: ActionItem; compact?: b
       <div className="mt-2 flex items-center gap-2 text-[11.5px]">
         <ProvenanceButton ids={["SIM_ACTIONS", ...a.sources]} />
         <AddToPortfolio a={a} />
-        <Link href={a.href} className="ms-auto inline-flex items-center gap-1 font-medium text-navy-600 hover:underline">{L("Open the model", "افتح النموذج")}<ArrowRight size={12} className="rtl:rotate-180" /></Link>
+        {here ? <span className="ms-auto text-ink-400">{L("Model shown on this page", "النموذج معروض في هذه الصفحة")}</span> : <Link href={a.href} className="ms-auto inline-flex items-center gap-1 font-medium text-navy-600 hover:underline">{L("Open the model", "افتح النموذج")}<ArrowRight size={12} className="rtl:rotate-180" /></Link>}
       </div>
     </article>
   );
