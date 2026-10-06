@@ -181,7 +181,7 @@ export function JordanMap(props: Props) {
     m.on("error", (e) => {
       const msg = String(e.error?.message ?? e);
       // basemap tiles need internet: switch the basemap off quietly instead of flooding the console
-      if (/cartocdn|basemaps/.test(msg) || /Failed to fetch/.test(msg)) {
+      if (/cartocdn|basemaps/.test(msg)) {
         setBasemap(false);
         if (!baseWarned.current) { baseWarned.current = true; toast({ message: "The online basemap could not be loaded (no internet connection). The map works without it." }); }
         return;

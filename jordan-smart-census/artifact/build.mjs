@@ -57,13 +57,15 @@ const html = `<title>UFUQ Jordan Foresight</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>:root{color-scheme:light}html,body{background:#f6f4ef;color:#141a24}${css}</style>
 <div id="root"></div>
-<script>window.__JSC_HOSTED__=true;window.__JSC_MAPLIBRE_WORKER__=URL.createObjectURL(new Blob([${safe(JSON.stringify(workerSrc))}],{type:"text/javascript"}));</script>
+<script>window.__JSC_HOSTED__=true;window.__JSC_MAPLIBRE_WORKER__=new URL("maplibre-gl-worker.cjs",location.href).href;</script>
 <script>${safe(appSrc)}</script>
 `;
 writeFileSync(path.join(out, "index.html"), html);
+// the hosted page loads the map worker as its own published file (a classic worker)
+writeFileSync(path.join(out, "maplibre-gl-worker.cjs"), classicWorkerSrc);
 console.log(`artifact/dist/index.html: ${(html.length / 1024 / 1024).toFixed(2)} MB`);
 
 // Offline copy for a laptop: double-click to open, no install. Real downloads and printing work there.
-const offline = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${html.replace("window.__JSC_HOSTED__=true;", "").replace(safe(JSON.stringify(workerSrc)), () => safe(JSON.stringify(classicWorkerSrc))).replace(',{type:"text/javascript"}));', ',{type:"text/javascript"}))+"#.cjs";')}</body></html>`.replace('<div id="root">', '</head><body><div id="root">');
+const offline = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${html.replace('window.__JSC_HOSTED__=true;window.__JSC_MAPLIBRE_WORKER__=new URL("maplibre-gl-worker.cjs",location.href).href;', () => `window.__JSC_MAPLIBRE_WORKER__=URL.createObjectURL(new Blob([${safe(JSON.stringify(classicWorkerSrc))}],{type:"text/javascript"}))+"#.cjs";`)}</body></html>`.replace('<div id="root">', '</head><body><div id="root">');
 writeFileSync(path.join(out, "ufuq-jordan.html"), offline);
 console.log(`artifact/dist/ufuq-jordan.html: ${(offline.length / 1024 / 1024).toFixed(2)} MB (offline, double-click to open)`);
