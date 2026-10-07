@@ -9,12 +9,12 @@ Status: **built** (done and tested), **partial** (some of it done and tested), *
 | --- | --- | --- | --- | --- |
 | 1 | **Demand capture and customer management** |  |  |  |
 | 1.1 | &nbsp;&nbsp;&nbsp;&nbsp;Receive the requirement |  |  |  |
-| 1.1.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ingest from email, WhatsApp, portal form, phone note or API from the shipper's system |  |  |  |
+| 1.1.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ingest from email, WhatsApp, portal form, phone note or API from the shipper's system | partial — Email (MIME, quoted-printable, base64, encoded words). WhatsApp, portal and API intake come later. | `src/p1/email.ts` | `tests/p1/1.1-intake.test.ts` |
 | 1.1.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read attachments: purchase order, packing list, supplier invoice, photos |  |  |  |
-| 1.1.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extract fields and normalise units, ports, dates and currency |  |  |  |
-| 1.1.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check completeness against the minimum needed to quote | partial — Request validate guard; completeness rules arrive with checkpoint 2. | `src/state/machines/request.ts` | `tests/state/machine.test.ts`<br>`tests/state/machines.test.ts` |
-| 1.1.5 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask the shipper for what is missing, and track the wait | partial — awaiting_info state; chasing arrives with checkpoint 2. | `src/state/machines/request.ts` | `tests/state/machine.test.ts`<br>`tests/state/machines.test.ts` |
-| 1.1.6 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deduplicate against existing requests and revisions |  |  |  |
+| 1.1.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extract fields and normalise units, ports, dates and currency | built — Rules extractor, plus Claude with the rules as fallback. | `src/p1/intake.ts`<br>`src/extract/dates.ts`<br>`src/extract/types.ts`<br>`src/network/hubs.ts`<br>`src/ai/claude.ts` | `tests/p1/1.1-intake.test.ts`<br>`tests/p4/4.3-replies.test.ts` |
+| 1.1.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check completeness against the minimum needed to quote | built | `src/p1/intake.ts`<br>`src/state/machines/request.ts` | `tests/p1/1.1-intake.test.ts`<br>`tests/state/machine.test.ts`<br>`tests/state/machines.test.ts` |
+| 1.1.5 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask the shipper for what is missing, and track the wait | partial — Drafts the missing-information reply; chasing on a timer comes later. | `src/p1/intake.ts`<br>`src/state/machines/request.ts` | `tests/p1/1.1-intake.test.ts`<br>`tests/state/machine.test.ts`<br>`tests/state/machines.test.ts` |
+| 1.1.6 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deduplicate against existing requests and revisions | built | `src/p1/intake.ts` | `tests/p1/1.1-intake.test.ts` |
 | 1.2 | &nbsp;&nbsp;&nbsp;&nbsp;Classify the cargo |  |  |  |
 | 1.2.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commodity description and HS code |  |  |  |
 | 1.2.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pieces, dimensions, weight, volume, stackability, packaging type |  |  |  |
@@ -39,10 +39,10 @@ Status: **built** (done and tested), **partial** (some of it done and tested), *
 | 1.5.5 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Release a redacted pack for RFQs and the full pack on booking *(added)* |  |  |  |
 | 2 | **Supply and capacity management** |  |  |  |
 | 2.1 | &nbsp;&nbsp;&nbsp;&nbsp;Build the supply base |  |  |  |
-| 2.1.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Identify carriers by lane, mode and equipment |  |  |  |
+| 2.1.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Identify carriers by lane, mode and equipment | partial — Illustrative carriers and lanes for GCC–Asia and GCC–Europe across ocean, air, rail and road. | `src/network/scenario.ts`<br>`src/network/hubs.ts`<br>`src/network/modes.ts` | `tests/p2/2.1-network.test.ts` |
 | 2.1.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify licence, insurance, bond, sanctions status |  |  |  |
 | 2.1.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agree the channel: API, EDI, portal, email, chat |  |  |  |
-| 2.1.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record coverage, restrictions, service strings and transit norms |  |  |  |
+| 2.1.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record coverage, restrictions, service strings and transit norms | partial — Service strings, transit norms and capacity units per mode. | `src/network/scenario.ts`<br>`src/network/view.ts` | `tests/p2/2.1-network.test.ts` |
 | 2.2 | &nbsp;&nbsp;&nbsp;&nbsp;Ingest schedules |  |  |  |
 | 2.2.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Departures, arrivals, port rotations, flight or truck departures |  |  |  |
 | 2.2.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cut-offs: gate-in, documentation, VGM, dangerous goods |  |  |  |
@@ -66,10 +66,10 @@ Status: **built** (done and tested), **partial** (some of it done and tested), *
 | 3.1.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Spot replies to a specific request |  |  |  |
 | 3.1.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate sheets in spreadsheet or PDF, and API or EDI tariffs |  |  |  |
 | 3.2 | &nbsp;&nbsp;&nbsp;&nbsp;Normalise rates |  |  |  |
-| 3.2.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map charge names onto one charge-code dictionary |  |  |  |
-| 3.2.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Convert currency, unit basis and container type |  |  |  |
-| 3.2.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Separate freight, surcharges, local charges and inland legs |  |  |  |
-| 3.2.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record what is included and what is not |  |  |  |
+| 3.2.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map charge names onto one charge-code dictionary | built | `src/p3/charges.ts` | `tests/p3/3.2-normalise.test.ts` |
+| 3.2.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Convert currency, unit basis and container type | built — Exchange rates are illustrative until a daily rate source is connected. | `src/p3/charges.ts`<br>`src/network/modes.ts` | `tests/p3/3.2-normalise.test.ts` |
+| 3.2.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Separate freight, surcharges, local charges and inland legs | built | `src/p3/charges.ts` | `tests/p3/3.2-normalise.test.ts` |
+| 3.2.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record what is included and what is not | built | `src/p3/charges.ts` | `tests/p3/3.2-normalise.test.ts` |
 | 3.3 | &nbsp;&nbsp;&nbsp;&nbsp;Hold the full cost picture |  |  |  |
 | 3.3.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Origin charges, destination charges, customs, inland, delivery |  |  |  |
 | 3.3.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duty and tax estimate from HS code and value |  |  |  |
@@ -95,11 +95,11 @@ Status: **built** (done and tested), **partial** (some of it done and tested), *
 | 4.2.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Detect revisions and supersede earlier offers | partial | `src/state/machines/bid.ts` | `tests/state/machine.test.ts`<br>`tests/state/machines.test.ts` |
 | 4.2.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Handle partial replies: "space yes, rate later" |  |  |  |
 | 4.3 | &nbsp;&nbsp;&nbsp;&nbsp;Turn replies into data |  |  |  |
-| 4.3.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extract rate, equipment, transit, routing, cut-off, validity, conditions |  |  |  |
-| 4.3.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score confidence per field, not per message |  |  |  |
-| 4.3.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Route low-confidence fields to a person, with the source shown |  |  |  |
-| 4.3.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Capture corrections as labelled training data |  |  |  |
-| 4.3.5 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Track accuracy per carrier and per format, and flag formats that need a template |  |  |  |
+| 4.3.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extract rate, equipment, transit, routing, cut-off, validity, conditions | built — Email, PDF text and chat. Claude extractor with rule fallback. | `src/p4/replies.ts`<br>`src/ai/claude.ts` | `tests/p4/4.3-replies.test.ts` |
+| 4.3.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score confidence per field, not per message | built | `src/p4/replies.ts`<br>`src/extract/types.ts` | `tests/p4/4.3-replies.test.ts` |
+| 4.3.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Route low-confidence fields to a person, with the source shown | built | `src/p4/replies.ts`<br>`config/rulesets/confidence.json` | `tests/p4/4.3-replies.test.ts` |
+| 4.3.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Capture corrections as labelled training data | built | `src/p4/replies.ts` | `tests/p4/4.3-replies.test.ts` |
+| 4.3.5 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Track accuracy per carrier and per format, and flag formats that need a template | built | `src/p4/replies.ts`<br>`config/rulesets/confidence.json` | `tests/p4/4.3-replies.test.ts` |
 | 4.4 | &nbsp;&nbsp;&nbsp;&nbsp;Test feasibility |  |  |  |
 | 4.4.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical fit: pallets or pieces against equipment floor, height and payload |  |  |  |
 | 4.4.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Weight and axle limits for the inland legs |  |  |  |
