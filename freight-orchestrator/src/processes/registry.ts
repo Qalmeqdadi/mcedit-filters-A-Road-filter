@@ -30,6 +30,7 @@ const INTAKE_TESTS = "tests/p1/1.1-intake.test.ts";
 const NETWORK_TESTS = "tests/p2/2.1-network.test.ts";
 const NORMALISE_TESTS = "tests/p3/3.2-normalise.test.ts";
 const REPLY_TESTS = "tests/p4/4.3-replies.test.ts";
+const API_TESTS = "tests/api/api.test.ts";
 
 export const IMPLEMENTATIONS: readonly Implementation[] = [
   // Objects and states: the first item in the document's re-engineering order.
@@ -43,7 +44,14 @@ export const IMPLEMENTATIONS: readonly Implementation[] = [
   impl("7.1", "stub", ["src/state/machines/shipment.ts"], MACHINE_TESTS, [], "Machine only (Phase 2)."),
 
   // 1.1 Receive the requirement.
-  impl("1.1.1", "partial", ["src/p1/email.ts"], [INTAKE_TESTS], [], "Email (MIME, quoted-printable, base64, encoded words). WhatsApp, portal and API intake come later."),
+  impl(
+    "1.1.1",
+    "partial",
+    ["src/p1/email.ts", "src/p1/mailbox.ts", "src/p1/imap.ts", "src/api/workspace.ts", "src/api/app.ts", "src/api/server.ts"],
+    [INTAKE_TESTS, "tests/p1/1.1-imap.test.ts", API_TESTS],
+    [],
+    "Email by inbound webhook, IMAP polling or .eml upload; replies by API. WhatsApp and portal forms come later.",
+  ),
   impl("1.1.3", "built", ["src/p1/intake.ts", "src/extract/dates.ts", "src/extract/types.ts", "src/network/hubs.ts", "src/ai/claude.ts"], [INTAKE_TESTS, REPLY_TESTS], [], "Rules extractor, plus Claude with the rules as fallback."),
   impl("1.1.4", "built", ["src/p1/intake.ts", "src/state/machines/request.ts"], [INTAKE_TESTS, ...MACHINE_TESTS]),
   impl("1.1.5", "partial", ["src/p1/intake.ts", "src/state/machines/request.ts"], [INTAKE_TESTS, ...MACHINE_TESTS], [], "Drafts the missing-information reply; chasing on a timer comes later."),
@@ -62,8 +70,8 @@ export const IMPLEMENTATIONS: readonly Implementation[] = [
   // 4.3 Turn replies into data.
   impl("4.3.1", "built", ["src/p4/replies.ts", "src/ai/claude.ts"], [REPLY_TESTS], [], "Email, PDF text and chat. Claude extractor with rule fallback."),
   impl("4.3.2", "built", ["src/p4/replies.ts", "src/extract/types.ts"], [REPLY_TESTS]),
-  impl("4.3.3", "built", ["src/p4/replies.ts", "config/rulesets/confidence.json"], [REPLY_TESTS]),
-  impl("4.3.4", "built", ["src/p4/replies.ts"], [REPLY_TESTS]),
+  impl("4.3.3", "built", ["src/p4/replies.ts", "src/api/workspace.ts", "config/rulesets/confidence.json"], [REPLY_TESTS, API_TESTS]),
+  impl("4.3.4", "built", ["src/p4/replies.ts", "src/api/workspace.ts"], [REPLY_TESTS, API_TESTS]),
   impl("4.3.5", "built", ["src/p4/replies.ts", "config/rulesets/confidence.json"], [REPLY_TESTS]),
 
   // 12 Governance, security and access.

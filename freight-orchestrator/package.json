@@ -12,7 +12,8 @@
     "db:migrate": "tsx src/db/migrate.ts",
     "process-map": "tsx scripts/process-map.ts",
     "demo": "tsx scripts/demo.ts",
-    "playground": "node playground/build.mjs"
+    "playground": "node playground/build.mjs",
+    "api": "tsx src/api/server.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",

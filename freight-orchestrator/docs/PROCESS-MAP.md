@@ -9,7 +9,7 @@ Status: **built** (done and tested), **partial** (some of it done and tested), *
 | --- | --- | --- | --- | --- |
 | 1 | **Demand capture and customer management** |  |  |  |
 | 1.1 | &nbsp;&nbsp;&nbsp;&nbsp;Receive the requirement |  |  |  |
-| 1.1.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ingest from email, WhatsApp, portal form, phone note or API from the shipper's system | partial — Email (MIME, quoted-printable, base64, encoded words). WhatsApp, portal and API intake come later. | `src/p1/email.ts` | `tests/p1/1.1-intake.test.ts` |
+| 1.1.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ingest from email, WhatsApp, portal form, phone note or API from the shipper's system | partial — Email by inbound webhook, IMAP polling or .eml upload; replies by API. WhatsApp and portal forms come later. | `src/p1/email.ts`<br>`src/p1/mailbox.ts`<br>`src/p1/imap.ts`<br>`src/api/workspace.ts`<br>`src/api/app.ts`<br>`src/api/server.ts` | `tests/p1/1.1-intake.test.ts`<br>`tests/p1/1.1-imap.test.ts`<br>`tests/api/api.test.ts` |
 | 1.1.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read attachments: purchase order, packing list, supplier invoice, photos |  |  |  |
 | 1.1.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extract fields and normalise units, ports, dates and currency | built — Rules extractor, plus Claude with the rules as fallback. | `src/p1/intake.ts`<br>`src/extract/dates.ts`<br>`src/extract/types.ts`<br>`src/network/hubs.ts`<br>`src/ai/claude.ts` | `tests/p1/1.1-intake.test.ts`<br>`tests/p4/4.3-replies.test.ts` |
 | 1.1.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check completeness against the minimum needed to quote | built | `src/p1/intake.ts`<br>`src/state/machines/request.ts` | `tests/p1/1.1-intake.test.ts`<br>`tests/state/machine.test.ts`<br>`tests/state/machines.test.ts` |
@@ -97,8 +97,8 @@ Status: **built** (done and tested), **partial** (some of it done and tested), *
 | 4.3 | &nbsp;&nbsp;&nbsp;&nbsp;Turn replies into data |  |  |  |
 | 4.3.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extract rate, equipment, transit, routing, cut-off, validity, conditions | built — Email, PDF text and chat. Claude extractor with rule fallback. | `src/p4/replies.ts`<br>`src/ai/claude.ts` | `tests/p4/4.3-replies.test.ts` |
 | 4.3.2 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score confidence per field, not per message | built | `src/p4/replies.ts`<br>`src/extract/types.ts` | `tests/p4/4.3-replies.test.ts` |
-| 4.3.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Route low-confidence fields to a person, with the source shown | built | `src/p4/replies.ts`<br>`config/rulesets/confidence.json` | `tests/p4/4.3-replies.test.ts` |
-| 4.3.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Capture corrections as labelled training data | built | `src/p4/replies.ts` | `tests/p4/4.3-replies.test.ts` |
+| 4.3.3 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Route low-confidence fields to a person, with the source shown | built | `src/p4/replies.ts`<br>`src/api/workspace.ts`<br>`config/rulesets/confidence.json` | `tests/p4/4.3-replies.test.ts`<br>`tests/api/api.test.ts` |
+| 4.3.4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Capture corrections as labelled training data | built | `src/p4/replies.ts`<br>`src/api/workspace.ts` | `tests/p4/4.3-replies.test.ts`<br>`tests/api/api.test.ts` |
 | 4.3.5 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Track accuracy per carrier and per format, and flag formats that need a template | built | `src/p4/replies.ts`<br>`config/rulesets/confidence.json` | `tests/p4/4.3-replies.test.ts` |
 | 4.4 | &nbsp;&nbsp;&nbsp;&nbsp;Test feasibility |  |  |  |
 | 4.4.1 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical fit: pallets or pieces against equipment floor, height and payload |  |  |  |
