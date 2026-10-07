@@ -1,0 +1,9 @@
+{
+  "presets": {
+    "balanced": { "price": 0.4, "transit": 0.2, "reliability": 0.25, "emissions": 0.05, "risk": 0.1 },
+    "cheapest": { "price": 0.7, "transit": 0.1, "reliability": 0.1, "emissions": 0.0, "risk": 0.1 },
+    "fastest": { "price": 0.2, "transit": 0.5, "reliability": 0.2, "emissions": 0.0, "risk": 0.1 },
+    "greenest": { "price": 0.3, "transit": 0.1, "reliability": 0.2, "emissions": 0.3, "risk": 0.1 }
+  },
+  "deskDefault": "balanced"
+}

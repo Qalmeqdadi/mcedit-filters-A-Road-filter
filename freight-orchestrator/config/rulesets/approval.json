@@ -1,0 +1,9 @@
+{
+  "rules": [
+    { "id": "margin-floor", "trigger": "margin_below_floor", "approverRole": "desk_admin" },
+    { "id": "high-value-quote", "trigger": "sell_price_above", "threshold": 25000, "approverRole": "desk_admin" },
+    { "id": "high-value-cargo", "trigger": "cargo_value_above", "threshold": 500000, "approverRole": "desk_admin" },
+    { "id": "dg-signoff", "trigger": "dangerous_goods", "approverRole": "desk_admin" },
+    { "id": "feasibility-override", "trigger": "feasibility_override", "approverRole": "desk_admin" }
+  ]
+}

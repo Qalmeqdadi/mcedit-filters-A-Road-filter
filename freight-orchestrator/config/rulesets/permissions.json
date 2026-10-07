@@ -1,0 +1,119 @@
+{
+  "roles": {
+    "desk_admin": { "persona": "desk", "label": "Desk administrator" },
+    "desk_agent": { "persona": "desk", "label": "Desk agent" },
+    "shipper_user": { "persona": "shipper", "label": "Shipper user" },
+    "carrier_user": { "persona": "carrier", "label": "Carrier user" },
+    "partner_user": { "persona": "partner", "label": "Service partner user" },
+    "platform_admin": { "persona": "platform", "label": "Platform administrator" },
+    "engine": { "persona": "engine", "label": "Rules engine or model" }
+  },
+  "grants": [
+    { "role": "desk_admin", "scope": "desk", "actions": ["*"] },
+    { "role": "desk_agent", "scope": "desk", "actions": [
+      "request.*", "cargo_item.*", "document.*", "rfq.*", "bid.read", "bid.chase", "bid.time_out",
+      "option.*", "quote.*", "booking.*", "shipment.*", "leg.*", "unit.*", "event.*", "charge.*",
+      "invoice.read", "payment.read", "exception.*", "job.*", "party.read", "rate.*", "capacity_slot.read",
+      "capacity_hold.*", "schedule.read", "review_item.*", "scorecard.read", "audit.read"
+    ] },
+
+    { "role": "shipper_user", "scope": "shipper", "actions": [
+      "request.create", "request.read", "request.update", "request.cancel", "request.info_received",
+      "cargo_item.create", "cargo_item.read", "cargo_item.update",
+      "document.create", "document.read", "document.upload",
+      "booking.read", "shipment.read", "leg.read", "event.read", "exception.read"
+    ] },
+    { "role": "shipper_user", "scope": "shipper", "actions": ["option.read"], "when": [{ "attr": "published", "in": [true] }] },
+    { "role": "shipper_user", "scope": "shipper", "actions": ["quote.read"],
+      "when": [{ "attr": "status", "in": ["sent", "accepted", "rejected", "countered", "expired"] }] },
+    { "role": "shipper_user", "scope": "shipper", "actions": ["quote.accept", "quote.reject", "quote.counter"],
+      "when": [{ "attr": "status", "in": ["sent"] }] },
+    { "role": "shipper_user", "scope": "shipper", "actions": ["invoice.read", "payment.read"],
+      "when": [{ "attr": "counterparty", "in": ["shipper"] }] },
+
+    { "role": "carrier_user", "scope": "carrier", "actions": [
+      "rfq.read", "bid.read", "bid.reply", "bid.decline",
+      "rate.create", "rate.read", "rate.update", "schedule.*", "capacity_slot.*",
+      "booking.read", "booking.confirm", "booking.amend", "booking.roll",
+      "shipment.read", "shipment.depart", "shipment.arrive", "event.create", "event.read",
+      "charge.read", "scorecard.read"
+    ] },
+    { "role": "carrier_user", "scope": "carrier", "actions": ["document.read"], "when": [{ "attr": "bookingConfirmed", "in": [true] }] },
+    { "role": "carrier_user", "scope": "carrier", "actions": ["invoice.*", "payment.read"],
+      "when": [{ "attr": "counterparty", "in": ["carrier"] }] },
+
+    { "role": "partner_user", "scope": "partner", "actions": ["job.read", "job.accept", "job.decline", "job.complete", "scorecard.read"] },
+    { "role": "partner_user", "scope": "partner", "actions": ["document.read"], "when": [{ "attr": "attachedToPartnerJob", "in": [true] }] },
+    { "role": "partner_user", "scope": "partner", "actions": ["invoice.*", "payment.read"],
+      "when": [{ "attr": "counterparty", "in": ["partner"] }] },
+
+    { "role": "platform_admin", "scope": "any", "actions": ["party.*", "user.*", "config.*", "audit.read"] },
+
+    { "role": "engine", "scope": "any", "actions": [
+      "request.request_info", "request.validate", "request.dispatch", "request.options_built", "request.quote_published",
+      "request.win", "request.lose", "request.expire",
+      "quote.create", "quote.submit_for_approval", "quote.publish", "quote.expire", "quote.supersede",
+      "bid.chase", "bid.reply", "bid.supersede", "bid.time_out",
+      "document.extract", "document.validate", "document.reject",
+      "option.create", "review_item.create", "capacity_hold.*", "charge.incur", "charge.invoice",
+      "exception.create", "shipment.depart", "shipment.arrive", "event.create"
+    ] }
+  ],
+  "fields": {
+    "bid": { "price": "carrier_cost", "costLines": "carrier_cost", "rawReply": "carrier_cost" },
+    "option": { "carrierCost": "carrier_cost", "costLines": "carrier_cost", "sellPrice": "sell_price" },
+    "quote": { "carrierCost": "carrier_cost", "margin": "desk_margin", "marginPct": "desk_margin", "sellPrice": "sell_price", "approvalNotes": "desk_internal" },
+    "rate": { "amount": "carrier_cost", "lines": "carrier_cost" },
+    "request": { "shipperOrgId": "shipper_identity", "shipperName": "shipper_identity", "cargoValue": "cargo_value", "targetPrice": "desk_internal" },
+    "rfq": { "shipperName": "shipper_identity", "cargoValue": "cargo_value" },
+    "document": { "storageKey": "document_full", "extracted": "document_full" },
+    "charge": { "cost": "carrier_cost", "sell": "sell_price" }
+  },
+  "visibility": {
+    "carrier_cost": [
+      { "role": "desk_admin", "scope": "desk" },
+      { "role": "desk_agent", "scope": "desk" },
+      { "role": "carrier_user", "scope": "carrier" },
+      { "role": "engine", "scope": "any" }
+    ],
+    "desk_margin": [
+      { "role": "desk_admin", "scope": "desk" },
+      { "role": "desk_agent", "scope": "desk" },
+      { "role": "engine", "scope": "any" }
+    ],
+    "desk_internal": [
+      { "role": "desk_admin", "scope": "desk" },
+      { "role": "desk_agent", "scope": "desk" }
+    ],
+    "sell_price": [
+      { "role": "desk_admin", "scope": "desk" },
+      { "role": "desk_agent", "scope": "desk" },
+      { "role": "shipper_user", "scope": "shipper" },
+      { "role": "engine", "scope": "any" }
+    ],
+    "shipper_identity": [
+      { "role": "desk_admin", "scope": "desk" },
+      { "role": "desk_agent", "scope": "desk" },
+      { "role": "shipper_user", "scope": "shipper" },
+      { "role": "carrier_user", "scope": "carrier", "when": [{ "attr": "bookingConfirmed", "in": [true] }] },
+      { "role": "partner_user", "scope": "partner" },
+      { "role": "engine", "scope": "any" }
+    ],
+    "cargo_value": [
+      { "role": "desk_admin", "scope": "desk" },
+      { "role": "desk_agent", "scope": "desk" },
+      { "role": "shipper_user", "scope": "shipper" },
+      { "role": "carrier_user", "scope": "carrier", "when": [{ "attr": "bookingConfirmed", "in": [true] }] },
+      { "role": "partner_user", "scope": "partner" },
+      { "role": "engine", "scope": "any" }
+    ],
+    "document_full": [
+      { "role": "desk_admin", "scope": "desk" },
+      { "role": "desk_agent", "scope": "desk" },
+      { "role": "shipper_user", "scope": "shipper" },
+      { "role": "carrier_user", "scope": "carrier", "when": [{ "attr": "bookingConfirmed", "in": [true] }] },
+      { "role": "partner_user", "scope": "partner", "when": [{ "attr": "attachedToPartnerJob", "in": [true] }] },
+      { "role": "engine", "scope": "any" }
+    ]
+  }
+}

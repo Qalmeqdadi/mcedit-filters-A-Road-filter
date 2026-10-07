@@ -1,5 +1,7 @@
 # Agentic Supplier & Procurement Lifecycle Orchestrator
 
+> This repository also holds **Freight Orchestrator**, a separate project in [`freight-orchestrator/`](freight-orchestrator/README.md).
+
 An illustrative Proof of Value (PoV) prepared for **Etihad Credit Bureau**, with Insight. It is a clickable enterprise demo: seven specialist AI agents orchestrate a procurement lifecycle end to end, and humans stay accountable for every material decision.
 
 > **Also in this repo:** [`freight-world/`](freight-world/README.md), the whole Freight Orchestrator MVP demo as an isometric, game-like world; and [`freight-depot/`](freight-depot/README.md), the road-carrier depot console (separate app, `cd freight-depot && npm install && npm run dev`).
