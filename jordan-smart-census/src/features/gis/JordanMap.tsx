@@ -136,7 +136,9 @@ export function JordanMap(props: Props) {
   const [hover, setHover] = useState<{ x: number; y: number; w: number; kind: "gov" | "district" | "ea" | "marker"; id: string } | null>(null);
   const [showLabels, setShowLabels] = useState(props.showLabelsDefault ?? true);
   const [basemap, setBasemap] = useState(false);
+  const [satellite, setSatellite] = useState(false);
   const baseWarned = useRef(false);
+  const tileFails = useRef(0);
   const markers = useRef<maplibregl.Marker[]>([]);
   const propsRef = useRef(props);
   useEffect(() => {
@@ -161,10 +163,12 @@ export function JordanMap(props: Props) {
         version: 8,
         sources: {
           carto: { type: "raster", tiles: ["https://basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png"], tileSize: 256, attribution: "© OpenStreetMap contributors © CARTO" },
+          satellite: { type: "raster", tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 18, attribution: "Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community" },
         },
         layers: [
           { id: "bg", type: "background", paint: { "background-color": "#e8e3d7" } },
           { id: "carto", type: "raster", source: "carto", layout: { visibility: "none" }, paint: { "raster-opacity": 0.85 } },
+          { id: "satellite", type: "raster", source: "satellite", layout: { visibility: "none" } },
         ],
       },
       bounds: JORDAN_BOUNDS as LngLatBoundsLike,
@@ -181,9 +185,15 @@ export function JordanMap(props: Props) {
     m.on("error", (e) => {
       const msg = String(e.error?.message ?? e);
       // basemap tiles need internet: switch the basemap off quietly instead of flooding the console
-      if (/cartocdn|basemaps/.test(msg)) {
-        setBasemap(false);
-        if (!baseWarned.current) { baseWarned.current = true; toast({ message: "The online basemap could not be loaded (no internet connection). The map works without it." }); }
+      if (/cartocdn|basemaps|arcgisonline/.test(msg)) {
+        // a few failed tiles can happen on a slow connection; switch off only when tiles keep failing
+        tileFails.current += 1;
+        if (tileFails.current >= 6) {
+          tileFails.current = 0;
+          setBasemap(false);
+          setSatellite(false);
+          if (!baseWarned.current) { baseWarned.current = true; toast({ message: "Online map imagery could not be loaded (no internet connection?). The map works without it." }); }
+        }
         return;
       }
       console.error("map error", msg);
@@ -368,8 +378,12 @@ export function JordanMap(props: Props) {
   useEffect(() => {
     const m = map.current;
     if (!m || !ready) return;
-    m.setLayoutProperty("carto", "visibility", basemap ? "visible" : "none");
-  }, [ready, basemap]);
+    m.setLayoutProperty("carto", "visibility", basemap && !satellite ? "visible" : "none");
+    m.setLayoutProperty("satellite", "visibility", satellite ? "visible" : "none");
+    // let the imagery show through the thematic colours in satellite view
+    m.setPaintProperty("gov-fill", "fill-opacity", ["case", ["boolean", ["feature-state", "dim"], false], satellite ? 0.15 : 0.35, satellite ? 0.45 : 0.92]);
+    m.setPaintProperty("district-fill", "fill-opacity", satellite ? 0.45 : 0.92);
+  }, [ready, basemap, satellite]);
 
   // ------------------------------------------------------------ camera
   useEffect(() => {
@@ -465,6 +479,7 @@ export function JordanMap(props: Props) {
         </div>
         <div className="pointer-events-auto flex items-center gap-1">
           <button type="button" onClick={() => setShowLabels((s) => !s)} className={cn("rounded-md px-2 py-1 text-[11.5px] font-medium shadow-sm", showLabels ? "bg-navy-800 text-white" : "bg-card/95 text-ink-700")}>{t("showLabels")}</button>
+          <button type="button" data-testid="satellite-toggle" onClick={() => { if (isHosted()) { toast({ message: L("Satellite view needs the offline file or the app — this shared page cannot load imagery from other websites.", "تتطلب صورة الأقمار الصناعية الملف دون اتصال أو التطبيق — لا تستطيع هذه الصفحة المشتركة تحميل صور من مواقع أخرى.") }); return; } setSatellite((s) => !s); }} title={L("Satellite imagery (Esri World Imagery, requires internet)", "صور الأقمار الصناعية (Esri، تتطلب اتصالاً بالإنترنت)")} className={cn("rounded-md px-2 py-1 text-[11.5px] font-medium shadow-sm", satellite ? "bg-navy-800 text-white" : "bg-card/95 text-ink-700")}>{L("Satellite", "قمر صناعي")}</button>
           {isHosted() ? null : <button type="button" onClick={() => setBasemap((s) => !s)} title={L("Online context basemap (requires internet)", "خريطة أساس سياقية (تتطلب اتصالاً بالإنترنت)")} className={cn("rounded-md px-2 py-1 text-[11.5px] font-medium shadow-sm", basemap ? "bg-navy-800 text-white" : "bg-card/95 text-ink-700")}>{L("Basemap", "خريطة أساس")}</button>}
           <button type="button" onClick={reset} className="flex items-center gap-1 rounded-md bg-card/95 px-2 py-1 text-[11.5px] font-medium text-ink-700 shadow-sm hover:text-ink-900"><RotateCcw size={12} />{t("resetView")}</button>
           {props.sources ? <span className="rounded-md bg-card/95 p-0.5 shadow-sm"><ProvenanceButton ids={props.sources} /></span> : null}
