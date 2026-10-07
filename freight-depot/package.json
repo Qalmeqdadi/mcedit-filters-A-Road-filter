@@ -1,5 +1,5 @@
 {
-  "name": "freight-orchestrator-carrier",
+  "name": "freight-depot",
   "version": "0.1.0",
   "private": true,
   "description": "Freight Orchestrator, carrier module: an isometric, game-like capacity console for a road linehaul carrier (synthetic data)",
