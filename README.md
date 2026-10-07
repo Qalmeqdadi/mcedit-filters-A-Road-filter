@@ -1,10 +1,13 @@
 # Agentic Supplier & Procurement Lifecycle Orchestrator
 
-> This repository also holds **Freight Orchestrator**, a separate project in [`freight-orchestrator/`](freight-orchestrator/README.md).
+> **Also in this repository: Freight Orchestrator**, a separate project in three folders:
+> - [`freight-orchestrator/`](freight-orchestrator/README.md): the platform. It has the process model, state machines, permissions, audit, intake, reply extraction, rate normalisation, the API server and mailbox ingestion.
+> - [`freight-world/`](freight-world/README.md): the game-like app. It has the global map, the live Inbox, Reply lab and Audit screens running the platform's code, and the isometric Jebel Ali board with the MVP demo.
+> - [`freight-depot/`](freight-depot/README.md): the road-carrier depot console.
+>
+> Each folder is its own app (`cd <folder> && npm install`).
 
 An illustrative Proof of Value (PoV) prepared for **Etihad Credit Bureau**, with Insight. It is a clickable enterprise demo: seven specialist AI agents orchestrate a procurement lifecycle end to end, and humans stay accountable for every material decision.
-
-> **Also in this repo:** [`freight-world/`](freight-world/README.md), the whole Freight Orchestrator MVP demo as an isometric, game-like world; and [`freight-depot/`](freight-depot/README.md), the road-carrier depot console (separate app, `cd freight-depot && npm install && npm run dev`).
 
 > **All data is synthetic.** The suppliers, people, figures, contracts and events are fictional. No ECB systems or credit data are connected. External / credit-risk information is only shown as an example of use *where legally permitted and authorised*. Value figures are illustrative hypotheses to be validated during the PoV.
 

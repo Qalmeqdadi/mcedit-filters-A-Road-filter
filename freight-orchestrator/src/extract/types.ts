@@ -22,7 +22,12 @@ export interface ExtractedField<T = unknown> {
 
 export type Fields = Record<string, ExtractedField>;
 
-export const span = (src: string, start: number, end: number): SourceSpan => ({ text: src.slice(start, end), start, end });
+/** The source text between two offsets, trimmed of surrounding whitespace so the highlight sits on the words. */
+export function span(src: string, start: number, end: number): SourceSpan {
+  while (start < end && /\s/.test(src[start]!)) start++;
+  while (end > start && /\s/.test(src[end - 1]!)) end--;
+  return { text: src.slice(start, end), start, end };
+}
 
 /** Finds a quoted snippet in the source, case-insensitively, for extractors that return quotes instead of offsets. */
 export function locate(src: string, quote: string | undefined | null): SourceSpan | undefined {

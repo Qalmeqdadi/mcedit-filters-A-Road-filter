@@ -1,10 +1,13 @@
 import { useEffect, useRef, type ReactNode } from "react";
+import { Globe } from "./globe/Globe";
+import { GlobeLabels, GlobeTools } from "./globe/GlobeLabels";
 import { World } from "./scene/World";
-import { routeOf, useStore, type View } from "./store";
+import { isGlobal, routeOf, useStore, type View } from "./store";
 import { Stat } from "./ui/bits";
 import { Labels } from "./ui/Labels";
 import { Guide, MapTools, Side, Toast, TopBar } from "./ui/Shell";
 import { FlowView } from "./ui/views/Flow";
+import { AuditView, InboxView, RepliesView, WorldView } from "./ui/views/Global";
 import { AnalyticsView, CarriersView, DashView, SetupView } from "./ui/views/Forwarder";
 import { CarrierCap, CarrierHome, CarrierPerf, PartnerJobs, ShipperDocs, ShipperHome } from "./ui/views/Portals";
 import { MultiView, NetView, OptView, ShipView, TrustView } from "./ui/views/Roadmap";
@@ -12,6 +15,7 @@ import { MultiView, NetView, OptView, ShipView, TrustView } from "./ui/views/Roa
 const VIEWS: Record<View, () => ReactNode> = {
   dash: DashView, flow: FlowView, carriers: CarriersView, analytics: AnalyticsView, setup: SetupView,
   ship: ShipView, multi: MultiView, opt: OptView, trust: TrustView, net: NetView,
+  world: WorldView, inbox: InboxView, replies: RepliesView, audit: AuditView,
   c_home: CarrierHome, c_cap: CarrierCap, c_perf: CarrierPerf, p_jobs: PartnerJobs, sh_home: ShipperHome, sh_docs: ShipperDocs,
 };
 
@@ -65,8 +69,18 @@ export function App() {
         <TopBar />
         <main className="workspace">
           <div className="world">
-            <World />
-            <Labels />
+            {isGlobal(view) ? (
+              <>
+                <Globe />
+                <GlobeLabels />
+                <GlobeTools />
+              </>
+            ) : (
+              <>
+                <World />
+                <Labels />
+              </>
+            )}
             <MapTools />
           </div>
           {kpis && (

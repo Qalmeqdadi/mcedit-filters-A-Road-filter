@@ -4,14 +4,14 @@ A multi-party freight procurement platform for forwarder desks, shippers, carrie
 
 All data is fictional. No real carriers or customers are used.
 
-## Status: checkpoint 1 of 7
+## Status: checkpoint 2 of 7, with parts of 3 and 4
 
 | Checkpoint | Scope | State |
 | --- | --- | --- |
-| 1 | Domain model, state machines, permission matrix, audit log, tests | **done, awaiting review** |
-| 2 | Process 1 and 3: intake, shipper document pack (1.5), rate normalisation, charge-code dictionary | next |
-| 3 | Process 4: RFQ, harvesting, extraction with review queue, feasibility, options, ranking, quoting, acceptance | |
-| 4 | Process 2: schedules and capacity, soft holds against live quotes | |
+| 1 | Domain model, state machines, permission matrix, audit log, tests | **done** |
+| 2 | Process 1 and 3: intake, shipper document pack (1.5), rate normalisation, charge-code dictionary | **intake (1.1) and normalisation (3.2) done**; document pack next |
+| 3 | Process 4: RFQ, harvesting, extraction with review queue, feasibility, options, ranking, quoting, acceptance | **reply extraction and review (4.3) done**; the rest next |
+| 4 | Process 2: schedules and capacity, soft holds against live quotes | multimodal network data and persona views (2.1) done |
 | 5 | Desk, shipper, carrier and partner workspaces | |
 | 6 | 10 onboarding, 11 scorecards, 12 permission screens | |
 | 7 | Stubs for 5 to 9 | |
@@ -41,6 +41,41 @@ Decisions behind this (who contracts, who sees what, whose user the shipper is) 
 | Every decision and override is audited | `src/governance/audit.ts`, written inside the same transaction as the state change; denials and refusals are audited too | `tests/p12/12.3-audit.test.ts` |
 | The audit log cannot be edited | trigger in `src/db/migrations/0001_audit_append_only.sql` | `tests/db/postgres.test.ts` |
 
+## What runs now
+
+**Intake (1.1).** An email arrives by a mail provider's inbound webhook, by IMAP polling, or as an uploaded `.eml`. It is routed to a desk by its inbound address (`src/p1/mailbox.ts`). The sender's domain decides whether it is a shipper's request or a carrier's reply. A request is read into fields (`src/p1/intake.ts`); each field has its own confidence and the exact text it came from. Then the request is checked for completeness (1.1.4) and checked against earlier requests for duplicates and revisions (1.1.6). The request machine moves it to `validated`, or to `awaiting_info` with a drafted reply asking for what is missing (1.1.5).
+
+**Replies (4.3) and normalisation (3.2).** Email, PDF text and chat replies, including voice-note transcripts, are read into the following fields:
+- rate, currency, equipment, transit and routing,
+- cut-off, validity, conditions and the itemised breakdown.
+
+Fields below the confidence rule set go to a person with the source shown. Confirmations and corrections become training labels, and accuracy is tracked per carrier and format. Below 80%, the format is flagged for a template. The breakdown is mapped onto one charge-code dictionary (`src/p3/charges.ts`), converted to one currency and a per-shipment basis, split into freight, surcharges, local charges and inland, and summed into a comparable all-in.
+
+**Claude extraction.** With `ANTHROPIC_API_KEY` set, Claude reads requests and replies first (`src/ai/claude.ts`). It uses structured output with a quote for every field, and those quotes are located in the source. A quote that cannot be found halves that field's confidence. The rule extractors cross-check every value: where Claude and the rules disagree, the field drops below review thresholds. The rules take over entirely when Claude is unavailable, declines, runs out of tokens or returns output that does not match the schema. The audit record says which extractor ran and why. Requests opt in to the API's server-side fallback for refusals (`fallbacks: "default"`), so a false-positive decline is retried on another model before the rules step in. Without a key, the rules run alone.
+
+**Network (2.1).** Real coordinates for 67 ports, airports, rail terminals and truck hubs, and 46 lanes across ocean, air, rail and road. Free space is counted in each mode's own unit (TEU, kg, pallets, wagons). `networkFor(actor)` returns exactly what the permission matrix lets that person see.
+
+### API server
+
+```bash
+npm run api                     # http://localhost:8787/api/health
+INBOUND_SECRET=… npm run api    # enables the inbound-email webhook
+IMAP_HOST=imap.example.com IMAP_USER=quotes@desk.example IMAP_PASSWORD=… npm run api   # polls a mailbox
+```
+
+| Route | Who | What |
+| --- | --- | --- |
+| `POST /api/inbound/email` | mail provider, with `x-inbound-secret` | raw MIME as text, JSON `{raw}`, or the provider's form field (`body-mime`, `email`) |
+| `POST /api/inbox/upload` | desk | an `.eml` or pasted source; it lands on the uploader's desk |
+| `POST /api/replies` | desk, or a carrier for itself | a reply that arrived by chat, PDF or phone |
+| `GET /api/requests`, `/api/replies`, `/api/review`, `/api/accuracy`, `/api/audit` | any persona | filtered through the policy |
+| `POST /api/review/:id` | desk | `{value, reason?}` confirms or corrects a field; corrections are audited as overrides |
+| `GET /api/network` | any persona | the network map for that person |
+
+Sign-in is a stand-in: the `x-actor` header names one of the pilot personas (`GET /api/actors`). Every read and write still goes through the policy, so real sessions only replace `actorOf()` in `src/api/app.ts`. The workspace keeps its state in memory for now; the Postgres stores take over with checkpoint 3.
+
+The same workspace code runs in the browser in [`../freight-world`](../freight-world/README.md): its Inbox, Reply lab, Audit trail and global map call this code directly.
+
 ## Layout
 
 ```
@@ -49,9 +84,17 @@ src/
   processes/            the process document as data, deviations and decisions, traceability registry
   state/                machine.ts (engine), machines/ (9 machines), apply.ts (the only way to change a status)
   governance/           actor.ts, policy.ts (12.2), resources.ts, audit.ts (12.3)
-  config/               rule set schemas, versioned store, audited publish (13.4)
+  config/               rule set schemas, versioned store (memory.ts runs in the browser too), audited publish (13.4)
   db/                   Drizzle schema (the core objects), migrations, Postgres stores
-tests/                  grouped by process: p12/, state/, config/, db/, processes/, static/
+  network/              hubs, modes and units, the pilot network, per-persona views (2.1, 11.1)
+  extract/              shared field type with confidence and source span, date reading
+  p1/                   email parsing, mailbox routing, IMAP polling, request intake (1.1)
+  p3/                   charge-code dictionary and normalisation (3.2)
+  p4/                   reply extraction, review queue, labels, accuracy (4.3)
+  ai/                   Claude extractors with the rules as cross-check and fallback
+  api/                  the workspace service, HTTP routes, node:http server
+tests/                  grouped by process: p1/, p2/, p3/, p4/, p12/, api/, state/, config/, db/, processes/, static/
+                        fixtures/: a shipper email and three carrier replies (email, PDF text, WhatsApp)
 docs/PROCESS-MAP.md     generated
 ```
 
@@ -81,6 +124,7 @@ You need Node 20 or later. The tests use in-process Postgres (PGlite), so no ser
 npm install
 npm run playground  # builds playground/dist/freight-playground.html: open it in any browser
 npm run demo        # walkthrough: one quote through the direct-to-shipper flow, per persona, with its audit trail
+npm run api         # the API server (see above)
 npm test
 npm run typecheck
 npm run process-map # regenerate docs/PROCESS-MAP.md

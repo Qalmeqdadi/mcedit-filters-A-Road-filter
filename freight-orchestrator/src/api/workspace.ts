@@ -3,14 +3,14 @@
 // append-only audit trail (12.3). State changes go through applyTransition; nothing here
 // writes a status directly.
 import { ClaudeReplyExtractor, extractRequestWithClaude, ReplyPipeline, type Parse } from "../ai/claude";
-import type { InMemoryConfigStore } from "../config/store";
+import type { ConfigStore } from "../config/memory";
 import { model, rule, system, type Actor } from "../governance/actor";
 import type { AuditRecord } from "../governance/audit";
 import { ForbiddenError, Policy, type ResourceRef } from "../governance/policy";
 import type { Fields } from "../extract/types";
 import { networkFor } from "../network/view";
 import { parseEmail, type ParsedEmail } from "../p1/email";
-import { checkCompleteness, dedupe, extractRequest, knownFrom, missingInfoReply, RULES_VERSION, type Completeness, type DedupeResult, type Known, type RequestDraft } from "../p1/intake";
+import { checkCompleteness, dedupe, extractRequest, knownFrom, missingInfoReply, requestSource, RULES_VERSION, type Completeness, type DedupeResult, type Known, type RequestDraft } from "../p1/intake";
 import { route } from "../p1/mailbox";
 import { normaliseQuote, type NormalisedQuote, type RawLine, type Shipment } from "../p3/charges";
 import { accuracyByFormat, label, reviewQueue, type CarrierReply, type ReplyChannel, type ReviewItem, type TrainingLabel } from "../p4/replies";
@@ -27,6 +27,8 @@ export interface RequestRecord {
   shipperName: string | null;
   from: string;
   subject: string;
+  /** Subject, body and text attachments: what field sources point into. */
+  source: string;
   receivedAt: string;
   via: Via;
   values: Omit<RequestDraft["values"], "cargoValue">;
@@ -71,7 +73,7 @@ export interface IngestResult {
 }
 
 export interface WorkspaceOptions {
-  config: InMemoryConfigStore;
+  config: ConfigStore;
   /** When set, Claude extracts and the rules are the fallback and second opinion. */
   parse?: Parse;
   now?: () => Date;
@@ -150,6 +152,7 @@ export class Workspace {
       shipperName,
       from: email.from,
       subject: email.subject,
+      source: requestSource(email),
       receivedAt: iso(email.date ?? now),
       via,
       values,

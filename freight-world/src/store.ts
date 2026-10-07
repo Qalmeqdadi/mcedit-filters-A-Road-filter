@@ -1,14 +1,27 @@
 import { create } from "zustand";
 import { CARRIERS, FIELDS, FORM_FIELDS, PRESETS, RFQS, rank, type Carrier, type Weights } from "./data";
+import { DEFAULT_LENS, LENSES, type LensKey } from "./live/engine";
 
 export type View =
   | "dash" | "flow" | "carriers" | "analytics" | "setup"
   | "ship" | "multi" | "opt" | "trust" | "net"
-  | "c_home" | "c_cap" | "c_perf" | "p_jobs" | "sh_home" | "sh_docs";
+  | "c_home" | "c_cap" | "c_perf" | "p_jobs" | "sh_home" | "sh_docs"
+  | "world" | "inbox" | "replies" | "audit";
 export type Persona = "shp" | "fwd" | "car" | "par";
+export type Family = "sea" | "air" | "rail" | "road";
 
-export const personaOf = (v: View): Persona =>
-  v.startsWith("c_") ? "car" : v.startsWith("p_") ? "par" : v.startsWith("sh_") ? "shp" : "fwd";
+/** Screens on the global map. Everything else is the regional board. */
+export const GLOBAL_VIEWS: View[] = ["world", "inbox", "replies", "audit"];
+export const isGlobal = (v: View) => GLOBAL_VIEWS.includes(v);
+/** Live screens that only a forwarder desk works in. */
+export const DESK_VIEWS: View[] = ["inbox", "replies", "audit"];
+
+/** On the global map the persona follows the lens; on the board it follows the screen. */
+export const personaOf = (v: View, lens?: LensKey): Persona =>
+  isGlobal(v) && lens ? LENSES[lens].persona : v.startsWith("c_") ? "car" : v.startsWith("p_") ? "par" : v.startsWith("sh_") ? "shp" : "fwd";
+
+export type MapPick = { kind: "lane" | "hub" | "shipment" | "region"; id: string } | null;
+export interface Enquiry { from: string; to: string; mode?: string; label: string }
 
 export const PERSONAS: Record<Persona, { label: string; who: [string, string, string, string]; home: View; role: string }> = {
   shp: { label: "Shipper", who: ["SH", "Sara Haddad", "Al Noor Home Appliances", "#13837A"], home: "sh_home", role: "Shipper portal" },
@@ -19,8 +32,8 @@ export const PERSONAS: Record<Persona, { label: string; who: [string, string, st
 
 export const ROAD_VIEWS: View[] = ["ship", "multi", "opt", "trust", "net"];
 export const SUPPLY_VIEWS: View[] = ["c_home", "c_cap", "c_perf", "p_jobs"];
-export const TOUR: string[] = ["dash", "flow-1", "flow-2", "flow-3", "flow-4", "flow-5", "flow-6", "sh_home", "analytics", "setup", "ship", "multi", "opt", "trust", "net", "c_home", "c_cap", "c_perf", "p_jobs"];
-export const VALID: View[] = ["dash", "carriers", "analytics", "setup", "ship", "multi", "opt", "trust", "net", "c_home", "c_cap", "c_perf", "p_jobs", "sh_home", "sh_docs"];
+export const TOUR: string[] = ["world", "inbox", "replies", "dash", "flow-1", "flow-2", "flow-3", "flow-4", "flow-5", "flow-6", "sh_home", "analytics", "setup", "ship", "multi", "opt", "trust", "net", "c_home", "c_cap", "c_perf", "p_jobs"];
+export const VALID: View[] = ["world", "inbox", "replies", "audit", "dash", "carriers", "analytics", "setup", "ship", "multi", "opt", "trust", "net", "c_home", "c_cap", "c_perf", "p_jobs", "sh_home", "sh_docs"];
 
 export interface Edit { label: string; from: string; to: string; when: string }
 
@@ -79,6 +92,12 @@ interface Data {
   // setup
   invited: boolean;
   rulesSet: boolean;
+  // global map
+  lens: LensKey;
+  flat: boolean;
+  modes: Record<Family, boolean>;
+  pick: MapPick;
+  enquiry: Enquiry | null;
   // presenter
   auto: boolean;
   tour: number;
@@ -87,7 +106,7 @@ interface Data {
 }
 
 const initial = (): Data => ({
-  view: "dash", step: 1,
+  view: "world", step: 1,
   filled: false, filling: false, fillCount: 0,
   rfqRunning: false, rfqGot: [], rfqMin: 0,
   src: "OL", resolved: {}, edits: {}, editing: null,
@@ -97,6 +116,7 @@ const initial = (): Data => ({
   rfqSel: "R1", cPrice: 2180, cSailing: "AUR", cSent: {}, cap: { AUR: 214, BOR: 320, CAS: 410 }, shared: { SHAJEA: true, NSAJEA: true, SHADMM: false }, rateSheet: false,
   jobs: {}, shNew: false, shReq: [], shPaid: false,
   invited: false, rulesSet: false,
+  lens: "gulfwayAgent", flat: false, modes: { sea: true, air: true, rail: true, road: true }, pick: null, enquiry: null,
   auto: false, tour: 0, toast: null, viewNonce: 0,
 });
 
@@ -118,6 +138,8 @@ interface Actions {
   startTour: () => void;
   stopTour: () => void;
   restart: () => void;
+  setLens: (k: LensKey) => void;
+  personaGo: (p: Persona) => void;
 }
 
 export type Store = Data & Actions;
@@ -293,6 +315,17 @@ export const useStore = create<Store>((set, get) => ({
     timers.forEach(clearTimeout);
     timers.clear();
     set({ ...initial(), viewNonce: get().viewNonce + 1 });
+  },
+  setLens: (lens) => {
+    const s = get();
+    // The desk's live screens are not open to other personas; their map is.
+    const view = DESK_VIEWS.includes(s.view) && LENSES[lens].persona !== "fwd" ? "world" : s.view;
+    set({ lens, view, pick: null, viewNonce: s.viewNonce + 1 });
+  },
+  personaGo: (p) => {
+    const s = get();
+    if (isGlobal(s.view)) get().setLens(DEFAULT_LENS[p]);
+    else get().open(PERSONAS[p].home);
   },
 }));
 

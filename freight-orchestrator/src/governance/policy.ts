@@ -1,7 +1,7 @@
 // 12.2 Data permissions: the single place where who-sees-what is decided.
 // Every server read and write goes through can()/assert() for rows and redact() for fields.
 // The matrix itself is configuration (config/rulesets/permissions.json).
-import type { Ruleset } from "../config/store";
+import type { Ruleset } from "../config/memory";
 import type { Permissions, Scope } from "../config/schema";
 import type { Actor } from "./actor";
 

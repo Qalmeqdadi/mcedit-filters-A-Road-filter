@@ -1,12 +1,19 @@
-import { BarChart3, Container, FileText, Globe, LayoutGrid, Lock, Mail, Minus, Plug, Plus, Route, Scan, Ship, Sparkles } from "lucide-react";
+import { BarChart3, Container, Earth, FileText, Globe, Inbox, LayoutGrid, Lock, Mail, Minus, Plug, Plus, Route, Scan, ScrollText, Ship, Sparkles, Wand2 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { S } from "../data";
-import { PERSONAS, ROAD_VIEWS, SUPPLY_VIEWS, TOUR, maxStep, personaOf, routeOf, selectedCarrier, useStore, type Persona, type View } from "../store";
+import { LENSES } from "../live/engine";
+import { PERSONAS, ROAD_VIEWS, SUPPLY_VIEWS, TOUR, isGlobal, maxStep, personaOf, routeOf, selectedCarrier, useStore, type Persona, type View } from "../store";
 
 interface NavItem { k?: View; l?: string; i?: ReactNode; tag?: string; sep?: string }
+const WORLD: NavItem = { k: "world", l: "World map", i: <Earth size={18} /> };
 const NAV: Record<Persona, NavItem[]> = {
   fwd: [
-    { sep: "Live MVP" },
+    { sep: "Global · live" },
+    WORLD,
+    { k: "inbox", l: "Inbox", i: <Inbox size={18} /> },
+    { k: "replies", l: "Reply lab", i: <Wand2 size={18} /> },
+    { k: "audit", l: "Audit trail", i: <ScrollText size={18} /> },
+    { sep: "Jebel Ali board" },
     { k: "dash", l: "Dashboard", i: <LayoutGrid size={18} /> },
     { k: "flow", l: "New quote", i: <Plus size={18} /> },
     { k: "analytics", l: "Insights", i: <BarChart3 size={18} /> },
@@ -19,12 +26,16 @@ const NAV: Record<Persona, NavItem[]> = {
     { k: "trust", l: "Trust & payments", i: <Lock size={18} />, tag: "5" },
     { k: "net", l: "Network & API", i: <Globe size={18} />, tag: "6" },
   ],
-  car: [{ sep: "Carrier portal · MVP" }, { k: "c_home", l: "Quote requests", i: <Mail size={18} /> }, { k: "c_cap", l: "Capacity & rates", i: <Container size={18} /> }, { k: "c_perf", l: "Performance & pay", i: <BarChart3 size={18} /> }],
-  par: [{ sep: "Partner portal · Phase 2–6" }, { k: "p_jobs", l: "Job queue", i: <FileText size={18} /> }],
-  shp: [{ sep: "Shipper portal · MVP" }, { k: "sh_home", l: "My shipments", i: <LayoutGrid size={18} /> }, { k: "sh_docs", l: "Documents & invoices", i: <FileText size={18} /> }],
+  car: [{ sep: "Global · live" }, WORLD, { sep: "Carrier portal · MVP" }, { k: "c_home", l: "Quote requests", i: <Mail size={18} /> }, { k: "c_cap", l: "Capacity & rates", i: <Container size={18} /> }, { k: "c_perf", l: "Performance & pay", i: <BarChart3 size={18} /> }],
+  par: [{ sep: "Global · live" }, WORLD, { sep: "Partner portal · Phase 2–6" }, { k: "p_jobs", l: "Job queue", i: <FileText size={18} /> }],
+  shp: [{ sep: "Global · live" }, WORLD, { sep: "Shipper portal · MVP" }, { k: "sh_home", l: "My shipments", i: <LayoutGrid size={18} /> }, { k: "sh_docs", l: "Documents & invoices", i: <FileText size={18} /> }],
 };
 
 const CRUMBS: Record<View, ReactNode> = {
+  world: <>World <span>/ Global network</span></>,
+  inbox: <>Inbox <span>/ Requests, live</span></>,
+  replies: <>Reply lab <span>/ Carrier replies, live</span></>,
+  audit: <>Audit trail <span>/ Append-only</span></>,
   dash: "Dashboard",
   flow: <>Quotes <span>/ Q-0916-0142 · {S.customer}</span></>,
   carriers: <>Carriers <span>/ Scorecards</span></>,
@@ -52,8 +63,11 @@ export function Side() {
   const open = useStore((s) => s.open);
   const go = useStore((s) => s.go);
   const step = useStore((s) => s.step);
-  const pk = personaOf(view);
+  const lens = useStore((s) => s.lens);
+  const pk = personaOf(view, lens);
   const P = PERSONAS[pk];
+  const L = LENSES[lens];
+  const who: [string, string, string, string] = isGlobal(view) ? [L.person.split(" ").map((w) => w[0]).join(""), L.person, L.org, L.color] : P.who;
   return (
     <aside className="side">
       <div className="brand"><Mark /><span className="lbl-hide">Freight Orchestrator</span></div>
@@ -69,8 +83,8 @@ export function Side() {
         )}
       </nav>
       <div className="side-foot">
-        <span className="avatar" style={{ background: P.who[3], color: "#fff" }}>{P.who[0]}</span>
-        <div className="lbl-hide"><div className="side-name">{P.who[1]}</div><div className="sm side-muted">{P.who[2]}</div></div>
+        <span className="avatar" style={{ background: who[3], color: "#fff" }}>{who[0]}</span>
+        <div className="lbl-hide"><div className="side-name">{who[1]}</div><div className="sm side-muted">{who[2]}</div></div>
       </div>
     </aside>
   );
@@ -80,11 +94,12 @@ export function TopBar() {
   const view = useStore((s) => s.view);
   const auto = useStore((s) => s.auto);
   const tour = useStore((s) => s.tour);
-  const open = useStore((s) => s.open);
   const startTour = useStore((s) => s.startTour);
   const stopTour = useStore((s) => s.stopTour);
   const toastMsg = useStore((s) => s.toastMsg);
-  const pk = personaOf(view);
+  const lens = useStore((s) => s.lens);
+  const personaGo = useStore((s) => s.personaGo);
+  const pk = personaOf(view, lens);
   const copy = () => {
     const url = location.href.split("#")[0] + "#" + routeOf(useStore.getState());
     navigator.clipboard?.writeText(url).then(() => toastMsg("Link to this screen copied"), () => toastMsg("Link: " + url));
@@ -94,7 +109,7 @@ export function TopBar() {
       <div className="crumbs">{CRUMBS[view]}</div>
       <div className="persona" role="group" aria-label="View the platform as">
         {(["shp", "fwd", "car", "par"] as Persona[]).map((k) => (
-          <button key={k} type="button" aria-pressed={k === pk} onClick={() => open(PERSONAS[k].home)}>{PERSONAS[k].label}</button>
+          <button key={k} type="button" aria-pressed={k === pk} onClick={() => personaGo(k)}>{PERSONAS[k].label}</button>
         ))}
       </div>
       <button type="button" className="btn ghost sm" onClick={copy} title="Copy a link to this screen">Copy link</button>
@@ -107,6 +122,10 @@ export function TopBar() {
 // ---------------------------------------------------------------- guide bar
 
 const NARR: Record<string, [string, string]> = {
+  world: ["One network, seen through each person's permissions", "Drag the globe, unroll it flat, or switch who you are. Every lane, rate and shipment shown has passed the same permission check the server runs."],
+  inbox: ["Email in, structured request out", "Deliver a message: it is routed to a desk, read field by field, checked for completeness and deduplicated. The enquiry is drawn on the globe."],
+  replies: ["Any reply format, one comparable price", "Read an email, a PDF table or a WhatsApp thread. Shaky fields wait for a person, and each answer becomes a training label."],
+  audit: ["Every step on the record", "Rule and model versions, state changes, refusals and overrides, in the order they happened."],
   0: ["This is the forwarder's desk", "Every live quote, lane and shipment in one place, on one map. Start the walkthrough to follow one request end to end."],
   1: ["A shipper's email becomes a clean request", "Details are read from the email automatically, then the 18 pallets are laid into real containers on the load-planning yard."],
   2: ["RFQs go out on channels carriers already use", "Watch the requests fly to the six ships on the Shanghai quay. Beacons turn teal as replies come back."],
@@ -152,6 +171,15 @@ function useNext(): { next: Next; back?: () => void; dots?: { n: number; on: num
     next: ti < 3 ? { label: "Next", fn: () => st.open(tail[ti + 1]) } : { label: "Restart demo", fn: st.restart },
     back: () => st.open(({ sh_home: "p_jobs", sh_docs: "sh_home", analytics: "sh_docs", setup: "analytics" } as Record<string, View>)[view]),
   };
+  const gi = (["world", "inbox", "replies", "audit"] as View[]).indexOf(view);
+  if (gi >= 0) {
+    const desk = LENSES[st.lens].persona === "fwd";
+    if (!desk) return { next: { label: "Zoom into the board", fn: () => st.open(PERSONAS[LENSES[st.lens].persona].home) } };
+    const order: View[] = ["world", "inbox", "replies", "audit"];
+    return gi < 3
+      ? { next: { label: ["Open the Inbox", "Open the Reply lab", "See the audit trail"][gi]!, fn: () => st.open(order[gi + 1]!) }, back: gi ? () => st.open(order[gi - 1]!) : undefined, dots: { n: 4, on: gi } }
+      : { next: { label: "Zoom into the Jebel Ali board", fn: () => st.open("dash") }, back: () => st.open("replies"), dots: { n: 4, on: 3 } };
+  }
   if (view !== "flow") return { next: { label: "Start walkthrough", fn: () => st.go(1) } };
   const back = () => (step > 1 ? st.go(step - 1) : st.open("dash"));
   const dots = { n: 6, on: step - 1 };

@@ -31,6 +31,9 @@ const NETWORK_TESTS = "tests/p2/2.1-network.test.ts";
 const NORMALISE_TESTS = "tests/p3/3.2-normalise.test.ts";
 const REPLY_TESTS = "tests/p4/4.3-replies.test.ts";
 const API_TESTS = "tests/api/api.test.ts";
+// Screens live in the sibling app, which runs this code in the page.
+const GLOBE = ["../freight-world/src/globe/Globe.tsx", "../freight-world/src/ui/views/Global.tsx"];
+const LIVE = ["../freight-world/src/ui/views/Global.tsx"];
 
 export const IMPLEMENTATIONS: readonly Implementation[] = [
   // Objects and states: the first item in the document's re-engineering order.
@@ -49,30 +52,30 @@ export const IMPLEMENTATIONS: readonly Implementation[] = [
     "partial",
     ["src/p1/email.ts", "src/p1/mailbox.ts", "src/p1/imap.ts", "src/api/workspace.ts", "src/api/app.ts", "src/api/server.ts"],
     [INTAKE_TESTS, "tests/p1/1.1-imap.test.ts", API_TESTS],
-    [],
+    LIVE,
     "Email by inbound webhook, IMAP polling or .eml upload; replies by API. WhatsApp and portal forms come later.",
   ),
-  impl("1.1.3", "built", ["src/p1/intake.ts", "src/extract/dates.ts", "src/extract/types.ts", "src/network/hubs.ts", "src/ai/claude.ts"], [INTAKE_TESTS, REPLY_TESTS], [], "Rules extractor, plus Claude with the rules as fallback."),
+  impl("1.1.3", "built", ["src/p1/intake.ts", "src/extract/dates.ts", "src/extract/types.ts", "src/network/hubs.ts", "src/ai/claude.ts"], [INTAKE_TESTS, REPLY_TESTS], LIVE, "Rules extractor, plus Claude with the rules as fallback."),
   impl("1.1.4", "built", ["src/p1/intake.ts", "src/state/machines/request.ts"], [INTAKE_TESTS, ...MACHINE_TESTS]),
-  impl("1.1.5", "partial", ["src/p1/intake.ts", "src/state/machines/request.ts"], [INTAKE_TESTS, ...MACHINE_TESTS], [], "Drafts the missing-information reply; chasing on a timer comes later."),
+  impl("1.1.5", "partial", ["src/p1/intake.ts", "src/state/machines/request.ts"], [INTAKE_TESTS, ...MACHINE_TESTS], LIVE, "Drafts the missing-information reply; chasing on a timer comes later."),
   impl("1.1.6", "built", ["src/p1/intake.ts"], [INTAKE_TESTS]),
 
   // 2.1 Supply base: multimodal hubs, carriers, lanes and persona views.
-  impl("2.1.1", "partial", ["src/network/scenario.ts", "src/network/hubs.ts", "src/network/modes.ts"], [NETWORK_TESTS], [], "Illustrative carriers and lanes for GCC–Asia and GCC–Europe across ocean, air, rail and road."),
-  impl("2.1.4", "partial", ["src/network/scenario.ts", "src/network/view.ts"], [NETWORK_TESTS], [], "Service strings, transit norms and capacity units per mode."),
+  impl("2.1.1", "partial", ["src/network/scenario.ts", "src/network/hubs.ts", "src/network/modes.ts"], [NETWORK_TESTS], GLOBE, "Illustrative carriers and lanes for GCC–Asia and GCC–Europe across ocean, air, rail and road."),
+  impl("2.1.4", "partial", ["src/network/scenario.ts", "src/network/view.ts"], [NETWORK_TESTS], GLOBE, "Service strings, transit norms and capacity units per mode."),
 
   // 3.2 Normalise rates.
   impl("3.2.1", "built", ["src/p3/charges.ts"], [NORMALISE_TESTS]),
   impl("3.2.2", "built", ["src/p3/charges.ts", "src/network/modes.ts"], [NORMALISE_TESTS], [], "Exchange rates are illustrative until a daily rate source is connected."),
-  impl("3.2.3", "built", ["src/p3/charges.ts"], [NORMALISE_TESTS]),
+  impl("3.2.3", "built", ["src/p3/charges.ts"], [NORMALISE_TESTS], LIVE),
   impl("3.2.4", "built", ["src/p3/charges.ts"], [NORMALISE_TESTS]),
 
   // 4.3 Turn replies into data.
-  impl("4.3.1", "built", ["src/p4/replies.ts", "src/ai/claude.ts"], [REPLY_TESTS], [], "Email, PDF text and chat. Claude extractor with rule fallback."),
+  impl("4.3.1", "built", ["src/p4/replies.ts", "src/ai/claude.ts"], [REPLY_TESTS], LIVE, "Email, PDF text and chat. Claude extractor with rule fallback."),
   impl("4.3.2", "built", ["src/p4/replies.ts", "src/extract/types.ts"], [REPLY_TESTS]),
-  impl("4.3.3", "built", ["src/p4/replies.ts", "src/api/workspace.ts", "config/rulesets/confidence.json"], [REPLY_TESTS, API_TESTS]),
+  impl("4.3.3", "built", ["src/p4/replies.ts", "src/api/workspace.ts", "config/rulesets/confidence.json"], [REPLY_TESTS, API_TESTS], LIVE),
   impl("4.3.4", "built", ["src/p4/replies.ts", "src/api/workspace.ts"], [REPLY_TESTS, API_TESTS]),
-  impl("4.3.5", "built", ["src/p4/replies.ts", "config/rulesets/confidence.json"], [REPLY_TESTS]),
+  impl("4.3.5", "built", ["src/p4/replies.ts", "config/rulesets/confidence.json"], [REPLY_TESTS], LIVE),
 
   // 12 Governance, security and access.
   impl("12.1", "partial", ["src/governance/actor.ts", "config/rulesets/permissions.json"], ["tests/p12/12.2-permissions.test.ts"], [], "Actors and roles; sign-in arrives with the workspaces."),
@@ -80,20 +83,22 @@ export const IMPLEMENTATIONS: readonly Implementation[] = [
     "12.2",
     "built",
     ["src/governance/policy.ts", "src/governance/resources.ts", "config/rulesets/permissions.json"],
-    ["tests/p12/12.2-permissions.test.ts"],
+    ["tests/p12/12.2-permissions.test.ts", NETWORK_TESTS, API_TESTS],
+    GLOBE,
   ),
   impl(
     "12.3",
     "built",
     ["src/governance/audit.ts", "src/state/apply.ts", "src/db/stores.ts", "src/db/migrations/0001_audit_append_only.sql"],
-    ["tests/p12/12.3-audit.test.ts", "tests/db/postgres.test.ts"],
+    ["tests/p12/12.3-audit.test.ts", "tests/db/postgres.test.ts", API_TESTS],
+    LIVE,
   ),
 
   // 13.4 Change management: configuration versus code.
   impl(
     "13.4",
     "partial",
-    ["src/config/schema.ts", "src/config/store.ts", "src/config/publish.ts", "src/db/stores.ts"],
+    ["src/config/schema.ts", "src/config/memory.ts", "src/config/store.ts", "src/config/publish.ts", "src/db/stores.ts"],
     ["tests/config/rulesets.test.ts", "tests/db/postgres.test.ts"],
     [],
     "Versioned, audited rule sets; release notes and training come later.",

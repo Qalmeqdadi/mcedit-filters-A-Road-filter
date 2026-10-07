@@ -261,8 +261,8 @@ Status: **built** (done and tested), **partial** (some of it done and tested), *
 | 11.7 | &nbsp;&nbsp;&nbsp;&nbsp;Emissions accounting |  |  |  |
 | 12 | **Governance, security and access** |  |  |  |
 | 12.1 | &nbsp;&nbsp;&nbsp;&nbsp;Identity and access | partial — Actors and roles; sign-in arrives with the workspaces. | `src/governance/actor.ts`<br>`config/rulesets/permissions.json` | `tests/p12/12.2-permissions.test.ts` |
-| 12.2 | &nbsp;&nbsp;&nbsp;&nbsp;Data permissions | built | `src/governance/policy.ts`<br>`src/governance/resources.ts`<br>`config/rulesets/permissions.json` | `tests/p12/12.2-permissions.test.ts` |
-| 12.3 | &nbsp;&nbsp;&nbsp;&nbsp;Audit and traceability | built | `src/governance/audit.ts`<br>`src/state/apply.ts`<br>`src/db/stores.ts`<br>`src/db/migrations/0001_audit_append_only.sql` | `tests/p12/12.3-audit.test.ts`<br>`tests/db/postgres.test.ts` |
+| 12.2 | &nbsp;&nbsp;&nbsp;&nbsp;Data permissions | built | `src/governance/policy.ts`<br>`src/governance/resources.ts`<br>`config/rulesets/permissions.json` | `tests/p12/12.2-permissions.test.ts`<br>`tests/p2/2.1-network.test.ts`<br>`tests/api/api.test.ts` |
+| 12.3 | &nbsp;&nbsp;&nbsp;&nbsp;Audit and traceability | built | `src/governance/audit.ts`<br>`src/state/apply.ts`<br>`src/db/stores.ts`<br>`src/db/migrations/0001_audit_append_only.sql` | `tests/p12/12.3-audit.test.ts`<br>`tests/db/postgres.test.ts`<br>`tests/api/api.test.ts` |
 | 12.4 | &nbsp;&nbsp;&nbsp;&nbsp;Privacy and retention |  |  |  |
 | 12.5 | &nbsp;&nbsp;&nbsp;&nbsp;Security operations |  |  |  |
 | 12.6 | &nbsp;&nbsp;&nbsp;&nbsp;Legal and regulatory |  |  |  |
@@ -270,7 +270,7 @@ Status: **built** (done and tested), **partial** (some of it done and tested), *
 | 13.1 | &nbsp;&nbsp;&nbsp;&nbsp;Help desk |  |  |  |
 | 13.2 | &nbsp;&nbsp;&nbsp;&nbsp;Service levels |  |  |  |
 | 13.3 | &nbsp;&nbsp;&nbsp;&nbsp;Incidents |  |  |  |
-| 13.4 | &nbsp;&nbsp;&nbsp;&nbsp;Change management | partial — Versioned, audited rule sets; release notes and training come later. | `src/config/schema.ts`<br>`src/config/store.ts`<br>`src/config/publish.ts`<br>`src/db/stores.ts` | `tests/config/rulesets.test.ts`<br>`tests/db/postgres.test.ts` |
+| 13.4 | &nbsp;&nbsp;&nbsp;&nbsp;Change management | partial — Versioned, audited rule sets; release notes and training come later. | `src/config/schema.ts`<br>`src/config/memory.ts`<br>`src/config/store.ts`<br>`src/config/publish.ts`<br>`src/db/stores.ts` | `tests/config/rulesets.test.ts`<br>`tests/db/postgres.test.ts` |
 | 13.5 | &nbsp;&nbsp;&nbsp;&nbsp;Feedback loop |  |  |  |
 | 14 | **Commercial operations** |  |  |  |
 | 14.1 | &nbsp;&nbsp;&nbsp;&nbsp;Pricing and packaging |  |  |  |

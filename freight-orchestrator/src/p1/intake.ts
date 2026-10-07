@@ -101,10 +101,12 @@ function detectMode(t: string): { mode: Mode; at: [number, number]; conf: number
   return null;
 }
 
+/** The text fields are read from, and that their source offsets point into: subject, body, text attachments. */
+export const requestSource = (email: ParsedEmail) => [email.subject, email.text, ...email.attachments.map((a) => a.text ?? "")].filter(Boolean).join("\n\n");
+
 export function extractRequest(input: string | ParsedEmail, now = new Date()): RequestDraft {
   const email = typeof input === "string" ? parseEmail(input) : input;
-  const attachText = email.attachments.map((a) => a.text ?? "").join("\n");
-  const src = [email.subject, email.text, attachText].filter(Boolean).join("\n\n");
+  const src = requestSource(email);
   const ref = email.date ?? now;
   const fields: Fields = {};
   const v: RequestDraft["values"] = {};

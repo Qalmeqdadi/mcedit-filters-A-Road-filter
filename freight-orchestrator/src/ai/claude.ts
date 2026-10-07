@@ -7,7 +7,7 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import { locate, type ExtractedField, type Fields } from "../extract/types";
 import { findHub } from "../network/hubs";
-import { extractRequest, type RequestDraft } from "../p1/intake";
+import { extractRequest, requestSource, type RequestDraft } from "../p1/intake";
 import type { RawLine } from "../p3/charges";
 import { extractReplyRules, REPLY_FIELDS, type CarrierReply, type Extractor } from "../p4/replies";
 
@@ -148,7 +148,7 @@ export class ClaudeReplyExtractor implements Extractor {
 
 export async function extractRequestWithClaude(raw: string, opts: { parse?: Parse; model?: string; now?: Date } = {}): Promise<RequestDraft> {
   const base = extractRequest(raw, opts.now);
-  const src = [base.email.subject, base.email.text].filter(Boolean).join("\n\n");
+  const src = requestSource(base.email);
   const content = `<email from="${base.email.from}" date="${(base.email.date ?? opts.now ?? new Date()).toISOString().slice(0, 10)}">\n${src}\n</email>`;
   const { out, model } = await call(opts.parse ?? defaultParse(), RequestOut, REQUEST_SYSTEM, content, opts.model ?? CLAUDE_MODEL);
   const by = `${model}@${PROMPTS.request}`;
@@ -202,4 +202,7 @@ export class ReplyPipeline {
 }
 
 /** True when the environment has credentials the SDK can use. */
-export const modelConfigured = () => !!(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN || process.env.ANTHROPIC_PROFILE);
+export const modelConfigured = () => {
+  const env = (globalThis as { process?: { env: Record<string, string | undefined> } }).process?.env ?? {};
+  return !!(env.ANTHROPIC_API_KEY || env.ANTHROPIC_AUTH_TOKEN || env.ANTHROPIC_PROFILE);
+};
