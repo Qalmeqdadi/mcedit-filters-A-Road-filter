@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #020a18;
+  color: #e7f0ff;
+}
+
+body {
+  font-feature-settings: "cv11", "ss01", "tnum";
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  * {
+    @apply border-line;
+  }
+  ::selection {
+    background: rgba(47, 214, 245, 0.3);
+  }
+}
+
+@layer components {
+  /* Glass panel used throughout the platform */
+  .panel {
+    @apply relative rounded-xl border border-line bg-ink-900/70 shadow-panel backdrop-blur-sm;
+    background-image: linear-gradient(180deg, rgba(17, 52, 102, 0.28), rgba(4, 21, 45, 0) 60%);
+  }
+  .panel-raised {
+    @apply relative rounded-xl border border-line-strong bg-ink-800/80 shadow-panel;
+  }
+  .eyebrow {
+    @apply text-[10.5px] font-semibold uppercase tracking-[0.16em] text-fg-dim;
+  }
+  .kpi-value {
+    @apply font-semibold tabular-nums tracking-tight text-fg;
+  }
+  .sim-tag {
+    @apply inline-flex items-center gap-1 rounded border border-warn/30 bg-warn/10 px-1.5 py-px text-[9.5px] font-semibold uppercase tracking-[0.12em] text-warn;
+  }
+  .grid-bg {
+    background-image: linear-gradient(rgba(86, 179, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(86, 179, 255, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .shimmer-text {
+    background: linear-gradient(90deg, #93a9cc 0%, #e7f0ff 40%, #93a9cc 80%);
+    background-size: 400px 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    @apply animate-shimmer;
+  }
+}
+
+/* Scrollbars */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(86, 179, 255, 0.25) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(86, 179, 255, 0.25);
+  border-radius: 999px;
+}
+
+.recharts-cartesian-grid line {
+  stroke: rgba(86, 179, 255, 0.08);
+}
+.recharts-text {
+  fill: #5f7799;
+  font-size: 10px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-area,
+  #print-area * {
+    visibility: visible;
+  }
+  #print-area {
+    position: absolute;
+    inset: 0;
+    background: white !important;
+    color: #0a1a33 !important;
+  }
+}

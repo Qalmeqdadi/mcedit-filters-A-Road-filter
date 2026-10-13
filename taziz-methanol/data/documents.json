@@ -1,0 +1,166 @@
+{
+  "_note": "SYNTHETIC engineering document library. Document numbers, content and revisions are invented for demonstration and do not describe any real facility.",
+  "documents": [
+    {
+      "id": "PID-210",
+      "number": "DEMO-MEOH-PID-0210",
+      "title": "P&ID – Methanol Synthesis Loop",
+      "type": "P&ID",
+      "rev": "Rev 7",
+      "date": "2025-03-04",
+      "equipment": ["C-201", "R-201", "E-205"],
+      "tags": ["synthesis", "loop", "recycle", "pressure", "p&id", "anti-surge"],
+      "sections": [
+        { "id": "1", "heading": "Loop configuration", "text": "Make-up gas from C-101 joins the recycle stream at the C-201 suction header. C-201 discharge passes through feed/effluent exchanger E-205 to reactor R-201. Reactor effluent is cooled, crude methanol is separated in V-210 and the overhead gas returns to C-201 suction. Purge gas is taken upstream of C-201 under pressure control PIC-212." },
+        { "id": "2", "heading": "Instrumentation", "text": "Recycle flow FT-210 (tag SYN-F-210), suction pressure PT-201S, discharge pressure PT-201D, anti-surge controller UIC-201 acting on FV-201, suction strainer differential pressure PDI-201." },
+        { "id": "3", "heading": "Potential flow restrictions", "text": "Suction strainer S-201, separator V-210 demister, E-205 tube side, and partially open manual isolations downstream of the purge take-off are the documented locations where loop hydraulic restriction can develop." }
+      ]
+    },
+    {
+      "id": "RX-MAN",
+      "number": "DEMO-MEOH-OM-0301",
+      "title": "Methanol Reactor Operating Manual",
+      "type": "Operating manual",
+      "rev": "Rev 4",
+      "date": "2024-11-20",
+      "equipment": ["R-201"],
+      "tags": ["reactor", "catalyst", "temperature", "conversion", "pressure"],
+      "sections": [
+        { "id": "2.1", "heading": "Operating window", "text": "Normal reactor inlet pressure 79–82.5 bar; outlet temperature 238–255 °C. Per-pass conversion depends on loop pressure, syngas stoichiometric number (SN 2.0–2.1) and catalyst activity." },
+        { "id": "4.3", "heading": "Causes of falling loop pressure", "text": "Loop pressure falls when make-up gas reduces, purge rate increases, recycle compressor capacity reduces, or conversion increases. A simultaneous fall in recycle flow and loop pressure with stable make-up gas points to recycle compressor capacity loss or increased loop restriction." },
+        { "id": "5.2", "heading": "Catalyst ageing", "text": "Catalyst activity declines gradually over the run. Ageing produces slow changes over weeks, not hours; sudden changes should be investigated as mechanical or process upsets." }
+      ]
+    },
+    {
+      "id": "C201-OEM",
+      "number": "DEMO-VND-C201-IOM",
+      "title": "Compressor C-201 OEM Manual",
+      "type": "OEM manual",
+      "rev": "Ed. 3",
+      "date": "2023-06-15",
+      "equipment": ["C-201"],
+      "tags": ["compressor", "c-201", "vibration", "bearing", "surge", "performance curve", "inspection", "recycle"],
+      "sections": [
+        { "id": "6.4", "heading": "Performance curve verification", "text": "Compare the current operating point (actual inlet flow, polytropic head, speed) against the guaranteed curve. An operating point below the curve at constant speed indicates internal recirculation, fouling, seal wear or an inlet restriction." },
+        { "id": "7.2", "heading": "Vibration limits", "text": "Overall vibration: alert 7.1 mm/s, trip 11.0 mm/s (machinery protection system). A rising trend with stable speed should be analysed with spectrum data: 1× running speed suggests imbalance or fouling; sub-synchronous components suggest seal or bearing instability." },
+        { "id": "7.5", "heading": "Bearing temperature", "text": "Journal bearing temperature alert 95 °C. A rise of more than 5 °C at constant load warrants lube oil review: supply temperature, pressure, filter ΔP and oil analysis." },
+        { "id": "9.1", "heading": "Inspection prerequisites", "text": "Before any intrusive inspection: machine shut down and isolated under permit, positive isolation of suction/discharge, depressurised and nitrogen purged to <1% H₂/CO, gas test certificate issued, LOTO on driver, MOC raised if operating limits are temporarily changed." }
+      ]
+    },
+    {
+      "id": "SOP-210",
+      "number": "DEMO-MEOH-SOP-0210",
+      "title": "Synthesis Loop SOP",
+      "type": "SOP",
+      "rev": "Rev 9",
+      "date": "2026-01-12",
+      "equipment": ["C-201", "R-201", "E-205"],
+      "tags": ["sop", "synthesis", "loop", "recycle", "pressure", "suction"],
+      "sections": [
+        { "id": "3.2", "heading": "Monitoring of loop hydraulics", "text": "Operators monitor recycle flow, C-201 suction pressure and PDI-201 hourly. A sustained fall in recycle flow greater than 3% from model must be reported to the shift supervisor and process engineer." },
+        { "id": "3.4", "heading": "Low suction pressure response", "text": "Verify make-up gas flow from C-101, purge controller PIC-212 output, separator V-210 level and strainer ΔP. Do not change anti-surge settings; anti-surge behaviour reviews are an engineering activity under MOC." },
+        { "id": "5.1", "heading": "Operating limits", "text": "Changes to loop pressure, compressor speed or purge set-points outside the approved operating envelope require shift supervisor authorisation and, where applicable, MOC." }
+      ]
+    },
+    {
+      "id": "STARTUP",
+      "number": "DEMO-MEOH-PRC-0100",
+      "title": "Plant Startup Procedure",
+      "type": "Procedure",
+      "rev": "Rev 6",
+      "date": "2025-05-30",
+      "equipment": ["F-101", "C-101", "C-201", "R-201"],
+      "tags": ["startup", "procedure", "reformer", "loop"],
+      "sections": [
+        { "id": "4", "heading": "Loop pressurisation", "text": "Pressurise the synthesis loop at ≤ 3 bar/min with C-201 in recycle before introducing make-up gas. Confirm anti-surge controller in automatic." },
+        { "id": "6", "heading": "Rate increase", "text": "Increase plant rate in 2% steps with a minimum 30-minute hold to confirm reformer, loop and distillation stability." }
+      ]
+    },
+    {
+      "id": "SHUTDOWN",
+      "number": "DEMO-MEOH-PRC-0110",
+      "title": "Plant Shutdown Procedure",
+      "type": "Procedure",
+      "rev": "Rev 5",
+      "date": "2025-05-30",
+      "equipment": ["C-201", "R-201"],
+      "tags": ["shutdown", "procedure", "isolation", "purge"],
+      "sections": [
+        { "id": "3", "heading": "Loop depressurisation", "text": "Depressurise via the purge system at ≤ 2 bar/min. Maintain reactor temperature above 200 °C until loop is below 20 bar to avoid condensation on catalyst." },
+        { "id": "5", "heading": "Isolation for maintenance", "text": "Positive isolation with spades per isolation register; nitrogen purge to < 1% combustibles; gas test before permit issue." }
+      ]
+    },
+    {
+      "id": "DIST-TG",
+      "number": "DEMO-MEOH-TG-0301",
+      "title": "Distillation Troubleshooting Guide",
+      "type": "Troubleshooting guide",
+      "rev": "Rev 3",
+      "date": "2025-09-18",
+      "equipment": ["T-301"],
+      "tags": ["distillation", "purity", "water", "ethanol", "reflux", "reboiler", "off-spec", "quality"],
+      "sections": [
+        { "id": "2.1", "heading": "Rising water in product", "text": "Typical causes: reduced reflux ratio, reboiler duty swings, temperature profile shifting upward on the lower trays, or higher water in crude feed." },
+        { "id": "2.3", "heading": "Ethanol / higher alcohols", "text": "Rising ethanol indicates side-draw (fusel oil) rate too low or temperature profile shift; check side-draw flow and tray 12–18 temperatures." },
+        { "id": "3.2", "heading": "Hydraulic limits", "text": "Rising column ΔP with stable feed indicates approach to flooding or tray fouling. Reduce reboiler duty in small steps and request gamma scan." }
+      ]
+    },
+    {
+      "id": "MSTRAT",
+      "number": "DEMO-MNT-STR-0020",
+      "title": "Maintenance Strategy – Rotating Equipment",
+      "type": "Maintenance strategy",
+      "rev": "Rev 2",
+      "date": "2025-12-01",
+      "equipment": ["C-201", "C-101", "P-110"],
+      "tags": ["maintenance", "strategy", "condition monitoring", "vibration", "compressor"],
+      "sections": [
+        { "id": "4.1", "heading": "Critical compressors", "text": "C-101 and C-201: monthly vibration route, quarterly oil analysis, continuous online efficiency calculation. A sustained 3% efficiency loss or 15% vibration increase triggers an engineering review within 7 days." },
+        { "id": "4.3", "heading": "Spares philosophy", "text": "Bearings and dry gas seals held on site; impellers held as capital spares at the OEM service centre (lead time 26 weeks)." }
+      ]
+    },
+    {
+      "id": "ARM",
+      "number": "DEMO-OPS-ARM-0001",
+      "title": "Alarm Response Manual",
+      "type": "Manual",
+      "rev": "Rev 11",
+      "date": "2026-03-22",
+      "equipment": ["C-201", "F-101", "T-301"],
+      "tags": ["alarm", "response", "vibration", "suction", "excess o2"],
+      "sections": [
+        { "id": "C201-03", "heading": "C-201 suction pressure LO", "text": "Check C-101 make-up flow, purge valve position, V-210 level. Inform supervisor. If below 74.0 barg, prepare for rate reduction per supervisor instruction." },
+        { "id": "C201-07", "heading": "C-201 vibration HI (alert)", "text": "Confirm on adjacent probes, check lube oil temperature/pressure, request machinery engineer spectrum review. Trip protection is handled by the machinery protection system and must not be bypassed." },
+        { "id": "F101-02", "heading": "Flue gas excess O₂ HI", "text": "Check analyser validity, burner damper positions and fuel gas header pressure; adjust air per supervisor approval." }
+      ]
+    },
+    {
+      "id": "MOC",
+      "number": "DEMO-MOC-REGISTER",
+      "title": "MOC History",
+      "type": "Register",
+      "rev": "Live",
+      "date": "2026-10-01",
+      "equipment": ["C-201", "F-101"],
+      "tags": ["moc", "change", "anti-surge", "purge"],
+      "sections": [
+        { "id": "MOC-26-031", "heading": "C-201 anti-surge controller retune (2026-05)", "text": "Anti-surge line margin adjusted from 10% to 12% after OEM review. Closed. No subsequent changes recorded." },
+        { "id": "MOC-26-044", "heading": "Purge controller PIC-212 range change (2026-08)", "text": "Transmitter range change; set-point unchanged. Closed." }
+      ]
+    },
+    {
+      "id": "IR",
+      "number": "DEMO-HSE-IR-LOG",
+      "title": "Incident Reports",
+      "type": "Incident register",
+      "rev": "Live",
+      "date": "2026-09-30",
+      "equipment": ["C-201", "T-301"],
+      "tags": ["incident", "lessons", "strainer", "compressor", "restriction"],
+      "sections": [
+        { "id": "IR-2024-017", "heading": "Recycle flow reduction – suction strainer blockage (2024)", "text": "Gradual 6% recycle flow loss over 8 hours traced to catalyst fines on suction strainer S-201. Resolved by switching to standby strainer. Lesson: trend PDI-201 together with recycle flow." },
+        { "id": "IR-2025-009", "heading": "Refining column upset after reboiler steam swing (2025)", "text": "Water in product reached 900 ppm during steam header disturbance; recovered within 3 hours. Lesson: link steam header events to column monitoring." }
+      ]
+    }
+  ]
+}

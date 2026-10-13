@@ -1,0 +1,13 @@
+{
+  "_note": "SYNTHETIC alarm & event journal (read-only replica). No safety instrumented function activations in the period.",
+  "alarms": [
+    { "time": "05:47", "tag": "PRODUCTION", "text": "Production rate below daily plan (advisory, MES)", "priority": "Advisory", "state": "Active" },
+    { "time": "05:02", "tag": "COMP-PI-201S", "text": "C-201 suction pressure LO deviation", "priority": "Low", "state": "Acknowledged" },
+    { "time": "04:58", "tag": "COMP-C-201", "text": "C-201 load deviation from model (advisory)", "priority": "Advisory", "state": "Acknowledged" },
+    { "time": "04:41", "tag": "SYN-F-210", "text": "Recycle flow LO deviation", "priority": "Low", "state": "Acknowledged" },
+    { "time": "03:15", "tag": "REF-AI-205", "text": "Flue gas excess O₂ HI", "priority": "Low", "state": "Acknowledged" },
+    { "time": "01:12", "tag": "STO-LI-401", "text": "TK-401 level HI (loading delayed)", "priority": "Low", "state": "Cleared" },
+    { "time": "22:40", "tag": "DIS-LI-305", "text": "T-301 reflux drum level HI", "priority": "Low", "state": "Cleared" },
+    { "time": "19:05", "tag": "PT-AI-111", "text": "Treated gas sulphur analyser maintenance", "priority": "Advisory", "state": "Cleared" }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "_note": "SYNTHETIC energy & utilities balance for demo purposes. Emission factors illustrative.",
+  "metrics": [
+    { "id": "ng", "label": "Natural gas consumption", "value": 84.6, "unit": "kNm³/h", "delta": "+1.9%", "tone": "warn" },
+    { "id": "steam-gen", "label": "Steam generation (HP)", "value": 420, "unit": "t/h", "delta": "+0.5%", "tone": "ok" },
+    { "id": "steam-use", "label": "Steam consumption", "value": 412, "unit": "t/h", "delta": "8 t/h let-down", "tone": "warn" },
+    { "id": "power", "label": "Electricity import", "value": 24.2, "unit": "MW", "delta": "+0.8%", "tone": "ok" },
+    { "id": "comp", "label": "Compressor energy", "value": 40.3, "unit": "MW", "delta": "+3.4% /t", "tone": "warn" },
+    { "id": "duty", "label": "Reformer fired duty", "value": 223, "unit": "MW", "delta": "+2.3%", "tone": "warn" },
+    { "id": "cooling", "label": "Cooling duty", "value": 165, "unit": "MW", "delta": "+0.6%", "tone": "ok" },
+    { "id": "ei", "label": "Energy intensity", "value": 28.4, "unit": "GJ/t", "delta": "+3.1%", "tone": "warn" },
+    { "id": "co2", "label": "Estimated CO₂ emissions", "value": 1372, "unit": "t/day", "delta": "0.56 t/t", "tone": "ok" }
+  ],
+  "flows": {
+    "sources": [
+      { "id": "ng-feed", "label": "Natural gas – process feed", "gjh": 2030 },
+      { "id": "ng-fuel", "label": "Natural gas – reformer fuel", "gjh": 725 },
+      { "id": "elec", "label": "Electricity import", "gjh": 87 },
+      { "id": "aux", "label": "Aux. boiler fuel", "gjh": 58 }
+    ],
+    "sinks": [
+      { "id": "product", "label": "Methanol product (LHV)", "gjh": 2032 },
+      { "id": "stack", "label": "Reformer stack losses", "gjh": 248 },
+      { "id": "cooling", "label": "Cooling water / air coolers", "gjh": 432 },
+      { "id": "purge", "label": "Purge gas & vents", "gjh": 104 },
+      { "id": "other", "label": "Other losses", "gjh": 84 }
+    ]
+  },
+  "opportunities": [
+    { "title": "Reformer excess O₂ adjustment", "saving": "0.30 GJ/t", "detail": "Return excess O₂ from 2.4% to the 1.8% target band via burner air balance (operator action through DCS)." },
+    { "title": "Steam balance optimisation", "saving": "0.20 GJ/t", "detail": "Eliminate 8 t/h HP→MP let-down by re-balancing turbine extraction." },
+    { "title": "Compressor efficiency recovery", "saving": "0.18 GJ/t", "detail": "Restore C-201 polytropic efficiency (linked to active investigation INV-0412)." },
+    { "title": "Heat recovery improvement", "saving": "0.12 GJ/t", "detail": "E-205 fouling: plan cleaning; interim approach-temperature monitoring." }
+  ],
+  "assumptions": { "gasPriceAedPerGj": 11.5, "co2PerTonne": 0.56 }
+}

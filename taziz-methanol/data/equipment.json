@@ -1,0 +1,98 @@
+{
+  "_note": "SYNTHETIC equipment register and condition data for demo purposes only.",
+  "equipment": [
+    {
+      "id": "C-201", "name": "Synthesis Loop Compressor", "type": "Centrifugal recycle compressor", "area": "synthesis", "criticality": "A",
+      "health": 71, "risk": "Elevated", "prediction": "Possible degradation developing",
+      "outlook": "If current trend persists, efficiency could reach the action limit in ~3–4 weeks (illustrative model estimate).",
+      "signals": [
+        { "label": "Vibration (DE bearing)", "value": "6.8 mm/s", "delta": "+18%", "tone": "warn" },
+        { "label": "Bearing temperature", "value": "86.1 °C", "delta": "+7%", "tone": "warn" },
+        { "label": "Polytropic efficiency", "value": "76.8 %", "delta": "−4%", "tone": "alert" },
+        { "label": "Load stability", "value": "σ 1.9 %", "delta": "deteriorating", "tone": "warn" }
+      ],
+      "lastMaintenance": "2026-09-21 · Monthly vibration survey (6.1 mm/s, within limits)",
+      "strategy": "Condition-based: monthly vibration route, quarterly lube-oil analysis, online efficiency monitoring, 4-yearly overhaul",
+      "spares": [
+        { "item": "Journal bearing set (DE/NDE)", "stock": "1 set", "lead": "On site" },
+        { "item": "Dry gas seal cartridge", "stock": "1", "lead": "On site" },
+        { "item": "Suction strainer element", "stock": "2", "lead": "On site" },
+        { "item": "Impeller (stage 1) – capital spare", "stock": "0", "lead": "26 weeks" }
+      ]
+    },
+    {
+      "id": "C-101", "name": "Syngas Compressor", "type": "Steam-turbine driven make-up compressor", "area": "compress", "criticality": "A",
+      "health": 88, "risk": "Low", "prediction": "Stable",
+      "outlook": "No adverse trend detected in the last 30 days.",
+      "signals": [
+        { "label": "Vibration", "value": "3.9 mm/s", "delta": "+1%", "tone": "ok" },
+        { "label": "Turbine steam rate", "value": "118 t/h", "delta": "0%", "tone": "ok" },
+        { "label": "Anti-surge margin", "value": "14 %", "delta": "stable", "tone": "ok" }
+      ],
+      "lastMaintenance": "2026-08-17 · Governor valve calibration",
+      "strategy": "Condition-based with online machinery protection",
+      "spares": [{ "item": "Turbine governor actuator", "stock": "1", "lead": "On site" }]
+    },
+    {
+      "id": "F-101", "name": "Reformer Furnace", "type": "Top-fired steam methane reformer", "area": "reform", "criticality": "A",
+      "health": 82, "risk": "Moderate", "prediction": "Combustion efficiency below optimum",
+      "outlook": "Excess O₂ trending above target since 22:00; burner balance review suggested.",
+      "signals": [
+        { "label": "Flue gas excess O₂", "value": "2.4 %", "delta": "+33%", "tone": "warn" },
+        { "label": "Max tube wall temp", "value": "912 °C", "delta": "within limit", "tone": "ok" },
+        { "label": "Fired duty", "value": "223 MW", "delta": "+2.3%", "tone": "warn" }
+      ],
+      "lastMaintenance": "2026-09-28 · Burner tuning (4 burners)",
+      "strategy": "Tube-skin thermography monthly, burner inspection quarterly",
+      "spares": [{ "item": "Burner tip set", "stock": "12", "lead": "On site" }]
+    },
+    {
+      "id": "P-110", "name": "Feed Pump", "type": "Multistage centrifugal pump", "area": "feed", "criticality": "B",
+      "health": 93, "risk": "Low", "prediction": "Stable",
+      "outlook": "Seal flush adjustment completed 2026-10-09; parameters normal.",
+      "signals": [
+        { "label": "Vibration", "value": "2.1 mm/s", "delta": "−3%", "tone": "ok" },
+        { "label": "Seal pot pressure", "value": "Normal", "delta": "stable", "tone": "ok" }
+      ],
+      "lastMaintenance": "2026-10-09 · Seal flush adjustment",
+      "strategy": "Run-to-condition with installed spare",
+      "spares": [{ "item": "Mechanical seal", "stock": "2", "lead": "On site" }]
+    },
+    {
+      "id": "R-201", "name": "Methanol Reactor", "type": "Isothermal steam-raising converter", "area": "synthesis", "criticality": "A",
+      "health": 90, "risk": "Low", "prediction": "Catalyst ageing on expected curve",
+      "outlook": "Catalyst activity 86% of start-of-run; consistent with ageing model.",
+      "signals": [
+        { "label": "Catalyst activity", "value": "86 % SOR", "delta": "on curve", "tone": "ok" },
+        { "label": "Reactor ΔT", "value": "Normal", "delta": "stable", "tone": "ok" }
+      ],
+      "lastMaintenance": "2025-02 · Catalyst change-out (turnaround)",
+      "strategy": "Catalyst performance tracking, shell-side inspection at turnaround",
+      "spares": []
+    },
+    {
+      "id": "T-301", "name": "Distillation Column", "type": "Refining column (75 trays)", "area": "distill", "criticality": "A",
+      "health": 89, "risk": "Low", "prediction": "Stable",
+      "outlook": "Hydraulics within design; reflux ratio steady.",
+      "signals": [
+        { "label": "Column ΔP", "value": "184 mbar", "delta": "+1%", "tone": "ok" },
+        { "label": "Reflux ratio", "value": "1.84", "delta": "stable", "tone": "ok" }
+      ],
+      "lastMaintenance": "2026-08-12 · Reflux pump P-305 seal replacement",
+      "strategy": "Gamma scan on demand, ΔP monitoring",
+      "spares": []
+    },
+    {
+      "id": "E-205", "name": "Loop Feed/Effluent Exchanger", "type": "Shell & tube heat exchanger", "area": "synthesis", "criticality": "B",
+      "health": 78, "risk": "Moderate", "prediction": "Gradual fouling",
+      "outlook": "Fouling factor +12% vs clean; cleaning planned for next turnaround window.",
+      "signals": [
+        { "label": "Approach temperature", "value": "+4 °C", "delta": "rising", "tone": "warn" },
+        { "label": "Fouling factor", "value": "+12 %", "delta": "rising", "tone": "warn" }
+      ],
+      "lastMaintenance": "2026-04-10 · Performance test",
+      "strategy": "Performance monitoring, cleaning at turnaround",
+      "spares": []
+    }
+  ]
+}

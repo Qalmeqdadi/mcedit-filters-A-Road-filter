@@ -1,0 +1,22 @@
+{
+  "_note": "SYNTHETIC maintenance history and work orders (mock EAM/CMMS extract).",
+  "history": [
+    { "date": "2026-09-21", "asset": "C-201", "type": "Inspection", "text": "Monthly vibration route: overall 6.1 mm/s DE, within alert limit (7.1 mm/s). Continue monthly." },
+    { "date": "2026-08-30", "asset": "C-201", "type": "Condition monitoring", "text": "Lube oil analysis normal; Fe 4 ppm (slight rise), water < 100 ppm." },
+    { "date": "2026-07-14", "asset": "C-201", "type": "Function test", "text": "Anti-surge valve FV-201 partial stroke test passed; response 1.8 s." },
+    { "date": "2026-06-02", "asset": "C-201", "type": "Inspection", "text": "Suction strainer ΔP check 0.18 bar (clean condition)." },
+    { "date": "2025-02-18", "asset": "C-201", "type": "Overhaul", "text": "Turnaround overhaul: bundle inspection, dry gas seals replaced, rotor balanced." },
+    { "date": "2026-09-28", "asset": "F-101", "type": "Tuning", "text": "Burner tuning on 4 burners, row C; excess O₂ returned to 1.8%." },
+    { "date": "2026-08-17", "asset": "C-101", "type": "Calibration", "text": "Turbine governor valve calibration completed." },
+    { "date": "2026-08-12", "asset": "T-301", "type": "Corrective", "text": "Reflux pump P-305 mechanical seal replaced." },
+    { "date": "2026-04-10", "asset": "E-205", "type": "Performance test", "text": "Fouling factor within design; trend to be reviewed quarterly." },
+    { "date": "2026-10-09", "asset": "P-110", "type": "Corrective", "text": "Seal flush flow adjusted; seal pot pressure normal." }
+  ],
+  "workOrders": [
+    { "id": "WO-26-04417", "asset": "C-201", "title": "Monthly vibration route", "status": "Scheduled", "due": "2026-10-19", "priority": "Routine" },
+    { "id": "WO-26-04388", "asset": "F-101", "title": "Burner inspection – row C", "status": "In progress", "due": "2026-10-14", "priority": "Normal" },
+    { "id": "WO-26-04302", "asset": "E-205", "title": "Cleaning scope planning (turnaround)", "status": "Planned", "due": "2027-02-01", "priority": "Normal" },
+    { "id": "WO-26-04460", "asset": "P-110", "title": "Seal flush adjustment", "status": "Completed", "due": "2026-10-09", "priority": "Normal" },
+    { "id": "WO-26-04471", "asset": "T-301", "title": "Level transmitter LT-305 calibration", "status": "Scheduled", "due": "2026-10-22", "priority": "Routine" }
+  ]
+}

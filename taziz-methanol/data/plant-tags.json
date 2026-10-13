@@ -1,0 +1,56 @@
+{
+  "_note": "SYNTHETIC demo tags. Not connected to any real plant, DCS, SIS or historian. 'expected' = model-expected value; 'baseline' = current simulated value in the core storyline; 'story' describes how the 24h history was synthesised.",
+  "tags": [
+    { "id": "FG-FI-101", "name": "Feed Gas Flow", "area": "feed", "unit": "Nm³/h", "expected": 64800, "low": 62000, "high": 67500, "decimals": 0, "noise": 0.003, "baseline": 64650 },
+    { "id": "FG-PI-101", "name": "Feed Gas Pressure", "area": "feed", "unit": "barg", "expected": 42.0, "low": 40.5, "high": 43.5, "decimals": 1, "noise": 0.002, "baseline": 41.9 },
+    { "id": "FG-TI-101", "name": "Feed Gas Temperature", "area": "feed", "unit": "°C", "expected": 38, "low": 30, "high": 45, "decimals": 1, "noise": 0.004, "baseline": 37.6 },
+    { "id": "FG-AI-101", "name": "Feed Gas CH₄", "area": "feed", "unit": "mol%", "expected": 92.4, "low": 91.0, "high": 94.0, "decimals": 1, "noise": 0.0008, "baseline": 92.3, "bad": "low" },
+    { "id": "FG-AI-102", "name": "Feed Gas CO₂", "area": "feed", "unit": "mol%", "expected": 2.1, "low": 1.5, "high": 2.8, "decimals": 2, "noise": 0.008, "baseline": 2.12, "bad": "high" },
+
+    { "id": "PT-TI-110", "name": "Desulphuriser Inlet Temp", "area": "pretreat", "unit": "°C", "expected": 375, "low": 365, "high": 385, "decimals": 0, "noise": 0.002, "baseline": 374 },
+    { "id": "PT-PI-110", "name": "Desulphuriser Pressure", "area": "pretreat", "unit": "barg", "expected": 40.8, "low": 39.5, "high": 42.0, "decimals": 1, "noise": 0.002, "baseline": 40.7 },
+    { "id": "PT-AI-111", "name": "Treated Gas Sulphur", "area": "pretreat", "unit": "ppmv", "expected": 0.05, "low": 0, "high": 0.1, "decimals": 2, "noise": 0.04, "baseline": 0.05, "bad": "high" },
+    { "id": "PT-TI-120", "name": "Saturator Outlet Temp", "area": "pretreat", "unit": "°C", "expected": 205, "low": 198, "high": 212, "decimals": 0, "noise": 0.003, "baseline": 204 },
+
+    { "id": "REF-FI-210", "name": "Syngas Production", "area": "reform", "unit": "kNm³/h", "expected": 268, "low": 258, "high": 276, "decimals": 0, "noise": 0.003, "baseline": 266 },
+    { "id": "REF-TI-201", "name": "Reformer Outlet Temp", "area": "reform", "unit": "°C", "expected": 880, "low": 870, "high": 890, "decimals": 0, "noise": 0.0015, "baseline": 882 },
+    { "id": "REF-PI-201", "name": "Reformer Outlet Pressure", "area": "reform", "unit": "barg", "expected": 19.5, "low": 18.8, "high": 20.2, "decimals": 1, "noise": 0.002, "baseline": 19.4 },
+    { "id": "REF-SC-201", "name": "Steam / Carbon Ratio", "area": "reform", "unit": "mol/mol", "expected": 2.8, "low": 2.6, "high": 3.0, "decimals": 2, "noise": 0.003, "baseline": 2.82 },
+    { "id": "REF-AI-205", "name": "Flue Gas Excess O₂", "area": "reform", "unit": "%", "expected": 1.8, "low": 1.4, "high": 2.2, "decimals": 1, "noise": 0.015, "baseline": 2.4, "bad": "high", "story": { "start": -540, "shape": "ramp" } },
+    { "id": "REF-QI-201", "name": "Reformer Fired Duty", "area": "reform", "unit": "MW", "expected": 218, "low": 205, "high": 225, "decimals": 0, "noise": 0.003, "baseline": 223, "bad": "high", "story": { "start": -540, "shape": "ramp" } },
+    { "id": "STM-PI-001", "name": "HP Steam Header Pressure", "area": "reform", "unit": "barg", "expected": 112, "low": 108, "high": 115, "decimals": 1, "noise": 0.002, "baseline": 111.6 },
+    { "id": "EN-INT", "name": "Energy Intensity", "area": "reform", "unit": "GJ/t", "expected": 27.55, "low": 26.8, "high": 28.0, "decimals": 1, "noise": 0.002, "baseline": 28.4, "bad": "high", "story": { "start": -108, "shape": "ramp" } },
+
+    { "id": "COMP-C-101", "name": "Syngas Compressor C-101 Load", "area": "compress", "unit": "%", "expected": 88, "low": 80, "high": 95, "decimals": 0, "noise": 0.003, "baseline": 87.6 },
+    { "id": "COMP-FI-101", "name": "Make-up Gas Flow", "area": "compress", "unit": "kNm³/h", "expected": 262, "low": 252, "high": 270, "decimals": 0, "noise": 0.003, "baseline": 259 },
+    { "id": "COMP-PI-101D", "name": "C-101 Discharge Pressure", "area": "compress", "unit": "barg", "expected": 80.5, "low": 79.0, "high": 82.0, "decimals": 1, "noise": 0.002, "baseline": 80.1 },
+    { "id": "COMP-TI-101D", "name": "C-101 Discharge Temp", "area": "compress", "unit": "°C", "expected": 128, "low": 120, "high": 136, "decimals": 0, "noise": 0.003, "baseline": 128 },
+
+    { "id": "SYN-R-101", "name": "Reactor Temperature", "area": "synthesis", "unit": "°C", "expected": 245, "low": 238, "high": 255, "decimals": 0, "noise": 0.002, "baseline": 245 },
+    { "id": "SYN-P-101", "name": "Reactor Pressure", "area": "synthesis", "unit": "bar", "expected": 80.0, "low": 79.0, "high": 82.5, "decimals": 1, "noise": 0.0015, "baseline": 78.5, "bad": "low", "story": { "start": -148, "shape": "ramp" } },
+    { "id": "SYN-F-210", "name": "Recycle Flow", "area": "synthesis", "unit": "Nm³/h", "expected": 4077, "low": 3950, "high": 4250, "decimals": 0, "noise": 0.003, "baseline": 3840, "bad": "low", "story": { "start": -166, "shape": "ramp" } },
+    { "id": "COMP-C-201", "name": "C-201 Compressor Load", "area": "synthesis", "unit": "%", "expected": 97, "low": 94, "high": 100, "decimals": 0, "noise": 0.003, "baseline": 92, "bad": "low", "story": { "start": -141, "shape": "ramp" } },
+    { "id": "COMP-PI-201S", "name": "C-201 Suction Pressure", "area": "synthesis", "unit": "barg", "expected": 76.5, "low": 75.5, "high": 77.5, "decimals": 1, "noise": 0.0015, "baseline": 74.6, "bad": "low", "story": { "start": -158, "shape": "ramp" } },
+    { "id": "COMP-VIB-201", "name": "C-201 Vibration", "area": "synthesis", "unit": "mm/s", "expected": 5.8, "low": 0, "high": 7.1, "decimals": 1, "noise": 0.02, "baseline": 6.8, "bad": "high", "story": { "start": -1440, "shape": "slow", "from": 6.1 } },
+    { "id": "COMP-TI-201B", "name": "C-201 Bearing Temperature", "area": "synthesis", "unit": "°C", "expected": 80.5, "low": 70, "high": 88, "decimals": 1, "noise": 0.003, "baseline": 86.1, "bad": "high", "story": { "start": -1440, "shape": "slow", "from": 82.4 } },
+    { "id": "COMP-EFF-201", "name": "C-201 Polytropic Efficiency", "area": "synthesis", "unit": "%", "expected": 80.0, "low": 77.5, "high": 83.0, "decimals": 1, "noise": 0.002, "baseline": 76.8, "bad": "low", "story": { "start": -150, "shape": "ramp" } },
+    { "id": "COMP-JI-201", "name": "C-201 Shaft Power", "area": "synthesis", "unit": "MW", "expected": 9.2, "low": 8.6, "high": 9.8, "decimals": 2, "noise": 0.003, "baseline": 9.31 },
+    { "id": "SYN-SN-220", "name": "Syngas Stoichiometric No. (SN)", "area": "synthesis", "unit": "–", "expected": 2.05, "low": 2.0, "high": 2.1, "decimals": 2, "noise": 0.002, "baseline": 2.05 },
+
+    { "id": "DIS-TI-301", "name": "Refining Column Top Temp", "area": "distill", "unit": "°C", "expected": 64.6, "low": 64.0, "high": 65.4, "decimals": 1, "noise": 0.0015, "baseline": 64.7 },
+    { "id": "DIS-PI-301", "name": "Refining Column Top Pressure", "area": "distill", "unit": "barg", "expected": 1.2, "low": 1.0, "high": 1.4, "decimals": 2, "noise": 0.004, "baseline": 1.21 },
+    { "id": "DIS-RR-301", "name": "Reflux Ratio", "area": "distill", "unit": "–", "expected": 1.85, "low": 1.75, "high": 1.95, "decimals": 2, "noise": 0.003, "baseline": 1.84 },
+    { "id": "DIS-QR-301", "name": "Reboiler Duty", "area": "distill", "unit": "MW", "expected": 38.0, "low": 35.5, "high": 40.5, "decimals": 1, "noise": 0.003, "baseline": 38.2 },
+    { "id": "DIS-DP-301", "name": "Column Differential Pressure", "area": "distill", "unit": "mbar", "expected": 182, "low": 150, "high": 210, "decimals": 0, "noise": 0.005, "baseline": 184, "bad": "high" },
+    { "id": "MEOH-PURITY", "name": "Methanol Purity", "area": "distill", "unit": "wt%", "expected": 99.85, "low": 99.75, "high": 100, "decimals": 2, "noise": 0.00001, "baseline": 99.83, "bad": "low" },
+    { "id": "MEOH-H2O", "name": "Water Content", "area": "distill", "unit": "ppm", "expected": 450, "low": 0, "high": 1000, "decimals": 0, "noise": 0.015, "baseline": 420, "bad": "high" },
+    { "id": "MEOH-ETOH", "name": "Ethanol", "area": "distill", "unit": "mg/kg", "expected": 20, "low": 0, "high": 50, "decimals": 0, "noise": 0.02, "baseline": 18, "bad": "high" },
+    { "id": "MEOH-ACET", "name": "Acetone", "area": "distill", "unit": "mg/kg", "expected": 12, "low": 0, "high": 30, "decimals": 0, "noise": 0.02, "baseline": 12, "bad": "high" },
+    { "id": "MEOH-HA", "name": "Higher Alcohols", "area": "distill", "unit": "mg/kg", "expected": 35, "low": 0, "high": 100, "decimals": 0, "noise": 0.02, "baseline": 34, "bad": "high" },
+
+    { "id": "STO-LI-401", "name": "Product Tank TK-401 Level", "area": "storage", "unit": "%", "expected": 62, "low": 20, "high": 90, "decimals": 1, "noise": 0.001, "baseline": 62.4 },
+    { "id": "STO-FI-402", "name": "Product Loading Rate", "area": "storage", "unit": "t/h", "expected": 410, "low": 0, "high": 600, "decimals": 0, "noise": 0.004, "baseline": 405 },
+    { "id": "STO-TI-401", "name": "Product Tank Temperature", "area": "storage", "unit": "°C", "expected": 36, "low": 25, "high": 45, "decimals": 1, "noise": 0.002, "baseline": 36.2 },
+    { "id": "PRODUCTION", "name": "Methanol Production", "area": "storage", "unit": "t/day", "expected": 2550, "low": 2500, "high": 2620, "decimals": 0, "noise": 0.0004, "baseline": 2450, "bad": "low", "story": { "start": -148, "shape": "ramp" } }
+  ]
+}

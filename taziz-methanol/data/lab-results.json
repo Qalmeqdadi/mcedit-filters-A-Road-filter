@@ -1,0 +1,13 @@
+{
+  "_note": "SYNTHETIC LIMS results for refined methanol (demo spec limits, not a contractual specification).",
+  "limits": { "purity": 99.75, "water": 1000, "ethanol": 50, "acetone": 30, "higherAlcohols": 100 },
+  "samples": [
+    { "time": "06:30", "id": "LS-2610-0614", "purity": 99.83, "water": 420, "ethanol": 18, "acetone": 12, "higherAlcohols": 34, "status": "In spec" },
+    { "time": "02:30", "id": "LS-2610-0613", "purity": 99.84, "water": 410, "ethanol": 18, "acetone": 11, "higherAlcohols": 33, "status": "In spec" },
+    { "time": "22:30", "id": "LS-2610-0612", "purity": 99.85, "water": 395, "ethanol": 17, "acetone": 11, "higherAlcohols": 32, "status": "In spec" },
+    { "time": "18:30", "id": "LS-2610-0611", "purity": 99.85, "water": 400, "ethanol": 17, "acetone": 12, "higherAlcohols": 33, "status": "In spec" },
+    { "time": "14:30", "id": "LS-2610-0610", "purity": 99.86, "water": 388, "ethanol": 16, "acetone": 11, "higherAlcohols": 31, "status": "In spec" },
+    { "time": "10:30", "id": "LS-2610-0609", "purity": 99.85, "water": 402, "ethanol": 17, "acetone": 12, "higherAlcohols": 32, "status": "In spec" },
+    { "time": "06:30 (D-1)", "id": "LS-2610-0608", "purity": 99.85, "water": 405, "ethanol": 17, "acetone": 12, "higherAlcohols": 33, "status": "In spec" }
+  ]
+}

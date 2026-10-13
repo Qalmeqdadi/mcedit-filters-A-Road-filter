@@ -1,0 +1,12 @@
+{
+  "_note": "SYNTHETIC process areas for the demo methanol value chain.",
+  "areas": [
+    { "id": "feed", "name": "Feed Gas", "short": "Feed", "description": "Natural gas receiving, metering and feed conditioning.", "throughputTag": "FG-FI-101", "tempTag": "FG-TI-101", "pressureTag": "FG-PI-101", "equipment": ["P-110"] },
+    { "id": "pretreat", "name": "Pretreatment", "short": "Pretreat", "description": "Hydro-desulphurisation, ZnO guard beds and feed saturation.", "throughputTag": "FG-FI-101", "tempTag": "PT-TI-110", "pressureTag": "PT-PI-110", "equipment": [] },
+    { "id": "reform", "name": "Reforming / Syngas", "short": "Reforming", "description": "Steam methane reformer F-101, waste-heat boiler and syngas cooling.", "throughputTag": "REF-FI-210", "tempTag": "REF-TI-201", "pressureTag": "REF-PI-201", "equipment": ["F-101"] },
+    { "id": "compress", "name": "Syngas Compression", "short": "Compression", "description": "Make-up syngas compressor C-101 (steam turbine driven).", "throughputTag": "COMP-FI-101", "tempTag": "COMP-TI-101D", "pressureTag": "COMP-PI-101D", "equipment": ["C-101"] },
+    { "id": "synthesis", "name": "Methanol Synthesis Loop", "short": "Synthesis", "description": "Synthesis reactor R-201, recycle compressor C-201, loop exchangers E-205.", "throughputTag": "SYN-F-210", "tempTag": "SYN-R-101", "pressureTag": "SYN-P-101", "equipment": ["C-201", "R-201", "E-205"] },
+    { "id": "distill", "name": "Distillation", "short": "Distillation", "description": "Topping and refining columns (T-301) producing grade-AA methanol.", "throughputTag": "PRODUCTION", "tempTag": "DIS-TI-301", "pressureTag": "DIS-PI-301", "equipment": ["T-301"] },
+    { "id": "storage", "name": "Storage & Loading", "short": "Storage", "description": "Product tankage TK-401/402 and marine loading.", "throughputTag": "STO-FI-402", "tempTag": "STO-TI-401", "pressureTag": null, "equipment": [] }
+  ]
+}

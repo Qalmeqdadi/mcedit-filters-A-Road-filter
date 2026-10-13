@@ -1,0 +1,16 @@
+{
+  "_note": "SYNTHETIC production data (mock MES / production planning extract).",
+  "dailyTarget": 2550,
+  "days": [
+    { "day": "29 Sep", "actual": 2546, "plan": 2550 }, { "day": "30 Sep", "actual": 2553, "plan": 2550 },
+    { "day": "01 Oct", "actual": 2549, "plan": 2550 }, { "day": "02 Oct", "actual": 2541, "plan": 2550 },
+    { "day": "03 Oct", "actual": 2556, "plan": 2550 }, { "day": "04 Oct", "actual": 2552, "plan": 2550 },
+    { "day": "05 Oct", "actual": 2538, "plan": 2550 }, { "day": "06 Oct", "actual": 2547, "plan": 2550 },
+    { "day": "07 Oct", "actual": 2551, "plan": 2550 }, { "day": "08 Oct", "actual": 2544, "plan": 2550 },
+    { "day": "09 Oct", "actual": 2549, "plan": 2550 }, { "day": "10 Oct", "actual": 2546, "plan": 2550 },
+    { "day": "11 Oct", "actual": 2540, "plan": 2550 }, { "day": "12 Oct", "actual": 2532, "plan": 2550 },
+    { "day": "Today (rate)", "actual": 2450, "plan": 2550 }
+  ],
+  "monthToDate": { "actual": 30645, "plan": 30600, "note": "Month-to-date still marginally ahead of plan; today's rate would erase the buffer within ~1 day." },
+  "nextCargo": { "vessel": "MT Demo Horizon", "eta": "16 Oct 2026", "nominated": "18,000 t", "status": "On track if rate restored within 48 h" }
+}
