@@ -19,7 +19,7 @@ const caption = async (title, sub = "") =>
     if (!el) {
       el = document.createElement("div");
       el.id = "__cap";
-      el.style.cssText = "position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:9999;max-width:1100px;padding:14px 26px;border-radius:14px;background:rgba(2,10,24,.92);border:1px solid rgba(47,214,245,.55);box-shadow:0 0 40px -10px #2FD6F5;font-family:Inter,sans-serif;text-align:center;transition:opacity .4s";
+      el.style.cssText = "position:fixed;pointer-events:none;left:50%;top:70px;transform:translateX(-50%);z-index:9999;max-width:1100px;padding:14px 26px;border-radius:14px;background:rgba(2,10,24,.92);border:1px solid rgba(47,214,245,.55);box-shadow:0 0 40px -10px #2FD6F5;font-family:Inter,sans-serif;text-align:center;transition:opacity .4s";
       document.body.appendChild(el);
     }
     el.style.opacity = t ? "1" : "0";
