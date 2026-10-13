@@ -1,0 +1,14 @@
+[
+  {"id": "open", "text": "Six thirty, at the Ta-zeez methanol plant. Production is four percent below target, and the signals are spread across the whole plant."},
+  {"id": "s01", "text": "The Operations Agent sees it coming. A decline in synthesis loop recycle flow, traced through compression, distillation and storage, all the way to the next cargo."},
+  {"id": "s02", "text": "It convenes a council of specialist agents. Process, asset, energy, quality, engineering, and H.S.E. investigate together, in seconds rather than hours."},
+  {"id": "s03", "text": "Their conclusion. The synthesis loop compressor is losing throughput, with eighty seven percent confidence. Around one hundred tonnes per day are at stake, and most of it is recoverable."},
+  {"id": "s04", "text": "The A.I. recommends an investigation plan, but it never acts on the plant. The shift supervisor decides, and every step is logged."},
+  {"id": "s05", "text": "The Asset Agent ranks equipment by risk, so engineers know which machine needs them next."},
+  {"id": "s06", "text": "Energy and production agents close the performance gap, with advisory operating envelopes for throughput, energy, and quality."},
+  {"id": "s07", "text": "Engineering knowledge is one question away. Cited answers from procedures, manuals, and incident history, in English and Arabic."},
+  {"id": "s08", "text": "Every shift starts with a clear, A.I. drafted handover. Good morning. Three things need you today."},
+  {"id": "s09", "text": "And it is governed by design. Agents read and recommend. They never write to the D.C.S. or the safety systems. People stay accountable."},
+  {"id": "tiles", "text": "Nine agentic capabilities. One intelligent operating layer, from plant signals to human decisions."},
+  {"id": "close", "text": "Start focused. Prove value. Scale. Ask us for the live demo."}
+]

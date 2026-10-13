@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TA'ZIZ · Agentic AI for the Intelligent Methanol Plant — concept film</title>
+<style>
+@font-face { font-family: "InterV"; src: url("inter.woff2") format("woff2"); font-weight: 100 900; }
+:root { --blue:#1E9BE8; --blue2:#3FB2FF; --ink:#020F30; --card:rgba(12,38,96,.55); --line:rgba(90,150,240,.28); --txt:#EAF2FF; --mut:#9DB3D8; --red:#FF5A5F; --amber:#F5A524; --green:#2BC48A; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { width:1920px; height:1080px; overflow:hidden; background:var(--ink); font-family:"InterV",Inter,system-ui,sans-serif; color:var(--txt); -webkit-font-smoothing:antialiased; }
+#stage { position:relative; width:1920px; height:1080px; overflow:hidden;
+  background: radial-gradient(1100px 700px at 88% -10%, rgba(30,110,230,.55), transparent 60%),
+              radial-gradient(900px 600px at -5% 105%, rgba(20,80,190,.35), transparent 60%),
+              linear-gradient(180deg,#03113A 0%,#021034 55%,#020C29 100%); }
+.glow { position:absolute; border-radius:50%; filter:blur(60px); opacity:.35; animation:drift 18s ease-in-out infinite alternate; }
+@keyframes drift { to { transform:translate(-80px,40px) scale(1.1); } }
+.scene { position:absolute; inset:0; opacity:0; transition:opacity .55s ease; pointer-events:none; }
+.scene.show { opacity:1; }
+.r { opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+.r.on { opacity:1; transform:none; }
+.eyebrow { position:absolute; left:96px; top:84px; font-size:22px; font-weight:700; letter-spacing:.2em; color:var(--blue); text-transform:uppercase; }
+.eyebrow b { color:#fff; letter-spacing:.02em; font-weight:600; text-transform:none; margin-left:12px; }
+.h1 { font-size:76px; font-weight:800; line-height:1.04; letter-spacing:-.02em; }
+.h1 .a { color:var(--blue); }
+.left { position:absolute; left:96px; top:300px; width:700px; }
+.sub { margin-top:30px; font-size:25px; line-height:1.45; color:var(--mut); max-width:620px; }
+.card { position:absolute; right:96px; top:180px; width:930px; min-height:640px; border-radius:20px; background:var(--card); border:1px solid var(--line); padding:38px 40px; box-shadow:0 30px 80px -40px rgba(0,0,0,.7); }
+.ctitle { font-size:18px; font-weight:700; letter-spacing:.2em; color:var(--blue); text-transform:uppercase; margin-bottom:26px; }
+.footer { position:absolute; left:96px; right:96px; bottom:46px; display:flex; justify-content:space-between; align-items:center; font-size:19px; color:var(--mut); z-index:5; }
+.logo { font-weight:800; color:#fff; font-size:24px; letter-spacing:-.01em; display:flex; align-items:center; gap:14px; }
+.logo .h { color:#E5397A; }
+.logo .sep { width:1px; height:24px; background:rgba(255,255,255,.35); }
+.logo small { display:block; font-size:9.5px; letter-spacing:.2em; color:var(--mut); font-weight:600; margin-top:2px; }
+#prog { position:absolute; left:0; bottom:0; height:4px; background:var(--blue); width:0; z-index:6; }
+/* chain */
+.chain { position:absolute; left:120px; right:120px; top:470px; display:flex; justify-content:space-between; }
+.chain .ln { position:absolute; left:64px; right:64px; top:63px; height:4px; background:var(--blue); transform-origin:left; transform:scaleX(0); transition:transform 1.6s ease; }
+.chain .ln.on { transform:scaleX(1); }
+.node { position:relative; width:128px; text-align:center; }
+.node .c { width:128px; height:128px; border-radius:50%; background:#0A2A6A; border:3px solid var(--blue2); display:grid; place-items:center; transition:all .6s; }
+.node .c svg { width:56px; height:56px; stroke:#fff; fill:none; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; }
+.node .lb { margin-top:20px; font-size:22px; font-weight:600; white-space:nowrap; margin-left:-40px; margin-right:-40px; }
+.node.bad .c { background:#B3262E; border-color:#FF7A7F; box-shadow:0 0 0 14px rgba(255,90,95,.15),0 0 0 30px rgba(255,90,95,.08),0 0 60px rgba(255,90,95,.5); }
+.node.amber .c { border-color:var(--amber); } .node.green .c { border-color:var(--green); }
+.alert { position:absolute; top:300px; background:#4A1422; border:2px solid #FF5A5F; border-radius:14px; padding:16px 30px 16px 24px; display:flex; gap:18px; align-items:center; }
+.alert .t { font-size:28px; font-weight:700; } .alert .s { font-size:20px; color:#FFC9CB; margin-top:4px; }
+.chip { display:inline-block; border:2px solid; border-radius:12px; padding:9px 18px; font-size:20px; font-weight:700; text-align:center; }
+.chip.g { color:var(--green); border-color:var(--green); } .chip.a { color:var(--amber); border-color:var(--amber); } .chip.b { color:var(--blue2); border-color:var(--blue2); }
+.playbook { position:absolute; left:96px; right:96px; top:790px; background:#0B5BC6; border-radius:14px; padding:22px 30px; display:flex; align-items:center; gap:30px; }
+.playbook .k { font-size:15px; letter-spacing:.2em; font-weight:700; color:#BFE0FF; width:190px; line-height:1.3; }
+.playbook .v { font-size:26px; font-weight:700; } .playbook .v small { display:block; font-size:18px; color:#CFE6FF; font-weight:500; margin-top:4px; }
+.playbook .pill { margin-left:auto; background:#fff; color:#0B5BC6; border-radius:999px; padding:10px 22px; font-weight:800; font-size:19px; }
+/* rows */
+.row { display:flex; align-items:center; gap:20px; padding:15px 0; border-bottom:1px solid rgba(90,150,240,.15); }
+.row .nm { width:170px; font-weight:700; font-size:22px; }
+.row .bar { flex:0 0 180px; height:10px; background:rgba(255,255,255,.08); border-radius:9px; overflow:hidden; }
+.bar i { display:block; height:100%; width:0; border-radius:9px; background:var(--blue2); transition:width 1.1s ease; }
+.on .bar i, .bar.on i { width:var(--w); }
+.row .fd { flex:1; font-size:20px; color:var(--mut); opacity:0; transition:opacity .6s .9s; }
+.row.on .fd { opacity:1; color:#DCE8FF; }
+.row .ck { width:30px; height:30px; border-radius:50%; border:2px solid rgba(255,255,255,.2); display:grid; place-items:center; font-size:17px; transition:all .4s 1s; color:transparent; }
+.row.on .ck { background:var(--green); border-color:var(--green); color:#02210f; }
+/* conclusion */
+.big { font-size:40px; font-weight:800; line-height:1.15; }
+.conf { display:flex; align-items:center; gap:24px; margin:30px 0 26px; }
+.conf .bar { flex:1; height:14px; } .conf .n { font-size:56px; font-weight:800; color:var(--blue2); width:140px; text-align:right; }
+.bul { font-size:22px; color:#D6E4FF; margin:10px 0; display:flex; gap:12px; } .bul:before { content:"›"; color:var(--blue2); font-weight:800; }
+.tiles3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:28px; }
+.tile { border:1px solid var(--line); border-radius:14px; padding:18px; background:rgba(4,20,60,.5); }
+.tile .k { font-size:15px; letter-spacing:.14em; color:var(--mut); font-weight:700; text-transform:uppercase; }
+.tile .v { font-size:34px; font-weight:800; margin-top:8px; }
+/* plan */
+.step { display:flex; gap:18px; align-items:flex-start; padding:14px 0; border-bottom:1px solid rgba(90,150,240,.15); }
+.step .n { width:40px; height:40px; border-radius:10px; background:rgba(63,178,255,.15); color:var(--blue2); font-weight:800; display:grid; place-items:center; font-size:20px; flex:none; }
+.step .t { font-size:23px; font-weight:700; } .step .o { font-size:18px; color:var(--mut); margin-top:3px; }
+.btn { margin-top:28px; display:inline-flex; align-items:center; gap:12px; padding:18px 30px; border-radius:12px; background:#0B5BC6; font-size:22px; font-weight:800; transition:all .5s; }
+.btn.ok { background:var(--green); color:#03200f; box-shadow:0 0 40px -6px var(--green); }
+.stamp { margin-top:18px; font-size:19px; color:var(--mut); }
+/* asset bars */
+.ab { display:flex; align-items:center; gap:18px; padding:11px 14px; border-radius:10px; margin:2px -14px; transition:background .6s; }
+.ab .nm { width:330px; font-size:21px; font-weight:600; } .ab .nm small { color:var(--mut); font-weight:500; margin-left:8px; }
+.ab .bar { flex:1; height:12px; } .ab .s { width:60px; text-align:right; font-weight:800; font-size:24px; }
+.ab.hl { background:rgba(255,90,95,.12); outline:2px solid rgba(255,90,95,.5); }
+/* gap bars */
+.gp { margin:26px 0; } .gp .k { font-size:22px; font-weight:700; display:flex; justify-content:space-between; } .gp .k span { color:var(--amber); }
+.gp .bar { height:22px; margin-top:12px; position:relative; overflow:visible; }
+.gp .bar i { background:linear-gradient(90deg,#1E6FE0,#3FB2FF); }
+.gp .tgt { position:absolute; top:-6px; bottom:-6px; width:4px; background:#fff; border-radius:2px; }
+/* chat */
+.bub { max-width:680px; border-radius:16px; padding:18px 22px; font-size:22px; line-height:1.45; margin:14px 0; }
+.bub.u { margin-left:auto; background:#0B5BC6; font-weight:600; }
+.bub.a { background:rgba(4,20,60,.75); border:1px solid var(--line); }
+.cite { display:inline-block; margin:10px 8px 0 0; font-size:16px; padding:5px 12px; border-radius:8px; border:1px solid var(--blue2); color:var(--blue2); font-weight:700; }
+.ar { direction:rtl; font-family:"DejaVu Sans",sans-serif; }
+/* shift */
+.it { display:flex; gap:20px; align-items:flex-start; padding:22px; border-radius:14px; background:rgba(4,20,60,.55); border:1px solid var(--line); margin-bottom:16px; }
+.it .d { width:16px; height:16px; border-radius:50%; margin-top:8px; flex:none; }
+.it .t { font-size:24px; font-weight:700; } .it .o { font-size:19px; color:var(--mut); margin-top:5px; }
+/* governance */
+.cols { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.col h4 { font-size:17px; letter-spacing:.18em; margin-bottom:12px; }
+.li { font-size:21px; padding:10px 0; display:flex; gap:12px; border-bottom:1px solid rgba(90,150,240,.12); }
+.layers { display:flex; gap:12px; margin-top:28px; align-items:center; }
+.layer { flex:1; border-radius:12px; padding:14px; text-align:center; font-size:18px; font-weight:700; border:2px solid; }
+/* tiles9 */
+.grid9 { position:absolute; left:96px; right:96px; top:420px; display:grid; grid-template-columns:repeat(9,1fr); gap:16px; }
+.t9 { border-radius:16px; background:rgba(12,38,96,.55); border:1px solid var(--line); padding:22px 16px; height:250px; transition:all .5s; }
+.t9 .ic { width:46px; height:46px; border-radius:50%; background:#fff; display:grid; place-items:center; color:#0B5BC6; font-weight:900; }
+.t9 .n { font-size:34px; font-weight:800; margin-top:22px; } .t9 .k { font-size:13px; letter-spacing:.12em; color:var(--blue2); font-weight:700; margin-top:6px; text-transform:uppercase; } .t9 .v { font-size:19px; font-weight:700; margin-top:6px; line-height:1.2; }
+.t9.hl { background:#0B5BC6; border-color:#3FB2FF; box-shadow:0 0 50px -10px #3FB2FF; transform:translateY(-8px); }
+.center { position:absolute; left:0; right:0; text-align:center; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="glow" style="width:700px;height:700px;right:-200px;top:-250px;background:#1A5FD0"></div>
+  <div class="glow" style="width:600px;height:600px;left:-250px;bottom:-250px;background:#123E9A;animation-duration:22s"></div>
+
+  <!-- OPEN -->
+  <section class="scene" id="open">
+    <div class="center" style="top:330px">
+      <div class="r" data-t="0.3" style="font-size:24px;letter-spacing:.3em;color:var(--blue);font-weight:700">06:30 · TA’ZIZ METHANOL · RUWAIS</div>
+      <div class="r h1" data-t="0.9" style="margin-top:34px;font-size:84px">Production is 4% below target.</div>
+      <div class="r h1" data-t="2.6" style="font-size:84px"><span class="a">The signals are everywhere.</span></div>
+      <div class="r" data-t="4.2" style="margin-top:44px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <span class="chip b">Historian trends</span><span class="chip b">Alarms</span><span class="chip b">Equipment health</span><span class="chip b">Lab results</span><span class="chip b">Work orders</span><span class="chip b">Engineering documents</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 -->
+  <section class="scene" id="s01">
+    <div class="eyebrow r" data-t="0.1">01 · See it coming <b>Methanol Operations Agent</b></div>
+    <div class="r h1" data-t="0.3" style="position:absolute;left:96px;top:130px;font-size:64px">A deviation in one loop, traced across the whole plant</div>
+    <div class="chain">
+      <div class="ln" data-t="0.8"></div>
+      <div class="node r" data-t="0.8" id="n1"><div class="c"><svg viewBox="0 0 24 24"><path d="M12 3c3 4 5 6 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg></div><div class="lb">Feed gas</div></div>
+      <div class="node r" data-t="0.95"><div class="c"><svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg></div><div class="lb">Pretreatment</div></div>
+      <div class="node r" data-t="1.1"><div class="c"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 16c0-2 3-3 3-6 1 2 3 3 3 6"/></svg></div><div class="lb">Reforming</div></div>
+      <div class="node r green" data-t="1.25" id="nComp"><div class="c"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v8l6 4M12 12l-6 4"/></svg></div><div class="lb">Compression</div></div>
+      <div class="node r" data-t="1.4" id="nSyn"><div class="c"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></svg></div><div class="lb">Synthesis loop</div></div>
+      <div class="node r" data-t="1.55" id="nDis"><div class="c"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="20" rx="3"/><path d="M8 8h8M8 13h8M8 18h8"/></svg></div><div class="lb">Distillation</div></div>
+      <div class="node r" data-t="1.7" id="nSto"><div class="c"><svg viewBox="0 0 24 24"><path d="M3 16h18l-2 4H5zM6 16V9h12v7M9 9V5h6v4"/></svg></div><div class="lb">Storage &amp; loading</div></div>
+    </div>
+    <div class="alert r" data-t="2.4" style="left:1000px;transform:none"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M12 3l10 18H2z" fill="#FF5A5F"/><path d="M12 10v5M12 18v.5" stroke="#4A1422" stroke-width="2.4" stroke-linecap="round"/></svg><div><div class="t">Recycle flow −5.8%</div><div class="s">C-201 load falling · first signal 04:12</div></div></div>
+    <div class="r" data-t="3.8" style="position:absolute;top:690px;left:838px"><span class="chip g">Make-up gas normal</span></div>
+    <div class="r" data-t="4.4" style="position:absolute;top:690px;left:1360px"><span class="chip g">Quality within spec</span></div>
+    <div class="r" data-t="5.0" style="position:absolute;top:690px;left:1625px"><span class="chip a">Rate −102 t/day<br>Cargo 16 Oct at risk</span></div>
+    <div class="playbook r" data-t="6.6"><div class="k">INVESTIGATION OPENED</div><div class="v">INV-26-0412 · Council of Agents convened<small>Process · Asset · Energy · Quality · Engineering · HSE · Production · Shift</small></div><div class="pill">06:30 · automatic</div></div>
+  </section>
+
+  <!-- 02 -->
+  <section class="scene" id="s02">
+    <div class="eyebrow r" data-t="0.1">02 · Investigate together <b>Council of Agents</b></div>
+    <div class="left"><div class="r h1" data-t="0.3">Six agents.<br><span class="a">One investigation.</span></div><div class="r sub" data-t="1.0">Evidence from every system, in seconds rather than hours.</div></div>
+    <div class="card r" data-t="0.6">
+      <div class="ctitle">Agent council · INV-26-0412</div>
+      <div class="row" data-t="1.4" style="--w:100%"><div class="nm" style="color:#4C9BFF">Process</div><div class="bar"><i></i></div><div class="fd">Recycle flow −5.8% · suction below band</div><div class="ck">✓</div></div>
+      <div class="row" data-t="2.3" style="--w:100%"><div class="nm" style="color:#F5A524">Asset</div><div class="bar"><i></i></div><div class="fd">C-201 efficiency −4% · vibration +18%</div><div class="ck">✓</div></div>
+      <div class="row" data-t="3.2" style="--w:100%"><div class="nm" style="color:#2BC48A">Energy</div><div class="bar"><i></i></div><div class="fd">Energy intensity +3.1% per tonne</div><div class="ck">✓</div></div>
+      <div class="row" data-t="4.1" style="--w:100%"><div class="nm" style="color:#9A8CFF">Quality</div><div class="bar"><i></i></div><div class="fd">Purity 99.83% · ruled out</div><div class="ck">✓</div></div>
+      <div class="row" data-t="5.0" style="--w:100%"><div class="nm" style="color:#7DE8FF">Engineering</div><div class="bar"><i></i></div><div class="fd">OEM manual §6.4 · 2024 incident match 0.78</div><div class="ck">✓</div></div>
+      <div class="row" data-t="5.9" style="--w:100%"><div class="nm" style="color:#FF8A7A">HSE</div><div class="bar"><i></i></div><div class="fd">All steps inside operating envelope</div><div class="ck">✓</div></div>
+      <div class="r" data-t="7.4" style="margin-top:26px;font-size:20px;color:var(--mut)">Read-only access · historian · alarms · CMMS · LIMS · documents · operating limits</div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="scene" id="s03">
+    <div class="eyebrow r" data-t="0.1">03 · Find the cause <b>Investigation Center</b></div>
+    <div class="left"><div class="r h1" data-t="0.3">Likely cause,<br><span class="a">with the evidence.</span></div><div class="r sub" data-t="1.0">Correlations, contradictions and confidence, shown openly.</div></div>
+    <div class="card r" data-t="0.6">
+      <div class="ctitle">Council conclusion</div>
+      <div class="big">Synthesis-loop compressor C-201<br>throughput degradation</div>
+      <div class="conf"><div class="bar" data-t="1.8" style="--w:87%"><i></i></div><div class="n" data-count="87" data-t="1.8" data-suffix="%">0%</div></div>
+      <div class="bul r" data-t="3.0">Compressor load trending down, suction below normal band</div>
+      <div class="bul r" data-t="3.6">Energy per tonne increasing with efficiency loss</div>
+      <div class="bul r" data-t="4.2">No recent maintenance explains the change</div>
+      <div class="tiles3">
+        <div class="tile r" data-t="5.6"><div class="k">At stake</div><div class="v" style="color:var(--amber)">~102 t/day</div></div>
+        <div class="tile r" data-t="6.4"><div class="k">Recoverable</div><div class="v" style="color:var(--green)">80–90 t/day</div></div>
+        <div class="tile r" data-t="7.2"><div class="k">Investigation</div><div class="v" style="color:var(--blue2)">120 → 15 min</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="scene" id="s04">
+    <div class="eyebrow r" data-t="0.1">04 · Human in command <b>Approval &amp; audit</b></div>
+    <div class="left"><div class="r h1" data-t="0.3">AI recommends.<br><span class="a">You decide.</span></div><div class="r sub" data-t="1.0">No plant action is ever executed by AI.</div></div>
+    <div class="card r" data-t="0.6">
+      <div class="ctitle" style="color:var(--amber)">Investigation plan · human approval required</div>
+      <div class="step r" data-t="1.2"><div class="n">1</div><div><div class="t">Validate compressor suction conditions</div><div class="o">Panel &amp; field operator</div></div></div>
+      <div class="step r" data-t="1.6"><div class="n">2</div><div><div class="t">Inspect recycle-loop restrictions</div><div class="o">Process engineer</div></div></div>
+      <div class="step r" data-t="2.0"><div class="n">3</div><div><div class="t">Compare against the OEM performance curve</div><div class="o">Rotating equipment engineer</div></div></div>
+      <div class="step r" data-t="2.4"><div class="n">4</div><div><div class="t">Review anti-surge behaviour · changes only via MOC</div><div class="o">Control engineer</div></div></div>
+      <div class="btn r" data-t="3.0" id="approve">Approve investigation plan</div>
+      <div class="stamp r" data-t="5.0">✓ Approved by Shift Supervisor · 07:04 · identity verified · logged to audit trail</div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="scene" id="s05">
+    <div class="eyebrow r" data-t="0.1">05 · Protect the asset <b>Asset Health</b></div>
+    <div class="left"><div class="r h1" data-t="0.3">Know which machine<br><span class="a">needs you next.</span></div><div class="r sub" data-t="1.0">Health ranked by risk, with the reason why.</div></div>
+    <div class="card r on-bars" data-t="0.6">
+      <div class="ctitle">Asset health · ranked by risk</div>
+      <div class="ab" id="abC201" data-t="1.2" style="--w:71%"><div class="nm">C-201<small>Synthesis loop compressor</small></div><div class="bar"><i style="background:var(--red)"></i></div><div class="s" style="color:var(--red)">71</div></div>
+      <div class="ab" data-t="1.35" style="--w:78%"><div class="nm">E-205<small>Loop exchanger</small></div><div class="bar"><i style="background:var(--amber)"></i></div><div class="s">78</div></div>
+      <div class="ab" data-t="1.5" style="--w:82%"><div class="nm">F-101<small>Reformer furnace</small></div><div class="bar"><i style="background:var(--amber)"></i></div><div class="s">82</div></div>
+      <div class="ab" data-t="1.65" style="--w:88%"><div class="nm">C-101<small>Syngas compressor</small></div><div class="bar"><i></i></div><div class="s">88</div></div>
+      <div class="ab" data-t="1.8" style="--w:89%"><div class="nm">T-301<small>Distillation column</small></div><div class="bar"><i></i></div><div class="s">89</div></div>
+      <div class="ab" data-t="1.95" style="--w:90%"><div class="nm">R-201<small>Methanol reactor</small></div><div class="bar"><i></i></div><div class="s">90</div></div>
+      <div class="r" data-t="3.3" style="margin-top:22px;padding:16px 20px;border-radius:12px;background:rgba(255,90,95,.1);border:1px solid rgba(255,90,95,.4);font-size:21px"><b style="color:#FF8A8D">C-201:</b> vibration +18% · bearing +7% · efficiency −4% → engineering review within 7 days</div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="scene" id="s06">
+    <div class="eyebrow r" data-t="0.1">06 · Run at best performance <b>Optimization · Energy &amp; Steam</b></div>
+    <div class="left"><div class="r h1" data-t="0.3">Close the<br><span class="a">performance gap.</span></div><div class="r sub" data-t="1.0">Every unit against its own best, with the drivers explained.</div></div>
+    <div class="card r" data-t="0.6">
+      <div class="ctitle">Gap to best demonstrated performance</div>
+      <div class="gp"><div class="k">Throughput <span>−4.0%</span></div><div class="bar" data-t="1.2" style="--w:84%"><i></i><div class="tgt" style="left:88%"></div></div></div>
+      <div class="gp"><div class="k">Energy efficiency <span>−3.1%</span></div><div class="bar" data-t="1.5" style="--w:76%"><i></i><div class="tgt" style="left:79%"></div></div></div>
+      <div class="gp"><div class="k">Product quality <span style="color:var(--green)">on target</span></div><div class="bar" data-t="1.8" style="--w:92%"><i></i><div class="tgt" style="left:92%"></div></div></div>
+      <div class="r" data-t="3.6" style="display:flex;gap:14px;margin-top:30px"><span class="chip b">AI envelope: +3.2% throughput</span><span class="chip g">−2.8% energy intensity</span><span class="chip a">Advisory only</span></div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="scene" id="s07">
+    <div class="eyebrow r" data-t="0.1">07 · Know instantly <b>Engineering Knowledge</b></div>
+    <div class="left"><div class="r h1" data-t="0.3">Cited answers,<br><span class="a">in English and Arabic.</span></div><div class="r sub" data-t="1.0">Procedures, OEM manuals, P&amp;IDs and lessons learnt, in seconds.</div></div>
+    <div class="card r" data-t="0.6">
+      <div class="ctitle">Engineering copilot</div>
+      <div class="bub u r" data-t="1.0"><span id="typeQ" data-text="What are the prerequisites before inspecting C-201?"></span></div>
+      <div class="bub a r" data-t="3.4">Shut down and isolate under permit, positive isolation, nitrogen purge to below 1% combustibles, gas test, and lock-out on the driver.<br><span class="cite">OEM manual §9.1</span><span class="cite">Shutdown procedure §5</span><span class="cite">SOP-0210 §5.1</span></div>
+      <div class="bub u ar r" data-t="5.6">ما هي متطلبات فحص الضاغط C-201؟</div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="scene" id="s08">
+    <div class="eyebrow r" data-t="0.1">08 · Hand over smarter <b>Shift Intelligence</b></div>
+    <div class="left"><div class="r h1" data-t="0.3">Good morning.<br><span class="a">Three things need you today.</span></div></div>
+    <div class="card r" data-t="0.6">
+      <div class="ctitle">AI-drafted shift handover · day shift</div>
+      <div class="it r" data-t="1.6"><div class="d" style="background:var(--red)"></div><div><div class="t">Approve INV-26-0412 plan: C-201 throughput</div><div class="o">Synthesis loop · Operations Agent</div></div></div>
+      <div class="it r" data-t="2.4"><div class="d" style="background:var(--amber)"></div><div><div class="t">Validate reformer O₂ analyser before air rebalance</div><div class="o">Reforming · Energy Agent</div></div></div>
+      <div class="it r" data-t="3.2"><div class="d" style="background:var(--amber)"></div><div><div class="t">Bring C-201 vibration route forward to this week</div><div class="o">Maintenance · Asset Agent</div></div></div>
+      <div class="r" data-t="4.4" style="font-size:20px;color:var(--mut);margin-top:10px">Shift report preparation: 45 min → 5 min (illustrative)</div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="scene" id="s09">
+    <div class="eyebrow r" data-t="0.1">09 · Governed by design <b>AI Control</b></div>
+    <div class="left"><div class="r h1" data-t="0.3">Above the DCS.<br><span class="a">Never inside it.</span></div><div class="r sub" data-t="1.0">Identity, permissions, guardrails, human approval and a full audit trail.</div></div>
+    <div class="card r" data-t="0.6">
+      <div class="cols">
+        <div class="col r" data-t="1.2"><h4 style="color:var(--green)">AGENTS MAY</h4>
+          <div class="li">✓ Read approved data</div><div class="li">✓ Analyse &amp; investigate</div><div class="li">✓ Retrieve documentation</div><div class="li">✓ Recommend &amp; prepare work requests</div></div>
+        <div class="col r" data-t="2.6"><h4 style="color:var(--red)">AGENTS MAY NOT</h4>
+          <div class="li">✕ Modify DCS settings or SIS logic</div><div class="li">✕ Bypass safety systems</div><div class="li">✕ Execute plant commands</div><div class="li">✕ Change limits or close safety alarms</div></div>
+      </div>
+      <div class="layers r" data-t="4.4">
+        <div class="layer" style="border-color:var(--red);color:#FF9A9D">OT · DCS / SIS<br><small style="font-weight:500">no AI access</small></div><div style="font-size:30px;color:var(--blue2)">→</div>
+        <div class="layer" style="border-color:var(--amber);color:var(--amber)">DMZ<br><small style="font-weight:500">read-only replica</small></div><div style="font-size:30px;color:var(--blue2)">→</div>
+        <div class="layer" style="border-color:var(--blue2);color:var(--blue2)">Agentic AI layer<br><small style="font-weight:500">recommends only</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TILES -->
+  <section class="scene" id="tiles">
+    <div class="center r" data-t="0.2" style="top:220px"><div class="h1" style="font-size:72px">Nine agentic capabilities. <span class="a">One operating layer.</span></div></div>
+    <div class="grid9">
+      <div class="t9 r" data-t="0.6"><div class="ic">◉</div><div class="n">01</div><div class="k">See it coming</div><div class="v">Operations Agent</div></div>
+      <div class="t9 r" data-t="0.75"><div class="ic">✦</div><div class="n">02</div><div class="k">Investigate</div><div class="v">Council of Agents</div></div>
+      <div class="t9 r" data-t="0.9"><div class="ic">⌕</div><div class="n">03</div><div class="k">Find the cause</div><div class="v">Investigation</div></div>
+      <div class="t9 r" data-t="1.05"><div class="ic">✓</div><div class="n">04</div><div class="k">Human in command</div><div class="v">Approval</div></div>
+      <div class="t9 r" data-t="1.2"><div class="ic">⚙</div><div class="n">05</div><div class="k">Protect the asset</div><div class="v">Asset Health</div></div>
+      <div class="t9 r" data-t="1.35"><div class="ic">⚡</div><div class="n">06</div><div class="k">Best performance</div><div class="v">Optimization &amp; Energy</div></div>
+      <div class="t9 r" data-t="1.5"><div class="ic">❝</div><div class="n">07</div><div class="k">Know instantly</div><div class="v">Engineering KM</div></div>
+      <div class="t9 r" data-t="1.65"><div class="ic">☰</div><div class="n">08</div><div class="k">Hand over</div><div class="v">Shift Intelligence</div></div>
+      <div class="t9 r" data-t="1.8"><div class="ic">⛨</div><div class="n">09</div><div class="k">Governed</div><div class="v">AI Control</div></div>
+    </div>
+    <div class="center r" data-t="3.0" style="top:740px;font-size:24px;color:var(--mut)">From plant signals to human decisions</div>
+  </section>
+
+  <!-- CLOSE -->
+  <section class="scene" id="close">
+    <div class="center" style="top:300px">
+      <div class="r" data-t="0.2" style="display:flex;justify-content:center"><div class="logo" style="font-size:44px;gap:24px"><span><span class="h">#</span>Insight</span><span class="sep" style="height:44px"></span><span style="text-align:left">TA’ZIZ<small style="font-size:13px">AN ADNOC GROUP COMPANY</small></span></div></div>
+      <div class="r h1" data-t="0.6" style="margin-top:56px;font-size:70px">Start focused. <span class="a">Prove value. Scale.</span></div>
+      <div class="r" data-t="2.0" style="margin-top:34px;font-size:40px;font-weight:700">Ask us for the live demo</div>
+      <div class="r" data-t="2.6" style="margin-top:22px;font-size:18px;letter-spacing:.3em;color:var(--blue);font-weight:700">AGENTIC AI OPERATIONS PLATFORM · INTELLIGENT METHANOL PLANT</div>
+    </div>
+  </section>
+
+  <div class="footer"><div class="logo"><span><span class="h">#</span>Insight</span><span class="sep"></span><span>TA’ZIZ<small>AN ADNOC GROUP COMPANY</small></span></div><div>Illustrative · synthetic data</div></div>
+  <div id="prog"></div>
+</div>
+<script>
+// Timeline: window.TL = [{id, start, len}] injected by the recorder (seconds). Fallback for preview.
+const TL = window.TL || [{id:"open",start:0,len:9}];
+const TOTAL = TL.length ? TL[TL.length-1].start + TL[TL.length-1].len : 10;
+const cues = [];
+for (const s of TL) {
+  const el = document.getElementById(s.id);
+  el.querySelectorAll("[data-t]").forEach(n => cues.push({ at: s.start + parseFloat(n.dataset.t), n }));
+}
+cues.sort((a,b)=>a.at-b.at);
+let t0 = null, ci = 0;
+const extra = { s01: [[2.2, () => document.getElementById("nSyn").classList.add("bad")], [4.4, () => document.getElementById("nDis").classList.add("green")], [5.0, () => document.getElementById("nSto").classList.add("amber")]], s04: [[4.2, () => { const b = document.getElementById("approve"); b.classList.add("ok"); b.textContent = "✓ Plan approved"; }]], s05: [[2.6, () => document.getElementById("abC201").classList.add("hl")]] };
+const xc = [];
+for (const s of TL) (extra[s.id]||[]).forEach(([d,f]) => xc.push({ at: s.start + d, f }));
+xc.sort((a,b)=>a.at-b.at); let xi = 0;
+function typeText(el) { const full = el.dataset.text; let i = 0; const iv = setInterval(() => { el.textContent = full.slice(0, ++i); if (i >= full.length) clearInterval(iv); }, 32); }
+function count(el) { const to = +el.dataset.count, suf = el.dataset.suffix||"", st = performance.now(); const f = () => { const p = Math.min(1,(performance.now()-st)/1200); el.textContent = Math.round(to*(1-Math.pow(1-p,3))) + suf; if (p<1) requestAnimationFrame(f); }; f(); }
+function frame(now) {
+  const t = (now - t0) / 1000;
+  for (const s of TL) document.getElementById(s.id).classList.toggle("show", t >= s.start && t < s.start + s.len - 0.05);
+  while (ci < cues.length && cues[ci].at <= t) { const n = cues[ci++].n; n.classList.add("on"); if (n.dataset.count) count(n); const ty = n.querySelector("[data-text]"); if (ty) typeText(ty); }
+  while (xi < xc.length && xc[xi].at <= t) xc[xi++].f();
+  document.getElementById("prog").style.width = Math.min(100, t / TOTAL * 100) + "%";
+  if (t < TOTAL + 1) requestAnimationFrame(frame);
+}
+window.__go = () => { t0 = performance.now(); requestAnimationFrame(frame); };
+window.__total = TOTAL;
+if (!window.TL) window.__go();
+</script>
+</body>
+</html>
