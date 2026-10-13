@@ -1,0 +1,1084 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HAYAT Global Pulse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: mission-control grid. Header, alert, four KPI tiles, then map + depletion (left)
+   beside threats + live audit stream (right), full-width commodity table last.
+   Single dark look by design (an operations-room screen), so no light theme. */
+:root {
+  --bg: #04070c;
+  --panel: #0a1018;
+  --panel-2: #0d1520;
+  --line: #172331;
+  --line-2: #22334a;
+  --text: #d7e3ef;
+  --muted: #7d8fa3;
+  --dim: #56687c;
+  --accent: #38d5ff;
+  --ink-on-badge: #04070c;
+  --sea-1: #0a1a2a;
+  --sea-2: #050b13;
+  --land: #0e1621;
+  --land-edge: #1c2a3a;
+  --land-uae: #13253a;
+  --sea-label: #2f4b67;
+  --hospital: #9fb3c8;
+  --hospital-hot: #ff7ad9;
+
+  --c-normal: #5d7187;
+  --c-low: #2ee6b0;
+  --c-elevated: #ffc44d;
+  --c-high: #ff8a3d;
+  --c-critical: #ff4d5e;
+
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --arabic: "IBM Plex Sans Arabic", "Geeza Pro", "Segoe UI", "Noto Sans Arabic", sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(1200px 600px at 70% -10%, rgba(56, 213, 255, 0.07), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(46, 230, 176, 0.05), transparent 60%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+h1, h2, h3, p { margin: 0; }
+h2, h3 { text-wrap: balance; }
+code { font-family: var(--mono); }
+.ar { font-family: var(--arabic); color: var(--muted); font-weight: 400; margin-inline-start: 4px; }
+.muted { color: var(--dim); font-size: 11px; }
+
+.shell { max-width: 1680px; margin: 0 auto; padding: 14px 20px 24px; }
+
+/* ---- top bar ---- */
+.topbar {
+  display: flex; align-items: center; gap: 24px; padding: 10px 16px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: linear-gradient(180deg, rgba(13, 21, 32, 0.95), rgba(8, 13, 20, 0.95));
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark {
+  width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--accent); position: relative; flex: none;
+  box-shadow: 0 0 16px rgba(56, 213, 255, 0.45), inset 0 0 10px rgba(56, 213, 255, 0.35);
+}
+.brand-mark::after {
+  content: ""; position: absolute; inset: 8px; border-radius: 50%; background: var(--accent);
+  animation: breathe 3.2s ease-in-out infinite;
+}
+.brand-name { font-weight: 700; letter-spacing: 0.28em; font-size: 17px; }
+.brand-name [lang="ar"] { font-family: var(--arabic); letter-spacing: 0; font-weight: 500; }
+.brand-sep { color: var(--dim); letter-spacing: 0; margin: 0 2px; }
+.brand-tag { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.screen-title { display: flex; flex-direction: column; border-left: 1px solid var(--line-2); padding-left: 20px; }
+.screen-title span { font-family: var(--mono); letter-spacing: 0.3em; color: var(--accent); font-size: 15px; font-weight: 600; }
+.screen-title small { color: var(--dim); font-size: 11px; margin-top: 2px; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+.clock, .calc-time { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+.btn {
+  font: inherit; font-weight: 600; border-radius: 7px; padding: 9px 16px; cursor: pointer;
+  border: 1px solid transparent; transition: background 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+.btn:disabled { opacity: 0.55; cursor: progress; }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-primary {
+  background: linear-gradient(180deg, #ff5d6c, #d73446); color: #fff; border-color: #ff7380;
+  box-shadow: 0 0 18px rgba(255, 77, 94, 0.3); letter-spacing: 0.02em;
+}
+.btn-primary:hover:not(:disabled) { box-shadow: 0 0 26px rgba(255, 77, 94, 0.55); }
+.btn-ghost { background: transparent; color: var(--text); border-color: var(--line-2); }
+.btn-ghost:hover:not(:disabled) { border-color: var(--accent); }
+
+/* ---- banners ---- */
+.banner {
+  margin-top: 12px; padding: 10px 16px; border-radius: 8px; border: 1px solid;
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+}
+.banner-threat {
+  border-color: var(--c-critical);
+  background: linear-gradient(90deg, rgba(255, 77, 94, 0.16), rgba(255, 77, 94, 0.03));
+  animation: threat-in 0.5s ease-out;
+}
+.banner-threat strong { font-family: var(--mono); letter-spacing: 0.06em; }
+.banner-more { margin-left: auto; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.banner-dot { width: 10px; height: 10px; border-radius: 50%; animation: blink 1.2s ease-in-out infinite; flex: none; }
+.banner-info { border-color: var(--line-2); background: rgba(56, 213, 255, 0.04); color: var(--muted); font-size: 12.5px; }
+.banner-info strong { color: var(--text); font-weight: 600; }
+
+/* ---- grid ---- */
+.grid { margin-top: 12px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 12px; }
+.kpis { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.table-panel { grid-column: 1 / -1; }
+.panel {
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; min-width: 0;
+}
+.panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.panel-head h2 { font-size: 11.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.panel-meta { font-size: 11px; color: var(--dim); font-family: var(--mono); }
+.empty { color: var(--muted); padding: 8px 0; }
+
+/* ---- KPI tiles ---- */
+.kpi {
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
+  position: relative; overflow: hidden; transition: border-color 0.4s; min-width: 0;
+}
+.kpi::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--line-2); transition: background 0.4s; }
+.kpi h3 { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.kpi-value { font-family: var(--mono); font-size: 34px; font-weight: 600; margin-top: 6px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.kpi-sub { margin-top: 6px; font-size: 12px; color: var(--muted); line-height: 1.4; }
+.kpi-index { display: flex; gap: 14px; align-items: center; }
+.gauge { width: 84px; height: 84px; flex: none; }
+.gauge-track { fill: none; stroke: var(--line-2); stroke-width: 7; }
+.gauge-fill {
+  fill: none; stroke: var(--tone, var(--accent)); stroke-width: 7; stroke-linecap: round;
+  transition: stroke-dasharray 0.9s ease; filter: drop-shadow(0 0 6px var(--tone, var(--accent)));
+}
+.tone-good { --tone: var(--c-low); }
+.tone-warn { --tone: var(--c-elevated); }
+.tone-bad { --tone: var(--c-critical); }
+.tone-good::before, .tone-warn::before, .tone-bad::before { background: var(--tone); }
+.tone-warn, .tone-bad { border-color: color-mix(in srgb, var(--tone) 35%, var(--line)); }
+.tone-bad .kpi-value { color: var(--c-critical); }
+.neg { color: var(--c-critical); font-family: var(--mono); }
+
+/* ---- map ---- */
+.map { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); display: block; }
+.land-region { fill: var(--land); stroke: var(--land-edge); stroke-width: 1; }
+.land-uae { fill: var(--land-uae); stroke: var(--accent); stroke-width: 1.4; stroke-opacity: 0.7; filter: drop-shadow(0 0 8px rgba(56, 213, 255, 0.25)); }
+.sea-label { fill: var(--sea-label); font-family: var(--mono); letter-spacing: 0.3em; text-anchor: middle; }
+.zone { fill: rgba(56, 213, 255, 0.06); stroke: rgba(56, 213, 255, 0.25); stroke-width: 1; stroke-dasharray: 3 3; transition: all 0.6s; }
+.zone-exposed { fill: rgba(255, 196, 77, 0.1); stroke: rgba(255, 196, 77, 0.6); }
+.lane { fill: none; stroke: rgba(56, 213, 255, 0.35); stroke-linecap: round; }
+.lane-disrupted {
+  fill: none; stroke: var(--c-critical); stroke-linecap: round; stroke-dasharray: 10 8;
+  animation: flow 1.2s linear infinite; filter: drop-shadow(0 0 4px rgba(255, 77, 94, 0.7));
+}
+.legend-dash { animation: none; stroke-dasharray: 4 3; }
+.warehouse { stroke: var(--bg); stroke-width: 1.5; transition: fill 0.6s; }
+.hospital path { stroke: var(--hospital); stroke-width: 2; }
+.hospital-ring { fill: none; stroke: rgba(159, 179, 200, 0.5); stroke-width: 1; }
+.hospital-exposed path { stroke: var(--hospital-hot); }
+.hospital-exposed .hospital-ring { stroke: var(--hospital-hot); stroke-width: 1.5; animation: blink 1.6s ease-in-out infinite; }
+.port-dot { fill: var(--bg); stroke: var(--accent); stroke-width: 2.5; }
+.port-disrupted .port-dot { stroke: var(--c-critical); }
+.port-pulse { fill: none; stroke: var(--c-critical); stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: ping 1.6s ease-out infinite; }
+.port-label { fill: var(--text); font-size: 13px; font-weight: 600; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; }
+.port-alert { fill: var(--c-critical); font-family: var(--mono); font-size: 12px; font-weight: 700; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; }
+.legend-box { fill: rgba(4, 7, 12, 0.85); stroke: var(--line-2); }
+.legend text { fill: var(--muted); font-size: 11.5px; }
+.legend-hospital { stroke: var(--hospital); stroke-width: 2; }
+
+/* ---- threats ---- */
+.signal { border: 1px solid rgba(255, 196, 77, 0.35); background: rgba(255, 196, 77, 0.06); border-radius: 8px; padding: 9px 12px; margin-bottom: 10px; }
+.signal-tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; color: var(--c-elevated); }
+.signal-title { margin-top: 3px; font-weight: 600; line-height: 1.35; }
+.signal-meta { margin-top: 3px; font-size: 12px; color: var(--muted); }
+.threat {
+  border: 1px solid; border-left-width: 3px; border-radius: 8px; padding: 10px 12px;
+  background: rgba(255, 77, 94, 0.04); margin-bottom: 10px; animation: threat-in 0.5s ease-out;
+}
+.threat header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.threat h3 { font-size: 15px; }
+.badge { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; color: var(--ink-on-badge); padding: 3px 7px; border-radius: 4px; }
+.threat-headline { margin-top: 6px; font-size: 12.5px; line-height: 1.4; }
+.spark { width: 100%; height: 46px; margin-top: 6px; display: block; }
+.spark-target { stroke: var(--muted); stroke-dasharray: 4 4; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.threat-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 6px 12px; margin: 8px 0 0; }
+.threat-stats dt { font-size: 10.5px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; }
+.threat-stats dd { margin: 2px 0 0; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.watch { font-size: 12px; color: var(--c-elevated); margin-top: 4px; }
+
+/* ---- audit stream ---- */
+.events { flex: 1; display: flex; flex-direction: column; min-height: 300px; }
+.event-scroll { position: relative; flex: 1; min-height: 250px; }
+.event-list { list-style: none; margin: 0; padding: 0 4px 0 0; overflow-y: auto; position: absolute; inset: 0; }
+.event-list li { padding: 7px 0 7px 12px; border-left: 2px solid var(--tone, var(--line-2)); margin-bottom: 4px; }
+.event-list li.fresh { animation: slide-in 0.35s ease-out; }
+.event-row { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.event-row time { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
+.event-type { font-size: 11.5px; color: var(--tone, var(--accent)); font-weight: 600; }
+.event-actor { font-size: 11px; color: var(--dim); margin-left: auto; }
+.event-msg { font-size: 12.5px; margin-top: 2px; line-height: 1.4; overflow-wrap: anywhere; }
+.ev-info { --tone: var(--accent); }
+.ev-alert { --tone: var(--c-critical); }
+.ev-work { --tone: var(--c-elevated); }
+.ev-good { --tone: var(--c-low); }
+.ev-muted { --tone: var(--c-normal); }
+.stream-status { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-flex; align-items: center; gap: 6px; color: var(--c-low); }
+.stream-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: blink 2s ease-in-out infinite; }
+.stream-status.working { color: var(--c-elevated); }
+
+/* ---- chart & table ---- */
+.chart { width: 100%; height: auto; display: block; }
+.axis-grid { stroke: var(--line); }
+.axis-target { stroke: var(--muted); stroke-dasharray: 5 4; }
+.axis-critical { stroke: var(--c-critical); stroke-opacity: 0.55; stroke-dasharray: 2 4; }
+.axis-label { fill: var(--dim); font-family: var(--mono); font-size: 11px; }
+.axis-note { fill: var(--muted); font-size: 10.5px; }
+.axis-note.critical { fill: var(--c-critical); }
+.series-label { font-size: 12px; font-weight: 600; }
+.table-wrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table th {
+  text-align: left; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim);
+  font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--line-2);
+}
+.table td { padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.table .num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.row-impacted td:first-child { box-shadow: inset 2px 0 0 var(--c-critical); }
+.pill { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+
+.foot { margin-top: 16px; text-align: center; font-size: 11.5px; color: var(--dim); line-height: 1.5; text-wrap: balance; }
+
+@keyframes breathe { 50% { opacity: 0.35; transform: scale(0.75); } }
+@keyframes blink { 50% { opacity: 0.25; } }
+@keyframes ping { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes flow { to { stroke-dashoffset: -36; } }
+@keyframes threat-in { from { opacity: 0.2; transform: translateY(-4px); } }
+@keyframes slide-in { from { opacity: 0.2; transform: translateX(-6px); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 1180px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .topbar { flex-wrap: wrap; }
+  .topbar-right { margin-left: 0; width: 100%; justify-content: flex-start; }
+}
+@media (max-width: 640px) {
+  .shell { padding: 10px 16px 20px; }
+  .kpis { grid-template-columns: minmax(0, 1fr); }
+  .screen-title { border-left: 0; padding-left: 0; }
+  .event-actor { margin-left: 0; }
+}
+</style>
+
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <div class="brand-name">HAYAT <span class="brand-sep">|</span> <span lang="ar">حياة</span></div>
+        <div class="brand-tag">Autonomous Resilience Intelligence</div>
+      </div>
+    </div>
+    <div class="screen-title">
+      <span>GLOBAL PULSE</span>
+      <small>UAE food &amp; logistics · synthetic data</small>
+    </div>
+    <div class="topbar-right">
+      <span class="clock" id="clock">--:--:-- GST</span>
+      <span class="calc-time" id="calc-time"></span>
+      <button class="btn btn-ghost" id="reset-btn" type="button" hidden>Reset to baseline</button>
+      <button class="btn btn-primary" id="trigger-btn" type="button">Trigger Demo Disruption</button>
+    </div>
+  </header>
+
+  <div id="banner"></div>
+
+  <main class="grid">
+    <section class="kpis" id="kpis" aria-label="Key indicators"></section>
+    <div class="col">
+      <section class="panel" aria-label="UAE operating picture">
+        <header class="panel-head">
+          <h2>UAE Operating Picture</h2>
+          <span class="panel-meta" id="map-meta"></span>
+        </header>
+        <div id="map"></div>
+      </section>
+      <section class="panel" aria-label="Inventory depletion projection">
+        <header class="panel-head">
+          <h2>Inventory Depletion</h2>
+          <span class="panel-meta" id="chart-meta"></span>
+        </header>
+        <div id="chart"></div>
+      </section>
+    </div>
+    <div class="col">
+      <section class="panel" aria-label="Material threats">
+        <header class="panel-head">
+          <h2>Material Threats</h2>
+          <span class="panel-meta">30-day projection</span>
+        </header>
+        <div id="threats"></div>
+      </section>
+      <section class="panel events" aria-label="Audit event stream">
+        <header class="panel-head">
+          <h2>Audit Stream</h2>
+          <span class="stream-status" id="stream-status">idle</span>
+        </header>
+        <div class="event-scroll"><ol class="event-list" id="events"></ol></div>
+      </section>
+    </div>
+    <section class="panel table-panel" aria-label="Commodity resilience">
+      <header class="panel-head">
+        <h2>Commodity Resilience</h2>
+        <span class="panel-meta">national stock across all warehouses</span>
+      </header>
+      <div class="table-wrap" id="table"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    Every value is calculated in this page by the HAYAT deterministic engine (the same logic as the
+    HAYAT API, ported to JavaScript) on synthetic data. No figure is generated by a language model.
+  </footer>
+</div>
+
+<script id="hayat-engine">
+// Synthetic UAE dataset, generated from apps/api/src/hayat_api/seed/synthetic_uae.py.
+const DATA = {"commodities":[{"id":"WHEAT","name":"Wheat","name_ar":"قمح","category":"grain","unit":"t","daily_consumption_t":4800.0,"safety_stock_days":30.0,"criticality":1.0,"unit_price_aed":1100.0,"vulnerable_group":"general"},{"id":"RICE","name":"Rice","name_ar":"أرز","category":"grain","unit":"t","daily_consumption_t":1250.0,"safety_stock_days":30.0,"criticality":0.9,"unit_price_aed":3300.0,"vulnerable_group":"general"},{"id":"COOKING_OIL","name":"Cooking oil","name_ar":"زيت الطبخ","category":"edible_oil","unit":"t","daily_consumption_t":820.0,"safety_stock_days":21.0,"criticality":0.7,"unit_price_aed":5500.0,"vulnerable_group":"general"},{"id":"INFANT_FORMULA","name":"Infant formula","name_ar":"حليب الأطفال","category":"infant_nutrition","unit":"t","daily_consumption_t":42.0,"safety_stock_days":10.0,"criticality":1.0,"unit_price_aed":90000.0,"vulnerable_group":"infants"},{"id":"SUGAR","name":"Sugar","name_ar":"سكر","category":"staple","unit":"t","daily_consumption_t":1600.0,"safety_stock_days":30.0,"criticality":0.5,"unit_price_aed":2200.0,"vulnerable_group":"general"},{"id":"POULTRY","name":"Frozen poultry","name_ar":"دواجن مجمدة","category":"protein","unit":"t","daily_consumption_t":1350.0,"safety_stock_days":14.0,"criticality":0.7,"unit_price_aed":9000.0,"vulnerable_group":"general"},{"id":"LENTILS","name":"Lentils & pulses","name_ar":"عدس وبقوليات","category":"staple","unit":"t","daily_consumption_t":550.0,"safety_stock_days":30.0,"criticality":0.5,"unit_price_aed":3500.0,"vulnerable_group":"general"},{"id":"DATES","name":"Dates","name_ar":"تمور","category":"domestic_produce","unit":"t","daily_consumption_t":280.0,"safety_stock_days":30.0,"criticality":0.4,"unit_price_aed":6000.0,"vulnerable_group":"general"}],"ports":[{"id":"JEA","name":"Jebel Ali Port","emirate":"Dubai","kind":"sea","coast":"gulf","lat":25.011,"lon":55.061,"handling_capacity_tpd":60000.0},{"id":"KHL","name":"Khalifa Port","emirate":"Abu Dhabi","kind":"sea","coast":"gulf","lat":24.81,"lon":54.645,"handling_capacity_tpd":40000.0},{"id":"KFK","name":"Khor Fakkan Port","emirate":"Sharjah","kind":"sea","coast":"east","lat":25.345,"lon":56.36,"handling_capacity_tpd":18000.0},{"id":"FJR","name":"Port of Fujairah","emirate":"Fujairah","kind":"sea","coast":"east","lat":25.17,"lon":56.362,"handling_capacity_tpd":15000.0},{"id":"MSQ","name":"Saqr Port","emirate":"Ras Al Khaimah","kind":"sea","coast":"gulf","lat":25.985,"lon":56.052,"handling_capacity_tpd":8000.0},{"id":"GHW","name":"Ghuwaifat Land Port","emirate":"Abu Dhabi","kind":"land","coast":"inland","lat":24.12,"lon":51.62,"handling_capacity_tpd":12000.0}],"routes":[{"id":"R-CST-JEA","name":"Constanta to Jebel Ali","mode":"sea","origin":"Constanta","origin_country":"Romania","destination_port_id":"JEA","corridor":"RED_SEA_SUEZ","transit_days":18.0,"chokepoints":["BOSPHORUS","SUEZ","BAB_EL_MANDEB","HORMUZ"],"chokepoint_offsets_days":{"BOSPHORUS":12.0,"SUEZ":9.5,"BAB_EL_MANDEB":6.0,"HORMUZ":1.0}},{"id":"R-ROU-KHL","name":"Rouen to Khalifa Port","mode":"sea","origin":"Rouen","origin_country":"France","destination_port_id":"KHL","corridor":"RED_SEA_SUEZ","transit_days":21.0,"chokepoints":["GIBRALTAR","SUEZ","BAB_EL_MANDEB","HORMUZ"],"chokepoint_offsets_days":{"GIBRALTAR":16.0,"SUEZ":10.0,"BAB_EL_MANDEB":6.5,"HORMUZ":1.2}},{"id":"R-HOU-JEA","name":"Houston to Jebel Ali","mode":"sea","origin":"Houston","origin_country":"United States","destination_port_id":"JEA","corridor":"RED_SEA_SUEZ","transit_days":30.0,"chokepoints":["GIBRALTAR","SUEZ","BAB_EL_MANDEB","HORMUZ"],"chokepoint_offsets_days":{"GIBRALTAR":15.5,"SUEZ":9.5,"BAB_EL_MANDEB":6.0,"HORMUZ":1.0}},{"id":"R-DAM-JEA","name":"Damietta to Jebel Ali","mode":"sea","origin":"Damietta","origin_country":"Egypt","destination_port_id":"JEA","corridor":"RED_SEA_SUEZ","transit_days":11.0,"chokepoints":["SUEZ","BAB_EL_MANDEB","HORMUZ"],"chokepoint_offsets_days":{"SUEZ":9.5,"BAB_EL_MANDEB":6.0,"HORMUZ":1.0}},{"id":"R-MER-JEA","name":"Mersin to Jebel Ali","mode":"sea","origin":"Mersin","origin_country":"Turkiye","destination_port_id":"JEA","corridor":"RED_SEA_SUEZ","transit_days":12.0,"chokepoints":["SUEZ","BAB_EL_MANDEB","HORMUZ"],"chokepoint_offsets_days":{"SUEZ":9.5,"BAB_EL_MANDEB":6.0,"HORMUZ":1.0}},{"id":"R-VLC-KHL","name":"Valencia to Khalifa Port","mode":"sea","origin":"Valencia","origin_country":"Spain","destination_port_id":"KHL","corridor":"RED_SEA_SUEZ","transit_days":17.0,"chokepoints":["SUEZ","BAB_EL_MANDEB","HORMUZ"],"chokepoint_offsets_days":{"SUEZ":10.0,"BAB_EL_MANDEB":6.5,"HORMUZ":1.2}},{"id":"R-RTM-JEA","name":"Rotterdam to Jebel Ali","mode":"sea","origin":"Rotterdam","origin_country":"Netherlands","destination_port_id":"JEA","corridor":"RED_SEA_SUEZ","transit_days":22.0,"chokepoints":["GIBRALTAR","SUEZ","BAB_EL_MANDEB","HORMUZ"],"chokepoint_offsets_days":{"GIBRALTAR":15.5,"SUEZ":9.5,"BAB_EL_MANDEB":6.0,"HORMUZ":1.0}},{"id":"R-ORK-KHL","name":"Cork to Khalifa Port","mode":"sea","origin":"Cork","origin_country":"Ireland","destination_port_id":"KHL","corridor":"RED_SEA_SUEZ","transit_days":22.0,"chokepoints":["GIBRALTAR","SUEZ","BAB_EL_MANDEB","HORMUZ"],"chokepoint_offsets_days":{"GIBRALTAR":16.0,"SUEZ":10.0,"BAB_EL_MANDEB":6.5,"HORMUZ":1.2}},{"id":"R-LEH-KFK","name":"Le Havre to Khor Fakkan","mode":"sea","origin":"Le Havre","origin_country":"France","destination_port_id":"KFK","corridor":"RED_SEA_SUEZ","transit_days":20.0,"chokepoints":["GIBRALTAR","SUEZ","BAB_EL_MANDEB"],"chokepoint_offsets_days":{"GIBRALTAR":14.5,"SUEZ":8.5,"BAB_EL_MANDEB":5.0}},{"id":"R-FRE-KHL","name":"Fremantle to Khalifa Port","mode":"sea","origin":"Fremantle","origin_country":"Australia","destination_port_id":"KHL","corridor":"INDIAN_OCEAN","transit_days":15.0,"chokepoints":["HORMUZ"],"chokepoint_offsets_days":{"HORMUZ":1.2}},{"id":"R-VAN-JEA","name":"Vancouver to Jebel Ali","mode":"sea","origin":"Vancouver","origin_country":"Canada","destination_port_id":"JEA","corridor":"TRANS_PACIFIC_MALACCA","transit_days":30.0,"chokepoints":["MALACCA","HORMUZ"],"chokepoint_offsets_days":{"MALACCA":10.0,"HORMUZ":1.0}},{"id":"R-MUN-JEA","name":"Mundra to Jebel Ali","mode":"sea","origin":"Mundra","origin_country":"India","destination_port_id":"JEA","corridor":"ARABIAN_SEA","transit_days":4.0,"chokepoints":["HORMUZ"],"chokepoint_offsets_days":{"HORMUZ":1.0}},{"id":"R-KHI-JEA","name":"Karachi to Jebel Ali","mode":"sea","origin":"Karachi","origin_country":"Pakistan","destination_port_id":"JEA","corridor":"ARABIAN_SEA","transit_days":3.0,"chokepoints":["HORMUZ"],"chokepoint_offsets_days":{"HORMUZ":1.0}},{"id":"R-LCB-JEA","name":"Laem Chabang to Jebel Ali","mode":"sea","origin":"Laem Chabang","origin_country":"Thailand","destination_port_id":"JEA","corridor":"MALACCA_INDIAN_OCEAN","transit_days":14.0,"chokepoints":["MALACCA","HORMUZ"],"chokepoint_offsets_days":{"MALACCA":10.0,"HORMUZ":1.0}},{"id":"R-PKG-JEA","name":"Port Klang to Jebel Ali","mode":"sea","origin":"Port Klang","origin_country":"Malaysia","destination_port_id":"JEA","corridor":"MALACCA_INDIAN_OCEAN","transit_days":12.0,"chokepoints":["MALACCA","HORMUZ"],"chokepoint_offsets_days":{"MALACCA":9.0,"HORMUZ":1.0}},{"id":"R-SSZ-KFK","name":"Santos to Khor Fakkan","mode":"sea","origin":"Santos","origin_country":"Brazil","destination_port_id":"KFK","corridor":"CAPE_ROUTE","transit_days":27.0,"chokepoints":["CAPE_OF_GOOD_HOPE"],"chokepoint_offsets_days":{"CAPE_OF_GOOD_HOPE":15.0}},{"id":"R-PNG-JEA","name":"Paranagua to Jebel Ali","mode":"sea","origin":"Paranagua","origin_country":"Brazil","destination_port_id":"JEA","corridor":"CAPE_ROUTE","transit_days":28.0,"chokepoints":["CAPE_OF_GOOD_HOPE","HORMUZ"],"chokepoint_offsets_days":{"CAPE_OF_GOOD_HOPE":15.5,"HORMUZ":1.0}},{"id":"R-KDL-KFK","name":"Kandla to Khor Fakkan","mode":"sea","origin":"Kandla","origin_country":"India","destination_port_id":"KFK","corridor":"ARABIAN_SEA","transit_days":3.0,"chokepoints":[],"chokepoint_offsets_days":{}},{"id":"R-GHW-LND","name":"Saudi Arabia overland via Ghuwaifat","mode":"land","origin":"Riyadh","origin_country":"Saudi Arabia","destination_port_id":"GHW","corridor":"GCC_OVERLAND","transit_days":2.0,"chokepoints":[],"chokepoint_offsets_days":{}},{"id":"R-DOM-LND","name":"Domestic production (Al Ain, Liwa)","mode":"land","origin":"Al Ain","origin_country":"United Arab Emirates","destination_port_id":null,"corridor":"DOMESTIC","transit_days":1.0,"chokepoints":[],"chokepoint_offsets_days":{}}],"suppliers":[{"id":"SUP-01","name":"Danube Grain Exporters","country":"Romania","commodity_id":"WHEAT","route_id":"R-CST-JEA","volume_tpd":1920.0},{"id":"SUP-02","name":"Normandy Cereal Cooperative","country":"France","commodity_id":"WHEAT","route_id":"R-ROU-KHL","volume_tpd":1056.0},{"id":"SUP-03","name":"Western Plains Grain Co.","country":"Australia","commodity_id":"WHEAT","route_id":"R-FRE-KHL","volume_tpd":1344.0},{"id":"SUP-04","name":"Prairie Harvest Commodities","country":"Canada","commodity_id":"WHEAT","route_id":"R-VAN-JEA","volume_tpd":480.0},{"id":"SUP-05","name":"Gulf Coast Rice Mills","country":"United States","commodity_id":"RICE","route_id":"R-HOU-JEA","volume_tpd":275.0},{"id":"SUP-06","name":"Nile Delta Rice Traders","country":"Egypt","commodity_id":"RICE","route_id":"R-DAM-JEA","volume_tpd":200.0},{"id":"SUP-07","name":"Punjab Basmati Exports","country":"India","commodity_id":"RICE","route_id":"R-MUN-JEA","volume_tpd":400.0},{"id":"SUP-08","name":"Indus Valley Rice Corp.","country":"Pakistan","commodity_id":"RICE","route_id":"R-KHI-JEA","volume_tpd":225.0},{"id":"SUP-09","name":"Chao Phraya Jasmine Rice","country":"Thailand","commodity_id":"RICE","route_id":"R-LCB-JEA","volume_tpd":150.0},{"id":"SUP-10","name":"Black Sea Sunflower Oils","country":"Romania","commodity_id":"COOKING_OIL","route_id":"R-CST-JEA","volume_tpd":426.4},{"id":"SUP-11","name":"Anatolia Edible Oils","country":"Turkiye","commodity_id":"COOKING_OIL","route_id":"R-MER-JEA","volume_tpd":164.0},{"id":"SUP-12","name":"Levante Seed Oils","country":"Spain","commodity_id":"COOKING_OIL","route_id":"R-VLC-KHL","volume_tpd":114.8},{"id":"SUP-13","name":"Selangor Palm Refiners","country":"Malaysia","commodity_id":"COOKING_OIL","route_id":"R-PKG-JEA","volume_tpd":114.8},{"id":"SUP-14","name":"Lowlands Infant Nutrition","country":"Netherlands","commodity_id":"INFANT_FORMULA","route_id":"R-RTM-JEA","volume_tpd":18.9},{"id":"SUP-15","name":"Emerald Dairy Nutrition","country":"Ireland","commodity_id":"INFANT_FORMULA","route_id":"R-ORK-KHL","volume_tpd":10.5},{"id":"SUP-16","name":"Seine Valley Paediatric Foods","country":"France","commodity_id":"INFANT_FORMULA","route_id":"R-LEH-KFK","volume_tpd":8.4},{"id":"SUP-17","name":"Najd Nutrition Industries","country":"Saudi Arabia","commodity_id":"INFANT_FORMULA","route_id":"R-GHW-LND","volume_tpd":4.2},{"id":"SUP-18","name":"Paulista Sugar Mills","country":"Brazil","commodity_id":"SUGAR","route_id":"R-SSZ-KFK","volume_tpd":880.0},{"id":"SUP-19","name":"Gujarat Sugar Exports","country":"India","commodity_id":"SUGAR","route_id":"R-KDL-KFK","volume_tpd":720.0},{"id":"SUP-20","name":"Parana Poultry Exports","country":"Brazil","commodity_id":"POULTRY","route_id":"R-PNG-JEA","volume_tpd":945.0},{"id":"SUP-21","name":"Arabian Poultry Farms","country":"Saudi Arabia","commodity_id":"POULTRY","route_id":"R-GHW-LND","volume_tpd":405.0},{"id":"SUP-22","name":"Western Plains Pulse Co.","country":"Australia","commodity_id":"LENTILS","route_id":"R-FRE-KHL","volume_tpd":275.0},{"id":"SUP-23","name":"Saskatchewan Pulse Exporters","country":"Canada","commodity_id":"LENTILS","route_id":"R-VAN-JEA","volume_tpd":275.0},{"id":"SUP-24","name":"Liwa & Al Ain Date Growers","country":"United Arab Emirates","commodity_id":"DATES","route_id":"R-DOM-LND","volume_tpd":280.0}],"warehouses":[{"id":"WH-DXB-SR","name":"Dubai South Strategic Food Reserve","emirate":"Dubai","lat":24.9,"lon":55.16,"capacity_t":400000.0,"cold_chain":true},{"id":"WH-JEA-DC","name":"Jebel Ali Distribution Centre","emirate":"Dubai","lat":24.99,"lon":55.1,"capacity_t":250000.0,"cold_chain":true},{"id":"WH-AUH-GT","name":"Khalifa Port Grain Terminal","emirate":"Abu Dhabi","lat":24.79,"lon":54.69,"capacity_t":350000.0,"cold_chain":false},{"id":"WH-AUH-DC","name":"Mussafah Food Distribution Centre","emirate":"Abu Dhabi","lat":24.35,"lon":54.5,"capacity_t":180000.0,"cold_chain":true},{"id":"WH-SHJ-CC","name":"Sharjah Cold Chain Hub","emirate":"Sharjah","lat":25.3,"lon":55.48,"capacity_t":120000.0,"cold_chain":true},{"id":"WH-AAN-RD","name":"Al Ain Regional Depot","emirate":"Abu Dhabi","lat":24.2,"lon":55.7,"capacity_t":90000.0,"cold_chain":false},{"id":"WH-FJR-EC","name":"Fujairah East Coast Depot","emirate":"Fujairah","lat":25.13,"lon":56.32,"capacity_t":110000.0,"cold_chain":false},{"id":"WH-RAK-ND","name":"Ras Al Khaimah Northern Depot","emirate":"Ras Al Khaimah","lat":25.7,"lon":55.85,"capacity_t":60000.0,"cold_chain":false},{"id":"WH-DHF-WR","name":"Al Dhafra Western Region Depot","emirate":"Abu Dhabi","lat":24.1,"lon":52.73,"capacity_t":50000.0,"cold_chain":false}],"inventory":[{"warehouse_id":"WH-AUH-GT","commodity_id":"WHEAT","quantity_t":97200.0},{"warehouse_id":"WH-DXB-SR","commodity_id":"WHEAT","quantity_t":75600.0},{"warehouse_id":"WH-FJR-EC","commodity_id":"WHEAT","quantity_t":21600.0},{"warehouse_id":"WH-AAN-RD","commodity_id":"WHEAT","quantity_t":21600.0},{"warehouse_id":"WH-DXB-SR","commodity_id":"RICE","quantity_t":19250.0},{"warehouse_id":"WH-JEA-DC","commodity_id":"RICE","quantity_t":13750.0},{"warehouse_id":"WH-AUH-DC","commodity_id":"RICE","quantity_t":11000.0},{"warehouse_id":"WH-SHJ-CC","commodity_id":"RICE","quantity_t":5500.0},{"warehouse_id":"WH-RAK-ND","commodity_id":"RICE","quantity_t":5500.0},{"warehouse_id":"WH-JEA-DC","commodity_id":"COOKING_OIL","quantity_t":9840.0},{"warehouse_id":"WH-AUH-DC","commodity_id":"COOKING_OIL","quantity_t":6150.0},{"warehouse_id":"WH-SHJ-CC","commodity_id":"COOKING_OIL","quantity_t":4920.0},{"warehouse_id":"WH-AAN-RD","commodity_id":"COOKING_OIL","quantity_t":3690.0},{"warehouse_id":"WH-DXB-SR","commodity_id":"INFANT_FORMULA","quantity_t":274.0},{"warehouse_id":"WH-AUH-DC","commodity_id":"INFANT_FORMULA","quantity_t":183.0},{"warehouse_id":"WH-SHJ-CC","commodity_id":"INFANT_FORMULA","quantity_t":152.0},{"warehouse_id":"WH-FJR-EC","commodity_id":"SUGAR","quantity_t":32000.0},{"warehouse_id":"WH-DXB-SR","commodity_id":"SUGAR","quantity_t":28000.0},{"warehouse_id":"WH-AUH-GT","commodity_id":"SUGAR","quantity_t":20000.0},{"warehouse_id":"WH-JEA-DC","commodity_id":"POULTRY","quantity_t":11880.0},{"warehouse_id":"WH-DXB-SR","commodity_id":"POULTRY","quantity_t":7425.0},{"warehouse_id":"WH-AUH-DC","commodity_id":"POULTRY","quantity_t":5940.0},{"warehouse_id":"WH-SHJ-CC","commodity_id":"POULTRY","quantity_t":4455.0},{"warehouse_id":"WH-AUH-GT","commodity_id":"LENTILS","quantity_t":10560.0},{"warehouse_id":"WH-DXB-SR","commodity_id":"LENTILS","quantity_t":9240.0},{"warehouse_id":"WH-RAK-ND","commodity_id":"LENTILS","quantity_t":6600.0},{"warehouse_id":"WH-AAN-RD","commodity_id":"DATES","quantity_t":12600.0},{"warehouse_id":"WH-DHF-WR","commodity_id":"DATES","quantity_t":7560.0},{"warehouse_id":"WH-DXB-SR","commodity_id":"DATES","quantity_t":5040.0}],"zones":[{"id":"Z-AUH","name":"Abu Dhabi City","emirate":"Abu Dhabi","lat":24.45,"lon":54.42,"radius_km":30.0,"population":1650000,"infant_share":0.026},{"id":"Z-AAN","name":"Al Ain","emirate":"Abu Dhabi","lat":24.2,"lon":55.7,"radius_km":25.0,"population":820000,"infant_share":0.028},{"id":"Z-DHF","name":"Al Dhafra","emirate":"Abu Dhabi","lat":23.7,"lon":53.4,"radius_km":70.0,"population":290000,"infant_share":0.022},{"id":"Z-DXB","name":"Dubai Urban","emirate":"Dubai","lat":25.2,"lon":55.3,"radius_km":25.0,"population":3200000,"infant_share":0.022},{"id":"Z-DXS","name":"Dubai South & Jebel Ali","emirate":"Dubai","lat":24.95,"lon":55.12,"radius_km":18.0,"population":520000,"infant_share":0.02},{"id":"Z-SHJ","name":"Sharjah","emirate":"Sharjah","lat":25.33,"lon":55.45,"radius_km":20.0,"population":1800000,"infant_share":0.025},{"id":"Z-AJM","name":"Ajman","emirate":"Ajman","lat":25.41,"lon":55.5,"radius_km":10.0,"population":540000,"infant_share":0.026},{"id":"Z-UAQ","name":"Umm Al Quwain","emirate":"Umm Al Quwain","lat":25.52,"lon":55.65,"radius_km":10.0,"population":85000,"infant_share":0.025},{"id":"Z-RAK","name":"Ras Al Khaimah","emirate":"Ras Al Khaimah","lat":25.75,"lon":55.95,"radius_km":20.0,"population":400000,"infant_share":0.027},{"id":"Z-ECO","name":"East Coast (Fujairah, Khor Fakkan)","emirate":"Fujairah","lat":25.25,"lon":56.3,"radius_km":20.0,"population":330000,"infant_share":0.027}],"hospitals":[{"id":"HSP-01","name":"Capital General Hospital","emirate":"Abu Dhabi","lat":24.47,"lon":54.37,"beds":650,"has_nicu":true,"zone_id":"Z-AUH"},{"id":"HSP-02","name":"Abu Dhabi Women & Children's Centre","emirate":"Abu Dhabi","lat":24.42,"lon":54.46,"beds":320,"has_nicu":true,"zone_id":"Z-AUH"},{"id":"HSP-03","name":"Al Ain Regional Hospital","emirate":"Abu Dhabi","lat":24.22,"lon":55.75,"beds":450,"has_nicu":true,"zone_id":"Z-AAN"},{"id":"HSP-04","name":"Al Dhafra Western Hospital","emirate":"Abu Dhabi","lat":24.08,"lon":52.7,"beds":120,"has_nicu":false,"zone_id":"Z-DHF"},{"id":"HSP-05","name":"Dubai Central Hospital","emirate":"Dubai","lat":25.26,"lon":55.32,"beds":700,"has_nicu":true,"zone_id":"Z-DXB"},{"id":"HSP-06","name":"Dubai Maternity & Paediatric Hospital","emirate":"Dubai","lat":25.18,"lon":55.26,"beds":350,"has_nicu":true,"zone_id":"Z-DXB"},{"id":"HSP-07","name":"Dubai South Community Hospital","emirate":"Dubai","lat":24.93,"lon":55.18,"beds":180,"has_nicu":false,"zone_id":"Z-DXS"},{"id":"HSP-08","name":"Sharjah General Hospital","emirate":"Sharjah","lat":25.34,"lon":55.42,"beds":500,"has_nicu":true,"zone_id":"Z-SHJ"},{"id":"HSP-09","name":"Ajman Medical Centre","emirate":"Ajman","lat":25.4,"lon":55.47,"beds":220,"has_nicu":false,"zone_id":"Z-AJM"},{"id":"HSP-10","name":"Umm Al Quwain Hospital","emirate":"Umm Al Quwain","lat":25.55,"lon":55.58,"beds":120,"has_nicu":false,"zone_id":"Z-UAQ"},{"id":"HSP-11","name":"Ras Al Khaimah Regional Hospital","emirate":"Ras Al Khaimah","lat":25.78,"lon":55.95,"beds":300,"has_nicu":true,"zone_id":"Z-RAK"},{"id":"HSP-12","name":"Fujairah East Coast Hospital","emirate":"Fujairah","lat":25.12,"lon":56.33,"beds":280,"has_nicu":true,"zone_id":"Z-ECO"},{"id":"HSP-13","name":"Khor Fakkan Hospital","emirate":"Sharjah","lat":25.33,"lon":56.34,"beds":140,"has_nicu":false,"zone_id":"Z-ECO"}],"demo_event":{"kind":"maritime_disruption","title":"Red Sea corridor disruption: Bab el-Mandeb transits suspended, vessels rerouting via the Cape of Good Hope","source":"HAYAT demo scenario","severity":"major","chokepoint":"BAB_EL_MANDEB","delay_days":11}};
+
+// ENGINE: mirrors packages/simulation and packages/agents. Pure, no DOM.
+const CONFIG = {
+  horizonDays: 30,
+  bands: { low: 0.3, elevated: 0.5, high: 0.75 },
+  bufferWeight: 0.75,
+  continuityWeight: 0.25,
+  materialLevels: ["HIGH", "CRITICAL"],
+};
+const EPS = 1e-9;
+const byId = (a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+const sortStr = (xs) => [...xs].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+const sum = (xs) => xs.reduce((t, x) => t + x, 0);
+const fmtG = (x) => String(Number(x));
+const firstIndex = (xs, pred) => { const i = xs.findIndex(pred); return i < 0 ? null : i; };
+
+function makeId() {
+  try { if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID(); } catch (e) { /* fall through */ }
+  return "id-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+}
+
+// --- metrics ---
+function daysOfCover(stock, consumption) {
+  if (stock < 0) throw new Error("stock must be >= 0");
+  return consumption <= 0 ? Infinity : stock / consumption;
+}
+
+function projectInventory(opening, consumption, inflow) {
+  const stock = [opening], served = [], shortfall = [];
+  for (const arrivals of inflow) {
+    const available = stock[stock.length - 1] + Math.max(0, arrivals);
+    const s = Math.min(consumption, available);
+    served.push(s);
+    shortfall.push(consumption - s);
+    stock.push(available - s);
+  }
+  const cover = stock.map((s) => daysOfCover(s, consumption));
+  return {
+    stock, served, shortfall, cover,
+    minCover: Math.min(...cover),
+    troughDay: stock.indexOf(Math.min(...stock)),
+    totalShortfall: sum(shortfall),
+    stockoutDay: firstIndex(shortfall, (x) => x > EPS),
+    firstDayBelow: (t) => firstIndex(stock, (s) => s < t - EPS),
+  };
+}
+
+function shortageRisk(minCover, safetyDays, hasShortfall) {
+  if (hasShortfall) return 1;
+  const ref = 2 * safetyDays;
+  return Math.min(1, Math.max(0, (ref - minCover) / ref));
+}
+
+function riskLevel(r) {
+  const b = CONFIG.bands;
+  return r < b.low ? "LOW" : r < b.elevated ? "ELEVATED" : r < b.high ? "HIGH" : "CRITICAL";
+}
+
+function resilienceScore(risk, continuity) {
+  const { bufferWeight: bw, continuityWeight: cw } = CONFIG;
+  return (100 * (bw * (1 - risk) + cw * continuity)) / (bw + cw);
+}
+
+function protectedDemand(p, floor) {
+  let total = 0;
+  p.served.forEach((s, day) => {
+    if (p.shortfall[day] <= EPS && p.stock[day + 1] >= floor - EPS) total += s;
+  });
+  return total;
+}
+
+// --- scenarios ---
+function affects(d, route) { return route.mode === "sea" && route.chokepoints.includes(d.chokepoint); }
+
+function arrivalGaps(d, routes) {
+  return routes.filter((r) => affects(d, r)).map((r) => {
+    const start = d.onsetDay + (r.chokepoint_offsets_days[d.chokepoint] ?? 0);
+    return { route_id: r.id, start_day: start, end_day: start + d.delayDays, source_id: d.sourceId };
+  });
+}
+
+function blockedFractions(gaps, horizon) {
+  const intervals = gaps.map((g) => [g.start_day, g.end_day]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const merged = [];
+  for (const [s, e] of intervals) {
+    if (merged.length && s <= merged[merged.length - 1][1]) merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], e);
+    else merged.push([s, e]);
+  }
+  const out = [];
+  for (let day = 0; day < horizon; day++) {
+    let covered = 0;
+    for (const [s, e] of merged) covered += Math.max(0, Math.min(e, day + 1) - Math.max(s, day));
+    out.push(Math.min(1, covered));
+  }
+  return out;
+}
+
+// --- engine ---
+function evaluate(net, disruptions) {
+  const H = CONFIG.horizonDays;
+  const gaps = disruptions.flatMap((d) => arrivalGaps(d, net.routes));
+  const gapsByRoute = new Map();
+  for (const g of gaps) { if (!gapsByRoute.has(g.route_id)) gapsByRoute.set(g.route_id, []); gapsByRoute.get(g.route_id).push(g); }
+  const blocked = new Map([...gapsByRoute].map(([rid, g]) => [rid, blockedFractions(g, H)]));
+
+  const results = net.commodities.map((c) => {
+    const flows = net.flows.filter((f) => f.commodity_id === c.id);
+    const baselineInflow = sum(flows.map((f) => f.volume_tpd));
+    const disruptedInflow = sum(flows.filter((f) => blocked.has(f.route_id)).map((f) => f.volume_tpd));
+    const share = baselineInflow > 0 ? disruptedInflow / baselineInflow : 0;
+    const inflow = new Array(H).fill(0);
+    for (const f of flows) {
+      const fr = blocked.get(f.route_id);
+      for (let d = 0; d < H; d++) inflow[d] += f.volume_tpd * (1 - (fr ? fr[d] : 0));
+    }
+    const stock = net.stock[c.id] ?? 0;
+    const p = projectInventory(stock, c.daily_consumption_t, inflow);
+    const floor = c.safety_stock_days * c.daily_consumption_t;
+    const risk = shortageRisk(p.minCover, c.safety_stock_days, p.stockoutDay !== null);
+    const continuity = 1 - share;
+    const demandValue = c.daily_consumption_t * H * c.unit_price_aed;
+    const protectedValue = protectedDemand(p, floor) * c.unit_price_aed;
+    return {
+      commodity_id: c.id,
+      name: c.name,
+      stock_t: stock,
+      daily_consumption_t: c.daily_consumption_t,
+      days_of_cover: daysOfCover(stock, c.daily_consumption_t),
+      safety_stock_days: c.safety_stock_days,
+      baseline_inflow_tpd: baselineInflow,
+      disrupted_inflow_share: share,
+      supply_continuity: continuity,
+      affected_route_ids: sortStr(new Set(flows.filter((f) => blocked.has(f.route_id)).map((f) => f.route_id))),
+      delayed_volume_t: baselineInflow * H - sum(inflow),
+      projected_stock_t: p.stock,
+      projected_cover_days: p.cover,
+      min_cover_days: p.minCover,
+      trough_day: p.troughDay,
+      safety_breach_day: p.firstDayBelow(floor),
+      stockout_day: p.stockoutDay,
+      total_shortfall_t: p.totalShortfall,
+      shortage_risk: risk,
+      risk_level: riskLevel(risk),
+      resilience_score: resilienceScore(risk, continuity),
+      criticality: c.criticality,
+      demand_value_aed: demandValue,
+      protected_value_aed: protectedValue,
+      value_at_risk_aed: demandValue - protectedValue,
+      impacted: share > 0,
+    };
+  });
+
+  const totalWeight = sum(results.map((r) => r.criticality));
+  const index = sum(results.map((r) => r.resilience_score * r.criticality)) / totalWeight;
+  const demand = sum(results.map((r) => r.demand_value_aed));
+  const prot = sum(results.map((r) => r.protected_value_aed));
+  return {
+    horizon_days: H,
+    commodities: results,
+    resilience_index: index,
+    demand_value_aed: demand,
+    protected_value_aed: prot,
+    value_at_risk_aed: demand - prot,
+    material_threat_ids: results.filter((r) => CONFIG.materialLevels.includes(r.risk_level)).map((r) => r.commodity_id),
+    affected_route_ids: sortStr(blocked.keys()),
+    arrival_gaps: gaps,
+    commodity(id) { return results.find((r) => r.commodity_id === id); },
+  };
+}
+
+// --- operating picture from the dataset ---
+function buildPicture(data) {
+  const stock = {};
+  for (const i of data.inventory) stock[i.commodity_id] = (stock[i.commodity_id] ?? 0) + i.quantity_t;
+  const commodities = [...data.commodities].sort(byId);
+  return {
+    network: {
+      commodities,
+      routes: [...data.routes].sort(byId),
+      flows: [...data.suppliers].sort(byId),
+      stock,
+    },
+    commodities,
+    routes: [...data.routes].sort(byId),
+    inventory: data.inventory,
+    hospitals: [...data.hospitals].sort(byId),
+    zones: [...data.zones].sort(byId),
+    profile(id) { return commodities.find((c) => c.id === id); },
+    routeRef(id) { return this.routes.find((r) => r.id === id); },
+  };
+}
+const PICTURE = DATA ? buildPicture(DATA) : null;
+
+// --- agents ---
+const SEVERITIES = ["minor", "moderate", "major", "severe"];
+
+function parseSignal(raw, now) {
+  if (raw.kind !== "maritime_disruption") throw new Error(`unsupported signal kind: ${raw.kind}`);
+  const chokepoint = String(raw.chokepoint ?? "").trim().toUpperCase();
+  if (!chokepoint) throw new Error("chokepoint is required");
+  const delay = Number(raw.delay_days);
+  if (!Number.isFinite(delay)) throw new Error("delay_days must be a number");
+  if (!(delay > 0 && delay <= 120)) throw new Error("delay_days must be in (0, 120]");
+  const severity = String(raw.severity ?? "major").toLowerCase();
+  if (!SEVERITIES.includes(severity)) throw new Error("invalid severity");
+  return {
+    id: String(raw.id || makeId()),
+    kind: raw.kind,
+    title: String(raw.title || `Maritime disruption at ${chokepoint}`),
+    source: String(raw.source || "unspecified"),
+    severity,
+    chokepoint,
+    delay_days: delay,
+    observed_at: raw.observed_at || now.toISOString(),
+  };
+}
+
+const toDisruption = (s) => ({ sourceId: s.id, chokepoint: s.chokepoint, delayDays: s.delay_days, onsetDay: 0 });
+const allSignals = (st) => st.activeSignals.concat(st.newSignal ? [st.newSignal] : []);
+const LEVEL_ORDER = { NORMAL: 0, LOW: 1, ELEVATED: 2, HIGH: 3, CRITICAL: 4 };
+const worst = (levels) => levels.reduce((w, l) => (LEVEL_ORDER[l] > LEVEL_ORDER[w] ? l : w), "NORMAL");
+
+function threatHeadline(c) {
+  let text = `${c.name}: cover falls from ${c.days_of_cover.toFixed(1)} to ${c.min_cover_days.toFixed(1)} days ` +
+    `by day ${c.trough_day} (safety target ${fmtG(c.safety_stock_days)} days)`;
+  if (c.stockout_day !== null) text += `; stock-out projected on day ${c.stockout_day}`;
+  else if (c.safety_breach_day !== null) text += `; safety stock breached on day ${c.safety_breach_day}`;
+  return text;
+}
+
+function exposure(pic, commodityId) {
+  const group = pic.profile(commodityId).vulnerable_group;
+  const infants = group === "infants";
+  return {
+    vulnerable_group: group,
+    exposed_population: sum(pic.zones.map((z) => (infants ? Math.round(z.population * z.infant_share) : z.population))),
+    exposed_hospital_ids: infants ? pic.hospitals.filter((h) => h.has_nicu).map((h) => h.id) : [],
+    warehouse_ids: sortStr(new Set(pic.inventory.filter((p) => p.commodity_id === commodityId && p.quantity_t > 0).map((p) => p.warehouse_id))),
+  };
+}
+
+function networkStatus(pic, revised) {
+  const routes = {};
+  for (const g of revised.arrival_gaps) {
+    const e = routes[g.route_id] ??= { status: "DISRUPTED", gap_start_day: g.start_day, gap_end_day: g.end_day, signal_ids: [] };
+    e.gap_start_day = Math.min(e.gap_start_day, g.start_day);
+    e.gap_end_day = Math.max(e.gap_end_day, g.end_day);
+    e.signal_ids.push(g.source_id);
+    e.delay_days = e.gap_end_day - e.gap_start_day;
+  }
+  const ports = {};
+  for (const pid of sortStr(new Set(Object.keys(routes).map((rid) => pic.routeRef(rid).destination_port_id).filter(Boolean)))) ports[pid] = "DISRUPTED";
+  const levels = Object.fromEntries(revised.commodities.filter((c) => c.impacted).map((c) => [c.commodity_id, c.risk_level]));
+  const wh = {};
+  for (const p of pic.inventory) if (p.quantity_t > 0 && p.commodity_id in levels) (wh[p.warehouse_id] ??= []).push(levels[p.commodity_id]);
+  const groups = new Set(revised.material_threat_ids.map((id) => pic.profile(id).vulnerable_group));
+  const infant = groups.has("infants"), general = groups.has("general");
+  return {
+    routes,
+    ports,
+    warehouses: Object.fromEntries(Object.entries(wh).map(([k, v]) => [k, worst(v)])),
+    hospitals: Object.fromEntries(pic.hospitals.filter((h) => infant && h.has_nicu).map((h) => [h.id, "EXPOSED"])),
+    zones: Object.fromEntries(pic.zones.filter(() => general || infant).map((z) => [z.id, "EXPOSED"])),
+  };
+}
+
+const AGENTS = [
+  {
+    name: "signal-intake",
+    run(ctx, st) {
+      if (!st.raw) return;
+      const s = parseSignal(st.raw, ctx.now());
+      st.newSignal = s;
+      ctx.emit(this.name, "event.received", `Event received from ${s.source}: ${s.title}`, { signal: s });
+    },
+  },
+  {
+    name: "disruption-detection",
+    run(ctx, st) {
+      st.disruptions = allSignals(st).map(toDisruption);
+      const s = st.newSignal;
+      if (!s) return;
+      const net = st.picture.network;
+      const d = toDisruption(s);
+      const routes = net.routes.filter((r) => affects(d, r));
+      const rids = new Set(routes.map((r) => r.id));
+      const flows = net.flows.filter((f) => rids.has(f.route_id));
+      const cids = sortStr(new Set(flows.map((f) => f.commodity_id)));
+      if (!routes.length) {
+        ctx.emit(this.name, "disruption.no_exposure", `No UAE supply routes transit ${s.chokepoint}; no exposure found`, { signal_id: s.id });
+        return;
+      }
+      ctx.emit(
+        this.name,
+        "disruption.detected",
+        `Disruption detected at ${s.chokepoint}: ${routes.length} routes delayed ${fmtG(s.delay_days)} days, ` +
+          `exposing ${cids.map((c) => st.picture.profile(c).name).join(", ")}`,
+        {
+          signal_id: s.id, chokepoint: s.chokepoint, delay_days: s.delay_days,
+          route_ids: sortStr(rids),
+          port_ids: sortStr(new Set(routes.map((r) => r.destination_port_id).filter(Boolean))),
+          supplier_ids: sortStr(new Set(flows.map((f) => f.id))),
+          commodity_ids: cids,
+          delayed_inflow_tpd: sum(flows.map((f) => f.volume_tpd)),
+        },
+      );
+    },
+  },
+  {
+    name: "impact-assessment",
+    run(ctx, st) {
+      const net = st.picture.network;
+      ctx.emit(
+        this.name,
+        "impact.calculation.started",
+        `Impact calculation started: ${net.commodities.length} commodities, ${st.disruptions.length} active disruptions, ${CONFIG.horizonDays}-day horizon`,
+        { disruptions: st.disruptions.length, horizon_days: CONFIG.horizonDays },
+      );
+      st.baseline = evaluate(net, []);
+      st.revised = evaluate(net, st.disruptions);
+      const impacted = st.revised.commodities.filter((c) => c.impacted);
+      ctx.emit(this.name, "impact.calculation.completed", `Impact calculation completed: ${impacted.length} commodities with delayed inflow`, {
+        impacted: impacted.map((c) => ({ commodity_id: c.commodity_id, min_cover_days: c.min_cover_days, risk_level: c.risk_level })),
+      });
+    },
+  },
+  {
+    name: "resilience",
+    run(ctx, st) {
+      const { baseline: b, revised: r, picture: pic } = st;
+      const commodities = r.commodities.map((c) => ({
+        ...c, name_ar: pic.profile(c.commodity_id).name_ar, vulnerable_group: pic.profile(c.commodity_id).vulnerable_group,
+      }));
+      const threats = r.material_threat_ids.map((id) => {
+        const c = r.commodity(id);
+        return {
+          commodity_id: id, name: c.name, name_ar: pic.profile(id).name_ar, risk_level: c.risk_level,
+          shortage_risk: c.shortage_risk, headline: threatHeadline(c), days_of_cover: c.days_of_cover,
+          min_cover_days: c.min_cover_days, trough_day: c.trough_day, safety_breach_day: c.safety_breach_day,
+          stockout_day: c.stockout_day, disrupted_inflow_share: c.disrupted_inflow_share,
+          value_at_risk_aed: c.value_at_risk_aed, affected_route_ids: c.affected_route_ids, ...exposure(pic, id),
+        };
+      }).sort((x, y) => y.shortage_risk - x.shortage_risk);
+      const signals = allSignals(st);
+      st.result = {
+        run_id: ctx.runId,
+        trigger: st.trigger,
+        computed_at: ctx.now().toISOString(),
+        horizon_days: r.horizon_days,
+        kpis: {
+          resilience_index: r.resilience_index,
+          baseline_resilience_index: b.resilience_index,
+          resilience_delta: r.resilience_index - b.resilience_index,
+          active_signals: signals.length,
+          material_threats: r.material_threat_ids.length,
+          protected_value_aed: r.protected_value_aed,
+          baseline_protected_value_aed: b.protected_value_aed,
+          value_at_risk_aed: r.value_at_risk_aed,
+          demand_value_aed: r.demand_value_aed,
+        },
+        signals,
+        commodities,
+        threats,
+        network_status: networkStatus(pic, r),
+      };
+      ctx.emit(
+        this.name,
+        "resilience.recalculated",
+        `Resilience recalculated: index ${b.resilience_index.toFixed(1)} baseline → ${r.resilience_index.toFixed(1)} current; ` +
+          `${r.material_threat_ids.length} material threats`,
+        { resilience_index: r.resilience_index, baseline_resilience_index: b.resilience_index, material_threat_ids: r.material_threat_ids, trigger: st.trigger },
+      );
+    },
+  },
+];
+
+function createRun({ raw = null, activeSignals = [], trigger = "recalculation", onEvent = () => {} } = {}) {
+  const runId = makeId();
+  const events = [];
+  const ctx = {
+    runId,
+    now: () => new Date(),
+    emit(actor, type, message, payload = {}) {
+      const e = { run_id: runId, event_type: type, actor, message, occurred_at: new Date().toISOString(), payload };
+      events.push(e);
+      onEvent(e);
+      return e;
+    },
+  };
+  const state = { picture: PICTURE, activeSignals: [...activeSignals], raw, trigger, newSignal: null, disruptions: [], baseline: null, revised: null, result: null };
+  return { ctx, state, events };
+}
+
+function runPipelineSync(opts) {
+  const run = createRun(opts);
+  for (const agent of AGENTS) agent.run(run.ctx, run.state);
+  return run;
+}
+// ENGINE END
+</script>
+
+<script>
+// ---------------------------------------------------------------------------------------
+// UI: renders engine output. Presentation only; it never computes a domain value.
+// ---------------------------------------------------------------------------------------
+const STEP_MS = 420; // pause between agents so each audit event is visible as it arrives
+
+const app = { state: null, activeSignals: [], events: [], seq: 0, busy: null, lastSeen: 0 };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const pause = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// --- formatting ---
+function formatAed(v) {
+  const a = Math.abs(v);
+  if (a >= 1e9) return `AED ${(v / 1e9).toFixed(2)}B`;
+  if (a >= 1e6) return `AED ${(v / 1e6).toFixed(1)}M`;
+  if (a >= 1e3) return `AED ${(v / 1e3).toFixed(0)}K`;
+  return `AED ${v.toFixed(0)}`;
+}
+const formatDays = (d) => (d === null || d === undefined || !Number.isFinite(d) ? "—" : `${d.toFixed(1)}d`);
+function formatSigned(v, digits = 1) {
+  const f = v.toFixed(digits);
+  if (Number(f) === 0) return (0).toFixed(digits);
+  return v > 0 ? `+${f}` : f;
+}
+function formatCompact(v) {
+  if (v >= 1e6) return `${(v / 1e6).toFixed(2)}M`;
+  if (v >= 1e3) return `${(v / 1e3).toFixed(1)}K`;
+  return v.toFixed(0);
+}
+const formatPercent = (s) => `${Math.round(s * 100)}%`;
+const GST = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Dubai", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+const formatGst = (iso) => GST.format(typeof iso === "string" ? new Date(iso) : iso);
+function humanizeChokepoint(code) {
+  return code.toLowerCase().split("_").map((w) => (["el", "of"].includes(w) ? w : w[0].toUpperCase() + w.slice(1)))
+    .join(" ").replace(/^./, (c) => c.toUpperCase()).replace("Bab el Mandeb", "Bab el-Mandeb");
+}
+const STATUS_COLOR = {
+  NORMAL: "var(--c-normal)", LOW: "var(--c-low)", ELEVATED: "var(--c-elevated)", HIGH: "var(--c-high)",
+  CRITICAL: "var(--c-critical)", DISRUPTED: "var(--c-critical)", EXPOSED: "var(--c-elevated)",
+};
+const statusColor = (s) => STATUS_COLOR[s ?? "NORMAL"];
+
+// --- geography (simplified outlines, for orientation only) ---
+const VIEW = { lonMin: 51.4, lonMax: 57.5, latMin: 22.6, latMax: 27.0 };
+const MAP_W = 1000;
+const X_SCALE = Math.cos((((VIEW.latMin + VIEW.latMax) / 2) * Math.PI) / 180);
+const UPD = MAP_W / ((VIEW.lonMax - VIEW.lonMin) * X_SCALE);
+const MAP_H = Math.round((VIEW.latMax - VIEW.latMin) * UPD);
+const project = ([lon, lat]) => [
+  Math.round((lon - VIEW.lonMin) * X_SCALE * UPD * 10) / 10,
+  Math.round((VIEW.latMax - lat) * UPD * 10) / 10,
+];
+const kmToUnits = (km) => (km / 111.32) * UPD;
+const toPath = (pts) => pts.map((p, i) => `${i ? "L" : "M"}${project(p).join(",")}`).join(" ") + " Z";
+function toCurve(points) {
+  const pts = points.map(project);
+  let d = `M${pts[0].join(",")}`;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const [x, y] = pts[i], [nx, ny] = pts[i + 1];
+    d += ` Q${x},${y} ${(x + nx) / 2},${(y + ny) / 2}`;
+  }
+  return d + ` L${pts[pts.length - 1].join(",")}`;
+}
+const UAE_GULF_COAST = [[51.58, 24.26], [51.8, 24.02], [52.05, 23.98], [52.35, 24.12], [52.58, 24.18], [52.73, 24.12], [53.1, 24.1], [53.45, 24.12], [53.9, 24.15], [54.2, 24.3], [54.37, 24.47], [54.6, 24.7], [54.77, 24.85], [55.03, 25.0], [55.15, 25.12], [55.27, 25.22], [55.39, 25.36], [55.55, 25.56], [55.8, 25.7], [55.95, 25.8], [56.08, 25.98]];
+const UAE_EAST_AND_BORDERS = [[56.2, 25.75], [56.27, 25.62], [56.35, 25.34], [56.36, 25.12], [56.37, 24.98], [56.1, 24.75], [55.95, 24.45], [55.78, 24.22], [55.82, 24.0], [55.55, 23.55], [55.2, 22.7], [52.6, 22.94], [51.95, 23.55], [51.6, 24.1]];
+const UAE_OUTLINE = [...UAE_GULF_COAST, ...UAE_EAST_AND_BORDERS];
+const REGION_LAND = [[51.3, 22.4], [51.3, 26.1], [51.4, 26.08], [51.55, 25.9], [51.58, 25.6], [51.53, 25.29], [51.62, 25.25], [51.6, 24.95], [51.42, 24.62], [51.5, 24.4], ...UAE_GULF_COAST, [56.12, 26.12], [56.25, 26.2], [56.38, 26.38], [56.47, 26.22], [56.38, 25.95], [56.27, 25.62], [56.35, 25.34], [56.36, 25.12], [56.37, 24.98], [56.5, 24.75], [56.8, 24.4], [57.2, 23.95], [57.6, 23.75], [57.6, 22.4]];
+const IRAN_COAST = [[52.6, 27.2], [52.6, 27.1], [53.7, 26.75], [54.5, 26.6], [54.9, 26.55], [55.3, 26.68], [55.7, 26.92], [56.1, 27.1], [56.6, 27.12], [56.9, 26.9], [57.1, 26.5], [57.3, 26.1], [57.6, 25.85], [57.6, 27.2]];
+const SEA_LABELS = [
+  { text: "ARABIAN GULF", at: [53.3, 25.6], size: 15 },
+  { text: "GULF OF OMAN", at: [56.75, 24.95], size: 12 },
+  { text: "STRAIT OF HORMUZ", at: [56.25, 26.62], size: 10 },
+];
+const APPROACH_LANES = {
+  JEA: [[57.5, 25.4], [56.95, 25.95], [56.6, 26.45], [56.1, 26.42], [55.5, 25.8], [55.1, 25.2], [55.061, 25.011]],
+  KHL: [[57.5, 25.5], [56.98, 26.02], [56.62, 26.5], [56.0, 26.45], [55.4, 25.9], [54.9, 25.2], [54.645, 24.81]],
+  MSQ: [[57.5, 25.6], [57.0, 26.1], [56.62, 26.52], [56.2, 26.35], [56.052, 25.985]],
+  KFK: [[57.5, 25.15], [56.8, 25.3], [56.36, 25.345]],
+  FJR: [[57.5, 24.85], [56.8, 25.02], [56.362, 25.17]],
+  GHW: [[51.4, 23.55], [51.5, 23.85], [51.62, 24.12]],
+};
+
+// --- renderers ---
+function renderMap(status) {
+  const net = DATA;
+  const vol = new Map();
+  for (const s of net.suppliers) vol.set(s.route_id, (vol.get(s.route_id) ?? 0) + s.volume_tpd);
+  const lanes = Object.entries(APPROACH_LANES).map(([portId, pts]) => {
+    const routes = net.routes.filter((r) => r.destination_port_id === portId);
+    const disrupted = routes.filter((r) => status.routes[r.id]);
+    const tot = (rs) => rs.reduce((t, r) => t + (vol.get(r.id) ?? 0), 0);
+    return { portId, path: toCurve(pts), volume: tot(routes), disruptedVolume: tot(disrupted), disruptedRoutes: disrupted.length,
+      delayDays: Math.max(0, ...disrupted.map((r) => status.routes[r.id].delay_days)) };
+  });
+  const width = (t) => 1.5 + Math.sqrt(t) / 12;
+  const portName = (id) => net.ports.find((p) => p.id === id)?.name ?? id;
+  let s = `<svg class="map" viewBox="0 0 ${MAP_W} ${MAP_H}" role="img" aria-label="Map of UAE ports, inbound lanes, warehouses, hospitals and population zones">
+    <defs><radialGradient id="sea" cx="55%" cy="45%" r="75%"><stop offset="0%" stop-color="#0a1a2a"/><stop offset="100%" stop-color="#050b13"/></radialGradient>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="rgba(80,140,190,0.06)" stroke-width="1"/></pattern></defs>
+    <rect width="${MAP_W}" height="${MAP_H}" fill="url(#sea)"/><rect width="${MAP_W}" height="${MAP_H}" fill="url(#grid)"/>
+    <path d="${toPath(REGION_LAND)}" class="land-region"/><path d="${toPath(IRAN_COAST)}" class="land-region"/><path d="${toPath(UAE_OUTLINE)}" class="land-uae"/>`;
+  for (const l of SEA_LABELS) { const [x, y] = project(l.at); s += `<text x="${x}" y="${y}" class="sea-label" font-size="${l.size}">${l.text}</text>`; }
+  for (const z of net.zones) {
+    const [x, y] = project([z.lon, z.lat]);
+    const exposed = status.zones[z.id] === "EXPOSED";
+    s += `<circle cx="${x}" cy="${y}" r="${kmToUnits(z.radius_km).toFixed(1)}" class="zone${exposed ? " zone-exposed" : ""}"><title>${esc(`${z.name}: population ${formatCompact(z.population)}${exposed ? " (exposed to a material threat)" : ""}`)}</title></circle>`;
+  }
+  for (const l of lanes) {
+    s += `<path d="${l.path}" class="lane" stroke-width="${width(l.volume).toFixed(2)}"><title>${esc(`Inbound to ${portName(l.portId)}: ${formatCompact(l.volume)} t/day`)}</title></path>`;
+    if (l.disruptedVolume > 0) s += `<path d="${l.path}" class="lane-disrupted" stroke-width="${width(l.disruptedVolume).toFixed(2)}"><title>${esc(`${l.disruptedRoutes} routes delayed ${l.delayDays.toFixed(0)} days: ${formatCompact(l.disruptedVolume)} t/day`)}</title></path>`;
+  }
+  for (const w of net.warehouses) {
+    const [x, y] = project([w.lon, w.lat]);
+    const st = status.warehouses[w.id];
+    s += `<rect x="${x - 5}" y="${y - 5}" width="10" height="10" transform="rotate(45 ${x} ${y})" class="warehouse" fill="${statusColor(st)}"><title>${esc(`${w.name} (${w.emirate})${st ? `: holds ${st} commodities` : ""}`)}</title></rect>`;
+  }
+  for (const h of net.hospitals) {
+    const [x, y] = project([h.lon, h.lat]);
+    const exposed = status.hospitals[h.id] === "EXPOSED";
+    s += `<g class="hospital${exposed ? " hospital-exposed" : ""}">${h.has_nicu ? `<circle cx="${x}" cy="${y}" r="7" class="hospital-ring"/>` : ""}<path d="M${x - 4},${y}H${x + 4}M${x},${y - 4}V${y + 4}"/><title>${esc(`${h.name}: ${h.beds} beds${h.has_nicu ? ", neonatal ICU" : ""}${exposed ? " (infant formula exposure)" : ""}`)}</title></g>`;
+  }
+  for (const p of net.ports) {
+    const [x, y] = project([p.lon, p.lat]);
+    const disrupted = status.ports[p.id] === "DISRUPTED";
+    const lane = lanes.find((l) => l.portId === p.id);
+    s += `<g class="port${disrupted ? " port-disrupted" : ""}">${disrupted ? `<circle cx="${x}" cy="${y}" r="10" class="port-pulse"/>` : ""}<circle cx="${x}" cy="${y}" r="6" class="port-dot"/>
+      <text x="${x + 10}" y="${y - 8}" class="port-label">${esc(p.name)}</text>
+      ${disrupted && lane ? `<text x="${x + 10}" y="${y + 8}" class="port-alert">+${lane.delayDays.toFixed(0)}d · ${lane.disruptedRoutes} ${lane.disruptedRoutes === 1 ? "route" : "routes"}</text>` : ""}
+      <title>${esc(`${p.name} (${p.kind} port, ${p.emirate})`)}</title></g>`;
+  }
+  s += `<g class="legend" transform="translate(18, ${MAP_H - 120})"><rect width="232" height="104" rx="6" class="legend-box"/><g transform="translate(14, 22)">
+    <circle r="5" class="port-dot"/><text x="14" y="4">Port of entry</text>
+    <rect x="-4" y="16" width="8" height="8" transform="rotate(45 0 20)" fill="var(--c-normal)"/><text x="14" y="24">Warehouse (colour = risk held)</text>
+    <path d="M-4,40H4M0,36V44" class="legend-hospital"/><text x="14" y="44">Hospital (ring = neonatal ICU)</text>
+    <line x1="-6" y1="62" x2="6" y2="62" class="lane" stroke-width="3"/><line x1="-6" y1="62" x2="6" y2="62" class="lane-disrupted legend-dash" stroke-width="3"/><text x="14" y="66">Inbound lane / delayed share</text>
+  </g></g></svg>`;
+  return s;
+}
+
+function gauge(v) {
+  const r = 34, c = 2 * Math.PI * r, f = (Math.max(0, Math.min(100, v)) / 100) * c;
+  return `<svg class="gauge" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="${r}" class="gauge-track"/><circle cx="42" cy="42" r="${r}" class="gauge-fill" stroke-dasharray="${f.toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 42 42)"/></svg>`;
+}
+
+function renderKpis(st) {
+  const k = st.kpis;
+  const sig = st.signals[st.signals.length - 1];
+  const tone = k.resilience_index >= 75 ? "tone-good" : k.resilience_index >= 60 ? "tone-warn" : "tone-bad";
+  const delta = k.resilience_delta === 0 ? "Baseline · no active disruptions"
+    : `<span class="neg">${formatSigned(k.resilience_delta)}</span> vs baseline ${k.baseline_resilience_index.toFixed(1)}`;
+  return `
+    <article class="kpi kpi-index ${tone}">${gauge(k.resilience_index)}<div><h3>Resilience Index</h3><p class="kpi-value">${k.resilience_index.toFixed(1)}</p><p class="kpi-sub">${delta}</p></div></article>
+    <article class="kpi ${k.active_signals ? "tone-warn" : ""}"><h3>Active Signals</h3><p class="kpi-value">${k.active_signals}</p><p class="kpi-sub">${sig ? esc(`${humanizeChokepoint(sig.chokepoint)} · +${sig.delay_days} days · ${sig.severity}`) : "No active disruption signals"}</p></article>
+    <article class="kpi ${k.material_threats ? "tone-bad" : ""}"><h3>Material Threats</h3><p class="kpi-value">${k.material_threats}</p><p class="kpi-sub">${st.threats.length ? esc(st.threats.map((t) => `${t.name} (${t.risk_level})`).join(" · ")) : "No commodity at HIGH or CRITICAL risk"}</p></article>
+    <article class="kpi ${k.value_at_risk_aed > 0 ? "tone-warn" : ""}"><h3>Protected Value</h3><p class="kpi-value">${formatAed(k.protected_value_aed)}</p><p class="kpi-sub">${k.value_at_risk_aed > 0
+      ? `<span class="neg">${formatAed(k.value_at_risk_aed)}</span> at risk of ${formatAed(k.demand_value_aed)} ${st.horizon_days}-day demand`
+      : `All ${st.horizon_days}-day essential demand served with safety stock intact`}</p></article>`;
+}
+
+function sparkline(values, target, color) {
+  const W = 220, H = 54, max = Math.max(target * 1.6, ...values);
+  const x = (i) => (i / Math.max(1, values.length - 1)) * W;
+  const y = (v) => H - 4 - (v / max) * (H - 8);
+  const line = values.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="0" x2="${W}" y1="${y(target).toFixed(1)}" y2="${y(target).toFixed(1)}" class="spark-target"/><path d="${line}L${W},${H}L0,${H}Z" fill="${color}" opacity="0.12"/><path d="${line}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
+}
+
+function renderThreats(st) {
+  const byId = new Map(st.commodities.map((c) => [c.commodity_id, c]));
+  const routes = Object.keys(st.network_status.routes);
+  const ports = Object.keys(st.network_status.ports).map((id) => DATA.ports.find((p) => p.id === id)?.name ?? id).join(", ");
+  let s = st.signals.map((sig) => `<div class="signal"><div class="signal-tag">SIGNAL · ${esc(sig.severity.toUpperCase())}</div><p class="signal-title">${esc(sig.title)}</p>
+    <p class="signal-meta">${esc(`${humanizeChokepoint(sig.chokepoint)} · +${sig.delay_days} days · ${routes.length} routes delayed${ports ? ` · arrivals at ${ports}` : ""}`)}</p></div>`).join("");
+  if (!st.threats.length) s += `<p class="empty">No material threats. Every commodity's projected cover stays above its safety target.</p>`;
+  for (const t of st.threats) {
+    const c = byId.get(t.commodity_id), color = statusColor(t.risk_level);
+    s += `<article class="threat" style="border-color:${color}"><header><span class="badge" style="background:${color}">${t.risk_level}</span><h3>${esc(t.name)} <span class="ar" lang="ar">${esc(t.name_ar)}</span></h3></header>
+      <p class="threat-headline">${esc(t.headline)}</p>${sparkline(c.projected_cover_days, c.safety_stock_days, color)}
+      <dl class="threat-stats">
+        <div><dt>Cover now → trough</dt><dd>${formatDays(t.days_of_cover)} → ${formatDays(t.min_cover_days)}</dd></div>
+        <div><dt>Inflow delayed</dt><dd>${formatPercent(t.disrupted_inflow_share)}</dd></div>
+        <div><dt>${t.vulnerable_group === "infants" ? "Infants exposed" : "Population exposed"}</dt><dd>${formatCompact(t.exposed_population)}</dd></div>
+        ${t.exposed_hospital_ids.length ? `<div><dt>Neonatal ICUs</dt><dd>${t.exposed_hospital_ids.length}</dd></div>` : ""}
+        <div><dt>Value at risk</dt><dd>${formatAed(t.value_at_risk_aed)}</dd></div>
+      </dl></article>`;
+  }
+  const watch = st.commodities.filter((c) => c.impacted && c.risk_level === "ELEVATED");
+  if (watch.length) s += `<p class="watch">Watch: ${esc(watch.map((c) => `${c.name} ${formatDays(c.days_of_cover)} → ${formatDays(c.min_cover_days)}`).join(" · "))} (ELEVATED, above safety target)</p>`;
+  return s;
+}
+
+function renderChart(st) {
+  const W = 640, H = 240, PAD = { l: 44, r: 120, t: 14, b: 28 }, YMAX = 2, hz = st.horizon_days;
+  const shown = st.commodities.filter((c) => c.impacted);
+  const series = shown.length ? shown : st.commodities.slice(0, 4);
+  $("chart-meta").textContent = shown.length ? "cover ÷ safety target, commodities with delayed inflow" : "cover ÷ safety target, baseline (no delayed inflow)";
+  const x = (d) => PAD.l + (d / hz) * (W - PAD.l - PAD.r);
+  const y = (r) => PAD.t + (1 - Math.min(r, YMAX) / YMAX) * (H - PAD.t - PAD.b);
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Projected days of cover relative to safety target over ${hz} days">`;
+  for (const v of [0, 0.5, 1, 1.5, 2]) {
+    s += `<line x1="${PAD.l}" x2="${W - PAD.r}" y1="${y(v)}" y2="${y(v)}" class="${v === 1 ? "axis-target" : v === 0.5 ? "axis-critical" : "axis-grid"}"/><text x="${PAD.l - 8}" y="${y(v) + 4}" text-anchor="end" class="axis-label">${v.toFixed(1)}×</text>`;
+  }
+  for (const d of [0, 5, 10, 15, 20, 25, 30].filter((d) => d <= hz)) s += `<text x="${x(d)}" y="${H - 8}" text-anchor="middle" class="axis-label">d${d}</text>`;
+  s += `<text x="${PAD.l + 6}" y="${y(1) - 5}" class="axis-note">safety target</text><text x="${PAD.l + 6}" y="${y(0.5) - 5}" class="axis-note critical">critical</text>`;
+  const labels = [];
+  for (const c of series) {
+    const ratios = c.projected_cover_days.map((v) => v / c.safety_stock_days);
+    s += `<path d="${ratios.map((r, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(r).toFixed(1)}`).join("")}" fill="none" stroke="${statusColor(c.risk_level)}" stroke-width="2.2"/>`;
+    labels.push({ text: c.name, color: statusColor(c.risk_level), y: y(ratios[ratios.length - 1]) });
+  }
+  labels.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < labels.length; i++) if (labels[i].y - labels[i - 1].y < 13) labels[i].y = labels[i - 1].y + 13;
+  for (const l of labels) s += `<text x="${x(hz) + 6}" y="${(l.y + 4).toFixed(1)}" class="series-label" fill="${l.color}">${esc(l.text)}</text>`;
+  return s + "</svg>";
+}
+
+function renderTable(st) {
+  const ORDER = { CRITICAL: 0, HIGH: 1, ELEVATED: 2, LOW: 3 };
+  const rows = [...st.commodities].sort((a, b) => ORDER[a.risk_level] - ORDER[b.risk_level] || b.criticality - a.criticality);
+  const day = (d) => (d === null ? "—" : `d${d}`);
+  return `<table class="table"><thead><tr><th>Commodity</th><th class="num">Stock (t)</th><th class="num">Use (t/day)</th><th class="num">Days of cover</th><th class="num">Safety target</th><th class="num">Projected trough</th><th class="num">Target breached</th><th class="num">Stock-out</th><th class="num">Inflow delayed</th><th class="num">Shortage risk</th><th>Level</th><th class="num">Resilience score</th><th class="num">Value at risk</th></tr></thead><tbody>
+    ${rows.map((c) => `<tr${c.impacted ? ' class="row-impacted"' : ""}><td>${esc(c.name)} <span class="ar" lang="ar">${esc(c.name_ar)}</span></td>
+      <td class="num">${formatCompact(c.stock_t)}</td><td class="num">${formatCompact(c.daily_consumption_t)}</td><td class="num">${formatDays(c.days_of_cover)}</td><td class="num">${formatDays(c.safety_stock_days)}</td>
+      <td class="num">${formatDays(c.min_cover_days)}${c.impacted ? `<span class="muted"> d${c.trough_day}</span>` : ""}</td><td class="num">${day(c.safety_breach_day)}</td><td class="num">${day(c.stockout_day)}</td>
+      <td class="num">${c.impacted ? formatPercent(c.disrupted_inflow_share) : "—"}</td><td class="num">${c.shortage_risk.toFixed(2)}</td>
+      <td><span class="pill" style="color:${statusColor(c.risk_level)}">${c.risk_level}</span></td><td class="num">${c.resilience_score.toFixed(1)}</td>
+      <td class="num">${c.value_at_risk_aed > 0 ? formatAed(c.value_at_risk_aed) : "—"}</td></tr>`).join("")}
+  </tbody></table>`;
+}
+
+const TONE = {
+  "event.received": "ev-info", "disruption.detected": "ev-alert", "disruption.no_exposure": "ev-muted",
+  "impact.calculation.started": "ev-work", "impact.calculation.completed": "ev-work", "resilience.recalculated": "ev-good",
+  "signals.reset": "ev-muted", "pipeline.failed": "ev-alert",
+};
+
+function renderEvents() {
+  const list = [...app.events].reverse();
+  $("events").innerHTML = list.map((e) => `<li class="${TONE[e.event_type] ?? "ev-info"}${e.id > app.lastSeen ? " fresh" : ""}"><div class="event-row"><time datetime="${e.occurred_at}">${formatGst(e.occurred_at)}</time><code class="event-type">${e.event_type}</code><span class="event-actor">${esc(e.actor)}</span></div><p class="event-msg">${esc(e.message)}</p></li>`).join("");
+  app.lastSeen = app.seq;
+}
+
+function renderControls() {
+  const st = app.state;
+  $("trigger-btn").disabled = app.busy !== null;
+  $("trigger-btn").textContent = app.busy === "trigger" ? "Processing event…" : "Trigger Demo Disruption";
+  $("reset-btn").hidden = !(st && st.kpis.active_signals > 0) && app.busy !== "reset";
+  $("reset-btn").disabled = app.busy !== null;
+  $("reset-btn").textContent = app.busy === "reset" ? "Resetting…" : "Reset to baseline";
+  const status = $("stream-status");
+  status.textContent = app.busy ? "processing" : "live";
+  status.classList.toggle("working", Boolean(app.busy));
+}
+
+function renderAll() {
+  const st = app.state;
+  renderControls();
+  if (!st) return;
+  $("calc-time").textContent = `recalculated ${formatGst(st.computed_at)}`;
+  const top = st.threats[0];
+  $("banner").innerHTML = top
+    ? `<div class="banner banner-threat" role="alert" style="border-color:${statusColor(top.risk_level)}"><span class="banner-dot" style="background:${statusColor(top.risk_level)}"></span><strong>${top.risk_level} THREAT</strong><span>${esc(top.headline)}</span>${st.threats.length > 1 ? `<span class="banner-more">+${st.threats.length - 1} more</span>` : ""}</div>`
+    : `<div class="banner banner-info"><strong>Baseline.</strong> No active disruption signals. Press <strong>Trigger Demo Disruption</strong> to send an 11-day Bab el-Mandeb closure through the agent pipeline.</div>`;
+  $("kpis").innerHTML = renderKpis(st);
+  $("map-meta").textContent = `${DATA.ports.length} ports · ${DATA.warehouses.length} warehouses · ${DATA.hospitals.length} hospitals · ${DATA.zones.length} zones`;
+  $("map").innerHTML = renderMap(st.network_status);
+  $("threats").innerHTML = renderThreats(st);
+  $("chart").innerHTML = renderChart(st);
+  $("table").innerHTML = renderTable(st);
+}
+
+// --- orchestration: run the agent pipeline, streaming each audit event as it is emitted ---
+async function runPipeline({ raw = null, trigger, paced }) {
+  const run = createRun({
+    raw, activeSignals: app.activeSignals, trigger,
+    onEvent: (e) => { e.id = ++app.seq; app.events.push(e); renderEvents(); },
+  });
+  for (const agent of AGENTS) {
+    const before = run.events.length;
+    try {
+      agent.run(run.ctx, run.state);
+    } catch (err) {
+      run.ctx.emit(agent.name, "pipeline.failed", `${agent.name} failed: ${err.message}`, { error: err.name });
+      throw err;
+    }
+    if (paced && run.events.length > before) await pause(STEP_MS);
+  }
+  return run.state;
+}
+
+async function triggerDisruption() {
+  if (app.busy) return;
+  app.busy = "trigger"; renderControls();
+  try {
+    const st = await runPipeline({ raw: { ...DATA.demo_event, id: makeId() }, trigger: "signal", paced: true });
+    app.activeSignals.push(st.newSignal);
+    app.state = st.result;
+  } finally {
+    app.busy = null; renderAll();
+  }
+}
+
+async function resetDemo() {
+  if (app.busy) return;
+  app.busy = "reset"; renderControls();
+  try {
+    const resolved = app.activeSignals.length;
+    const ctx = createRun({ onEvent: (e) => { e.id = ++app.seq; app.events.push(e); renderEvents(); } }).ctx;
+    ctx.emit("operator", "signals.reset", `Demo reset: ${resolved} active signals resolved`, { resolved });
+    app.activeSignals = [];
+    await pause(STEP_MS);
+    app.state = (await runPipeline({ trigger: "reset", paced: true })).result;
+  } finally {
+    app.busy = null; renderAll();
+  }
+}
+
+function tick() { $("clock").textContent = `${formatGst(new Date())} GST`; }
+
+(async function boot() {
+  tick(); setInterval(tick, 1000);
+  $("trigger-btn").addEventListener("click", triggerDisruption);
+  $("reset-btn").addEventListener("click", resetDemo);
+  app.state = (await runPipeline({ trigger: "seed", paced: false })).result;
+  renderAll();
+})();
+</script>
+
+</body>
+</html>

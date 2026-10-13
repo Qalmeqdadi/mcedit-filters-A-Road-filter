@@ -26,7 +26,8 @@ hayat/
 ├── apps/
 │   ├── api/            hayat_api         FastAPI + SQLAlchemy (PostgreSQL), seed scripts,
 │   │                                     audit log and Server-Sent Events stream.
-│   └── web/            Next.js + TypeScript: the GLOBAL PULSE screen.
+│   ├── web/            Next.js + TypeScript: the GLOBAL PULSE screen.
+│   └── standalone/     the same screen as one self-contained HTML file (built from the dataset)
 ├── docker-compose.yml  PostgreSQL 16
 ├── pyproject.toml      uv workspace (the three Python packages)
 └── Makefile            shortcuts for the commands below
@@ -37,6 +38,20 @@ over HTTP and SSE only.
 
 > The repository root also contains an older, unrelated Next.js procurement demo. HAYAT is
 > self-contained in `hayat/` and does not depend on it.
+
+## No install: open one HTML file
+
+`apps/standalone/hayat-global-pulse.html` is the whole GLOBAL PULSE screen in one file.
+Download it and double-click it: it opens in any modern browser with no server, no
+database and nothing to install. It embeds the synthetic dataset and runs the same
+deterministic engine and agent pipeline, ported to JavaScript. Trigger, the audit stream
+and reset all work in the page. A test (`apps/api/tests/test_standalone_parity.py`) checks
+that its numbers and audit messages are identical to the Python engine's.
+
+Regenerate it after changing the dataset or the template:
+`uv run python apps/standalone/build.py`.
+
+The rest of this README is for running the full stack (API, PostgreSQL, Next.js).
 
 ## Prerequisites
 
