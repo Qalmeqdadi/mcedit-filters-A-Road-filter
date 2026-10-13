@@ -1,0 +1,16 @@
+[project]
+name = "hayat-agents"
+version = "0.1.0"
+description = "HAYAT agent contracts and the phase-1 resilience pipeline."
+requires-python = ">=3.12"
+dependencies = ["hayat-simulation"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hayat_agents"]
+
+[tool.uv.sources]
+hayat-simulation = { workspace = true }

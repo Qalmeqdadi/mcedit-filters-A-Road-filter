@@ -1,0 +1,49 @@
+[project]
+name = "hayat-workspace"
+version = "0.1.0"
+description = "HAYAT | حياة — Autonomous Resilience Intelligence (workspace root)"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "hayat-simulation",
+    "hayat-agents",
+    "hayat-api",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "httpx>=0.28",
+    "ruff>=0.8",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["packages/simulation", "packages/agents", "apps/api"]
+
+[tool.uv.sources]
+hayat-simulation = { workspace = true }
+hayat-agents = { workspace = true }
+hayat-api = { workspace = true }
+
+[tool.pytest.ini_options]
+testpaths = ["packages/simulation/tests", "packages/agents/tests", "apps/api/tests"]
+addopts = "-q --import-mode=importlib"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["hayat_simulation", "hayat_agents", "hayat_api"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Header"]
+
+[tool.ruff.format]
+# The synthetic dataset is kept as aligned tables for readability.
+exclude = ["apps/api/src/hayat_api/seed/synthetic_uae.py"]

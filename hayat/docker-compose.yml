@@ -1,0 +1,21 @@
+# Local PostgreSQL for HAYAT. Credentials match the API default HAYAT_DATABASE_URL.
+services:
+  db:
+    image: postgres:16
+    container_name: hayat-db
+    environment:
+      POSTGRES_USER: hayat
+      POSTGRES_PASSWORD: hayat
+      POSTGRES_DB: hayat
+    ports:
+      - "5432:5432"
+    volumes:
+      - hayat-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hayat -d hayat"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  hayat-pgdata:

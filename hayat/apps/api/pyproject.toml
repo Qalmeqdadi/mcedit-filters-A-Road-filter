@@ -1,0 +1,28 @@
+[project]
+name = "hayat-api"
+version = "0.1.0"
+description = "HAYAT API: FastAPI service, persistence, seed data and audit event stream."
+requires-python = ">=3.12"
+dependencies = [
+    "hayat-simulation",
+    "hayat-agents",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "sqlalchemy>=2.0.36",
+    "psycopg[binary]>=3.2",
+    "pydantic-settings>=2.6",
+]
+
+[project.scripts]
+hayat-seed = "hayat_api.seed.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hayat_api"]
+
+[tool.uv.sources]
+hayat-simulation = { workspace = true }
+hayat-agents = { workspace = true }
