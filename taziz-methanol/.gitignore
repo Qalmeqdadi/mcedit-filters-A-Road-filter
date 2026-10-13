@@ -8,3 +8,4 @@ next-env.d.ts
 hosted/dist
 video/frames
 video/tmp
+hosted/dist

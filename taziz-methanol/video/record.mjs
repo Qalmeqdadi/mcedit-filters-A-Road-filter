@@ -2,15 +2,27 @@
 // Usage: start the app (npm run build && npm start), then: node video/record.mjs [url]
 import { chromium } from "playwright-core";
 import { execSync } from "node:child_process";
-import { readdirSync, renameSync, mkdirSync } from "node:fs";
+import { mkdirSync, writeFileSync, rmSync } from "node:fs";
 import path from "node:path";
 
 const url = process.argv[2] ?? "http://localhost:3000";
 const out = path.resolve(import.meta.dirname, "tmp");
 mkdirSync(out, { recursive: true });
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
-const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1, recordVideo: { dir: out, size: { width: 1920, height: 1080 } } });
+const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
 const page = await ctx.newPage();
+// Capture frames via the DevTools screencast (crisp, no Playwright ffmpeg dependency)
+rmSync(out, { recursive: true, force: true });
+mkdirSync(out, { recursive: true });
+const frames = [];
+const cdp = await ctx.newCDPSession(page);
+cdp.on("Page.screencastFrame", async (f) => {
+  const file = path.join(out, `f${String(frames.length).padStart(6, "0")}.jpg`);
+  writeFileSync(file, Buffer.from(f.data, "base64"));
+  frames.push({ file, t: f.metadata.timestamp });
+  cdp.send("Page.screencastFrameAck", { sessionId: f.sessionId }).catch(() => {});
+});
+await cdp.send("Page.startScreencast", { format: "jpeg", quality: 88, maxWidth: 1920, maxHeight: 1080, everyNthFrame: 1 });
 const wait = (ms) => page.waitForTimeout(ms);
 
 const caption = async (title, sub = "") =>
@@ -97,9 +109,12 @@ await page.getByRole("button", { name: "Executive Value Summary" }).click(); awa
 
 await card(`<div>${brand}<div style="margin-top:40px;font-size:46px;font-weight:800">AI does not replace the operator or the DCS.</div><div style="margin-top:14px;font-size:24px;color:#93A9CC">It adds an intelligent layer above plant systems that</div><div style="margin-top:20px;font-size:26px;font-weight:700;letter-spacing:4px;color:#2FD6F5">OBSERVES · UNDERSTANDS · INVESTIGATES · COORDINATES · RECOMMENDS · ESCALATES · LEARNS</div><div style="margin-top:22px;font-size:20px">while humans remain accountable for operational decisions.</div><div style="margin-top:30px;font-size:13px;color:#F4B740;letter-spacing:2px">ILLUSTRATIVE DEMO · SYNTHETIC DATA · SUBJECT TO VALIDATION WITH TA’ZIZ DATA</div></div>`, 6500);
 
-const vpath = await page.video().path();
+await cdp.send("Page.stopScreencast").catch(() => {});
+const endT = Date.now() / 1000;
 await ctx.close();
 await browser.close();
+const list = frames.map((f, i) => `file '${f.file}'\nduration ${Math.max(0.01, ((frames[i + 1]?.t ?? endT) - f.t)).toFixed(3)}`).join("\n") + `\nfile '${frames[frames.length - 1].file}'\n`;
+writeFileSync(path.join(out, "list.txt"), list);
 const mp4 = path.resolve(import.meta.dirname, "taziz-agentic-methanol-demo.mp4");
-execSync(`ffmpeg -y -loglevel error -i "${vpath}" -c:v libx264 -preset medium -crf 22 -pix_fmt yuv420p -movflags +faststart "${mp4}"`);
+execSync(`ffmpeg -y -loglevel error -f concat -safe 0 -i "${path.join(out, "list.txt")}" -vf "fps=25,scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2" -c:v libx264 -preset veryfast -crf 21 -pix_fmt yuv420p -movflags +faststart "${mp4}"`);
 console.log("video:", mp4);
