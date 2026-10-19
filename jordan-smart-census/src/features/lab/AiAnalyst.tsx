@@ -12,6 +12,7 @@ import { ACTION_SECTORS, SECTOR_LABEL, type NationalPlan, type PlanSnapshot } fr
 import type { World } from "@/simulation/generate";
 import type { GovId } from "@/types/census";
 import { usePlans, useLab } from "./shared";
+import { entity, HEADLINE, indicator, INDICATORS, AS_OF } from "@/data/registry";
 
 type SampleFn = ((input: string, opts?: { onText?: (e: { text: string }) => void; signal?: AbortSignal; modelTier?: string }) => Promise<{ text: string; truncated: boolean }>);
 
@@ -35,8 +36,14 @@ function buildContext(world: World, plans: NationalPlan, s: PlanSnapshot, govId:
       topActions: p.actions.slice(0, 8).map((a) => ({ title: a.title.en, sector: a.sector, severity: a.severity, horizon: a.horizon, costJODm: r2(a.costM), lead: a.lead.en, target: a.kpi.en })),
     };
   };
+  const official = {
+    note: `REAL DATA from the National Indicator Registry (snapshot ${AS_OF}). Each value has a status: OFFICIAL (machine-read official file), REPORTED (official figure transcribed), DERIVED (computed from official figures), INTERNATIONAL (World Bank/ILO/UNHCR), MISSING (not available — requested from the accountable entity).`,
+    national: HEADLINE.map((id) => { const i = indicator(id); return { indicator: i.name.en, value: i.value, unit: i.unit.en, scale: i.scale ?? 1, period: i.period, status: i.status, accountable: entity(i.owner).name.en, source: i.source.name }; }),
+    governorates: INDICATORS.filter((i) => i.level === "MICRO").map((i) => ({ indicator: i.name.en, unit: i.unit.en, period: i.period, status: i.status, accountable: entity(i.owner).name.en, kingdom: i.value, byGovernorate: i.byGov ? Object.fromEntries(Object.entries(i.byGov).map(([g, v]) => [world.gov[g as GovId].name.en, v])) : "MISSING — requested" })),
+  };
   return {
-    note: "All values are SIMULATED planning-model outputs of the UFUQ prototype (synthetic census on real boundaries; national GDP and electricity calibrated to open data). Not official statistics.",
+    officialData: official,
+    note: "Values outside officialData are SIMULATED planning-model outputs of the UFUQ prototype (synthetic census on real boundaries; national GDP and electricity calibrated to open data). Not official statistics.",
     scenario, baseYear: s.baseYear, horizon: s.year,
     national: {
       population: { [s.baseYear]: r0(s.sa0.national.pop), [s.year]: r0(s.saH.national.pop) },
@@ -52,7 +59,7 @@ function buildContext(world: World, plans: NationalPlan, s: PlanSnapshot, govId:
   };
 }
 
-const PAGES = "Pages: Population Projections, Scenario Futures, Robustness Test, Area Action Plans, Facility Siting, Housing Need, Water Security, Mobility, Climate Risk, Jobs, Ageing, Regional Economy, Land & Terrain, Energy & Utilities, Municipal Finance, Equity & SDGs, Delivery Tracker, Model Validation.";
+const PAGES = "Pages: Macro–Micro Dashboard, Governorate Dossiers, Indicator Registry, Entity Accountability, Data Requests, Governance Charter, Population Projections, Scenario Futures, Robustness Test, Area Action Plans, Facility Siting, Housing Need, Water Security, Mobility, Climate Risk, Jobs, Ageing, Regional Economy, Land & Terrain, Energy & Utilities, Municipal Finance, Equity & SDGs, Delivery Tracker, Model Validation.";
 
 export function AiAnalyst() {
   const engine = useEngine();
@@ -78,7 +85,7 @@ export function AiAnalyst() {
     ctrl.current = ac;
     setAnswer({ q: question, text: "", done: false });
     const ctx = buildContext(engine.world, plans, snap, govId, scenarioName);
-    const prompt = `You are UFUQ's planning analyst for Jordan. Answer the question using ONLY the JSON data below, which comes from the platform's simulation models. Rules: answer in ${ar ? "Arabic" : "English"}; be concise (under 180 words) with concrete numbers; say clearly that figures are simulated planning estimates, not official statistics; if the data does not contain the answer, say so and name the UFUQ page that would help. Never invent figures. End with one line "Pages:" naming the UFUQ pages that show the evidence. ${PAGES}\n\nDATA:\n${JSON.stringify(ctx)}\n\nQUESTION: ${question}`;
+    const prompt = `You are UFUQ's planning analyst for Jordan. Answer the question using ONLY the JSON data below: "officialData" holds real figures with their status and source; everything else comes from the platform's simulation models. Rules: answer in ${ar ? "Arabic" : "English"}; be concise (under 180 words) with concrete numbers; always say which figures are official/real (give status and accountable entity) and which are simulated planning estimates; for current facts prefer officialData; if the data does not contain the answer, say so and name the UFUQ page that would help. Never invent figures. End with one line "Pages:" naming the UFUQ pages that show the evidence. ${PAGES}\n\nDATA:\n${JSON.stringify(ctx)}\n\nQUESTION: ${question}`;
     try {
       const res = await sample(prompt, { signal: ac.signal, onText: (e) => setAnswer({ q: question, text: e.text, done: false }) });
       setAnswer({ q: question, text: res.text, done: true });
@@ -88,7 +95,7 @@ export function AiAnalyst() {
       setAnswer((a) => ({ q: question, text: a?.text ?? "", done: true, error: msg }));
     }
   };
-  const examples = [L("What are the three biggest risks for Mafraq by 2040, and what should be done first?", "ما أكبر ثلاثة مخاطر في المفرق بحلول 2040، وما الذي يجب فعله أولاً؟"), L("Which governorates are least able to fund their plans?", "أي المحافظات الأقل قدرة على تمويل خططها؟"), L("Summarise Jordan's SDG position in five bullet points.", "لخّص وضع الأردن في أهداف التنمية المستدامة في خمس نقاط.")];
+  const examples = [L("Where is unemployment highest today, and which data is still missing for that governorate?", "أين البطالة الأعلى اليوم، وما البيانات التي ما زالت غير متاحة لتلك المحافظة؟"), L("What are the three biggest risks for Mafraq by 2040, and what should be done first?", "ما أكبر ثلاثة مخاطر في المفرق بحلول 2040، وما الذي يجب فعله أولاً؟"), L("Which governorates are least able to fund their plans?", "أي المحافظات الأقل قدرة على تمويل خططها؟"), L("Summarise Jordan's SDG position in five bullet points.", "لخّص وضع الأردن في أهداف التنمية المستدامة في خمس نقاط.")];
   return (
     <Panel className="mb-3" title={<span className="inline-flex items-center gap-1.5"><Sparkles size={15} className="text-navy-600" />{L("AI analyst", "المحلل الذكي")}</span>} subtitle={L("Generative AI that reads only UFUQ's model outputs for the current scenario and horizon. It explains and summarises — it never changes data. Check important numbers on the pages it cites.", "ذكاء اصطناعي توليدي يقرأ مخرجات نماذج أفق فقط للسيناريو والأفق الحاليين. يشرح ويلخص — ولا يغيّر البيانات أبداً. تحقق من الأرقام المهمة في الصفحات التي يذكرها.")} nature="SIMULATED">
       <div data-testid="ai-analyst">

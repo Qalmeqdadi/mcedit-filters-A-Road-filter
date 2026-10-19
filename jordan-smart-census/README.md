@@ -1,18 +1,32 @@
 # UFUQ — أفق
 
-**Jordan National Foresight & Planning Platform** · المنصة الوطنية للاستشراف والتخطيط
+**Jordan National Macro–Micro Dashboard & Foresight** · لوحة الأردن الكلية والجزئية والاستشراف
 
-A working, bilingual (English / Arabic, LTR / RTL) prototype of a national foresight and urban-planning platform for Jordan, built on a census-grade data foundation. It is organised in five pillars:
+A bilingual (English / Arabic, LTR / RTL) **concept proposal** for a national Macro–Micro Dashboard: one view of the Kingdom (macro) and of each of the twelve governorates (micro), built on **real, cited data**. Every figure is tied to the entity accountable for supplying it, its freshness against proposed service levels, and its source. Gaps become formal data requests. A foresight and planning layer (simulated models) sits on top of the official baseline.
 
-1. **Data foundation** — census planning, GIS & enumeration areas, field operations, quality, anomaly detection, post-enumeration survey, inter-censal nowcast, provenance.
-2. **Jordan today** — population, housing, labour, education, health, migration, infrastructure.
-3. **Futures** — probabilistic projections, scenarios, urban growth, housing need, water, mobility, climate, jobs, ageing.
-4. **Plan & decide** — area action plans, facility siting, capital investment planner, shock response, decision intelligence, Ask the Data.
-5. **Deliver & monitor** — delivery tracking and reports.
+The proposed governance places the **Royal Hashemite Court as owner and convenor**, the **Department of Statistics as statistical authority and validator**, and **MoDEE's Government data exchange as the delivery channel**. This is a proposal for discussion: UFUQ is **not an official product of the Royal Hashemite Court or of any government entity**, uses no emblem, and makes no claim about any entity beyond what was found in open channels.
 
-UFUQ is a prototype and **not an official government product**.
+Navigation:
 
-> **Data integrity rule.** Nothing in this prototype is presented as an official Jordanian statistic. Every KPI, chart, layer and table carries one of four badges — **Official**, **Reference**, **Simulated**, **Synthetic operational** — and an ⓘ provenance button. No official DoS file is bundled; the architecture lets one be imported (see *Replacing simulated data*).
+1. **National dashboard (real data)** — Macro–Micro Dashboard (home), Governorate Dossiers, Indicator Registry.
+2. **Data accountability** — Entity Accountability (scorecards), Data Requests (workflow + Arabic/English request letters in Word), Governance Charter, Data Connectors, Model Validation.
+3. **Jordan today (model)** · 4. **Futures** (Foresight Hub, projections, scenarios, sector models) · 5. **Plan & decide** · 6. **Deliver & monitor**.
+7. **Census simulation sandbox** — census operations, quality, PES, nowcast (simulated training environment).
+
+### Real data in this build (snapshot 2026-10-19)
+
+| Data | Source | Status |
+|---|---|---|
+| 77 national series (economy, public finance, labour, population, social, infrastructure) | World Bank WDI via the open mirror github.com/datasets/world-development-indicators (`npm run data:national`) | International |
+| Employed / unemployed Jordanians 15+ by governorate, 2017–2025 | DoS PxWeb tables EMPALL / EMPALL1 (jorinfo.dos.gov.jo), checksummed mirror (`npm run data:governorates`) | Official (rates: Derived) |
+| Unemployment rate by governorate, all residents and Jordanians, 2025-Q3 → 2026-Q2 | DoS quarterly Labour Force Survey releases (PDF charts read by position and checked against each release's text) | Official |
+| Population by governorate, end-2025 (national 11,937,000) | DoS population estimates (PopulationEstimates.pdf); Aqaba as residual | Reported / Derived |
+| Registered refugees (352,553 at 30 Sep 2026; governorate split Feb 2026) | UNHCR Operational Data Portal; Jordan Times | International |
+| Governorate poverty, schools, beds, water, electricity, municipal revenue, permits, insured workers, cash aid, road deaths, births, EMV projects | Not found in open channels | Missing → 25 data requests |
+
+Statuses: **Official** (machine-read official file/API), **Reported** (official figure transcribed), **Derived** (computed by UFUQ from official figures), **International** (World Bank / ILO / UNHCR), **Missing** (requested). Freshness and entity scores use **proposed** delivery windows and are indicative only.
+
+> **Data integrity rule (models).** Outside the dashboard pages, nothing produced by the planning models is presented as an official Jordanian statistic. Every KPI, chart, layer and table carries one of four badges — **Official**, **Reference**, **Simulated**, **Synthetic operational** — and an ⓘ provenance button. The census frame is sized to DoS end-2025 governorate estimates; more official files can be imported (see *Replacing simulated data*).
 
 ---
 

@@ -11,6 +11,7 @@ import { fmtInd } from "@/features/lab/ActionPlans";
 import type { DeliveryData } from "@/delivery/model";
 import { healthOf, stageOf, STAGE_LABEL, HEALTH_LABEL } from "@/delivery/model";
 import { fmtCompact, fmtInt } from "./format";
+import { AS_OF, entity, fmtValue, HEADLINE, indicator, INDICATORS, STATUS_LABEL } from "@/data/registry";
 
 export async function buildProfileDocx(world: World, plans: NationalPlan, snap: PlanSnapshot, govId: GovId | null, ar: boolean, delivery: DeliveryData, scenarioName: string): Promise<Blob> {
   const t = (l: L) => (ar ? l.ar : l.en);
@@ -42,7 +43,12 @@ export async function buildProfileDocx(world: World, plans: NationalPlan, snap: 
   const children: (Paragraph | Table)[] = [
     new Paragraph({ children: [run(`UFUQ · ${T("Profile", "ملف")} — ${name}`, { bold: true, size: 40, color: "16325C" })], heading: HeadingLevel.TITLE, bidirectional: ar }),
     p(`${T("Scenario", "السيناريو")}: ${scenarioName} · ${T("Horizon", "الأفق")} ${Y} · ${T("Prepared", "أُعدّ")} ${new Date().toISOString().slice(0, 10)}`, { color: "5F6876" }),
-    p(T("Prototype built from simulated census data and rule-based models. UFUQ is not an official government product; figures are not official statistics.", "نموذج أولي مبني على بيانات تعداد محاكاة ونماذج قائمة على القواعد. أفق ليس منتجاً حكومياً رسمياً؛ والأرقام ليست إحصاءات رسمية."), { color: "9A5B00", size: 18 }),
+    p(T("Concept proposal. The first table holds official, reported and derived figures with their status; all other sections are simulated planning-model outputs. UFUQ is not an official product of the Royal Hashemite Court or any government entity.", "مقترح مفاهيمي. يضم الجدول الأول أرقاماً رسمية ومنشورة ومشتقة مع حالتها؛ وبقية الأقسام مخرجات نماذج تخطيط محاكاة. أفق ليست منتجاً رسمياً للديوان الملكي الهاشمي أو لأي جهة حكومية."), { color: "9A5B00", size: 18 }),
+    h(T(`Official and reported data (snapshot ${AS_OF})`, `البيانات الرسمية والمنشورة (لقطة ${AS_OF})`)),
+    govId
+      ? table([T("Indicator", "المؤشر"), name, T("Jordan", "الأردن"), T("Status", "الحالة"), T("Period", "الفترة"), T("Accountable", "المسؤول")], INDICATORS.filter((i) => i.level === "MICRO").map((i) => { const st = i.govStatus?.[govId] ?? i.status; return [t(i.name), st === "MISSING" ? T("Requested", "مطلوب") : `${fmtValue(i, i.byGov?.[govId])} ${t(i.unit)}`, fmtValue(i, i.value), t(STATUS_LABEL[st]), i.period ?? "—", t(entity(i.owner).short)]; }))
+      : table([T("Indicator", "المؤشر"), T("Value", "القيمة"), T("Status", "الحالة"), T("Period", "الفترة"), T("Accountable", "المسؤول")], HEADLINE.map((id) => { const i = indicator(id); return [t(i.name), `${fmtValue(i, i.value)} ${t(i.unit)}`, t(STATUS_LABEL[i.status]), i.period ?? "—", t(entity(i.owner).short)]; })),
+    p(T("Model outputs (simulated)", "مخرجات النماذج (محاكاة)"), { bold: true, color: "9A5B00", size: 18 }),
     h(T(`1. Today (${B}) and ${Y}`, `1. اليوم (${B}) و${Y}`)),
     table([T("Indicator", "المؤشر"), `${T("Today", "اليوم")} ${B}`, String(Y), T("Change", "التغير")], kRows),
   ];

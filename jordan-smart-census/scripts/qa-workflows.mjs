@@ -35,8 +35,59 @@ const nav = async (href) => {
 const headerBtn = (label) => page.locator("header").first().locator(`button:has-text("${label}")`).first();
 
 await page.goto(base + "/", { waitUntil: "networkidle", timeout: 120000 });
-await page.waitForSelector("[data-testid=pillar]", { timeout: 60000 });
-check("UFUQ home shows five pillars", (await page.locator("[data-testid=pillar]").count()) === 5);
+await page.waitForSelector("[data-testid=headline-tile]", { timeout: 60000 });
+await step("macro-micro dashboard", async () => {
+  check("dashboard shows 12 headline indicators", (await page.locator("[data-testid=headline-tile]").count()) === 12);
+  check("concept-proposal disclaimer shown", (await page.textContent("[data-testid=concept-banner]")).includes("not an official product"));
+  check("governorate table has 12 governorates + Kingdom", (await page.locator("[data-testid=gov-table] tbody tr").count()) === 13);
+  const req = await page.locator("[data-testid=gov-table] td:has-text('Requested')").count();
+  check("missing governorate data shown as requests", req >= 40, `${req} cells`);
+  await page.selectOption("[data-testid=micro-layer]", "GOV_POP");
+  await page.waitForTimeout(600);
+  check("map layer switches to population", (await page.textContent("main")).includes("end-2025"));
+  await page.locator("[data-testid=source-pop]").first().click();
+  await page.waitForTimeout(300);
+  check("source popover shows accountable entity", (await page.textContent("body")).includes("Accountable entity"));
+  await page.keyboard.press("Escape");
+  await page.screenshot({ path: `${shots}/wf-dashboard.png`, fullPage: true });
+});
+await step("dossier", async () => {
+  await page.locator("[data-testid=gov-table] tbody tr").nth(4).locator("a").click();
+  await page.waitForURL((u) => u.pathname === "/governorates");
+  await page.waitForSelector("[data-testid=dossier-tile]");
+  check("dossier opens for the clicked governorate (Mafraq)", (await page.textContent("main h1 ~ *, main")).includes("Mafraq"));
+  check("dossier lists every governorate indicator", (await page.locator("[data-testid=dossier-table] tbody tr").count()) >= 25);
+  const [dl] = await Promise.all([page.waitForEvent("download", { timeout: 20000 }), page.click("[data-testid=dossier-docx]")]);
+  check("governorate dossier exports as Word", dl.suggestedFilename() === "dossier-MAF.docx", dl.suggestedFilename());
+});
+await step("registry", async () => {
+  await page.goto(base + "/indicators", { waitUntil: "networkidle" });
+  const all = await page.locator("[data-testid=registry-table] tbody tr").count();
+  await page.fill("[data-testid=registry-search]", "unemployment");
+  await page.waitForTimeout(300);
+  const some = await page.locator("[data-testid=registry-table] tbody tr").count();
+  check("registry lists all indicators and filters by search", all >= 100 && some > 3 && some < 20, `${all} → ${some}`);
+});
+await step("accountability", async () => {
+  await page.goto(base + "/accountability", { waitUntil: "networkidle" });
+  check("entity scorecards listed", (await page.locator("[data-testid=scorecard-row]").count()) >= 20);
+});
+await step("data requests", async () => {
+  await page.goto(base + "/data-requests", { waitUntil: "networkidle" });
+  check("data requests drafted", (await page.locator("[data-testid=request]").count()) >= 20);
+  await page.locator("[data-testid=request-advance]").first().click();
+  await page.waitForTimeout(300);
+  check("request advances to Sent", (await page.locator("[data-testid=request-stage]").first().textContent()).includes("Sent"));
+  const [dl] = await Promise.all([page.waitForEvent("download", { timeout: 20000 }), page.locator("[data-testid=letter-ar]").first().click()]);
+  check("Arabic request letter downloads (.docx)", dl.suggestedFilename().endsWith("-ar.docx"), dl.suggestedFilename());
+});
+await step("governance", async () => {
+  await page.goto(base + "/governance", { waitUntil: "networkidle" });
+  check("governance charter roles", (await page.locator("[data-testid=charter-roles] > div").count()) === 7);
+  await page.goto(base + "/foresight", { waitUntil: "networkidle" });
+  await page.waitForSelector("[data-testid=pillar]", { timeout: 60000 });
+  check("foresight hub shows five pillars", (await page.locator("[data-testid=pillar]").count()) === 5);
+});
 await page.goto(base + "/census", { waitUntil: "networkidle", timeout: 120000 });
 await page.waitForSelector("main h1", { timeout: 60000 });
 await page.waitForTimeout(1500);
@@ -216,6 +267,8 @@ await step("arabic", async () => {
 });
 
 await step("reset", async () => {
+  check("census controls hidden outside the sandbox", (await page.locator("header button[aria-label=Reset]").count()) === 0);
+  await nav("/census");
   await page.click("header button[aria-label=Reset]");
   await page.click("[role=dialog] button:has-text('Reset')");
   await page.waitForTimeout(4000);

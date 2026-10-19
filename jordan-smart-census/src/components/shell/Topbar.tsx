@@ -12,6 +12,8 @@ import { Modal } from "@/components/ui/dialog";
 import { fmtDateTime, fmtPct } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { DEFAULT_SEED } from "@/simulation/generate";
+import { usePathname } from "next/navigation";
+import { NAV } from "@/lib/nav";
 
 export function SimControls({ compact, mobile }: { compact?: boolean; mobile?: boolean }) {
   const engine = useEngine();
@@ -131,18 +133,20 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
   const setDemo = useApp((s) => s.setDemo);
   const demoActive = useApp((s) => s.demoActive);
   const openAlerts = engine.alerts.filter((a) => a.status === "OPEN" || a.status === "ESCALATED").length;
+  // census simulation controls belong to the sandbox pages (and the guided demo)
+  const path = usePathname();
+  const sandbox = demoActive || NAV.find((n) => n.href === path)?.group === "navFoundation";
   return (
     <header className="no-print sticky z-30" style={{ top: "env(safe-area-inset-top, 0px)" }}>
       <div className="flex h-[52px] items-center gap-1.5 bg-navy-850 px-2 text-white sm:gap-3 sm:px-3 lg:px-4">
         <button type="button" onClick={onMenu} className="rounded p-1.5 text-navy-100 hover:bg-white/10 lg:hidden" aria-label="Menu"><Menu size={18} /></button>
         <div className="hidden min-w-0 flex-col md:flex">
           <span className="truncate text-[12.5px] font-semibold leading-tight">{t("appSubtitle")}</span>
-          <span className="truncate text-[10.5px] leading-tight text-navy-300">{ar ? "Jordan National Foresight & Planning Platform" : "المنصة الوطنية للاستشراف والتخطيط"}</span>
+          <span className="truncate text-[10.5px] leading-tight text-navy-300">{ar ? "Jordan Macro–Micro Dashboard & Foresight" : "لوحة الأردن الكلية والجزئية والاستشراف"}</span>
         </div>
         <span className="truncate text-[13px] font-semibold md:hidden">{t("appName")}</span>
         <div className="flex-1" />
-        <div className="hidden md:block"><SimControls /></div>
-        <div className="mx-1 hidden h-6 w-px bg-white/15 md:block" />
+        {sandbox ? <><div className="hidden md:block"><SimControls /></div><div className="mx-1 hidden h-6 w-px bg-white/15 md:block" /></> : null}
         <Button data-demo="alerts" variant="darkGhost" size="icon" onClick={() => setAlertsOpen(true)} aria-label={t("alertsShort")} title={t("alerts")} className="relative">
           <Bell size={15} />
           {openAlerts > 0 ? <span className="absolute -top-0.5 -end-0.5 min-w-[17px] rounded-full bg-jordan px-1 text-[9.5px] font-bold leading-[17px] tabular">{openAlerts > 999 ? "999+" : openAlerts}</span> : null}
@@ -152,9 +156,9 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
         <SettingsPopover />
         <Button variant={demoActive ? "dark" : "accent"} size="sm" onClick={() => setDemo(!demoActive, 0)} aria-label={t("executiveDemo")}><PresentationIcon size={14} /><span className="hidden sm:inline">{t("executiveDemo")}</span></Button>
       </div>
-      <div className="flex items-center border-t border-white/10 bg-navy-900 px-2 py-1.5 text-white md:hidden">
+      {sandbox ? <div className="flex items-center border-t border-white/10 bg-navy-900 px-2 py-1.5 text-white md:hidden">
         <SimControls mobile />
-      </div>
+      </div> : null}
       <div className="flex h-9 items-center justify-between gap-3 border-b border-line bg-card/95 px-3 backdrop-blur lg:px-5">
         <div className="flex min-w-0 items-center gap-2">
           <span className="text-[10.5px] font-semibold uppercase tracking-wider text-ink-400">{t("scope")}</span>

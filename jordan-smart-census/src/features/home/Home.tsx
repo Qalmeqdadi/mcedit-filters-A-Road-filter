@@ -95,7 +95,7 @@ export function Home() {
       <h2 className="mb-2 mt-6 text-[13px] font-semibold uppercase tracking-[0.12em] text-navy-800">{L("Five pillars", "خمس ركائز")}</h2>
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
         {PILLARS.map((p, i) => {
-          const items = NAV.filter((n) => n.group === p.group);
+          const items = NAV.filter((n) => n.group === p.group && n.href !== "/foresight");
           return (
             <section key={p.group} className="flex min-w-0 flex-col rounded-lg border border-line bg-card" data-testid="pillar">
               <div className="h-1 rounded-t-lg" style={{ background: p.accent }} />

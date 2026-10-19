@@ -1,19 +1,18 @@
 import type { GovId, GovernorateProfile } from "@/types/census";
+import { GOV_POP_2025 } from "./registry";
 
 /**
  * REFERENCE DATA — governorate population baseline used as the census frame.
  *
- * These are rounded Department of Statistics (DoS) end-of-year 2024 population
- * estimates AS REPORTED IN SECONDARY SOURCES (web search results citing DoS).
- * They were NOT ingested from an official DoS file in this prototype and must be
- * verified against the DoS release before any operational use.
+ * Department of Statistics (DoS) estimated population by governorate at END-2025, as published in
+ * "Estimated population of the Kingdom by governorate" (PopulationEstimates.pdf, Statistical Yearbook):
+ * national total 11,937,000. Eleven governorates were transcribed from the DoS file (read via search
+ * extraction — verify against the file); Aqaba is the residual of the published national total.
+ * The same figures feed the National Macro–Micro Dashboard (src/data/registry.ts).
  *
- * `verification` documents exactly how each row was obtained.
- * Replace this table by importing an official DoS CSV (see Methodology →
- * "Replace reference data"); the import adapter validates it with Zod and the
- * whole platform regenerates from it.
+ * Replace this table by importing an official DoS CSV (see Methodology → "Replace reference data").
  */
-export type Verification = "SECONDARY_CONFIRMED" | "SECONDARY_SINGLE_SOURCE" | "DERIVED_RESIDUAL";
+export type Verification = "DOS_PUBLISHED" | "SECONDARY_CONFIRMED" | "SECONDARY_SINGLE_SOURCE" | "DERIVED_RESIDUAL";
 
 export interface GovReference {
   govId: GovId;
@@ -22,22 +21,11 @@ export interface GovReference {
   verification: Verification;
 }
 
-export const REFERENCE_YEAR = 2024;
+export const REFERENCE_YEAR = 2025;
 
-export const GOV_REFERENCE: GovReference[] = [
-  { govId: "AMM", population: 4_920_100, year: 2024, verification: "SECONDARY_SINGLE_SOURCE" },
-  { govId: "IRB", population: 2_139_200, year: 2024, verification: "DERIVED_RESIDUAL" },
-  { govId: "ZAR", population: 1_675_700, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "MAF", population: 675_200, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "BAL", population: 603_700, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "JER", population: 291_000, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "AJL", population: 216_200, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "MAD", population: 232_300, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "KAR", population: 388_700, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "TAF", population: 118_200, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "MAN", population: 194_500, year: 2024, verification: "SECONDARY_CONFIRMED" },
-  { govId: "AQB", population: 245_200, year: 2024, verification: "SECONDARY_CONFIRMED" },
-];
+export const GOV_REFERENCE: GovReference[] = (["AMM", "IRB", "ZAR", "MAF", "BAL", "JER", "AJL", "MAD", "KAR", "TAF", "MAN", "AQB"] as GovId[]).map((govId) => ({
+  govId, population: GOV_POP_2025[govId], year: 2025, verification: govId === "AQB" ? "DERIVED_RESIDUAL" : "DOS_PUBLISHED",
+}));
 
 /** Cross-check references (REFERENCE DATA). */
 export const NATIONAL_REFERENCES = {
@@ -50,6 +38,8 @@ export const NATIONAL_REFERENCES = {
     { year: 2024, value: 11_552_876 },
     { year: 2025, value: 11_520_684 },
   ],
+  /** DoS end-2025 estimate (World Population Day 2026 release) and end-2026 projection. */
+  dos: { end2025: 11_937_000, end2026: 12_144_000 },
   /** DoS General Population and Housing Census 2015 — headline totals as publicly reported. */
   census2015: { total: 9_531_712, amman: 4_007_526, irbid: 1_770_158 },
 };

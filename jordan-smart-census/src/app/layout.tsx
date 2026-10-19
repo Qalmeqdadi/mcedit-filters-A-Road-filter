@@ -13,7 +13,7 @@ import "./globals.css";
 import { AppShell } from "@/components/shell/AppShell";
 
 export const metadata: Metadata = {
-  title: "UFUQ — Jordan National Foresight & Planning Platform · أفق",
+  title: "UFUQ — Jordan Macro–Micro Dashboard · أفق",
   description: "Jordan national foresight and urban planning platform built on a census data foundation (prototype; operational data simulated).",
   icons: { icon: "/icon.svg" },
 };

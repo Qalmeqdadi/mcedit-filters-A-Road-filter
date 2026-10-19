@@ -1,11 +1,12 @@
 import {
+  LayoutDashboard, ListTree, FileWarning, ScrollText,
   Activity, BarChart3, BookOpenCheck, Brain, Briefcase, BriefcaseBusiness, Building2, Bus, ClipboardList, Coins, Compass, Droplets, FileDown, GaugeCircle,
   GraduationCap, HeartHandshake, HeartPulse, Home, HousePlus, Landmark, ListChecks, Map, MapPinned, MessageSquareText, Plane, Radar, ScanSearch, School, ShieldCheck,
   Siren, SlidersHorizontal, Sunrise, Grid2x2, Telescope, KanbanSquare, Presentation, Plug, Scale, Factory, Mountain, Zap, Banknote, Target, Tent, ThermometerSun, TrendingUp, Users, Wrench,
 } from "lucide-react";
 import type { DictKey } from "@/lib/i18n/dict";
 
-export type NavGroup = "navHome" | "navFoundation" | "navToday" | "navFutures" | "navDecide" | "navDeliver";
+export type NavGroup = "navHome" | "navNational" | "navAccount" | "navFoundation" | "navToday" | "navFutures" | "navDecide" | "navDeliver";
 
 export interface NavItem {
   href: string;
@@ -16,8 +17,17 @@ export interface NavItem {
 }
 
 const ITEMS: Omit<NavItem, "index">[] = [
-  { href: "/", key: "navUfuqHome", group: "navHome", icon: Sunrise },
-  // 1 · Data foundation
+  { href: "/", key: "navDashboard", group: "navHome", icon: LayoutDashboard },
+  // 1 · National dashboard (real data)
+  { href: "/governorates", key: "navGovernorates", group: "navNational", icon: MapPinned },
+  { href: "/indicators", key: "navIndicators", group: "navNational", icon: ListTree },
+  // 2 · Data accountability
+  { href: "/accountability", key: "navAccountability", group: "navAccount", icon: Landmark },
+  { href: "/data-requests", key: "navRequests", group: "navAccount", icon: FileWarning },
+  { href: "/governance", key: "navGovernance", group: "navAccount", icon: ScrollText },
+  { href: "/connectors", key: "navConnectors", group: "navAccount", icon: Plug },
+  { href: "/validation", key: "navValidation", group: "navAccount", icon: Target },
+  // 7 · Census simulation sandbox
   { href: "/census", key: "nav01", group: "navFoundation", icon: Landmark },
   { href: "/planning", key: "nav02", group: "navFoundation", icon: Compass },
   { href: "/gis", key: "nav03", group: "navFoundation", icon: Map },
@@ -30,9 +40,7 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/early-warning", key: "navEarly", group: "navFoundation", icon: Siren },
   { href: "/pes", key: "nav10", group: "navFoundation", icon: BookOpenCheck },
   { href: "/nowcast", key: "navNowcast", group: "navFoundation", icon: Radar },
-  { href: "/connectors", key: "navConnectors", group: "navFoundation", icon: Plug },
-  { href: "/validation", key: "navValidation", group: "navFoundation", icon: Target },
-  { href: "/methodology", key: "nav22", group: "navFoundation", icon: MapPinned },
+  { href: "/methodology", key: "nav22", group: "navFoundation", icon: BookOpenCheck },
   // 2 · Jordan today
   { href: "/population", key: "nav11", group: "navToday", icon: BarChart3 },
   { href: "/housing", key: "nav12", group: "navToday", icon: Home },
@@ -42,7 +50,8 @@ const ITEMS: Omit<NavItem, "index">[] = [
   { href: "/migration", key: "nav16", group: "navToday", icon: Plane },
   { href: "/equity", key: "navEquity", group: "navToday", icon: Scale },
   { href: "/infrastructure", key: "nav17", group: "navToday", icon: Wrench },
-  // 3 · Futures
+  // 4 · Futures
+  { href: "/foresight", key: "navForesight", group: "navFutures", icon: Sunrise },
   { href: "/projections", key: "nav18", group: "navFutures", icon: TrendingUp },
   { href: "/futures", key: "navScenarioFutures", group: "navFutures", icon: Grid2x2 },
   { href: "/signals", key: "navSignals", group: "navFutures", icon: Telescope },
@@ -73,7 +82,8 @@ const ITEMS: Omit<NavItem, "index">[] = [
 ];
 
 /** Module numbers: home is 00, then modules in menu order. */
-export const NAV: NavItem[] = ITEMS.map((n, i) => ({ ...n, index: String(i).padStart(2, "0") }));
+export const GROUP_ORDER: NavGroup[] = ["navHome", "navNational", "navAccount", "navToday", "navFutures", "navDecide", "navDeliver", "navFoundation"];
+export const NAV: NavItem[] = GROUP_ORDER.flatMap((g) => ITEMS.filter((n) => n.group === g)).map((n, i) => ({ ...n, index: String(i).padStart(2, "0") }));
 
 /** Module number shown in page headers, derived from the navigation order. */
 export const navIndex = (href: string) => NAV.find((n) => n.href === href)?.index ?? "";
