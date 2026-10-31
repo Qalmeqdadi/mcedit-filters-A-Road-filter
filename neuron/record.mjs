@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Render neuron-atlas.html to an MP4, one frame at a time.
+// Render an atlas page (neuron-atlas.html by default, or --src ../eye/eye-atlas.html) to an MP4, one frame at a time.
 //
 // The page runs in a deterministic "record" mode (fixed time step, seeded randomness),
 // so every frame is rendered completely no matter how slow the machine is. Frames go
@@ -74,16 +74,16 @@ if (OFFLINE) {
 }
 
 await page.goto(pathToFileURL(page_).href + '?record=1');
-await page.waitForFunction(() => window.__neuron, null, { timeout: 60000 });
-await page.evaluate(() => window.__neuron.ready);
-const duration = +(args.seconds || await page.evaluate(() => window.__neuron.duration));
+await page.waitForFunction(() => (window.__atlas||window.__neuron), null, { timeout: 60000 });
+await page.evaluate(() => (window.__atlas||window.__neuron).ready);
+const duration = +(args.seconds || await page.evaluate(() => (window.__atlas||window.__neuron).duration));
 const dt = 1 / FPS;
 
 if (STILLS) {
   let t = 0;
   for (const [i, at] of STILLS.entries()) {
-    while (t + dt <= at) { await page.evaluate(d => window.__neuron.advance(d), dt); t += dt; }
-    await page.evaluate(d => window.__neuron.step(d), dt); t += dt;
+    while (t + dt <= at) { await page.evaluate(d => (window.__atlas||window.__neuron).advance(d), dt); t += dt; }
+    await page.evaluate(d => (window.__atlas||window.__neuron).step(d), dt); t += dt;
     const file = OUT.replace(/\.mp4$/i, '') + `-still-${String(i + 1).padStart(2, '0')}.png`;
     await page.screenshot({ path: file });
     console.log(`still ${at}s -> ${file}`);
@@ -98,7 +98,7 @@ const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-fr
 const done = new Promise((ok, fail) => ff.on('close', c => c === 0 ? ok() : fail(new Error('ffmpeg exited with ' + c))));
 const t0 = Date.now();
 for (let f = 0; f < frames; f++) {
-  await page.evaluate(d => window.__neuron.step(d), dt);
+  await page.evaluate(d => (window.__atlas||window.__neuron).step(d), dt);
   const jpg = await page.screenshot({ type: 'jpeg', quality: 93 });
   if (!ff.stdin.write(jpg)) await new Promise(r => ff.stdin.once('drain', r));
   if (f % FPS === 0) {

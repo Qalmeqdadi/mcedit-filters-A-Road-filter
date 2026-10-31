@@ -1,0 +1,1130 @@
+<title>Eye Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Saira+Condensed:wght@500;600;700;800&family=Saira:wght@400;500&display=swap">
+<style>
+/* Layout: a full-bleed WebGL specimen stage framed by two glass instrument bands.
+   Top band = identity, eye profile, live pupil. Bottom band = optics, photoreceptors, ganglion spikes. */
+:root{
+  --ink:#03060f;
+  --glass:rgba(13,26,58,.60);
+  --glass-2:rgba(6,13,32,.52);
+  --line:rgba(136,166,255,.22);
+  --text:#e3e9ff;
+  --muted:#8d9cc4;
+  --amber:#ffb84d;
+  --lilac:#b7a1ff;
+  --cyan:#72e8ff;
+  --pink:#ff74c8;
+  --blue:#8cb1ff;
+  --display:"Saira Condensed","Arial Narrow","Roboto Condensed",sans-serif;
+  --body:"Saira","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(120% 95% at 50% 46%,transparent 52%,rgba(2,4,12,.6) 100%)}
+#fade{position:fixed;inset:0;background:var(--ink);opacity:0;pointer-events:none}
+#hud{position:fixed;inset:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;
+  padding-block:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  pointer-events:none}
+.band{display:grid;background:linear-gradient(180deg,var(--glass),var(--glass-2));border:1px solid var(--line);border-radius:12px;
+  backdrop-filter:blur(10px) saturate(1.25);-webkit-backdrop-filter:blur(10px) saturate(1.25);
+  box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)}
+.band>section{min-width:0;padding:11px 16px}
+.band>section+section{border-left:1px solid var(--line)}
+.top{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1.3fr)}
+.bottom{grid-template-columns:minmax(0,.95fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr)}
+.label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 7px}
+.label h2{margin:0;font:600 10px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--text);white-space:nowrap}
+.label span{font:500 9.5px/1.2 var(--mono);letter-spacing:.06em;color:var(--amber);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{margin-top:10px}
+.eyebrow{margin:0;font:600 10px/1.2 var(--mono);letter-spacing:.18em;color:var(--amber);text-transform:uppercase}
+.brand h1{margin:6px 0 3px;font:800 clamp(30px,3.4vw,48px)/.9 var(--display);letter-spacing:.03em;color:var(--amber);text-transform:uppercase;text-wrap:balance;text-shadow:0 0 22px rgba(255,184,77,.25)}
+.brand h1 em{font-style:normal;color:var(--lilac);text-shadow:0 0 22px rgba(183,161,255,.35)}
+.tag{margin:0;font:600 12px/1.3 var(--display);letter-spacing:.3em;text-transform:uppercase}
+.note{margin:5px 0 0;font:400 10px/1.3 var(--mono);color:var(--muted)}
+.profile dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;font-size:11.5px;line-height:1.45}
+.profile dt{color:var(--muted);white-space:nowrap}
+.profile dd{margin:0;text-align:right;font:500 11px/1.45 var(--mono);color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vmrow{display:flex;align-items:center;gap:14px}
+.vmrow output{font:700 42px/1 var(--display);color:var(--cyan);font-variant-numeric:tabular-nums;min-width:2.6ch;text-shadow:0 0 16px rgba(114,232,255,.45)}
+.vmrow output small{font-size:18px;color:var(--muted);text-shadow:none;margin-left:2px}
+.vmrow b{display:block;font:600 11.5px/1.35 var(--mono);color:var(--text)}
+.vmrow small.s{display:block;font:400 10px/1.35 var(--mono);color:var(--muted)}
+#pupilTrace{display:block;width:100%;height:44px;margin-top:5px}
+.legend{margin:3px 0 0;font:400 9.5px/1.3 var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.legend i{font-style:normal;color:var(--cyan)}.legend em{font-style:normal;color:var(--amber)}
+.stage{position:relative;min-height:0}
+.corner{position:absolute;width:22px;height:22px;border:0 solid rgba(205,218,255,.55)}
+.tl{top:0;left:0;border-top-width:1.5px;border-left-width:1.5px}
+.tr{top:0;right:0;border-top-width:1.5px;border-right-width:1.5px}
+.bl{bottom:0;left:0;border-bottom-width:1.5px;border-left-width:1.5px}
+.br{bottom:0;right:0;border-bottom-width:1.5px;border-right-width:1.5px}
+.stage-top{position:absolute;top:10px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;font:600 10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:7px 12px;white-space:nowrap;backdrop-filter:blur(6px)}
+.chip b{font-weight:600;color:var(--amber)}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber);animation:blink 1.6s ease-in-out infinite}
+.kind::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.zoom{font:700 26px/1 var(--display);letter-spacing:.02em;color:var(--text);font-variant-numeric:tabular-nums;text-shadow:0 0 14px rgba(0,0,0,.7)}
+.caption{position:absolute;left:12px;bottom:12px;width:min(350px,calc(100% - 24px));background:linear-gradient(180deg,var(--glass),var(--glass-2));
+  border:1px solid var(--line);border-radius:10px;padding:11px 15px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.caption h3{margin:0;font:700 23px/1 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--blue);text-wrap:balance}
+.caption p{margin:4px 0 0;font:500 12px/1.35 var(--body);color:var(--muted)}
+.caption ul{margin:7px 0 0;padding:0;list-style:none;display:grid;gap:1px;font:400 11px/1.45 var(--mono);color:var(--text)}
+.caption li::before{content:"› ";color:var(--amber)}
+.caption.swap{animation:swap .7s cubic-bezier(.2,.7,.2,1)}
+.scale{position:absolute;right:16px;bottom:16px;display:grid;justify-items:center;gap:5px;font:500 10.5px/1 var(--mono);color:var(--text);text-shadow:0 0 8px #000}
+.scale i{display:block;width:84px;height:6px;border:1.5px solid rgba(226,234,255,.85);border-top:0}
+.controls{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;pointer-events:auto}
+.controls button{font:600 11px/1 var(--mono);color:var(--text);background:var(--glass);border:1px solid var(--line);border-radius:999px;height:32px;min-width:36px;padding:0 12px;cursor:pointer;backdrop-filter:blur(6px)}
+.controls button:hover{border-color:rgba(255,184,77,.6);color:var(--amber)}
+.controls button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.hint{font:400 10px/1 var(--mono);color:var(--muted);margin-left:6px;white-space:nowrap;text-shadow:0 0 8px #000;transition:opacity .6s}
+#glerr{position:absolute;left:12px;right:12px;top:45%;margin:0;text-align:center;font:500 13px/1.5 var(--mono);color:var(--muted)}
+#locator{display:block;width:100%;height:92px;border-radius:6px;background:rgba(3,8,22,.55)}
+.foot{display:flex;justify-content:space-between;gap:8px;margin-top:5px;font:400 9.5px/1.3 var(--mono);color:var(--muted);white-space:nowrap}
+.foot span{overflow:hidden;text-overflow:ellipsis}
+.rows{display:grid;gap:5px}
+.row{display:grid;grid-template-columns:minmax(0,7.4em) minmax(24px,1fr) 5.4em;align-items:center;gap:10px;font:400 11px/1.25 var(--body);color:var(--muted)}
+.row>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .t{height:6px;border-radius:3px;background:rgba(140,170,255,.12);overflow:hidden}
+.row .t i{display:block;height:100%;width:0;border-radius:3px;background:var(--c);box-shadow:0 0 8px var(--c)}
+.row output{font:500 11px/1 var(--mono);text-align:right;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.regime{display:flex;gap:4px}
+.regime span{flex:1;text-align:center;font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:6px 2px;transition:all .3s}
+.regime span.on{color:var(--ink);background:var(--amber);border-color:var(--amber);box-shadow:0 0 12px rgba(255,184,77,.5)}
+.regime span.on.night{background:var(--lilac);border-color:var(--lilac);box-shadow:0 0 12px rgba(183,161,255,.5)}
+.regime span.on.twi{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 12px rgba(114,232,255,.45)}
+.mini{margin:6px 0 0;padding:0;list-style:none;font:400 9.5px/1.5 var(--mono);color:var(--muted)}
+.mini li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini b{font-weight:500;color:var(--text)}
+.focus{display:flex;align-items:center;gap:14px}
+.focus b{display:block;font:700 30px/1 var(--display);color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.focus span{display:block;font:600 9.5px/1.3 var(--mono);letter-spacing:.14em;color:var(--blue);text-transform:uppercase;margin-top:3px;white-space:nowrap}
+.focus ul{margin:0;padding:0;list-style:none;font:400 9.5px/1.5 var(--mono);color:var(--muted);min-width:0}
+.focus li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#raster{display:block;width:100%;height:50px}
+#log{margin:0;padding:0;list-style:none;font:400 9.5px/1.5 var(--mono);color:var(--muted);display:grid}
+#log li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#log li:first-child{color:var(--text)}
+#log time{color:var(--amber);display:inline-block;min-width:5.4ch}
+@keyframes blink{50%{opacity:.35}}
+@keyframes swap{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
+.rec .controls{display:none}
+/* Recording runs in software; live background blur would cost seconds per frame, so panels go a little more opaque instead. */
+.rec{--glass:rgba(11,22,52,.80);--glass-2:rgba(5,11,28,.74)}
+.rec .band,.rec .caption,.rec .chip{backdrop-filter:none;-webkit-backdrop-filter:none}
+@media (max-width:1100px){
+  .profile,.locator{display:none}
+  .top{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+  .bottom{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  #hud{gap:8px}
+  .band>section{padding:9px 12px}
+  .top{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+  .brand h1{font-size:26px}
+  .tag{letter-spacing:.16em;font-size:10px}
+  .note,.vmrow small.s,.legend,.sub,.rasterp,.stage-top .kind,.hint,.caption ul,.label span{display:none}
+  .vmrow{gap:10px}
+  .vmrow output{font-size:30px}
+  #pupilTrace{height:30px}
+  .bottom{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row{grid-template-columns:minmax(0,1fr) auto;gap:3px 8px}
+  .row .t{grid-column:1 / -1;grid-row:2}
+  .caption{right:12px;width:auto;bottom:54px;padding:9px 12px}
+  .caption h3{font-size:19px}
+  .zoom{font-size:20px}
+}
+@media (max-height:600px) and (min-width:721px){
+  .bottom,.profile{display:none}
+  .top{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .live::before{animation:none}
+  .caption.swap{animation:none}
+}
+</style>
+
+<canvas id="gl" aria-label="Interactive 3D model of the human eye"></canvas>
+<div class="vignette"></div>
+<div id="fade"></div>
+
+<div id="hud">
+  <header class="band top">
+    <section class="brand">
+      <p class="eyebrow">✳ Live model · pupil · retina</p>
+      <h1>Eye <em>Atlas</em></h1>
+      <p class="tag">Light · Focus · Signal</p>
+      <p class="note">false colour · schematic, not to scale</p>
+    </section>
+    <section class="profile">
+      <div class="label"><h2>Eye profile</h2></div>
+      <dl>
+        <dt>Axial length</dt><dd>≈ 24 mm</dd>
+        <dt>Optical power</dt><dd>≈ 60 D · cornea ≈ 43 D</dd>
+        <dt>Pupil</dt><dd>≈ 2 – 8 mm</dd>
+        <dt>Rods / cones</dt><dd>≈ 92 M / 4.6 M</dd>
+        <dt>Peak cone density</dt><dd>≈ 200 000 /mm²</dd>
+        <dt>Optic nerve</dt><dd>≈ 1.2 M axons</dd>
+      </dl>
+    </section>
+    <section class="vm">
+      <div class="label"><h2>Pupil diameter</h2><span>mm · live</span></div>
+      <div class="vmrow">
+        <output id="pupVal">2.7<small>mm</small></output>
+        <div><b id="pupState">steady</b><small class="s">light reflex · latency ≈ 0.25 s</small></div>
+      </div>
+      <canvas id="pupilTrace"></canvas>
+      <p class="legend"><i>pupil</i> · <em>luminance</em> · last 10 s · steady state after Moon &amp; Spencer 1944</p>
+    </section>
+  </header>
+
+  <main class="stage" id="stage">
+    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <div class="stage-top">
+      <span class="chip live">Live · shot <b id="shotNo">01</b>/ 10</span>
+      <span class="chip kind" id="shotKind">Wide · whole eye</span>
+      <span class="zoom" id="zoomTop">×4</span>
+    </div>
+    <p id="glerr" hidden>3D view unavailable: this browser has WebGL turned off. The live model and readouts still run.</p>
+    <div class="caption" id="caption">
+      <h3 id="capTitle">Human eye</h3>
+      <p id="capSub">Cornea · lens · retina · optic nerve</p>
+      <ul id="capList"></ul>
+    </div>
+    <div class="scale"><span id="barLbl">≈ 5 mm</span><i></i></div>
+    <nav class="controls" aria-label="Tour controls">
+      <button id="prev" type="button" aria-label="Previous shot">◀</button>
+      <button id="play" type="button" aria-label="Pause tour">❚❚</button>
+      <button id="next" type="button" aria-label="Next shot">▶</button>
+      <span class="hint" id="hint">drag to look around · ← → shots · space pauses</span>
+    </nav>
+  </main>
+
+  <footer class="band bottom">
+    <section class="locator">
+      <div class="label"><h2>Locator · section</h2><span>live</span></div>
+      <canvas id="locator"></canvas>
+      <div class="foot"><span id="locNo">01 / 10</span><span id="locName">whole eye</span></div>
+    </section>
+    <section class="optics">
+      <div class="label"><h2>Light &amp; optics</h2><span id="sceneName">room light</span></div>
+      <div class="rows">
+        <div class="row" style="--c:var(--amber)"><span>Luminance</span><span class="t"><i id="lumF"></i></span><output id="lumV">80 cd/m²</output></div>
+        <div class="row" style="--c:var(--pink)"><span>Retinal illum.</span><span class="t"><i id="tdF"></i></span><output id="tdV">450 Td</output></div>
+        <div class="row" style="--c:var(--cyan)"><span>Accommodation</span><span class="t"><i id="accF"></i></span><output id="accV">+0.0 D</output></div>
+        <div class="row" style="--c:var(--lilac)"><span>Defocus</span><span class="t"><i id="defF"></i></span><output id="defV">0.00 D</output></div>
+      </div>
+      <div class="sub">
+        <div class="label"><h2>Vision regime</h2><span>by luminance</span></div>
+        <div class="regime"><span id="rgS" class="night">scotopic</span><span id="rgM" class="twi">mesopic</span><span id="rgP">photopic</span></div>
+        <ul class="mini"><li>focus target · <b id="focusTgt">far · ≥ 6 m</b></li></ul>
+      </div>
+    </section>
+    <section class="photo">
+      <div class="label"><h2>Photoreceptors · live</h2><span>of max</span></div>
+      <div class="rows">
+        <div class="row" style="--c:var(--lilac)"><span>Rod response</span><span class="t"><i id="rodF"></i></span><output id="rodV">0 %</output></div>
+        <div class="row" style="--c:var(--amber)"><span>Cone response</span><span class="t"><i id="coneF"></i></span><output id="coneV">0 %</output></div>
+        <div class="row" style="--c:var(--cyan)"><span>Cone Vm</span><span class="t"><i id="vmF"></i></span><output id="vmV">−40 mV</output></div>
+        <div class="row" style="--c:var(--pink)"><span>Rod dark current</span><span class="t"><i id="dcF"></i></span><output id="dcV">100 %</output></div>
+      </div>
+      <div class="sub">
+        <div class="label"><h2>Focus</h2><span>zoom</span></div>
+        <div class="focus">
+          <div><b id="focusZoom">×4</b><span id="focusName">human eye</span></div>
+          <ul><li id="focusBar">scale bar ≈ 5 mm</li><li>light program loops every 13 s</li></ul>
+        </div>
+      </div>
+    </section>
+    <section class="rasterp">
+      <div class="label"><h2>Ganglion spikes</h2><span>8 RGCs · 2.5 s</span></div>
+      <canvas id="raster"></canvas>
+      <div class="foot"><span>rows 1–4 ON · 5–8 OFF</span><span id="rasterN">0 spikes in window</span></div>
+      <div class="label sub"><h2>Eye log</h2><span>live</span></div>
+      <ol id="log"></ol>
+    </section>
+  </footer>
+</div>
+
+<script>
+  setTimeout(function(){ if(!window.__eyeBooted){ var e=document.getElementById('glerr'); if(e){ e.textContent='3D view could not load (three.js did not arrive). Check the connection and reload.'; e.hidden=false; } } }, 8000);
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+
+window.__eyeBooted = true;
+const RECORD = new URLSearchParams(location.search).has('record');
+const REDUCED = !RECORD && matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (RECORD) document.documentElement.classList.add('rec');
+
+/* ------------------------------------------------------------------ helpers */
+const $ = id => document.getElementById(id);
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R = mulberry32(24031944);   // geometry
+const RS = mulberry32(1944);      // simulation
+const rr = (a,b,r=R) => a+(b-a)*r();
+const V3 = (x=0,y=0,z=0) => new THREE.Vector3(x,y,z);
+const UP = V3(0,1,0);
+function randUnit(r=R){const u=r()*2-1,a=r()*Math.PI*2,s=Math.sqrt(1-u*u);return V3(s*Math.cos(a),u,s*Math.sin(a))}
+const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const clamp01 = x => Math.min(1,Math.max(0,x));
+const lerp = (a,b,k) => a+(b-a)*k;
+const lp = (dt,tau) => 1-Math.exp(-dt/tau);   // exact first-order low-pass step
+function perpTo(T,hint){const h=hint.clone().normalize();return h.sub(T.clone().multiplyScalar(h.dot(T))).normalize()}
+const fmtMinus = s => String(s).replace('-', '−');
+function fmtNum(v){ if(v>=100) return Math.round(v).toLocaleString('en-US').replace(/,/g,' '); if(v>=10) return v.toFixed(0); if(v>=1) return v.toFixed(1); return v.toPrecision(1); }
+
+function taperTube(curve,segs,radial,rFn,wobble=0){
+  const fr=curve.computeFrenetFrames(segs,false);const P=[],N=[],UV=[],I=[];const p=V3();
+  for(let i=0;i<=segs;i++){
+    const u=i/segs;curve.getPointAt(u,p);const n=fr.normals[i],b=fr.binormals[i],r=rFn(u);
+    for(let j=0;j<=radial;j++){
+      const v=j/radial*Math.PI*2,s=Math.sin(v),c=-Math.cos(v);
+      const nx=c*n.x+s*b.x,ny=c*n.y+s*b.y,nz=c*n.z+s*b.z;
+      const rw=r*(1+wobble*Math.sin(v*3+u*17)*Math.sin(u*31+v));
+      N.push(nx,ny,nz);P.push(p.x+rw*nx,p.y+rw*ny,p.z+rw*nz);UV.push(u,j/radial);
+    }
+  }
+  for(let i=0;i<segs;i++)for(let j=0;j<radial;j++){const a=i*(radial+1)+j,b=(i+1)*(radial+1)+j;I.push(a,b,a+1,b,b+1,a+1)}
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));
+  g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));
+  g.setAttribute('uv',new THREE.Float32BufferAttribute(UV,2));
+  g.setIndex(I);return g;
+}
+
+/* ------------------------------------------------------------------ shaders */
+const NOISE = `
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){
+  const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0);
+  vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);
+  vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.0-g;vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);
+  vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy;vec3 x3=x0-D.yyy;
+  i=mod289(i);
+  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+  float n_=0.142857142857;vec3 ns=n_*D.wyz-D.xzx;
+  vec4 j=p-49.0*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.0*x_);
+  vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.0-abs(x)-abs(y);
+  vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);
+  vec4 s0=floor(b0)*2.0+1.0;vec4 s1=floor(b1)*2.0+1.0;vec4 sh=-step(h,vec4(0.0));
+  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+  vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);
+  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+  p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0);m=m*m;
+  return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+}`;
+
+const TISSUE_VS = `
+varying vec3 vN;
+varying vec3 vW;
+varying vec2 vUv;
+varying vec3 vIC;
+void main(){
+  mat4 M=modelMatrix;
+  #ifdef USE_INSTANCING
+  M=modelMatrix*instanceMatrix;
+  #endif
+  vec4 w=M*vec4(position,1.0);
+  vW=w.xyz;vN=normalize(mat3(M)*normal);vUv=uv;
+  #ifdef USE_INSTANCING_COLOR
+  vIC=instanceColor;
+  #else
+  vIC=vec3(1.0);
+  #endif
+  gl_Position=projectionMatrix*viewMatrix*w;
+}`;
+
+const TISSUE_FS = NOISE + `
+uniform vec3 uColor;
+uniform vec3 uRim;
+uniform vec3 uPulseCol;
+uniform vec3 uFogCol;
+uniform vec3 uLight;
+uniform vec3 uMac;
+uniform vec3 uDisc;
+uniform vec4 uCut;
+uniform float uTime;
+uniform float uGlow;
+uniform float uNoise;
+uniform float uRimPow;
+uniform float uTrans;
+uniform float uOpacity;
+uniform float uStripe;
+uniform vec2 uStripeV;
+uniform float uPulseR;
+uniform float uFogNear;
+uniform float uFogFar;
+uniform vec4 uPulse[4];
+varying vec3 vN;
+varying vec3 vW;
+varying vec2 vUv;
+varying vec3 vIC;
+void main(){
+  #ifdef CUT
+  if(dot(vW,uCut.xyz)>uCut.w) discard;
+  #endif
+  vec3 V=normalize(cameraPosition-vW);
+  vec3 N=normalize(vN);
+  if(!gl_FrontFacing) N=-N;
+  float n1=snoise(vW*uNoise+vec3(0.0,0.0,uTime*0.04));
+  float n2=snoise(vW*uNoise*3.1+7.0);
+  N=normalize(N+0.2*vec3(n1,n2,n1*n2));
+  float ndv=clamp(dot(N,V),0.0,1.0);
+  float fres=pow(1.0-ndv,uRimPow);
+  float dif=0.25+0.75*clamp(dot(N,uLight)*0.5+0.5,0.0,1.0);
+  vec3 base=uColor*vIC*(0.72+0.38*n2);
+  #ifdef FUNDUS
+  vec3 dd=normalize(vW);
+  float am=acos(clamp(dot(dd,uMac),-1.0,1.0));
+  float ad=acos(clamp(dot(dd,uDisc),-1.0,1.0));
+  base=mix(vec3(0.85,0.22,0.08),vec3(1.0,0.42,0.12),0.5+0.5*n2);
+  base=mix(base*0.42,base,smoothstep(0.06,0.3,am));
+  base+=vec3(1.0,0.8,0.35)*smoothstep(0.016,0.0,am)*0.9;
+  base=mix(base,vec3(0.95,0.78,0.45),smoothstep(0.085,0.07,ad));
+  base+=vec3(0.35,0.3,0.18)*smoothstep(0.04,0.0,ad);
+  #endif
+  float st=1.0+uStripe*0.5*sin(dot(vUv,uStripeV)*6.2831853+n1*1.4);
+  vec3 col=base*dif*st*0.78+uRim*fres*1.0+base*uGlow;
+  float spec=pow(clamp(dot(reflect(-uLight,N),V),0.0,1.0),22.0);
+  col+=vec3(0.85,0.92,1.0)*spec*0.22;
+  float p=0.0;
+  for(int i=0;i<4;i++){vec3 d=vW-uPulse[i].xyz;p+=uPulse[i].w*exp(-dot(d,d)/(uPulseR*uPulseR));}
+  col+=uPulseCol*p*1.8;
+  float a=uOpacity*mix(1.0,clamp(0.07+fres*1.15,0.0,1.0),uTrans);
+  float dist=length(cameraPosition-vW);
+  col=mix(col,uFogCol,smoothstep(uFogNear,uFogFar,dist));
+  gl_FragColor=vec4(col,a);
+}`;
+
+const IRIS_VS = `
+varying vec3 vL;
+varying vec3 vN;
+varying vec3 vW;
+void main(){
+  vec3 p=position;float r=length(p.yz);
+  p.x+=0.45*smoothstep(5.8,0.6,r)-0.1;
+  vL=p;vN=normalize(mat3(modelMatrix)*normal);
+  vec4 w=modelMatrix*vec4(p,1.0);vW=w.xyz;
+  gl_Position=projectionMatrix*viewMatrix*w;
+}`;
+const IRIS_FS = NOISE + `
+uniform float uPupil;uniform float uRout;uniform vec3 uLight;uniform vec4 uCut;
+varying vec3 vL;varying vec3 vN;varying vec3 vW;
+void main(){
+  if(dot(vW,uCut.xyz)>uCut.w) discard;
+  float r=length(vL.yz);if(r<uPupil) discard;
+  if(!gl_FrontFacing){gl_FragColor=vec4(0.03,0.015,0.03,1.0);return;}
+  float th=atan(vL.z,vL.y);float s=(r-uPupil)/(uRout-uPupil);
+  vec2 c=vec2(cos(th),sin(th));
+  float fib=snoise(vec3(c*9.0,s*2.2))*0.5+snoise(vec3(c*26.0,s*4.0))*0.35;
+  float coll=smoothstep(0.06,0.0,abs(s-0.32+0.03*snoise(vec3(c*7.0,1.0))));
+  vec3 col=mix(vec3(1.0,0.6,0.16),vec3(0.10,0.42,0.95),smoothstep(0.24,0.46,s));
+  col*=0.5+0.65*(0.5+0.5*fib);
+  col+=vec3(1.0,0.75,0.35)*coll*0.55;
+  float crypt=smoothstep(0.5,0.75,snoise(vec3(c*5.0,s*6.0+3.0)))*step(0.36,s)*step(s,0.86);
+  col*=1.0-0.65*crypt;
+  col*=0.25+0.75*smoothstep(1.0,0.86,s);
+  col=mix(vec3(0.07,0.03,0.02),col,smoothstep(0.0,0.05,s));
+  float dif=0.5+0.5*clamp(dot(normalize(vN),uLight)*0.5+0.5,0.0,1.0);
+  gl_FragColor=vec4(col*dif*0.95,1.0);
+}`;
+
+const PTS_VS = `
+attribute float aAlpha;
+attribute vec3 aColor;
+uniform float uSize;
+uniform float uPx;
+uniform float uNearFade;
+varying float vA;
+varying vec3 vC;
+void main(){
+  vec4 mv=modelViewMatrix*vec4(position,1.0);
+  gl_Position=projectionMatrix*mv;
+  float z=max(-mv.z,0.001);
+  gl_PointSize=clamp(uSize*uPx/z,0.0,48.0);
+  vA=aAlpha*(uNearFade>0.0?smoothstep(uNearFade,uNearFade*4.0,z):1.0);
+  vC=aColor;
+}`;
+const PTS_FS = `
+uniform vec3 uColor;
+uniform float uOpacity;
+varying float vA;
+varying vec3 vC;
+void main(){
+  vec2 c=gl_PointCoord-0.5;float d=length(c);if(d>0.5) discard;
+  float a=pow(1.0-d*2.0,1.6);
+  gl_FragColor=vec4(uColor*vC,a*vA*uOpacity);
+}`;
+const MICRO_VS = `
+uniform vec3 uCenter;uniform float uSpan;uniform float uTime;uniform float uSize;uniform float uPx;
+varying float vA;
+void main(){
+  vec3 q=fract(position+vec3(0.013,0.007,-0.011)*uTime)-0.5;
+  vec3 w=uCenter+q*uSpan;
+  vec4 mv=viewMatrix*vec4(w,1.0);
+  gl_Position=projectionMatrix*mv;
+  float z=max(-mv.z,0.001);
+  gl_PointSize=clamp(uSize*uPx/z,0.0,22.0);
+  float edge=1.0-smoothstep(0.32,0.5,max(max(abs(q.x),abs(q.y)),abs(q.z)));
+  vA=edge*smoothstep(0.0,uSpan*0.06,z)*(0.3+0.7*fract(position.x*97.0));
+}`;
+const MICRO_FS = `uniform vec3 uColor;varying float vA;void main(){vec2 c=gl_PointCoord-0.5;float d=length(c);if(d>0.5) discard;gl_FragColor=vec4(uColor,pow(1.0-d*2.0,2.0)*vA);}`;
+const BG_VS = `varying vec3 vD;void main(){vD=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;
+const BG_FS = NOISE + `
+uniform float uTime;uniform vec3 uA;uniform vec3 uB;uniform vec3 uC;varying vec3 vD;
+void main(){
+  float n=snoise(vD*2.2+vec3(0.0,0.0,uTime*0.01))*0.5+0.5;
+  float n2=snoise(vD*6.0+3.0)*0.5+0.5;
+  float n3=snoise(vD*28.0)*0.5+0.5;
+  vec3 c=mix(uA,uB,smoothstep(0.25,0.95,n));
+  c+=uC*pow(n2,5.0)*0.55;
+  c+=vec3(0.55,0.7,1.0)*pow(n3,18.0)*0.8;
+  gl_FragColor=vec4(c,1.0);
+}`;
+
+/* ------------------------------------------------------------------ renderer */
+const canvas = $('gl');
+let renderer=null, composer=null, renderPass=null, bloom=null;
+try{
+  renderer = new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:RECORD,powerPreference:'high-performance'});
+  renderer.setPixelRatio(RECORD ? (window.devicePixelRatio||1) : Math.min(window.devicePixelRatio||1,1.6));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.localClippingEnabled = true;
+}catch(e){ renderer=null; $('glerr').hidden=false; }
+
+const camera = new THREE.PerspectiveCamera(38,1,0.02,600);
+const scene = new THREE.Scene();   // the eye, millimetre units
+const ret = new THREE.Scene();     // retina block and rod disc stack
+
+const U = {
+  uTime:{value:0}, uPx:{value:800},
+  uFogCol:{value:new THREE.Color('#050c22')}, uFogNear:{value:60}, uFogFar:{value:400},
+  uLight:{value:V3(0.55,0.75,0.4).normalize()},
+  uCut:{value:new THREE.Vector4(0,0,1,0)},
+  uMac:{value:V3(-1,0,0)}, uDisc:{value:V3(-1,0.03,-0.27).normalize()},
+};
+const pulseSet = (col,r) => ({uPulse:{value:[0,1,2,3].map(()=>new THREE.Vector4())},uPulseR:{value:r},uPulseCol:{value:new THREE.Color(col)}});
+const P_MAIN = pulseSet('#4fb8d8',1.7), P_RET = pulseSet('#fff1c4',0.5), P_DISC = pulseSet('#7dffb0',0.75);
+
+function tissue({color,rim='#cfe0ff',glow=0,noise=0.6,rimPow=2.2,trans=0,opacity=1,stripe=0,stripeV=[0,0],side=THREE.FrontSide,cut=false,fundus=false,pset=P_MAIN}={}){
+  const t = trans>0||opacity<1;
+  const defines={};if(cut)defines.CUT='';if(fundus)defines.FUNDUS='';
+  return new THREE.ShaderMaterial({
+    defines,
+    uniforms:{
+      uTime:U.uTime,uFogCol:U.uFogCol,uFogNear:U.uFogNear,uFogFar:U.uFogFar,uLight:U.uLight,uCut:U.uCut,uMac:U.uMac,uDisc:U.uDisc,
+      uPulse:pset.uPulse,uPulseR:pset.uPulseR,uPulseCol:pset.uPulseCol,
+      uColor:{value:new THREE.Color(color)},uRim:{value:new THREE.Color(rim)},uGlow:{value:glow},uNoise:{value:noise},uRimPow:{value:rimPow},
+      uTrans:{value:trans},uOpacity:{value:opacity},uStripe:{value:stripe},uStripeV:{value:new THREE.Vector2(...stripeV)},
+    },
+    vertexShader:TISSUE_VS,fragmentShader:TISSUE_FS,transparent:t,depthWrite:!t,side,
+  });
+}
+function pointsMat({color='#ffffff',size=0.1,nearFade=0}={}){
+  return new THREE.ShaderMaterial({
+    uniforms:{uColor:{value:new THREE.Color(color)},uSize:{value:size},uPx:U.uPx,uNearFade:{value:nearFade},uOpacity:{value:1}},
+    vertexShader:PTS_VS,fragmentShader:PTS_FS,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+  });
+}
+function makePoints(n,mat){
+  const geo=new THREE.BufferGeometry();
+  const pos=new Float32Array(n*3),alpha=new Float32Array(n),col=new Float32Array(n*3).fill(1);
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('aAlpha',new THREE.BufferAttribute(alpha,1));
+  geo.setAttribute('aColor',new THREE.BufferAttribute(col,3));
+  const pts=new THREE.Points(geo,mat);pts.frustumCulled=false;
+  return {pts,geo,pos,alpha,col,mat,dirty(){geo.attributes.position.needsUpdate=true;geo.attributes.aAlpha.needsUpdate=true;geo.attributes.aColor.needsUpdate=true;}};
+}
+function bgSphere(){
+  const m=new THREE.Mesh(new THREE.SphereGeometry(1,48,32),new THREE.ShaderMaterial({
+    uniforms:{uTime:U.uTime,uA:{value:new THREE.Color('#030818')},uB:{value:new THREE.Color('#0b1f52')},uC:{value:new THREE.Color('#2a1f6e')}},
+    vertexShader:BG_VS,fragmentShader:BG_FS,side:THREE.BackSide,depthWrite:false}));
+  m.renderOrder=-10;m.frustumCulled=false;return m;
+}
+function microCloud(color){
+  const n=1400,pos=new Float32Array(n*3);for(let i=0;i<n*3;i++)pos[i]=R();
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const mat=new THREE.ShaderMaterial({uniforms:{uCenter:{value:V3()},uSpan:{value:10},uTime:U.uTime,uSize:{value:0.05},uPx:U.uPx,uColor:{value:new THREE.Color(color)}},
+    vertexShader:MICRO_VS,fragmentShader:MICRO_FS,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending});
+  const p=new THREE.Points(geo,mat);p.frustumCulled=false;return p;
+}
+const dummy = new THREE.Object3D();
+const cutPlane = new THREE.Plane(V3(0,0,-1),0);
+
+/* ------------------------------------------------------------------ the eye (1 unit = 1 mm, optical axis = +x) */
+const EYE_R=12, LIMBUS=5.85, LIMBUS_X=Math.sqrt(EYE_R*EYE_R-LIMBUS*LIMBUS);
+const CORNEA_R=7.8, CORNEA_CX=LIMBUS_X-Math.sqrt(CORNEA_R*CORNEA_R-LIMBUS*LIMBUS);
+const IRIS_X=10.0, IRIS_R=5.85, LENS_X0=7.9, CIL_X=8.6, CIL_R=7.2, RET_R=11.5;
+function shellCap(r,thetaStart,ws=128,hs=96){const g=new THREE.SphereGeometry(r,ws,hs,0,Math.PI*2,thetaStart,Math.PI-thetaStart);g.rotateZ(-Math.PI/2);return g;}
+
+scene.add(new THREE.Mesh(shellCap(EYE_R,Math.asin(LIMBUS/EYE_R)),tissue({color:'#c4cff0',rim:'#8da0d8',glow:0.03,noise:0.9,cut:true,side:THREE.DoubleSide})));
+scene.add(new THREE.Mesh(shellCap(11.75,0.62),tissue({color:'#d8384c',rim:'#ff9aa8',glow:0.1,noise:1.6,cut:true,side:THREE.DoubleSide})));
+scene.add(new THREE.Mesh(shellCap(RET_R,0.86),tissue({color:'#ff6a2a',rim:'#ffb38a',glow:0.32,noise:1.8,cut:true,fundus:true,side:THREE.DoubleSide})));
+{
+  const outer=new THREE.SphereGeometry(CORNEA_R,96,40,0,Math.PI*2,0,Math.acos((LIMBUS_X-CORNEA_CX)/CORNEA_R));outer.rotateZ(-Math.PI/2);outer.translate(CORNEA_CX,0,0);
+  const icx=12.57-6.6;const inner=new THREE.SphereGeometry(6.6,96,40,0,Math.PI*2,0,0.9);inner.rotateZ(-Math.PI/2);inner.translate(icx,0,0);
+  const m=tissue({color:'#7fd0ff',rim:'#dff3ff',glow:0.04,trans:0.92,noise:1.2,cut:true,side:THREE.DoubleSide});
+  scene.add(new THREE.Mesh(outer,m));scene.add(new THREE.Mesh(inner,m));
+}
+// Iris: a shader draws the fibres and cuts the pupil at the live radius.
+const irisMat=new THREE.ShaderMaterial({uniforms:{uPupil:{value:1.35},uRout:{value:IRIS_R},uLight:U.uLight,uCut:U.uCut},vertexShader:IRIS_VS,fragmentShader:IRIS_FS,side:THREE.DoubleSide});
+{const g=new THREE.RingGeometry(0.3,IRIS_R,200,56);g.rotateY(Math.PI/2);const m=new THREE.Mesh(g,irisMat);m.position.x=IRIS_X;scene.add(m);}
+// Ciliary body with folded processes.
+const ciliary=(()=>{
+  const g=new THREE.TorusGeometry(CIL_R,0.95,28,260);g.rotateY(Math.PI/2);
+  const p=g.attributes.position,v=V3();
+  for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i);const a=Math.atan2(v.z,v.y);const rad=Math.hypot(v.y,v.z);
+    if(rad<CIL_R){const k=1-0.6*Math.max(0,Math.sin(a*72))*clamp01((CIL_R-rad)/0.95)*0.9/rad*CIL_R*0.15;v.y*=k;v.z*=k;}p.setXYZ(i,v.x,v.y,v.z);}
+  g.computeVertexNormals();
+  const m=new THREE.Mesh(g,tissue({color:'#b4467e',rim:'#ffb0dc',glow:0.12,noise:2.2,cut:true,side:THREE.DoubleSide}));m.position.x=CIL_X;m.scale.set(1,1,1);scene.add(m);return m;
+})();
+// Lens and its nucleus; scaled live by accommodation.
+const lens=new THREE.Mesh(new THREE.SphereGeometry(1,72,48),tissue({color:'#8fd3ff',rim:'#e6f6ff',glow:0.05,trans:0.86,noise:0.9,cut:true,side:THREE.DoubleSide}));
+const lensNuc=new THREE.Mesh(new THREE.SphereGeometry(1,48,32),tissue({color:'#ffd58a',rim:'#fff1cc',glow:0.08,trans:0.7,noise:1.4,cut:true,side:THREE.DoubleSide}));
+scene.add(lens);scene.add(lensNuc);
+// Cut faces: what the cutaway plane reveals (wall layers, cornea, iris and lens in section).
+const sections=[];
+function sectionMesh(geo,color,rim,base=1){const m=tissue({color,rim,glow:0.14,noise:1.6,opacity:0.999,side:THREE.DoubleSide});const mesh=new THREE.Mesh(geo,m);mesh.renderOrder=2;scene.add(mesh);sections.push({mesh,m,base});return mesh;}
+{
+  const ring=(a,b,th0,cx=0,len)=>{const g=new THREE.RingGeometry(a,b,180,2,th0,len??Math.PI*2-2*th0);g.translate(cx,0,0);return g;};
+  sectionMesh(ring(11.75,12,Math.asin(LIMBUS/EYE_R)),'#c4cff0','#e8eeff');
+  sectionMesh(ring(11.5,11.75,0.62),'#d8384c','#ff9aa8');
+  sectionMesh(ring(11.3,11.5,0.86),'#ff7a3a','#ffc2a0');
+  const ca=Math.acos((LIMBUS_X-CORNEA_CX)/CORNEA_R);
+  sectionMesh(ring(7.25,7.8,-ca,CORNEA_CX,2*ca),'#7fd0ff','#e6f6ff',0.75);
+}
+const irisSec=[1,-1].map(sg=>{const m=sectionMesh(new THREE.PlaneGeometry(0.42,1),'#c7843f','#ffd2a0');m.userData.sg=sg;return m;});
+const lensSec=sectionMesh(new THREE.CircleGeometry(1,72),'#8fd3ff','#e6f6ff',0.38);
+const lensNucSec=sectionMesh(new THREE.CircleGeometry(1,48),'#ffd58a','#fff1cc',0.8);
+lensNucSec.position.z=0.002;
+// Zonule fibres (clipped by the cutaway plane).
+const ZN=180;const zonGeo=new THREE.BufferGeometry();const zonPos=new Float32Array(ZN*6);zonGeo.setAttribute('position',new THREE.BufferAttribute(zonPos,3));
+const zonules=new THREE.LineSegments(zonGeo,new THREE.LineBasicMaterial({color:'#9ff4ff',transparent:true,opacity:0.55,blending:THREE.AdditiveBlending,depthWrite:false,clippingPlanes:[cutPlane]}));
+zonules.frustumCulled=false;scene.add(zonules);
+const zonA=[...Array(ZN)].map((_,i)=>({a:i/ZN*Math.PI*2+rr(-.01,.01),dx:rr(-0.5,0.5),f:rr(-0.5,0.5)}));
+
+// Retinal vessels drawn on the inner retina, mapped from fundus coordinates (u → z, v → y).
+const FMAP=(u,v,r=11.36)=>V3(-1,v,u).normalize().multiplyScalar(r);
+{
+  const trunks=[
+    [[-0.27,0.05],[-0.22,0.15],[-0.1,0.23],[0.05,0.26],[0.2,0.24],[0.36,0.18],[0.52,0.12]],
+    [[-0.27,0.01],[-0.22,-0.11],[-0.1,-0.2],[0.05,-0.24],[0.2,-0.22],[0.36,-0.17],[0.52,-0.1]],
+    [[-0.27,0.05],[-0.34,0.14],[-0.44,0.24],[-0.58,0.31]],
+    [[-0.27,0.01],[-0.36,-0.1],[-0.46,-0.2],[-0.6,-0.26]],
+  ];
+  const paths=[];
+  const branch=(p,a,len,depth,out)=>{const pts=[p.slice()];let x=p[0],y=p[1];for(let i=1;i<=6;i++){a+=rr(-0.22,0.22);let nx=x+Math.cos(a)*len/6,ny=y+Math.sin(a)*len/6;if(Math.hypot(nx,ny)<0.09){a+=0.6;nx=x+Math.cos(a)*len/6;ny=y+Math.sin(a)*len/6;}x=nx;y=ny;pts.push([x,y]);}
+    out.push({pts,depth});if(depth<2)for(let k=0;k<2;k++){const q=pts[2+Math.floor(R()*3)];branch(q,a+(k?1:-1)*rr(0.5,1.0),len*rr(0.5,0.7),depth+1,out);}};
+  for(const t of trunks){paths.push({pts:t,depth:0});for(let k=1;k<t.length-1;k++){if(R()<0.75){const [x0,y0]=t[k],[x1,y1]=t[k+1];const a=Math.atan2(y1-y0,x1-x0)+(R()<0.5?1:-1)*rr(0.6,1.2);branch(t[k],a,rr(0.14,0.26),1,paths);}}}
+  const mk=(off,r0,col,rim)=>{const geos=paths.map(p=>{const pts=p.pts.map(([u,v])=>FMAP(u+off,v+off*0.6));const r=r0*Math.pow(0.6,p.depth);return taperTube(new THREE.CatmullRomCurve3(pts),36,7,u=>r*(1-0.45*u));});
+    scene.add(new THREE.Mesh(mergeGeometries(geos),tissue({color:col,rim,glow:0.3,noise:2.0,cut:true})));};
+  mk(0,0.095,'#ff6a3d','#ffc2a8');
+  mk(0.012,0.125,'#a3122f','#ff7f96');
+}
+// Optic nerve leaving from the disc.
+const discDir=U.uDisc.value.clone();
+const nerveCurve=new THREE.CatmullRomCurve3([discDir.clone().multiplyScalar(11.2),discDir.clone().multiplyScalar(13.6),V3(-18,0.3,-4.6),V3(-27,0.5,-4.0),V3(-37,0.6,-2.6)]);
+scene.add(new THREE.Mesh(taperTube(nerveCurve,160,28,u=>1.45+0.15*Math.sin(u*9),0.02),tissue({color:'#ffcf7a',rim:'#fff0cc',glow:0.12,noise:1.2,stripe:0.6,stripeV:[0,22],cut:true})));
+// Extraocular muscles (the one facing the viewer is left out of the cutaway).
+{
+  const m=tissue({color:'#c43d63',rim:'#ff9ab8',glow:0.08,noise:1.4,stripe:0.5,stripeV:[0,16],cut:true});
+  const apex=V3(-36,0.8,-3);
+  const ins=[[V3(5.1,10.85,0),V3(-14,9.5,-1.2),V3(-2,12.6,-0.3)],[V3(5.1,-10.85,0),V3(-14,-9.3,-1.6),V3(-2,-12.6,-0.3)],[V3(5.1,0,-10.85),V3(-14,0.5,-9.8),V3(-2,0.2,-12.6)]];
+  for(const [I,M,N] of ins){I.multiplyScalar(1.025);}
+  for(const [I,M,N] of ins)scene.add(new THREE.Mesh(taperTube(new THREE.CatmullRomCurve3([apex,M,N,I]),120,16,u=>0.55+1.0*Math.sin(Math.PI*Math.min(1,u*1.15))*0.9),m));
+}
+// Light rays (classic optics diagram in the z = 0 plane) and moving photons.
+const RAY_N=17,RAY_SEG=5;
+const rayGeo=new THREE.BufferGeometry();const rayPos=new Float32Array(RAY_N*RAY_SEG*6),rayCol=new Float32Array(RAY_N*RAY_SEG*6);
+rayGeo.setAttribute('position',new THREE.BufferAttribute(rayPos,3));rayGeo.setAttribute('color',new THREE.BufferAttribute(rayCol,3));
+const rayMat=new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0.6,blending:THREE.AdditiveBlending,depthWrite:false});
+const rays=new THREE.LineSegments(rayGeo,rayMat);rays.frustumCulled=false;scene.add(rays);
+const PH_N=90;const photons=makePoints(PH_N,pointsMat({color:'#fff1c4',size:0.22}));scene.add(photons.pts);
+const phS=[...Array(PH_N)].map(()=>({ray:Math.floor(R()*RAY_N),u:R(),v:rr(0.18,0.3)}));
+const spot=makePoints(1,pointsMat({color:'#fff4d6',size:0.6}));scene.add(spot.pts);
+const rayPaths=[...Array(RAY_N)].map(()=>({pts:[],len:0,blocked:false}));
+
+// Atmosphere.
+const bgMain=bgSphere();scene.add(bgMain);
+const dust=makePoints(2200,pointsMat({color:'#9fb6ff',size:0.22,nearFade:0.6}));
+for(let i=0;i<2200;i++){dust.pos[i*3]=rr(-60,60);dust.pos[i*3+1]=rr(-45,45);dust.pos[i*3+2]=rr(-60,30);dust.alpha[i]=rr(0.12,0.5);}
+dust.dirty();scene.add(dust.pts);
+const microMain=microCloud('#8fb2ff');scene.add(microMain);
+
+/* ------------------------------------------------------------------ retina block (arbitrary units, light comes from +y) */
+const RY={ilm:5.1,nfl:4.6,gcl:3.85,ipl0:2.5,ipl1:3.35,inl:1.7,opl:0.75,onl0:-1.1,onl1:0.25,is:-1.8,os:-3.15,rpe:-4.35};
+const SX=7,SZ=3.5;
+// RPE hex cells and choroid vessels
+{
+  const list=[];for(let iz=0;iz*0.65<=SZ*2;iz++)for(let ix=0;ix*0.75<=SX*2;ix++){list.push([-SX+ix*0.75+(iz%2)*0.375,-SZ+iz*0.65]);}
+  const m=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.42,0.42,0.5,6),tissue({color:'#8a4a1c',rim:'#e09a5a',glow:0.14,noise:3,pset:P_RET}),list.length);
+  list.forEach(([x,z],i)=>{dummy.position.set(x,RY.rpe,z);dummy.rotation.set(0,Math.PI/6,0);dummy.scale.set(1,rr(0.9,1.1),1);dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);});ret.add(m);
+  const vm=tissue({color:'#d0303f',rim:'#ff9aa8',glow:0.15,noise:2,pset:P_RET});const geos=[];
+  for(let k=0;k<6;k++){const z=-SZ+0.6+k*1.2;geos.push(taperTube(new THREE.CatmullRomCurve3([V3(-SX-1,-5.2,z),V3(-2,-5.25+rr(-.1,.1),z+rr(-.3,.3)),V3(3,-5.15,z+rr(-.3,.3)),V3(SX+1,-5.2,z)]),60,12,()=>0.32));}
+  for(let k=0;k<26;k++){const x=-SX+0.3+k*0.54;geos.push(taperTube(new THREE.CatmullRomCurve3([V3(x,-4.75,-SZ-0.4),V3(x+rr(-.2,.2),-4.75,0),V3(x,-4.75,SZ+0.4)]),30,6,()=>0.08));}
+  ret.add(new THREE.Mesh(mergeGeometries(geos),vm));
+}
+// Photoreceptors
+const prs=[];for(let x=-SX+0.15;x<=SX-0.1;x+=0.3)for(let z=-SZ+0.15;z<=SZ-0.1;z+=0.3){const cone=R()<0.12;prs.push({x:x+rr(-.05,.05),z:z+rr(-.05,.05),cone,ct:cone?(R()<0.6?0:(R()<0.85?1:2)):-1,ny:rr(RY.onl0,RY.onl1)});}
+{
+  const rods=prs.filter(p=>!p.cone),cones=prs.filter(p=>p.cone);
+  const mkI=(geo,mat,list,place)=>{const m=new THREE.InstancedMesh(geo,mat,list.length);list.forEach((p,i)=>{place(p);dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);});ret.add(m);return m;};
+  const reset=()=>{dummy.rotation.set(0,0,0);dummy.scale.set(1,1,1);};
+  mkI(new THREE.CylinderGeometry(0.085,0.085,1.75,8),tissue({color:'#c46bff',rim:'#f0d4ff',glow:0.22,noise:3,stripe:0.5,stripeV:[0,40],pset:P_RET}),rods,p=>{reset();dummy.position.set(p.x,RY.os,p.z);});
+  mkI(new THREE.CylinderGeometry(0.1,0.095,1.0,8),tissue({color:'#6f7dff',rim:'#cfd6ff',glow:0.12,noise:3,pset:P_RET}),rods,p=>{reset();dummy.position.set(p.x,RY.is,p.z);});
+  const coneCols=[new THREE.Color('#ff7a3a'),new THREE.Color('#7be36a'),new THREE.Color('#4f8bff')];
+  const cOS=mkI(new THREE.CylinderGeometry(0.19,0.07,1.05,12),tissue({color:'#ffffff',rim:'#ffffff',glow:0.3,noise:3,stripe:0.4,stripeV:[0,24],pset:P_RET}),cones,p=>{reset();dummy.position.set(p.x,RY.os+0.33,p.z);});
+  cones.forEach((p,i)=>cOS.setColorAt(i,coneCols[p.ct]));
+  mkI(new THREE.CylinderGeometry(0.22,0.26,1.1,12),tissue({color:'#8fb0ff',rim:'#e0e8ff',glow:0.14,noise:3,pset:P_RET}),cones,p=>{reset();dummy.position.set(p.x,RY.is+0.05,p.z);});
+  mkI(new THREE.SphereGeometry(1,10,8),tissue({color:'#3b5bdb',rim:'#a9b8ff',glow:0.18,noise:3,pset:P_RET}),prs,p=>{reset();dummy.position.set(p.x,p.cone?0.15:p.ny,p.z);dummy.scale.set(0.13,0.2,0.13);});
+  mkI(new THREE.SphereGeometry(1,8,6),tissue({color:'#6f9bff',rim:'#dfe8ff',glow:0.2,noise:3,pset:P_RET}),prs,p=>{reset();dummy.position.set(p.x,RY.opl,p.z);dummy.scale.setScalar(p.cone?0.14:0.08);});
+  const lp_=[];for(const p of prs){const y0=p.cone?0.15:p.ny;lp_.push(p.x,y0,p.z,p.x+rr(-.05,.05),RY.opl,p.z);lp_.push(p.x,RY.is-0.5,p.z,p.x,y0,p.z);}
+  const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lp_,3));
+  ret.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:'#7f9cff',transparent:true,opacity:0.35,blending:THREE.AdditiveBlending,depthWrite:false})));
+}
+// Bipolar, horizontal, amacrine, ganglion cells and wiring
+const bip=[],gang=[];
+{
+  const lines=[];
+  const hc=new THREE.InstancedMesh(new THREE.SphereGeometry(1,10,8),tissue({color:'#ff7ad9',rim:'#ffd6f2',glow:0.2,noise:3,pset:P_RET}),26);
+  for(let i=0;i<26;i++){const x=rr(-SX+.4,SX-.4),z=rr(-SZ+.3,SZ-.3);dummy.position.set(x,1.05,z);dummy.rotation.set(0,rr(0,3),0);dummy.scale.set(0.32,0.12,0.2);dummy.updateMatrix();hc.setMatrixAt(i,dummy.matrix);
+    for(let k=0;k<5;k++)lines.push(x,1.0,z,x+rr(-1,1),RY.opl+0.05,z+rr(-.6,.6));}
+  ret.add(hc);
+  const bm=new THREE.InstancedMesh(new THREE.SphereGeometry(1,10,8),tissue({color:'#ffffff',rim:'#ffffff',glow:0.2,noise:3,pset:P_RET}),220);
+  const cOn=new THREE.Color('#3fe0c5'),cOff=new THREE.Color('#d36bff');
+  for(let i=0;i<220;i++){const x=rr(-SX+.2,SX-.2),z=rr(-SZ+.2,SZ-.2),y=rr(1.3,2.15),on=i%2===0;bip.push({x,z,on});
+    dummy.position.set(x,y,z);dummy.rotation.set(0,0,0);dummy.scale.set(0.14,0.24,0.14);dummy.updateMatrix();bm.setMatrixAt(i,dummy.matrix);bm.setColorAt(i,on?cOn:cOff);
+    lines.push(x,y-0.2,z,x+rr(-.15,.15),RY.opl+0.05,z);lines.push(x,y+0.2,z,x+rr(-.1,.1),on?3.2:2.7,z+rr(-.1,.1));}
+  ret.add(bm);
+  const am=new THREE.InstancedMesh(new THREE.SphereGeometry(1,10,8),tissue({color:'#ffd166',rim:'#fff0c2',glow:0.2,noise:3,pset:P_RET}),60);
+  for(let i=0;i<60;i++){const x=rr(-SX+.3,SX-.3),z=rr(-SZ+.3,SZ-.3);dummy.position.set(x,2.3,z);dummy.scale.setScalar(0.13);dummy.updateMatrix();am.setMatrixAt(i,dummy.matrix);for(let k=0;k<3;k++)lines.push(x,2.35,z,x+rr(-.8,.8),rr(RY.ipl0,RY.ipl1),z+rr(-.5,.5));}
+  ret.add(am);
+  for(let i=0;i<520;i++){const x=rr(-SX,SX),z=rr(-SZ,SZ),y=rr(RY.ipl0,RY.ipl1);lines.push(x,y,z,x+rr(-.5,.5),y+rr(-.12,.12),z+rr(-.3,.3));}
+  const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lines,3));
+  ret.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:'#9f8cff',transparent:true,opacity:0.3,blending:THREE.AdditiveBlending,depthWrite:false})));
+}
+const gangMesh=new THREE.InstancedMesh(new THREE.SphereGeometry(1,20,14),tissue({color:'#ffffff',rim:'#efe4ff',glow:0.3,noise:2.5,pset:P_RET}),42);
+const gBase=new THREE.Color('#a77bff');
+{
+  const axons=[],lines=[];
+  for(let i=0;i<42;i++){const x=rr(-SX+.5,SX-1.2),z=rr(-SZ+.4,SZ-.4);gang.push({x,z,flash:0});
+    dummy.position.set(x,RY.gcl,z);dummy.rotation.set(0,0,0);dummy.scale.setScalar(rr(0.24,0.32));dummy.updateMatrix();gangMesh.setMatrixAt(i,dummy.matrix);gangMesh.setColorAt(i,gBase);
+    for(let k=0;k<4;k++)lines.push(x,RY.gcl-0.2,z,x+rr(-.7,.7),rr(2.6,3.3),z+rr(-.5,.5));
+    axons.push(taperTube(new THREE.CatmullRomCurve3([V3(x,RY.gcl+0.2,z),V3(x+0.3,RY.nfl-0.05,z),V3((x+SX)/2+0.5,RY.nfl+rr(-.15,.15),z),V3(SX+0.6,RY.nfl+rr(-.15,.15),z)]),50,6,()=>0.05));}
+  for(let k=0;k<44;k++){const y=rr(4.35,4.95),z=rr(-SZ,SZ);axons.push(taperTube(new THREE.CatmullRomCurve3([V3(-SX-0.6,y,z),V3(0,y+rr(-.1,.1),z+rr(-.2,.2)),V3(SX+0.6,y,z)]),60,6,()=>0.05));}
+  ret.add(gangMesh);
+  ret.add(new THREE.Mesh(mergeGeometries(axons),tissue({color:'#ffb24a',rim:'#ffe2b0',glow:0.25,noise:3,pset:P_RET})));
+  const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lines,3));
+  ret.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:'#c4a8ff',transparent:true,opacity:0.4,blending:THREE.AdditiveBlending,depthWrite:false})));
+  const ilm=new THREE.Mesh(new THREE.PlaneGeometry(SX*2+1.2,SZ*2+0.8),tissue({color:'#7fd0ff',rim:'#dff3ff',glow:0.03,trans:0.93,noise:1.5,side:THREE.DoubleSide,pset:P_RET}));
+  ilm.rotation.x=-Math.PI/2;ilm.position.y=RY.ilm;ret.add(ilm);
+}
+const RGC_MAP=gang.map((g,i)=>[g.z,i]).sort((a,b)=>b[0]-a[0]).slice(0,8).map(x=>x[1]);
+// Photons falling into the retina, and signals climbing back up.
+const RPH_N=50;const rph=makePoints(RPH_N,pointsMat({color:'#fff1c4',size:0.11}));ret.add(rph.pts);
+const rphS=[...Array(RPH_N)].map(()=>({on:false}));
+const SIG_N=70;const sig=makePoints(SIG_N,pointsMat({color:'#72e8ff',size:0.12}));ret.add(sig.pts);
+const sigS=[...Array(SIG_N)].map(()=>({on:false}));
+const retHits=[];
+// Rod outer segment disc stack, for phototransduction.
+const DS=V3(60,0,0);
+const discYs=[...Array(21)].map((_,i)=>-3+i*0.3);
+const chanList=[];
+{
+  const g=new THREE.Group();g.position.copy(DS);ret.add(g);
+  const camAng=Math.atan2(0.45,1);
+  const gap=Math.PI*0.55;
+  g.add(new THREE.Mesh(new THREE.CylinderGeometry(2.25,2.25,7.0,120,1,true,camAng+gap/2,Math.PI*2-gap),tissue({color:'#9a7cff',rim:'#e4dcff',glow:0.06,trans:0.75,noise:1.6,side:THREE.DoubleSide,pset:P_DISC})));
+  const discG=new THREE.CylinderGeometry(2.0,2.0,0.1,96);
+  const dm=new THREE.InstancedMesh(discG,tissue({color:'#b05cff',rim:'#e8c8ff',glow:0.12,noise:2.2,pset:P_DISC}),discYs.length);
+  discYs.forEach((y,i)=>{dummy.position.set(0,y,0);dummy.rotation.set(0,0,0);dummy.scale.set(1,1,1);dummy.updateMatrix();dm.setMatrixAt(i,dummy.matrix);});g.add(dm);
+  const rh=[];for(const y of discYs)for(let k=0;k<110;k++){const a=R()*Math.PI*2,r=Math.sqrt(R())*1.9;rh.push([Math.cos(a)*r,y+(R()<0.5?0.075:-0.075),Math.sin(a)*r]);}
+  const rm=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.035,0.035,0.09,6),tissue({color:'#ff7ad9',rim:'#ffd6f2',glow:0.2,noise:4,pset:P_DISC}),rh.length);
+  rh.forEach(([x,y,z],i)=>{dummy.position.set(x,y,z);dummy.rotation.set(0,0,0);dummy.scale.setScalar(1);dummy.updateMatrix();rm.setMatrixAt(i,dummy.matrix);});g.add(rm);
+  const tm=new THREE.InstancedMesh(new THREE.SphereGeometry(0.05,8,6),tissue({color:'#7dff9a',rim:'#d8ffe0',glow:0.25,noise:4,pset:P_DISC}),240);
+  for(let i=0;i<240;i++){const y=discYs[Math.floor(R()*discYs.length)]+(R()<0.5?0.1:-0.1);const a=R()*Math.PI*2,r=Math.sqrt(R())*1.9;dummy.position.set(Math.cos(a)*r,y,Math.sin(a)*r);dummy.updateMatrix();tm.setMatrixAt(i,dummy.matrix);}g.add(tm);
+  const pm=new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.045,0.08,4,8),tissue({color:'#ff9a4d',rim:'#ffd8b8',glow:0.25,noise:4,pset:P_DISC}),130);
+  for(let i=0;i<130;i++){const y=discYs[Math.floor(R()*discYs.length)]+(R()<0.5?0.1:-0.1);const a=R()*Math.PI*2,r=Math.sqrt(R())*1.9;dummy.position.set(Math.cos(a)*r,y,Math.sin(a)*r);dummy.rotation.set(0,0,Math.PI/2);dummy.updateMatrix();pm.setMatrixAt(i,dummy.matrix);}g.add(pm);
+}
+const chanMat=tissue({color:'#62f0ff',rim:'#ffffff',glow:0.8,noise:4,pset:P_DISC});
+{
+  const camAng=Math.atan2(0.45,1),gap=Math.PI*0.55;const n=110;const m=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.06,0.06,0.16,8),chanMat,n);
+  for(let i=0;i<n;i++){const a=camAng+gap/2+R()*(Math.PI*2-gap);const y=rr(-3.2,3.2);const out=V3(Math.sin(a),0,Math.cos(a));chanList.push({a,y,out});
+    dummy.position.copy(DS).add(V3(out.x*2.26,y,out.z*2.26));dummy.quaternion.setFromUnitVectors(UP,out);dummy.scale.setScalar(1);dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);}
+  ret.add(m);
+}
+const ION_N=170;const ions=makePoints(ION_N,pointsMat({color:'#ffd166',size:0.045}));ret.add(ions.pts);
+const ionS=[...Array(ION_N)].map(()=>({c:Math.floor(R()*110),ph:R()}));
+const CG_N=380;const cgmp=makePoints(CG_N,pointsMat({color:'#9ff4ff',size:0.04}));ret.add(cgmp.pts);
+const cgS=[...Array(CG_N)].map(()=>{const a=R()*Math.PI*2,r=Math.sqrt(R())*1.95;const y=discYs[Math.floor(R()*(discYs.length-1))]+0.15;return {p:V3(Math.cos(a)*r,y,Math.sin(a)*r),ph:R()*6.28};});
+const DPH_N=12;const dph=makePoints(DPH_N,pointsMat({color:'#fff1c4',size:0.09}));ret.add(dph.pts);
+const dphS=[...Array(DPH_N)].map(()=>({on:false}));
+const discEvents=[];
+const bgRet=bgSphere();ret.add(bgRet);
+const microRet=microCloud('#9cc0ff');ret.add(microRet);
+
+/* ------------------------------------------------------------------ shots */
+const SHOTS=[
+ {kind:'Wide · whole eye',title:'Human eye',sub:'Cornea · lens · retina · optic nerve',bullets:['about 24 mm front to back','bends light onto the retina','sends ≈ 1.2 million axons to the brain'],zoom:'×4',bar:'≈ 5 mm',dur:7,
+  tgt:V3(-6,0,0),dir:V3(0.32,0.3,1),rw:25,rh:13,cut:0,rays:0.35,loc:V3(-6,0,0),locR:22},
+ {kind:'Close-up · cornea',title:'Cornea',sub:'Clear front window · ≈ 0.55 mm thick',bullets:['gives ≈ 43 D of the eye’s ≈ 60 D','no blood vessels, so it stays clear','a tear film keeps the surface smooth'],zoom:'×20',bar:'≈ 1 mm',dur:6,
+  tgt:V3(12.6,3.1,0),dir:V3(0.18,0.14,1),rw:3.0,rh:2.2,cut:0,rays:0.5,loc:V3(12,1.5,0),locR:3},
+ {kind:'Front · iris and pupil',title:'Iris and pupil',sub:'Two muscles set the aperture',bullets:['the pupil spans ≈ 2 to 8 mm','bright light shrinks it within ≈ 0.3 s','focusing near narrows it too'],zoom:'×8',bar:'≈ 2 mm',dur:7.5,
+  tgt:V3(10,0,0),dir:V3(1,0.1,0.16),rw:6.6,rh:6.0,cut:40,rays:0,loc:V3(10,0,0),locR:6},
+ {kind:'Section · lens and ciliary body',title:'Accommodation',sub:'Ciliary muscle · zonules · lens',bullets:['the ciliary muscle contracts for near','zonules slacken and the lens rounds up','young eyes add up to ≈ 10 D'],zoom:'×8',bar:'≈ 2 mm',dur:7.5,
+  tgt:V3(8.2,2.2,0),dir:V3(0.2,0.18,1),rw:6.0,rh:4.4,cut:0,rays:0.55,loc:V3(8,2,0),locR:5},
+ {kind:'Section · light path',title:'Image formation',sub:'Cornea and lens focus light on the fovea',bullets:['the image lands upside down','the pupil sets how much light enters','defocus spreads a point into a blur'],zoom:'×4',bar:'≈ 5 mm',dur:7.5,
+  tgt:V3(1.5,0,0),dir:V3(0.06,0.12,1),rw:18,rh:12.6,cut:0,rays:1,loc:V3(1,0,0),locR:14},
+ {kind:'Inside · fundus',title:'Optic disc and macula',sub:'The back of the eye, seen from inside',bullets:['vessels fan out from the optic disc','the disc has no photoreceptors: the blind spot','the macula holds the cone-packed fovea'],zoom:'×10',bar:'≈ 1 mm',dur:7,
+  tgt:FMAP(-0.13,0.02,11.4),dir:V3(1,0.1,0.07),rw:4.6,rh:3.4,maxD:13,cut:40,rays:0,loc:V3(-11.3,0,0),locR:4},
+ {kind:'Section · retina',scene:'ret',title:'Retina layers',sub:'Light passes through to the photoreceptors',bullets:['photoreceptors sit at the very back','bipolar cells relay to ganglion cells','ganglion axons become the optic nerve'],zoom:'×600',bar:'≈ 50 µm',dur:7.5,
+  tgt:V3(0,0,0),dir:V3(0.14,0.08,1),rw:7.4,rh:5.6,loc:V3(-11.5,0,0),locR:1.2},
+ {kind:'Macro · rods and cones',scene:'ret',title:'Rods and cones',sub:'≈ 92 million rods · ≈ 4.6 million cones',bullets:['rods see in dim light, then saturate','L, M and S cones give colour vision','outer segments are stacks of discs'],zoom:'×3 000',bar:'≈ 10 µm',dur:7,
+  tgt:V3(-1.2,-2.6,1.6),dir:V3(0.4,0.25,1),rw:1.9,rh:1.4,loc:V3(-11.5,0,0),locR:0.6},
+ {kind:'Macro · phototransduction',scene:'ret',title:'Phototransduction',sub:'Rhodopsin → transducin → PDE → cGMP',bullets:['one photon activates one rhodopsin','PDE burns cGMP and channels close','the rod hyperpolarises: that is the signal'],zoom:'×60 000',bar:'≈ 500 nm',dur:7.5,
+  tgt:DS.clone().add(V3(0,0.4,0)),dir:V3(0.45,0.35,1),rw:3.0,rh:3.4,loc:V3(-11.5,0,0),locR:0.3},
+ {kind:'Wide · optic nerve',title:'Optic nerve',sub:'Ganglion cell axons carry spikes to the brain',bullets:['≈ 1.2 million axons leave at the disc','half of them cross at the optic chiasm','eye → retina → brain'],zoom:'×3',bar:'≈ 5 mm',dur:7,
+  tgt:V3(-16,0.5,-2.5),dir:V3(0.12,0.42,1),rw:24,rh:10,cut:0,rays:0.3,loc:V3(-16,0,0),locR:18},
+];
+SHOTS.forEach(s=>{s.dir.normalize();s.scene=s.scene||'main';if(s.cut===undefined)s.cut=40;if(s.rays===undefined)s.rays=0;});
+const TOUR_LEN=SHOTS.reduce((a,s)=>a+s.dur,0);
+
+/* ------------------------------------------------------------------ simulation */
+// Light program (cd/m²), looping every 13 s.
+const PROGRAM=[[3.5,80,'room light'],[1.6,4000,'daylight'],[3.0,80,'room light'],[2.6,0.002,'night'],[2.3,80,'room light']];
+const PROG_LEN=PROGRAM.reduce((a,p)=>a+p[0],0);
+function programAt(t){t%=PROG_LEN;for(const p of PROGRAM){if(t<p[0])return p;t-=p[0];}return PROGRAM[0];}
+const S={logL:Math.log10(80),L:80,D:2.67,A:0,accTarget:0,demand:0,Td:0,rod:[0,0,0],cone:[0,0,0],coneAdapt:450,Rrod:1,Rcone:0.5,If:450,Is:450,c:0,scene:'room light'};
+const lumHist=[];const PT_N=600;const pupTrace=new Float32Array(PT_N).fill(2.67),lumTrace=new Float32Array(PT_N).fill(Math.log10(80));let ptHead=0;
+const raster=Array.from({length:8},()=>[]);
+const logLines=[];let logDirty=true;
+function log(text){logLines.unshift([T.toFixed(1)+' s',text]);if(logLines.length>4)logLines.length=4;logDirty=true;}
+const events=[];function later(dt,fn){events.push({t:T+dt,fn});}
+function poisson(lam){const Lm=Math.exp(-lam);let k=0,p=1;do{k++;p*=RS();}while(p>Lm);return k-1;}
+const nervePulses=[];let lastNerve=-9;
+let lastRegime='',lastDemand=0,rodsSatLogged=false;
+
+function simulate(dt){
+  const prog=programAt(T);
+  if(prog[2]!==S.scene){S.scene=prog[2];log(`${prog[2]} · ${fmtNum(prog[1])} cd/m²`);if(prog[1]>S.L)later(0.25,()=>log('pupil constricting · sphincter'));else later(0.25,()=>log('pupil dilating · dilator'));}
+  S.logL+=(Math.log10(prog[1])-S.logL)*lp(dt,0.06);S.L=10**S.logL;
+  // Accommodation demand alternates far / near; response lags ≈ 0.35 s.
+  const demand=(T%8)<4?0:3.5;
+  if(demand!==lastDemand){lastDemand=demand;later(0.35,()=>{S.accTarget=demand;});log(demand?'near target · 29 cm · +3.5 D':'far target · relaxing to 0 D');}
+  S.demand=demand;S.A+=(S.accTarget-S.A)*lp(dt,0.35);
+  // Pupil: delayed luminance → steady state → asymmetric first-order dynamics.
+  lumHist.push([T,S.logL]);while(lumHist.length>1&&lumHist[1][0]<=T-0.25)lumHist.shift();
+  const logLd=lumHist[0][1];
+  const Dss=Math.min(8,Math.max(1.8,4.9-3*Math.tanh(0.4*(logLd+0.5))-0.15*S.A));
+  S.D+=(Dss-S.D)*lp(dt,Dss<S.D?0.28:1.1);
+  S.Td=S.L*Math.PI*(S.D/2)**2;
+  // Photoreceptors: three-stage low-pass, then saturation (rods) or adapting saturation (cones).
+  const r=S.rod,c=S.cone;r[0]+=(S.Td-r[0])*lp(dt,0.08);r[1]+=(r[0]-r[1])*lp(dt,0.08);r[2]+=(r[1]-r[2])*lp(dt,0.08);
+  c[0]+=(S.Td-c[0])*lp(dt,0.025);c[1]+=(c[0]-c[1])*lp(dt,0.025);c[2]+=(c[1]-c[2])*lp(dt,0.025);
+  S.coneAdapt+=(c[2]-S.coneAdapt)*lp(dt,1.5);
+  S.Rrod=r[2]/(r[2]+0.5);S.Rcone=c[2]/(c[2]+30+0.8*S.coneAdapt);
+  if(S.Rrod>0.98&&!rodsSatLogged){rodsSatLogged=true;log('rods saturated · cones carry vision');}
+  if(S.Rrod<0.9)rodsSatLogged=false;
+  // Ganglion cells: ON/OFF contrast = log ratio of fast and slow light estimates.
+  S.If+=(S.Td-S.If)*lp(dt,0.06);S.Is+=(S.Td-S.Is)*lp(dt,0.9);S.c=Math.log((S.If+1)/(S.Is+1));
+  for(let k=0;k<8;k++){const on=k<4;const rate=Math.min(220,12+70*Math.max(0,on?S.c:-S.c));const n=poisson(rate*dt);
+    for(let j=0;j<n;j++){const ts=T-dt+(j+0.5)/n*dt;raster[k].push(ts);gang[RGC_MAP[k]].flash=1;
+      if((k===0||k===4)&&T-lastNerve>0.12&&nervePulses.length<4){nervePulses.push({t0:T});lastNerve=T;}}}
+  for(const row of raster)while(row.length&&row[0]<T-2.5)row.shift();
+  const rg=S.L<0.005?'scotopic':(S.L<5?'mesopic':'photopic');
+  if(rg!==lastRegime){if(lastRegime)log(`${rg} vision${rg==='scotopic'?' · rods only':''}`);lastRegime=rg;}
+  for(let i=events.length-1;i>=0;i--)if(T>=events[i].t){const e=events[i];events.splice(i,1);e.fn();}
+}
+// The trace is sampled at a fixed 60 Hz so its time axis does not depend on frame rate.
+let traceClock=0;
+function sampleTrace(dt){traceClock+=dt;while(traceClock>=1/60){traceClock-=1/60;pupTrace[ptHead]=S.D;lumTrace[ptHead]=S.logL;ptHead=(ptHead+1)%PT_N;}}
+
+/* ------------------------------------------------------------------ per-frame visuals */
+const lensState={halfT:1.9,rEq:4.6,x:LENS_X0};
+function corneaX(h){return CORNEA_CX+Math.sqrt(Math.max(0,CORNEA_R*CORNEA_R-h*h));}
+function updateEye(dt){
+  // Lens and ciliary body follow accommodation (geometry change exaggerated ×3 for visibility).
+  const A=S.A;lensState.halfT=1.9+0.12*A;lensState.rEq=4.6-0.07*A;lensState.x=LENS_X0+0.06*A;
+  lens.position.x=lensState.x;lens.scale.set(lensState.halfT,lensState.rEq,lensState.rEq);
+  lensNuc.position.x=lensState.x;lensNuc.scale.set(lensState.halfT*0.55,lensState.rEq*0.55,lensState.rEq*0.55);
+  const k=1-0.012*A;ciliary.scale.set(1,k,k);
+  for(let i=0;i<ZN;i++){const z=zonA[i];const ca=Math.cos(z.a),sa=Math.sin(z.a);const rc=(CIL_R-1.45)*k;
+    zonPos.set([CIL_X-0.3+z.dx*0.6,rc*ca,rc*sa,lensState.x+z.f*lensState.halfT*0.7,lensState.rEq*ca*Math.sqrt(1-0.4*z.f*z.f),lensState.rEq*sa*Math.sqrt(1-0.4*z.f*z.f)],i*6);}
+  zonGeo.attributes.position.needsUpdate=true;
+  irisMat.uniforms.uPupil.value=S.D/2;
+  const secOp=clamp01(1-U.uCut.value.w/6);
+  for(const sct of sections){sct.m.uniforms.uOpacity.value=secOp*sct.base;sct.mesh.visible=secOp>0.01;}
+  for(const m of irisSec){const a=S.D/2,b=IRIS_R;m.scale.y=b-a;m.position.set(IRIS_X+0.12,m.userData.sg*(a+b)/2,0);}
+  lensSec.position.set(lensState.x,0,0.001);lensSec.scale.set(lensState.halfT,lensState.rEq,1);
+  lensNucSec.position.set(lensState.x,0,0.002);lensNucSec.scale.set(lensState.halfT*0.55,lensState.rEq*0.55,1);
+  // Rays: refract at cornea and lens, stop at the iris if outside the pupil, converge toward a focus moved by defocus.
+  const defocus=S.demand-S.A;const xf=-RET_R+0.05-defocus*1.4;const lf=lensState.x-lensState.halfT,lb=lensState.x+lensState.halfT;
+  const bright=0.25+0.75*clamp01((S.logL+3)/7);let spreadMin=1e9,spreadMax=-1e9;
+  for(let i=0;i<RAY_N;i++){
+    const h=-4.6+i*(9.2/(RAY_N-1));const path=rayPaths[i];const pts=[V3(34,h,0),V3(corneaX(h),h,0)];
+    const h2=h*0.93;
+    if(Math.abs(h2)>S.D/2){pts.push(V3(IRIS_X+0.2,h2,0));path.blocked=true;}
+    else{path.blocked=false;pts.push(V3(lb,h2,0));const h3=h2*0.86;const A_=V3(lf,h3,0);pts.push(A_);
+      const F=V3(xf,0,0);const Dv=F.clone().sub(A_);const a=Dv.dot(Dv),b=2*A_.dot(Dv),cc=A_.dot(A_)-(RET_R-0.08)**2;const t=(-b+Math.sqrt(b*b-4*a*cc))/(2*a);
+      const end=A_.clone().addScaledVector(Dv,t);pts.push(end);spreadMin=Math.min(spreadMin,end.y);spreadMax=Math.max(spreadMax,end.y);}
+    path.pts=pts;let len=0;path.cum=[0];for(let k=1;k<pts.length;k++){len+=pts[k].distanceTo(pts[k-1]);path.cum.push(len);}path.len=len;
+    for(let s=0;s<RAY_SEG;s++){const o=(i*RAY_SEG+s)*6;const a=pts[Math.min(s,pts.length-1)],b=pts[Math.min(s+1,pts.length-1)];rayPos.set([a.x,a.y,a.z,b.x,b.y,b.z],o);
+      const w=s+1<pts.length?bright*(s===0?0.55:1):0;const cr=path.blocked&&s>=1?0.6:1;rayCol.set([w*cr,w*0.93*cr,w*0.75*cr,w*cr,w*0.93*cr,w*0.75*cr],o);}
+  }
+  rayGeo.attributes.position.needsUpdate=true;rayGeo.attributes.color.needsUpdate=true;
+  for(let i=0;i<PH_N;i++){const p=phS[i];const path=rayPaths[p.ray];p.u+=p.v*dt;if(p.u>1){p.u-=1;p.ray=Math.floor(RS()*RAY_N);}
+    const d=p.u*path.len;let k=1;while(k<path.cum.length-1&&path.cum[k]<d)k++;const f=(d-path.cum[k-1])/Math.max(1e-6,path.cum[k]-path.cum[k-1]);
+    const q=path.pts[k-1].clone().lerp(path.pts[k],clamp01(f));photons.pos.set([q.x,q.y,q.z],i*3);photons.alpha[i]=bright*0.9;}
+  photons.dirty();
+  const blur=spreadMax>spreadMin?spreadMax-spreadMin:0;spot.pos.set([-RET_R+0.15,(spreadMax+spreadMin)/2||0,0]);spot.alpha[0]=bright*rayVis;spot.mat.uniforms.uSize.value=0.45+blur*1.2;spot.dirty();
+  rayMat.opacity=0.6*rayVis;photons.mat.uniforms.uOpacity.value=rayVis;
+  // Optic nerve volleys.
+  const arr=P_MAIN.uPulse.value;for(let k=0;k<4;k++)arr[k].set(0,0,0,0);
+  for(let i=nervePulses.length-1;i>=0;i--){if(T-nervePulses[i].t0>1.1)nervePulses.splice(i,1);}
+  nervePulses.forEach((p,k)=>{const u=clamp01((T-p.t0)/1.1);const q=nerveCurve.getPointAt(u);arr[k].set(q.x,q.y,q.z,1-0.4*u);});
+}
+let rayVis=0.35;
+let hitSlot=0;
+function updateRetina(dt){
+  // Photon arrivals scale with retinal illuminance (log), so night shows sparse single hits.
+  const rate=Math.max(0.6,Math.min(26,3+4*Math.log10(S.Td+0.01)));
+  if(RS()<rate*dt){const s=rphS.find(x=>!x.on);if(s){const p=prs[Math.floor(RS()*prs.length)];s.on=true;s.p=p;s.y=9;}}
+  for(let i=0;i<RPH_N;i++){const s=rphS[i];if(!s.on){rph.alpha[i]=0;continue;}s.y-=14*dt;const stop=s.p.cone?RY.os+0.5:RY.os;
+    if(s.y<=stop){s.on=false;retHits[hitSlot]={p:V3(s.p.x,stop,s.p.z),t0:T};hitSlot=(hitSlot+1)%4;
+      if(RS()<0.7){const g=sigS.find(x=>!x.on);if(g){const b=bip.reduce((best,c)=>{const d=(c.x-s.p.x)**2+(c.z-s.p.z)**2;return d<best[0]?[d,c]:best;},[1e9,null])[1];
+        const gi=gang.reduce((best,c,i)=>{const d=(c.x-b.x)**2+(c.z-b.z)**2;return d<best[0]?[d,i]:best;},[1e9,0])[1];const gg=gang[gi];
+        g.on=true;g.gi=gi;g.u=0;g.pts=[V3(s.p.x,stop,s.p.z),V3(s.p.x,RY.opl,s.p.z),V3(b.x,RY.inl,b.z),V3(b.x,b.on?3.2:2.7,b.z),V3(gg.x,RY.gcl,gg.z),V3(gg.x+0.3,RY.nfl,gg.z),V3(SX+0.6,RY.nfl,gg.z)];
+        let L=0;g.cum=[0];for(let k=1;k<g.pts.length;k++){L+=g.pts[k].distanceTo(g.pts[k-1]);g.cum.push(L);}g.len=L;}}}
+    rph.pos.set([s.p.x,s.y,s.p.z],i*3);rph.alpha[i]=0.95;}
+  rph.dirty();
+  const ra=P_RET.uPulse.value;for(let k=0;k<4;k++){const h=retHits[k];if(!h){ra[k].set(0,0,0,0);continue;}const w=Math.exp(-(T-h.t0)/0.3);ra[k].set(h.p.x,h.p.y,h.p.z,w);}
+  for(let i=0;i<SIG_N;i++){const g=sigS[i];if(!g.on){sig.alpha[i]=0;continue;}g.u+=4.2*dt;if(g.u>=g.len){g.on=false;sig.alpha[i]=0;continue;}
+    let k=1;while(k<g.cum.length-1&&g.cum[k]<g.u)k++;const f=(g.u-g.cum[k-1])/Math.max(1e-6,g.cum[k]-g.cum[k-1]);const q=g.pts[k-1].clone().lerp(g.pts[k],clamp01(f));
+    if(k===4&&f>0.9)gang[g.gi].flash=Math.max(gang[g.gi].flash,0.7);sig.pos.set([q.x,q.y,q.z],i*3);sig.alpha[i]=0.95;}
+  sig.dirty();
+  const c=new THREE.Color();for(let i=0;i<gang.length;i++){const g=gang[i];g.flash*=Math.exp(-dt/0.18);c.copy(gBase).multiplyScalar(1+2.6*g.flash);gangMesh.setColorAt(i,c);}gangMesh.instanceColor.needsUpdate=true;
+  // Disc stack: photons hit discs, activation spreads, cGMP falls, channels close.
+  const dc=1-S.Rrod;
+  const drate=0.7+2.4*clamp01((S.logL+3)/4);
+  if(RS()<drate*dt){const s=dphS.find(x=>!x.on);if(s){const a=RS()*Math.PI*2,r=Math.sqrt(RS())*1.7;s.on=true;s.x=Math.cos(a)*r;s.z=Math.sin(a)*r;s.ty=discYs[Math.floor(RS()*discYs.length)]+0.08;s.y=5;}}
+  for(let i=0;i<DPH_N;i++){const s=dphS[i];if(!s.on){dph.alpha[i]=0;continue;}s.y-=9*dt;if(s.y<=s.ty){s.on=false;discEvents.push({p:DS.clone().add(V3(s.x,s.ty,s.z)),t0:T});if(discEvents.length>4)discEvents.shift();if(shotIdx===8&&RS()<0.35)log('rhodopsin → R* · transducin on');}
+    dph.pos.set([DS.x+s.x,s.y,DS.z+s.z],i*3);dph.alpha[i]=1;}
+  dph.dirty();
+  const da=P_DISC.uPulse.value;for(let k=0;k<4;k++){const e=discEvents[k];if(!e){da[k].set(0,0,0,0);continue;}const age=T-e.t0;da[k].set(e.p.x,e.p.y,e.p.z,age<0.15?age/0.15:Math.exp(-(age-0.15)/0.7));}
+  chanMat.uniforms.uGlow.value=0.08+0.9*dc;
+  ionFlux+=dc*dt;
+  for(let i=0;i<ION_N;i++){const s=ionS[i];const ch=chanList[s.c];const f=(s.ph+ionFlux*1.3)%1;const r=2.95-0.95*f;
+    ions.pos.set([DS.x+ch.out.x*r,ch.y+(f-0.5)*0.1,DS.z+ch.out.z*r],i*3);ions.alpha[i]=dc*(0.2+0.8*Math.sin(Math.PI*f));}
+  ions.dirty();
+  for(let i=0;i<CG_N;i++){const s=cgS[i];const x=s.p.x+0.04*Math.sin(T*1.3+s.ph),y=s.p.y,z=s.p.z+0.04*Math.cos(T*1.1+s.ph);
+    let local=1;for(const e of discEvents){const age=T-e.t0;const w=age<0.15?age/0.15:Math.exp(-(age-0.15)/0.7);const dx=DS.x+x-e.p.x,dy=y-e.p.y,dz=DS.z+z-e.p.z;local-=0.85*w*Math.exp(-(dx*dx+dy*dy*4+dz*dz)/0.9);}
+    cgmp.pos.set([DS.x+x,y,DS.z+z],i*3);cgmp.alpha[i]=Math.max(0,(0.12+0.88*dc)*local);}
+  cgmp.dirty();
+}
+let ionFlux=0;
+
+/* ------------------------------------------------------------------ camera + tour */
+let controls=null;
+if(renderer){controls=new OrbitControls(camera,canvas);controls.enableDamping=false;controls.enablePan=false;controls.rotateSpeed=0.6;
+  controls.addEventListener('start',()=>{userCam=true;setPlaying(false);hideHint();});}
+let T=0,shotIdx=0,shotT=0,playing=!REDUCED,userCam=false,trans=null,activeScene='main';
+let stageFrac=0.5,stageOffset=0,cutFrom=0,cutTo=0,rayFrom=0.35,rayTo=0.35;
+function fitDist(s){
+  const vh=THREE.MathUtils.degToRad(camera.fov)/2;
+  const vEff=Math.atan(Math.tan(vh)*stageFrac);const hh=Math.atan(Math.tan(vh)*camera.aspect*0.92);
+  return Math.min(s.maxD||1e9,Math.max(s.rw/Math.tan(hh),s.rh/Math.tan(vEff)));
+}
+function shotPose(i,t){
+  const s=SHOTS[i];const drift=REDUCED?0:(0.09*Math.sin(t*0.22)+t*0.014);
+  const dir=s.dir.clone().applyAxisAngle(UP,drift);
+  return {tgt:s.tgt.clone(),pos:s.tgt.clone().addScaledVector(dir,fitDist(s))};
+}
+function goShot(i){
+  const prev=SHOTS[shotIdx];shotIdx=(i+SHOTS.length)%SHOTS.length;const s=SHOTS[shotIdx];shotT=0;userCam=false;
+  cutFrom=U.uCut.value.w;cutTo=s.cut;rayFrom=rayVis;rayTo=s.rays;
+  if(s.scene!==prev.scene||REDUCED)trans={type:'cut',t:0,swapped:false};
+  else trans={type:'move',t:0,dur:2.3,fromPos:camera.position.clone(),fromTgt:(controls?controls.target:shotPose(shotIdx,0).tgt).clone()};
+  hudShot();
+}
+function setClip(d){
+  camera.near=Math.max(0.004,d*0.008);camera.far=Math.max(80,d*14);camera.updateProjectionMatrix();
+  U.uFogNear.value=d*1.25;U.uFogFar.value=d*5.5;
+  const bg=activeScene==='ret'?bgRet:bgMain;bg.position.copy(camera.position);bg.scale.setScalar(camera.far*0.85);
+  const micro=activeScene==='ret'?microRet:microMain;const tgt=controls?controls.target:SHOTS[shotIdx].tgt;
+  micro.material.uniforms.uCenter.value.copy(tgt);micro.material.uniforms.uSpan.value=d*1.7;micro.material.uniforms.uSize.value=d*0.0055;
+}
+function updateTour(dt){
+  if(trans){trans.t+=dt;
+    if(trans.type==='cut'){
+      const fade=$('fade');
+      if(!trans.swapped){fade.style.opacity=clamp01(trans.t/0.35);if(trans.t>=0.35){trans.swapped=true;activeScene=SHOTS[shotIdx].scene;if(renderPass)renderPass.scene=activeScene==='ret'?ret:scene;U.uCut.value.w=cutTo;rayVis=rayTo;shotT=0;}}
+      else{fade.style.opacity=clamp01(1-(trans.t-0.35)/0.5);if(trans.t>=0.85){fade.style.opacity=0;trans=null;}}
+    }else{const k=ease(clamp01(trans.t/1.6));U.uCut.value.w=lerp(cutFrom,cutTo,k);rayVis=lerp(rayFrom,rayTo,k);}
+  }
+  cutPlane.constant=U.uCut.value.w;
+  if(!(trans&&trans.type==='cut'&&!trans.swapped))shotT+=dt;
+  if(playing&&shotT>SHOTS[shotIdx].dur)goShot(shotIdx+1);
+}
+function updateCamera(){
+  if(userCam&&controls){controls.update();setClip(camera.position.distanceTo(controls.target));return;}
+  if(trans&&trans.type==='cut'&&!trans.swapped)return;
+  const pose=shotPose(shotIdx,shotT);let pos=pose.pos,tgt=pose.tgt;
+  if(trans&&trans.type==='move'){
+    const k=ease(clamp01(trans.t/trans.dur));
+    tgt=trans.fromTgt.clone().lerp(pose.tgt,k);
+    const d0=trans.fromPos.distanceTo(trans.fromTgt),d1=pose.pos.distanceTo(pose.tgt);
+    const a=trans.fromPos.clone().sub(trans.fromTgt).normalize(),b=pose.pos.clone().sub(pose.tgt).normalize();
+    const qk=new THREE.Quaternion().slerp(new THREE.Quaternion().setFromUnitVectors(a,b),k);
+    const d=Math.exp(Math.log(d0)+(Math.log(d1)-Math.log(d0))*k);
+    pos=tgt.clone().addScaledVector(a.applyQuaternion(qk),d);
+    if(trans.t>=trans.dur)trans=null;
+  }
+  camera.position.copy(pos);camera.lookAt(tgt);if(controls)controls.target.copy(tgt);
+  setClip(pos.distanceTo(tgt));
+}
+
+/* ------------------------------------------------------------------ HUD */
+const el={};for(const id of ['pupVal','pupState','pupilTrace','shotNo','shotKind','zoomTop','capTitle','capSub','capList','caption','barLbl','locator','locNo','locName','sceneName','lumV','lumF','tdV','tdF','accV','accF','defV','defF','rgS','rgM','rgP','focusTgt','rodV','rodF','coneV','coneF','vmV','vmF','dcV','dcF','focusZoom','focusName','focusBar','raster','rasterN','log','prev','play','next','hint','stage'])el[id]=$(id);
+const pad2=n=>String(n).padStart(2,'0');
+function hudShot(){
+  const s=SHOTS[shotIdx];
+  el.shotNo.textContent=pad2(shotIdx+1);el.shotKind.textContent=s.kind;el.zoomTop.textContent=s.zoom;
+  el.capTitle.textContent=s.title;el.capSub.textContent=s.sub;el.capList.replaceChildren(...s.bullets.map(b=>{const li=document.createElement('li');li.textContent=b;return li;}));
+  el.caption.classList.remove('swap');void el.caption.offsetWidth;el.caption.classList.add('swap');
+  el.barLbl.textContent=s.bar;el.focusZoom.textContent=s.zoom;el.focusName.textContent=s.title;el.focusBar.textContent='scale bar '+s.bar;
+  el.locNo.textContent=`${pad2(shotIdx+1)} / ${SHOTS.length}`;el.locName.textContent=s.title.toLowerCase();
+}
+function fitCanvas(c){const r=c.getBoundingClientRect();const d=Math.min(2,window.devicePixelRatio||1);c.width=Math.max(1,Math.round(r.width*d));c.height=Math.max(1,Math.round(r.height*d));const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return {x,w:r.width,h:r.height};}
+let cvTrace,cvRaster,cvLoc,locBase=null,locMap=null;
+function drawTrace(){
+  if(!cvTrace||cvTrace.w<2)return;const {x,w,h}=cvTrace;x.clearRect(0,0,w,h);
+  const yD=v=>h-3-((v-1.5)/6.5)*(h-6),yL=v=>h-3-((v+3.2)/7.2)*(h-6);
+  x.strokeStyle='rgba(140,170,255,.12)';x.lineWidth=1;for(const v of [2,4,6,8]){x.beginPath();x.moveTo(0,yD(v));x.lineTo(w,yD(v));x.stroke();}
+  x.beginPath();for(let i=0;i<PT_N;i++){const v=lumTrace[(ptHead+i)%PT_N];const px=i/(PT_N-1)*w;i?x.lineTo(px,yL(v)):x.moveTo(px,yL(v));}
+  x.strokeStyle='rgba(255,184,77,.55)';x.lineWidth=1.2;x.stroke();
+  x.beginPath();for(let i=0;i<PT_N;i++){const v=pupTrace[(ptHead+i)%PT_N];const px=i/(PT_N-1)*w;i?x.lineTo(px,yD(v)):x.moveTo(px,yD(v));}
+  x.strokeStyle='rgba(114,232,255,.22)';x.lineWidth=5;x.stroke();x.strokeStyle='#72e8ff';x.lineWidth=1.7;x.stroke();
+  const last=pupTrace[(ptHead+PT_N-1)%PT_N];x.fillStyle='#d8fbff';x.beginPath();x.arc(w-2,yD(last),2.4,0,7);x.fill();
+}
+function drawRaster(){
+  if(!cvRaster||cvRaster.w<2)return;const {x,w,h}=cvRaster;x.clearRect(0,0,w,h);const rh=h/8;
+  for(let r=0;r<8;r++){x.fillStyle=r%2?'rgba(140,170,255,.04)':'rgba(140,170,255,.08)';x.fillRect(0,r*rh,w,rh);
+    x.fillStyle=r<4?'#ffb84d':'#b7a1ff';for(const t of raster[r]){const px=w*(1-(T-t)/2.5);x.fillRect(px-0.6,r*rh+rh*0.15,1.2,rh*0.7);}}
+}
+function buildLocator(){
+  if(!cvLoc||cvLoc.w<2)return;const {w,h}=cvLoc;
+  const minX=-38,maxX=15,minY=-13.5,maxY=13.5;
+  const sc=Math.min((w-12)/(maxX-minX),(h-10)/(maxY-minY));const ox=(w-(maxX-minX)*sc)/2,oy=(h-(maxY-minY)*sc)/2;
+  locMap=v=>[ox+(v.x-minX)*sc,oy+(maxY-v.y)*sc];locMap.sc=sc;
+  const d=Math.min(2,window.devicePixelRatio||1);locBase=document.createElement('canvas');locBase.width=Math.round(w*d);locBase.height=Math.round(h*d);
+  const x=locBase.getContext('2d');x.setTransform(d,0,0,d,0,0);x.lineCap='round';
+  const path=(pts,style,lw)=>{x.strokeStyle=style;x.lineWidth=lw;x.beginPath();pts.forEach((p,i)=>{const [a,b]=locMap(p);i?x.lineTo(a,b):x.moveTo(a,b);});x.stroke();};
+  path([...Array(41)].map((_,i)=>nerveCurve.getPointAt(i/40)),'rgba(255,207,122,.75)',Math.max(1.5,2.9*sc));
+  for(const sgn of [1,-1])path([V3(-36,0.8,0),V3(-14,9.5*sgn,0),V3(-2,12.6*sgn,0),V3(5.1,10.85*sgn,0)],'rgba(196,61,99,.7)',1.4);
+  const arc=(r,cx,a0,a1,style,lw)=>path([...Array(61)].map((_,i)=>{const a=a0+(a1-a0)*i/60;return V3(cx+Math.cos(a)*r,Math.sin(a)*r,0);}),style,lw);
+  const ls=Math.asin(LIMBUS/EYE_R);
+  arc(EYE_R,0,ls,Math.PI*2-ls,'rgba(223,230,255,.85)',1.4);arc(RET_R,0,0.86,Math.PI*2-0.86,'rgba(255,106,42,.8)',1);
+  const ca=Math.acos((LIMBUS_X-CORNEA_CX)/CORNEA_R);arc(CORNEA_R,CORNEA_CX,-ca,ca,'rgba(127,208,255,.9)',1.2);
+  path([V3(IRIS_X,1.4,0),V3(IRIS_X,IRIS_R,0)],'rgba(255,170,80,.9)',1.6);path([V3(IRIS_X,-1.4,0),V3(IRIS_X,-IRIS_R,0)],'rgba(255,170,80,.9)',1.6);
+  x.strokeStyle='rgba(143,211,255,.9)';x.lineWidth=1.2;{const [cx,cy]=locMap(V3(LENS_X0,0,0));x.beginPath();x.ellipse(cx,cy,1.9*sc,4.6*sc,0,0,7);x.stroke();}
+}
+function drawLocator(){
+  if(!cvLoc||!locBase||!locMap)return;const {x,w,h}=cvLoc;x.clearRect(0,0,w,h);x.drawImage(locBase,0,0,w,h);
+  x.fillStyle='#9ff4ff';x.shadowColor='#72e8ff';x.shadowBlur=6;for(const p of nervePulses){const [px,py]=locMap(nerveCurve.getPointAt(clamp01((T-p.t0)/1.1)));x.beginPath();x.arc(px,py,1.8,0,7);x.fill();}x.shadowBlur=0;
+  const s=SHOTS[shotIdx];const [cx,cy]=locMap(s.loc);const half=Math.max(4,Math.min(w*0.45,s.locR*locMap.sc));
+  x.strokeStyle='#ffb84d';x.lineWidth=1.2;x.strokeRect(cx-half,cy-half*0.75,half*2,half*1.5);
+  x.strokeStyle='rgba(255,184,77,.35)';x.beginPath();x.moveTo(cx,0);x.lineTo(cx,cy-half*0.75);x.moveTo(cx,cy+half*0.75);x.lineTo(cx,h);x.stroke();
+}
+function bar(f,v,frac,text){f.style.width=(clamp01(frac)*100).toFixed(1)+'%';if(v.textContent!==text)v.textContent=text;}
+let hudAcc=0,lastD=2.67;
+function updateHud(dt,draw=true){
+  hudAcc+=dt;sampleTrace(dt);
+  if(!draw)return;
+  drawTrace();drawRaster();drawLocator();
+  if(!RECORD&&hudAcc<1/15)return;const span=hudAcc;hudAcc=0;
+  el.pupVal.firstChild.textContent=S.D.toFixed(1);
+  const dD=(S.D-lastD)/Math.max(span,1e-3);lastD=S.D;
+  const st=dD<-0.05?'constricting · light ↑':(dD>0.05?'dilating · light ↓':'steady');if(el.pupState.textContent!==st)el.pupState.textContent=st;
+  if(el.sceneName.textContent!==S.scene)el.sceneName.textContent=S.scene;
+  bar(el.lumF,el.lumV,(S.logL+3)/7,fmtNum(S.L)+' cd/m²');
+  bar(el.tdF,el.tdV,(Math.log10(S.Td+1e-4)+2)/7,fmtNum(S.Td)+' Td');
+  bar(el.accF,el.accV,S.A/4,'+'+S.A.toFixed(1)+' D');
+  const df=Math.abs(S.demand-S.A);bar(el.defF,el.defV,df/2,df.toFixed(2)+' D');
+  const rg=S.L<0.005?0:(S.L<5?1:2);el.rgS.classList.toggle('on',rg===0);el.rgM.classList.toggle('on',rg===1);el.rgP.classList.toggle('on',rg===2);
+  const ft=S.demand?'near · 29 cm':'far · ≥ 6 m';if(el.focusTgt.textContent!==ft)el.focusTgt.textContent=ft;
+  bar(el.rodF,el.rodV,S.Rrod,Math.round(S.Rrod*100)+' %'+(S.Rrod>0.98?' sat':''));
+  bar(el.coneF,el.coneV,S.Rcone,Math.round(S.Rcone*100)+' %');
+  const vm=-40-25*S.Rcone;bar(el.vmF,el.vmV,(-vm-40)/25,fmtMinus(vm.toFixed(0))+' mV');
+  bar(el.dcF,el.dcV,1-S.Rrod,Math.round((1-S.Rrod)*100)+' %');
+  const n=raster.reduce((a,r)=>a+r.length,0);el.rasterN.textContent=n+' spikes in window';
+  if(logDirty){logDirty=false;el.log.replaceChildren(...logLines.map(([t,s])=>{const li=document.createElement('li');const tm=document.createElement('time');tm.textContent=t;li.append(tm,' '+s);return li;}));}
+}
+
+/* ------------------------------------------------------------------ controls */
+function setPlaying(p){playing=p;el.play.textContent=p?'❚❚':'▶︎';el.play.setAttribute('aria-label',p?'Pause tour':'Play tour');if(p){userCam=false;}}
+function hideHint(){if(el.hint)el.hint.style.opacity='0';}
+el.prev.addEventListener('click',()=>{hideHint();goShot(shotIdx-1);});
+el.next.addEventListener('click',()=>{hideHint();goShot(shotIdx+1);});
+el.play.addEventListener('click',()=>{hideHint();if(userCam){goShot(shotIdx);}setPlaying(!playing||userCam);});
+addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('button')&&(e.key===' '||e.key==='Enter'))return;
+  if(e.key==='ArrowRight'){goShot(shotIdx+1);hideHint();}else if(e.key==='ArrowLeft'){goShot(shotIdx-1);hideHint();}else if(e.key===' '){e.preventDefault();if(userCam)goShot(shotIdx);setPlaying(!playing);hideHint();}});
+
+/* ------------------------------------------------------------------ render */
+function resize(){
+  const w=innerWidth,h=innerHeight;camera.aspect=w/h;
+  const r=el.stage.getBoundingClientRect();stageFrac=Math.max(0.25,r.height/h);stageOffset=h/2-(r.top+r.height/2);
+  camera.setViewOffset(w,h,0,stageOffset,w,h);camera.updateProjectionMatrix();
+  if(renderer){renderer.setSize(w,h,false);composer.setSize(w,h);}
+  const pr=renderer?renderer.getPixelRatio():1;U.uPx.value=(h*pr)/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2));
+  cvTrace=fitCanvas(el.pupilTrace);cvRaster=fitCanvas(el.raster);cvLoc=fitCanvas(el.locator);buildLocator();
+}
+if(renderer){
+  composer=new EffectComposer(renderer);renderPass=new RenderPass(scene,camera);composer.addPass(renderPass);
+  bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),0.7,0.55,0.7);composer.addPass(bloom);composer.addPass(new OutputPass());
+}
+addEventListener('resize',resize);
+resize();hudShot();
+
+function step(dt,draw=true){T+=dt;U.uTime.value=T;simulate(dt);updateTour(dt);updateEye(dt);updateRetina(dt);updateCamera();updateHud(dt,draw);}
+function render(){if(composer)composer.render();}
+
+{const p=shotPose(0,0);camera.position.copy(p.tgt).addScaledVector(p.pos.clone().sub(p.tgt),2.2);camera.lookAt(p.tgt);if(controls)controls.target.copy(p.tgt);
+ U.uCut.value.w=SHOTS[0].cut;rayVis=SHOTS[0].rays;
+ if(!REDUCED)trans={type:'move',t:0,dur:3.0,fromPos:camera.position.clone(),fromTgt:p.tgt.clone()};cutFrom=cutTo=SHOTS[0].cut;rayFrom=rayTo=rayVis;}
+log('model online · room light 80 cd/m²');
+
+if(RECORD){
+  window.__atlas={duration:TOUR_LEN,step(dt){step(dt);render();return T;},advance(dt){step(dt,false);return T;},render(){render();},ready:(async()=>{try{await document.fonts.ready;}catch(e){}resize();step(1/60);render();return true;})()};
+}else{
+  let last=performance.now();
+  const loop=now=>{const dt=Math.min(0.05,(now-last)/1000);last=now;step(dt);render();requestAnimationFrame(loop);};
+  requestAnimationFrame(loop);
+}
+</script>
