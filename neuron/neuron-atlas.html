@@ -1,0 +1,1133 @@
+<title>Neuron Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Saira+Condensed:wght@500;600;700;800&family=Saira:wght@400;500&display=swap">
+<style>
+/* Layout: a full-bleed WebGL specimen stage framed by two glass instrument bands.
+   Top band = identity, profile, membrane potential. Bottom band = live readouts driven by the model. */
+:root{
+  --ink:#03060f;
+  --glass:rgba(13,26,58,.60);
+  --glass-2:rgba(6,13,32,.52);
+  --line:rgba(136,166,255,.22);
+  --text:#e3e9ff;
+  --muted:#8d9cc4;
+  --amber:#ffb84d;
+  --lilac:#b7a1ff;
+  --cyan:#72e8ff;
+  --pink:#ff74c8;
+  --blue:#8cb1ff;
+  --display:"Saira Condensed","Arial Narrow","Roboto Condensed",sans-serif;
+  --body:"Saira","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(120% 95% at 50% 46%,transparent 52%,rgba(2,4,12,.6) 100%)}
+#fade{position:fixed;inset:0;background:var(--ink);opacity:0;pointer-events:none}
+#hud{position:fixed;inset:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;
+  padding-block:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  pointer-events:none}
+
+/* Bands */
+.band{display:grid;background:linear-gradient(180deg,var(--glass),var(--glass-2));border:1px solid var(--line);border-radius:12px;
+  backdrop-filter:blur(10px) saturate(1.25);-webkit-backdrop-filter:blur(10px) saturate(1.25);
+  box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)}
+.band>section{min-width:0;padding:11px 16px}
+.band>section+section{border-left:1px solid var(--line)}
+.top{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1.3fr)}
+.bottom{grid-template-columns:minmax(0,.95fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr)}
+.label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 7px}
+.label h2{margin:0;font:600 10px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--text);white-space:nowrap}
+.label span{font:500 9.5px/1.2 var(--mono);letter-spacing:.06em;color:var(--amber);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{margin-top:10px}
+
+/* Brand */
+.eyebrow{margin:0;font:600 10px/1.2 var(--mono);letter-spacing:.18em;color:var(--amber);text-transform:uppercase}
+.brand h1{margin:6px 0 3px;font:800 clamp(30px,3.4vw,48px)/.9 var(--display);letter-spacing:.03em;color:var(--amber);text-transform:uppercase;text-wrap:balance;text-shadow:0 0 22px rgba(255,184,77,.25)}
+.brand h1 em{font-style:normal;color:var(--lilac);text-shadow:0 0 22px rgba(183,161,255,.35)}
+.tag{margin:0;font:600 12px/1.3 var(--display);letter-spacing:.3em;text-transform:uppercase}
+.note{margin:5px 0 0;font:400 10px/1.3 var(--mono);color:var(--muted)}
+
+/* Profile */
+.profile dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;font-size:11.5px;line-height:1.45}
+.profile dt{color:var(--muted)}
+.profile dd{margin:0;text-align:right;font:500 11px/1.45 var(--mono);color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Membrane potential */
+.vmrow{display:flex;align-items:center;gap:14px}
+.vmrow output{font:700 42px/1 var(--display);color:var(--cyan);font-variant-numeric:tabular-nums;min-width:3.1ch;text-shadow:0 0 16px rgba(114,232,255,.45)}
+.vmrow b{display:block;font:600 11.5px/1.35 var(--mono);color:var(--text)}
+.vmrow small{display:block;font:400 10px/1.35 var(--mono);color:var(--muted)}
+#vmTrace{display:block;width:100%;height:44px;margin-top:5px}
+.legend{margin:3px 0 0;font:400 9.5px/1.3 var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Stage */
+.stage{position:relative;min-height:0}
+.corner{position:absolute;width:22px;height:22px;border:0 solid rgba(205,218,255,.55)}
+.tl{top:0;left:0;border-top-width:1.5px;border-left-width:1.5px}
+.tr{top:0;right:0;border-top-width:1.5px;border-right-width:1.5px}
+.bl{bottom:0;left:0;border-bottom-width:1.5px;border-left-width:1.5px}
+.br{bottom:0;right:0;border-bottom-width:1.5px;border-right-width:1.5px}
+.stage-top{position:absolute;top:10px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;font:600 10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:7px 12px;white-space:nowrap;backdrop-filter:blur(6px)}
+.chip b{font-weight:600;color:var(--amber)}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber);animation:blink 1.6s ease-in-out infinite}
+.kind::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.zoom{font:700 26px/1 var(--display);letter-spacing:.02em;color:var(--text);font-variant-numeric:tabular-nums;text-shadow:0 0 14px rgba(0,0,0,.7)}
+.caption{position:absolute;left:12px;bottom:12px;width:min(350px,calc(100% - 24px));background:linear-gradient(180deg,var(--glass),var(--glass-2));
+  border:1px solid var(--line);border-radius:10px;padding:11px 15px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.caption h3{margin:0;font:700 23px/1 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--blue);text-wrap:balance}
+.caption p{margin:4px 0 0;font:500 12px/1.35 var(--body);color:var(--muted)}
+.caption ul{margin:7px 0 0;padding:0;list-style:none;display:grid;gap:1px;font:400 11px/1.45 var(--mono);color:var(--text)}
+.caption li::before{content:"› ";color:var(--amber)}
+.caption.swap{animation:swap .7s cubic-bezier(.2,.7,.2,1)}
+.scale{position:absolute;right:16px;bottom:16px;display:grid;justify-items:center;gap:5px;font:500 10.5px/1 var(--mono);color:var(--text);text-shadow:0 0 8px #000}
+.scale i{display:block;width:84px;height:6px;border:1.5px solid rgba(226,234,255,.85);border-top:0}
+.controls{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;pointer-events:auto}
+.controls button{font:600 11px/1 var(--mono);color:var(--text);background:var(--glass);border:1px solid var(--line);border-radius:999px;height:32px;min-width:36px;padding:0 12px;cursor:pointer;backdrop-filter:blur(6px)}
+.controls button:hover{border-color:rgba(255,184,77,.6);color:var(--amber)}
+.controls button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.hint{font:400 10px/1 var(--mono);color:var(--muted);margin-left:6px;white-space:nowrap;text-shadow:0 0 8px #000;transition:opacity .6s}
+#glerr{position:absolute;left:12px;right:12px;top:45%;margin:0;text-align:center;font:500 13px/1.5 var(--mono);color:var(--muted)}
+
+/* Bottom readouts */
+#locator{display:block;width:100%;height:92px;border-radius:6px;background:rgba(3,8,22,.55)}
+.foot{display:flex;justify-content:space-between;gap:8px;margin-top:5px;font:400 9.5px/1.3 var(--mono);color:var(--muted);white-space:nowrap}
+.foot span{overflow:hidden;text-overflow:ellipsis}
+.rows{display:grid;gap:5px}
+.row{display:grid;grid-template-columns:minmax(0,7.4em) minmax(24px,1fr) 4.8em;align-items:center;gap:10px;font:400 11px/1.25 var(--body);color:var(--muted)}
+.row>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .t{height:6px;border-radius:3px;background:rgba(140,170,255,.12);overflow:hidden}
+.row .t i{display:block;height:100%;width:0;border-radius:3px;background:var(--c);box-shadow:0 0 8px var(--c)}
+.row output{font:500 11px/1 var(--mono);text-align:right;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cv{display:flex;align-items:center;gap:12px}
+.cv svg{width:46px;height:46px;flex:none}
+.cv ul,.focus ul{margin:0;padding:0;list-style:none;font:400 9.5px/1.5 var(--mono);color:var(--muted);min-width:0}
+.cv li,.focus li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.focus{display:flex;align-items:center;gap:14px}
+.focus b{display:block;font:700 30px/1 var(--display);color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.focus span{display:block;font:600 9.5px/1.3 var(--mono);letter-spacing:.14em;color:var(--blue);text-transform:uppercase;margin-top:3px;white-space:nowrap}
+#raster{display:block;width:100%;height:50px}
+#log{margin:0;padding:0;list-style:none;font:400 9.5px/1.5 var(--mono);color:var(--muted);display:grid}
+#log li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#log li:first-child{color:var(--text)}
+#log time{color:var(--amber);display:inline-block;min-width:4.6ch}
+
+@keyframes blink{50%{opacity:.35}}
+@keyframes swap{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.rec .controls{display:none}
+/* Recording runs in software; live background blur would cost seconds per frame, so panels go a little more opaque instead. */
+.rec{--glass:rgba(11,22,52,.80);--glass-2:rgba(5,11,28,.74)}
+.rec .band,.rec .caption,.rec .chip{backdrop-filter:none;-webkit-backdrop-filter:none}
+
+@media (max-width:1100px){
+  .profile,.locator{display:none}
+  .top{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+  .bottom{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  #hud{gap:8px}
+  .band>section{padding:9px 12px}
+  .top{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+  .brand h1{font-size:26px}
+  .tag{letter-spacing:.16em;font-size:10px}
+  .note,.vmrow small,.legend,.sub,.rasterp,.stage-top .kind,.hint,.caption ul,.label span{display:none}
+  .vmrow{gap:10px}
+  .vmrow output{font-size:30px}
+  #vmTrace{height:30px}
+  .bottom{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row{grid-template-columns:minmax(0,1fr) auto;gap:3px 8px}
+  .row .t{grid-column:1 / -1;grid-row:2}
+  .caption{right:12px;width:auto;bottom:54px;padding:9px 12px}
+  .caption h3{font-size:19px}
+  .zoom{font-size:20px}
+}
+@media (max-height:600px) and (min-width:721px){
+  .bottom,.profile{display:none}
+  .top{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .live::before{animation:none}
+  .caption.swap{animation:none}
+}
+</style>
+
+<canvas id="gl" aria-label="Interactive 3D model of a neuron"></canvas>
+<div class="vignette"></div>
+<div id="fade"></div>
+
+<div id="hud">
+  <header class="band top">
+    <section class="brand">
+      <p class="eyebrow">✳ Live model · Hodgkin–Huxley</p>
+      <h1>Neuron <em>Atlas</em></h1>
+      <p class="tag">Structure · Signal · Connection</p>
+      <p class="note">false colour · schematic, not to scale</p>
+    </section>
+    <section class="profile">
+      <div class="label"><h2>Neuron profile</h2></div>
+      <dl>
+        <dt>Type</dt><dd>multipolar · motor</dd>
+        <dt>Soma diameter</dt><dd>4 – 100 µm</dd>
+        <dt>Axon length</dt><dd>up to ≈ 1 m</dd>
+        <dt>Synapses / neuron</dt><dd>≈ 1 000 – 10 000</dd>
+        <dt>Resting potential</dt><dd>−65 to −70 mV</dd>
+        <dt>Kinetics</dt><dd>Hodgkin–Huxley 1952</dd>
+      </dl>
+    </section>
+    <section class="vm">
+      <div class="label"><h2>Membrane potential</h2><span>mV · live</span></div>
+      <div class="vmrow">
+        <output id="vmVal">−65</output>
+        <div><b id="vmState">resting</b><small>threshold ≈ −55 mV</small></div>
+      </div>
+      <canvas id="vmTrace"></canvas>
+      <p class="legend">Na⁺ in → spike → K⁺ out → reset · trace: 1 s = 25 ms</p>
+    </section>
+  </header>
+
+  <main class="stage" id="stage">
+    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <div class="stage-top">
+      <span class="chip live">Live · shot <b id="shotNo">01</b>/ 10</span>
+      <span class="chip kind" id="shotKind">Wide · whole neuron</span>
+      <span class="zoom" id="zoomTop">×150</span>
+    </div>
+    <p id="glerr" hidden>3D view unavailable: this browser has WebGL turned off. The live model and readouts still run.</p>
+    <div class="caption" id="caption">
+      <h3 id="capTitle">Motor neuron</h3>
+      <p id="capSub">Dendrites · soma · myelinated axon</p>
+      <ul id="capList"></ul>
+    </div>
+    <div class="scale"><span id="barLbl">≈ 100 µm</span><i></i></div>
+    <nav class="controls" aria-label="Tour controls">
+      <button id="prev" type="button" aria-label="Previous shot">◀</button>
+      <button id="play" type="button" aria-label="Pause tour">❚❚</button>
+      <button id="next" type="button" aria-label="Next shot">▶</button>
+      <span class="hint" id="hint">drag to look around · ← → shots · space pauses</span>
+    </nav>
+  </main>
+
+  <footer class="band bottom">
+    <section class="locator">
+      <div class="label"><h2>Locator · section</h2><span>live</span></div>
+      <canvas id="locator"></canvas>
+      <div class="foot"><span id="locNo">01 / 10</span><span id="locName">whole neuron → parts → whole</span></div>
+    </section>
+    <section class="chan">
+      <div class="label"><h2>Ion channels</h2><span>open fraction · peak hold</span></div>
+      <div class="rows">
+        <div class="row" style="--c:var(--amber)"><span>Na⁺ in</span><span class="t"><i id="naF"></i></span><output id="naV">0 %</output></div>
+        <div class="row" style="--c:var(--blue)"><span>K⁺ out</span><span class="t"><i id="kF"></i></span><output id="kV">0 %</output></div>
+        <div class="row" style="--c:var(--pink)"><span>Ca²⁺ bouton</span><span class="t"><i id="caF"></i></span><output id="caV">0 %</output></div>
+        <div class="row" style="--c:var(--lilac)"><span>Na⁺/K⁺ pump</span><span class="t"><i id="pmF"></i></span><output id="pmV">30 %</output></div>
+      </div>
+      <div class="sub">
+        <div class="label"><h2>Conduction velocity</h2><span>m/s</span></div>
+        <div class="cv">
+          <svg viewBox="0 0 46 46" aria-hidden="true">
+            <circle cx="23" cy="23" r="19" fill="none" stroke="rgba(140,170,255,.16)" stroke-width="4"/>
+            <circle id="cvArc" cx="23" cy="23" r="19" fill="none" stroke="#72e8ff" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 120" transform="rotate(-90 23 23)"/>
+            <text id="cvVal" x="23" y="27" text-anchor="middle" fill="#e3e9ff" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">98</text>
+          </svg>
+          <ul><li>myelinated · up to 120</li><li>bare axon · 0.5 – 2</li><li>saltatory · node → node</li></ul>
+        </div>
+      </div>
+    </section>
+    <section class="syn">
+      <div class="label"><h2>Synapse · live</h2><span>glutamate</span></div>
+      <div class="rows">
+        <div class="row" style="--c:var(--amber)"><span>Vesicles / spike</span><span class="t"><i id="vesF"></i></span><output id="vesV">0</output></div>
+        <div class="row" style="--c:var(--pink)"><span>Glutamate cleft</span><span class="t"><i id="gluF"></i></span><output id="gluV">0.00 mM</output></div>
+        <div class="row" style="--c:var(--cyan)"><span>AMPA open</span><span class="t"><i id="ampaF"></i></span><output id="ampaV">0 %</output></div>
+        <div class="row" style="--c:var(--lilac)"><span>EPSP</span><span class="t"><i id="epspF"></i></span><output id="epspV">+0.00 mV</output></div>
+      </div>
+      <div class="sub">
+        <div class="label"><h2>Focus</h2><span>zoom</span></div>
+        <div class="focus">
+          <div><b id="focusZoom">×150</b><span id="focusName">whole neuron</span></div>
+          <ul><li id="focusBar">scale bar ≈ 100 µm</li><li>propagation slowed for display</li></ul>
+        </div>
+      </div>
+    </section>
+    <section class="rasterp">
+      <div class="label"><h2>Spike raster</h2><span>8 neurons · 2.5 s</span></div>
+      <canvas id="raster"></canvas>
+      <div class="foot"><span>row 1 = this axon</span><span id="rasterN">0 spikes in window</span></div>
+      <div class="label sub"><h2>Neuron log</h2><span>live</span></div>
+      <ol id="log"></ol>
+    </section>
+  </footer>
+</div>
+
+<script>
+  // If the 3D module cannot load (offline, blocked CDN), say so instead of showing an empty stage.
+  setTimeout(function(){ if(!window.__neuronBooted){ var e=document.getElementById('glerr'); if(e){ e.textContent='3D view could not load (three.js did not arrive). Check the connection and reload.'; e.hidden=false; } } }, 8000);
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+
+window.__neuronBooted = true;
+const RECORD = new URLSearchParams(location.search).has('record');
+const REDUCED = !RECORD && matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (RECORD) document.documentElement.classList.add('rec');
+
+/* ------------------------------------------------------------------ helpers */
+const $ = id => document.getElementById(id);
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R = mulberry32(20261031);   // geometry
+const RS = mulberry32(1952);      // simulation
+const rr = (a,b,r=R) => a+(b-a)*r();
+const V3 = (x=0,y=0,z=0) => new THREE.Vector3(x,y,z);
+const UP = V3(0,1,0);
+function randUnit(r=R){const u=r()*2-1,a=r()*Math.PI*2,s=Math.sqrt(1-u*u);return V3(s*Math.cos(a),u,s*Math.sin(a))}
+function randBall(r=R){return randUnit(r).multiplyScalar(Math.cbrt(r()))}
+const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const smooth = (a,b,x) => {const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t)};
+const clamp01 = x => Math.min(1,Math.max(0,x));
+function frameAt(curve,u){const T=curve.getTangentAt(u).normalize();const ref=Math.abs(T.y)<.9?UP:V3(1,0,0);const N=V3().crossVectors(T,ref).normalize();const B=V3().crossVectors(T,N).normalize();return{T,N,B}}
+function perpTo(T,hint){const h=hint.clone().normalize();return h.sub(T.clone().multiplyScalar(h.dot(T))).normalize()}
+function gauss(r=RS){return Math.sqrt(-2*Math.log(r()+1e-9))*Math.cos(2*Math.PI*r())}
+const fmtMinus = s => String(s).replace('-', '−');
+
+/* Tube with a radius profile, so dendrites taper and myelin swells. */
+function taperTube(curve,segs,radial,rFn,wobble=0){
+  const fr=curve.computeFrenetFrames(segs,false);const P=[],N=[],UV=[],I=[];const p=V3();
+  for(let i=0;i<=segs;i++){
+    const u=i/segs;curve.getPointAt(u,p);const n=fr.normals[i],b=fr.binormals[i],r=rFn(u);
+    for(let j=0;j<=radial;j++){
+      const v=j/radial*Math.PI*2,s=Math.sin(v),c=-Math.cos(v);
+      const nx=c*n.x+s*b.x,ny=c*n.y+s*b.y,nz=c*n.z+s*b.z;
+      const rw=r*(1+wobble*Math.sin(v*3+u*17)*Math.sin(u*31+v));
+      N.push(nx,ny,nz);P.push(p.x+rw*nx,p.y+rw*ny,p.z+rw*nz);UV.push(u,j/radial);
+    }
+  }
+  for(let i=0;i<segs;i++)for(let j=0;j<radial;j++){const a=i*(radial+1)+j,b=(i+1)*(radial+1)+j;I.push(a,b,a+1,b,b+1,a+1)}
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));
+  g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));
+  g.setAttribute('uv',new THREE.Float32BufferAttribute(UV,2));
+  g.setIndex(I);return g;
+}
+
+/* ------------------------------------------------------------------ shaders */
+const NOISE = `
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){
+  const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0);
+  vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);
+  vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.0-g;vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);
+  vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy;vec3 x3=x0-D.yyy;
+  i=mod289(i);
+  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+  float n_=0.142857142857;vec3 ns=n_*D.wyz-D.xzx;
+  vec4 j=p-49.0*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.0*x_);
+  vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.0-abs(x)-abs(y);
+  vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);
+  vec4 s0=floor(b0)*2.0+1.0;vec4 s1=floor(b1)*2.0+1.0;vec4 sh=-step(h,vec4(0.0));
+  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+  vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);
+  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+  p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0);m=m*m;
+  return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+}`;
+
+const TISSUE_VS = `
+varying vec3 vN;
+varying vec3 vW;
+varying vec2 vUv;
+varying vec3 vIC;
+void main(){
+  mat4 M=modelMatrix;
+  #ifdef USE_INSTANCING
+  M=modelMatrix*instanceMatrix;
+  #endif
+  vec4 w=M*vec4(position,1.0);
+  vW=w.xyz;vN=normalize(mat3(M)*normal);vUv=uv;
+  #ifdef USE_INSTANCING_COLOR
+  vIC=instanceColor;
+  #else
+  vIC=vec3(1.0);
+  #endif
+  gl_Position=projectionMatrix*viewMatrix*w;
+}`;
+
+const TISSUE_FS = NOISE + `
+uniform vec3 uColor;
+uniform vec3 uRim;
+uniform vec3 uPulseCol;
+uniform vec3 uFogCol;
+uniform vec3 uLight;
+uniform float uTime;
+uniform float uGlow;
+uniform float uNoise;
+uniform float uRimPow;
+uniform float uTrans;
+uniform float uOpacity;
+uniform float uStripe;
+uniform vec2 uStripeV;
+uniform float uPulseR;
+uniform float uPulseGain;
+uniform float uFogNear;
+uniform float uFogFar;
+uniform vec4 uPulse[4];
+varying vec3 vN;
+varying vec3 vW;
+varying vec2 vUv;
+varying vec3 vIC;
+void main(){
+  vec3 V=normalize(cameraPosition-vW);
+  vec3 N=normalize(vN);
+  if(!gl_FrontFacing) N=-N;
+  float n1=snoise(vW*uNoise+vec3(0.0,0.0,uTime*0.04));
+  float n2=snoise(vW*uNoise*3.1+7.0);
+  N=normalize(N+0.22*vec3(n1,n2,n1*n2));
+  float ndv=clamp(dot(N,V),0.0,1.0);
+  float fres=pow(1.0-ndv,uRimPow);
+  float dif=0.25+0.75*clamp(dot(N,uLight)*0.5+0.5,0.0,1.0);
+  vec3 base=uColor*vIC*(0.72+0.38*n2);
+  float st=1.0+uStripe*0.5*sin(dot(vUv,uStripeV)*6.2831853+n1*1.4);
+  vec3 col=base*dif*st*0.78+uRim*fres*1.0+base*uGlow;
+  float spec=pow(clamp(dot(reflect(-uLight,N),V),0.0,1.0),22.0);
+  col+=vec3(0.85,0.92,1.0)*spec*0.22;
+  float p=0.0;
+  for(int i=0;i<4;i++){vec3 d=vW-uPulse[i].xyz;p+=uPulse[i].w*exp(-dot(d,d)/(uPulseR*uPulseR));}
+  col+=uPulseCol*p*1.8*uPulseGain;
+  float a=uOpacity*mix(1.0,clamp(0.07+fres*1.15,0.0,1.0),uTrans);
+  float dist=length(cameraPosition-vW);
+  col=mix(col,uFogCol,smoothstep(uFogNear,uFogFar,dist));
+  gl_FragColor=vec4(col,a);
+}`;
+
+const PTS_VS = `
+attribute float aAlpha;
+attribute vec3 aColor;
+uniform float uSize;
+uniform float uPx;
+uniform float uNearFade;
+varying float vA;
+varying vec3 vC;
+void main(){
+  vec4 mv=modelViewMatrix*vec4(position,1.0);
+  gl_Position=projectionMatrix*mv;
+  float z=max(-mv.z,0.001);
+  gl_PointSize=clamp(uSize*uPx/z,0.0,40.0);
+  vA=aAlpha*(uNearFade>0.0?smoothstep(uNearFade,uNearFade*4.0,z):1.0);
+  vC=aColor;
+}`;
+const PTS_FS = `
+uniform vec3 uColor;
+uniform float uOpacity;
+varying float vA;
+varying vec3 vC;
+void main(){
+  vec2 c=gl_PointCoord-0.5;float d=length(c);if(d>0.5) discard;
+  float a=pow(1.0-d*2.0,1.6);
+  gl_FragColor=vec4(uColor*vC,a*vA*uOpacity);
+}`;
+
+const MICRO_VS = `
+uniform vec3 uCenter;
+uniform float uSpan;
+uniform float uTime;
+uniform float uSize;
+uniform float uPx;
+varying float vA;
+void main(){
+  vec3 q=fract(position+vec3(0.013,0.007,-0.011)*uTime)-0.5;
+  vec3 w=uCenter+q*uSpan;
+  vec4 mv=viewMatrix*vec4(w,1.0);
+  gl_Position=projectionMatrix*mv;
+  float z=max(-mv.z,0.001);
+  gl_PointSize=clamp(uSize*uPx/z,0.0,22.0);
+  float edge=1.0-smoothstep(0.32,0.5,max(max(abs(q.x),abs(q.y)),abs(q.z)));
+  vA=edge*smoothstep(0.0,uSpan*0.06,z)*(0.3+0.7*fract(position.x*97.0));
+}`;
+const MICRO_FS = `
+uniform vec3 uColor;
+varying float vA;
+void main(){vec2 c=gl_PointCoord-0.5;float d=length(c);if(d>0.5) discard;gl_FragColor=vec4(uColor,pow(1.0-d*2.0,2.0)*vA);}`;
+
+const BG_VS = `varying vec3 vD;void main(){vD=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;
+const BG_FS = NOISE + `
+uniform float uTime;uniform vec3 uA;uniform vec3 uB;uniform vec3 uC;varying vec3 vD;
+void main(){
+  float n=snoise(vD*2.2+vec3(0.0,0.0,uTime*0.01))*0.5+0.5;
+  float n2=snoise(vD*6.0+3.0)*0.5+0.5;
+  float n3=snoise(vD*28.0)*0.5+0.5;
+  vec3 c=mix(uA,uB,smoothstep(0.25,0.95,n));
+  c+=uC*pow(n2,5.0)*0.55;
+  c+=vec3(0.55,0.7,1.0)*pow(n3,18.0)*0.8;
+  gl_FragColor=vec4(c,1.0);
+}`;
+
+const LAM_VS = `varying vec2 vP;void main(){vP=position.xy;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;
+const LAM_FS = NOISE + `
+uniform float uRin;uniform float uRout;uniform float uTime;varying vec2 vP;
+void main(){
+  float r=length(vP);float th=atan(vP.y,vP.x);
+  float t=(r-uRin)/(uRout-uRin);
+  float n=snoise(vec3(vP*2.6,0.7))*0.5+snoise(vec3(vP*9.0,3.1))*0.25;
+  float ph=t*24.0+th/6.2831853+n*0.55;
+  float lam=fract(ph);
+  float major=smoothstep(0.0,0.10,lam)*smoothstep(0.32,0.16,lam);
+  float minor=smoothstep(0.52,0.58,lam)*smoothstep(0.70,0.62,lam);
+  vec3 deep=vec3(0.006,0.014,0.07);vec3 mid=vec3(0.035,0.12,0.55);vec3 hi=vec3(0.18,0.42,1.05);
+  vec3 col=mix(deep,mid,0.5+0.5*n)+hi*major*0.6+mid*minor*0.55;
+  col*=0.8+0.35*smoothstep(0.0,0.3,t);
+  col+=vec3(1.1,0.5,0.15)*smoothstep(0.04,0.0,t);
+  col+=vec3(0.3,0.45,1.1)*smoothstep(0.95,1.0,t)*0.6;
+  gl_FragColor=vec4(col,1.0);
+}`;
+
+/* ------------------------------------------------------------------ renderer */
+const canvas = $('gl');
+let renderer=null, composer=null, renderPass=null, bloom=null;
+try{
+  renderer = new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:RECORD,powerPreference:'high-performance'});
+  renderer.setPixelRatio(RECORD ? (window.devicePixelRatio||1) : Math.min(window.devicePixelRatio||1,1.6));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+}catch(e){ renderer=null; $('glerr').hidden=false; }
+
+const camera = new THREE.PerspectiveCamera(38,1,0.02,600);
+const scene = new THREE.Scene();
+const xs = new THREE.Scene();
+
+const U = {
+  uTime:{value:0}, uPulseR:{value:1.1}, uPx:{value:800},
+  uPulse:{value:[new THREE.Vector4(),new THREE.Vector4(),new THREE.Vector4(),new THREE.Vector4()]},
+  uPulseCol:{value:new THREE.Color('#9ff4ff')},
+  uFogCol:{value:new THREE.Color('#050c22')},
+  uFogNear:{value:60}, uFogFar:{value:400},
+  uLight:{value:V3(0.45,0.8,0.55).normalize()},
+};
+function tissue({color,rim='#cfe0ff',glow=0,noise=0.6,rimPow=2.2,trans=0,opacity=1,stripe=0,stripeV=[0,0],pulse=1,side=THREE.FrontSide}={}){
+  const t = trans>0||opacity<1;
+  return new THREE.ShaderMaterial({
+    uniforms:{
+      uTime:U.uTime,uPulse:U.uPulse,uPulseR:U.uPulseR,uPulseCol:U.uPulseCol,uFogCol:U.uFogCol,uFogNear:U.uFogNear,uFogFar:U.uFogFar,uLight:U.uLight,
+      uColor:{value:new THREE.Color(color)},uRim:{value:new THREE.Color(rim)},uGlow:{value:glow},uNoise:{value:noise},uRimPow:{value:rimPow},
+      uTrans:{value:trans},uOpacity:{value:opacity},uStripe:{value:stripe},uStripeV:{value:new THREE.Vector2(...stripeV)},uPulseGain:{value:pulse},
+    },
+    vertexShader:TISSUE_VS,fragmentShader:TISSUE_FS,transparent:t,depthWrite:!t,side,
+  });
+}
+function pointsMat({color='#ffffff',size=0.1,nearFade=0}={}){
+  return new THREE.ShaderMaterial({
+    uniforms:{uColor:{value:new THREE.Color(color)},uSize:{value:size},uPx:U.uPx,uNearFade:{value:nearFade},uOpacity:{value:1}},
+    vertexShader:PTS_VS,fragmentShader:PTS_FS,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+  });
+}
+function makePoints(n,mat){
+  const geo=new THREE.BufferGeometry();
+  const pos=new Float32Array(n*3),alpha=new Float32Array(n),col=new Float32Array(n*3).fill(1);
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('aAlpha',new THREE.BufferAttribute(alpha,1));
+  geo.setAttribute('aColor',new THREE.BufferAttribute(col,3));
+  const pts=new THREE.Points(geo,mat);pts.frustumCulled=false;
+  return {pts,geo,pos,alpha,col,mat,dirty(){geo.attributes.position.needsUpdate=true;geo.attributes.aAlpha.needsUpdate=true;geo.attributes.aColor.needsUpdate=true;}};
+}
+function bgSphere(){
+  const m=new THREE.Mesh(new THREE.SphereGeometry(1,48,32),new THREE.ShaderMaterial({
+    uniforms:{uTime:U.uTime,uA:{value:new THREE.Color('#030818')},uB:{value:new THREE.Color('#0b1f52')},uC:{value:new THREE.Color('#2a1f6e')}},
+    vertexShader:BG_VS,fragmentShader:BG_FS,side:THREE.BackSide,depthWrite:false}));
+  m.renderOrder=-10;m.frustumCulled=false;return m;
+}
+function microCloud(color){
+  const n=1400,pos=new Float32Array(n*3);for(let i=0;i<n*3;i++)pos[i]=R();
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const mat=new THREE.ShaderMaterial({uniforms:{uCenter:{value:V3()},uSpan:{value:10},uTime:U.uTime,uSize:{value:0.05},uPx:U.uPx,uColor:{value:new THREE.Color(color)}},
+    vertexShader:MICRO_VS,fragmentShader:MICRO_FS,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending});
+  const p=new THREE.Points(geo,mat);p.frustumCulled=false;return p;
+}
+const dummy = new THREE.Object3D();
+
+/* ------------------------------------------------------------------ the neuron */
+const PAL = {soma:'#9a78ff',dend:'#7a68ff',spine:'#b892ff',axon:'#ffad45',myelin:'#3d7cff',chanNa:'#62f0ff',chanK:'#a98bff',bouton:'#ffa24a',post:'#a07aff',nucleus:'#5468ff',nucleolus:'#ff6ec7',nissl:'#ffc861',mito:'#ff7f3a',ves:'#ffd06e',rec:'#62f0ff'};
+
+// Soma: a pear-shaped sphere pulled toward the axon hillock.
+const somaG = new THREE.SphereGeometry(2.2,96,64);
+{const p=somaG.attributes.position,v=V3();for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i).normalize();const d=v.clone();
+  const r=2.2*(1+0.07*Math.sin(3*d.x+1)*Math.cos(4*d.y)+0.05*Math.sin(7*d.z+2*d.x));v.multiplyScalar(r);v.x+=0.9*Math.pow(Math.max(d.x,0),4);p.setXYZ(i,v.x,v.y,v.z);}
+ somaG.computeVertexNormals();}
+const somaMat = tissue({color:PAL.soma,rim:'#d9c8ff',glow:0.12,trans:0.82,noise:0.9,side:THREE.DoubleSide});
+scene.add(new THREE.Mesh(somaG,somaMat));
+const nucleus = new THREE.Mesh(new THREE.SphereGeometry(0.95,48,32),tissue({color:PAL.nucleus,rim:'#a9b6ff',glow:0.18,trans:0.55,noise:1.6}));
+nucleus.position.set(-0.25,0.15,0);scene.add(nucleus);
+const nucleolus = new THREE.Mesh(new THREE.SphereGeometry(0.3,32,24),tissue({color:PAL.nucleolus,rim:'#ffd0ef',glow:0.9,noise:3.0}));
+nucleolus.position.set(-0.05,0.3,0.2);scene.add(nucleolus);
+{
+  const g=new THREE.SphereGeometry(1,10,8);const n=150;
+  const m=new THREE.InstancedMesh(g,tissue({color:PAL.nissl,rim:'#fff0c8',glow:0.28,noise:2.5}),n);
+  for(let i=0;i<n;i++){const d=randUnit();if(d.x>0.7)d.x*=-1;dummy.position.copy(d.multiplyScalar(rr(1.2,1.85)));dummy.rotation.set(rr(0,6),rr(0,6),rr(0,6));dummy.scale.set(rr(.08,.14),rr(.03,.05),rr(.06,.1));dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);}
+  scene.add(m);
+}
+
+// Dendrites: recursive branching tree with tapering tubes.
+const branches=[];
+function grow(start,dir,len,r0,depth){
+  const pts=[start.clone()],p=start.clone(),d=dir.clone().normalize();
+  for(let i=1;i<=5;i++){d.add(randUnit().multiplyScalar(0.28)).normalize();p.addScaledVector(d,len/5);pts.push(p.clone());}
+  const curve=new THREE.CatmullRomCurve3(pts,false,'centripetal');
+  const terminal=depth===3;const r1=terminal?0.04:r0*0.62;
+  branches.push({curve,r0,r1,depth,len});
+  if(!terminal){const t=curve.getTangentAt(1);for(let k=0;k<2;k++){const nd=t.clone().add(randUnit().multiplyScalar(0.85)).normalize();grow(curve.getPointAt(1),nd,len*rr(0.62,0.82),r1*(k?0.85:1),depth+1);}}
+}
+for(const v of [[-1,.2,.1],[-.6,.8,.3],[-.5,-.7,.4],[-.3,.3,-.9],[.1,.9,-.4],[.05,-.8,-.6],[-.8,-.1,-.6]]){const dir=V3(...v).normalize();grow(dir.clone().multiplyScalar(1.9),dir,rr(6.5,8.5),0.62,0);}
+const bR = (b,u) => b.r0+(b.r1-b.r0)*Math.pow(u,0.8);
+const dendG = mergeGeometries(branches.map(b=>taperTube(b.curve,28,9,u=>bR(b,u),0.06)));
+const dendMat = tissue({color:PAL.dend,rim:'#c9c0ff',glow:0.1,noise:1.1});
+scene.add(new THREE.Mesh(dendG,dendMat));
+
+// Dendritic spines (mushroom shape), instanced along the branches.
+{
+  const neck=new THREE.CylinderGeometry(0.03,0.035,0.18,6,1,true);neck.translate(0,0.09,0);
+  const head=new THREE.SphereGeometry(0.075,8,6);head.translate(0,0.21,0);
+  const spineG=mergeGeometries([neck.toNonIndexed(),head.toNonIndexed()]);
+  const list=[];
+  for(const b of branches){if(b.depth<1)continue;const n=Math.floor(b.len*4.5);for(let k=0;k<n;k++){const u=rr(0.08,0.95);const f=frameAt(b.curve,u);const a=rr(0,Math.PI*2);
+    const out=f.N.clone().multiplyScalar(Math.cos(a)).add(f.B.clone().multiplyScalar(Math.sin(a))).addScaledVector(f.T,rr(-.3,.3)).normalize();
+    const base=b.curve.getPointAt(u).addScaledVector(out,bR(b,u)*0.85);list.push([base,out,rr(0.7,1.3)]);}}
+  const m=new THREE.InstancedMesh(spineG,tissue({color:PAL.spine,rim:'#efe4ff',glow:0.2,noise:2.0}),list.length);
+  list.forEach(([p,o,s],i)=>{dummy.position.copy(p);dummy.quaternion.setFromUnitVectors(UP,o);dummy.scale.setScalar(s);dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);});
+  scene.add(m);
+}
+
+// Axon: hillock flare, then a long gently curving fibre.
+const axPts=[];for(let i=0;i<=15;i++){const k=Math.min(1,i/3)**2;axPts.push(V3(1.4+i*3.9,1.4*Math.sin(i*0.55)*k,1.2*Math.sin(i*0.37+0.4)*k));}
+const axon=new THREE.CatmullRomCurve3(axPts,false,'centripetal');
+const L=axon.getLength();const S2U=s=>clamp01(s/L);
+const axR = s => 0.3+0.85*Math.exp(-s/1.15);
+scene.add(new THREE.Mesh(taperTube(axon,700,12,u=>axR(u*L),0.03),tissue({color:PAL.axon,rim:'#ffe6b8',glow:0.16,noise:1.2})));
+
+// Myelin internodes and nodes of Ranvier.
+const IN_LEN=4.0,GAP=0.5,S0=4.6;
+const NI=Math.floor((L-6.5-S0)/(IN_LEN+GAP));
+const internodes=[];for(let k=0;k<NI;k++){const a=S0+k*(IN_LEN+GAP);internodes.push([a,a+IN_LEN]);}
+const nodes=[];for(let k=1;k<NI;k++)nodes.push(internodes[k][0]-GAP/2);
+const myEnd=internodes[NI-1][1];
+const myelinG=mergeGeometries(internodes.map(([a,b])=>{const pts=[];for(let i=0;i<=10;i++)pts.push(axon.getPointAt(S2U(a+(b-a)*i/10)));
+  return taperTube(new THREE.CatmullRomCurve3(pts),56,22,u=>0.33+0.31*Math.pow(Math.sin(Math.PI*u),0.32),0.015);}));
+scene.add(new THREE.Mesh(myelinG,tissue({color:PAL.myelin,rim:'#bcd6ff',glow:0.12,noise:1.4,stripe:0.55,stripeV:[26,1]})));
+
+// Ion channels: dense at the initial segment, clustered at every node.
+{
+  const g=new THREE.CylinderGeometry(0.028,0.028,0.08,7);const list=[];
+  const place=(s,col)=>{const f=frameAt(axon,S2U(s));const a=rr(0,Math.PI*2);const out=f.N.clone().multiplyScalar(Math.cos(a)).add(f.B.clone().multiplyScalar(Math.sin(a)));
+    list.push([axon.getPointAt(S2U(s)).addScaledVector(out,axR(s)+0.01),out,col]);};
+  for(const s of nodes)for(let j=0;j<70;j++)place(s+rr(-0.22,0.22),R()<0.7?PAL.chanNa:PAL.chanK);
+  for(let j=0;j<260;j++)place(rr(0.9,3.8),R()<0.8?PAL.chanNa:PAL.chanK);
+  const m=new THREE.InstancedMesh(g,tissue({color:'#ffffff',rim:'#ffffff',glow:0.45,noise:3.0}),list.length);
+  const c=new THREE.Color();
+  list.forEach(([p,o,col],i)=>{dummy.position.copy(p);dummy.quaternion.setFromUnitVectors(UP,o);dummy.scale.setScalar(1);dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);m.setColorAt(i,c.set(col));});
+  scene.add(m);
+}
+
+// Axon terminal: four branches, each ending in a bouton.
+const E=axon.getPointAt(1),TE=axon.getTangentAt(1).normalize(),fE=frameAt(axon,1);
+const boutons=[];
+{
+  const geos=[];
+  [0.35,1.9,3.5,5.0].forEach((th,i)=>{
+    const d=TE.clone().add(fE.N.clone().multiplyScalar(Math.cos(th)*0.95)).add(fE.B.clone().multiplyScalar(Math.sin(th)*0.95)).normalize();
+    const len=i===0?2.6:rr(2.0,3.0);
+    const mid=E.clone().addScaledVector(TE,len*0.45).addScaledVector(d,len*0.25);const end=E.clone().addScaledVector(d,len);
+    const c=new THREE.CatmullRomCurve3([E.clone().addScaledVector(TE,-0.3),mid,end]);
+    geos.push(taperTube(c,40,10,u=>0.26-0.12*u,0.04));
+    const dir=c.getTangentAt(1).normalize();boutons.push({c:end.clone().addScaledVector(dir,0.5),d:dir});
+  });
+  scene.add(new THREE.Mesh(mergeGeometries(geos),tissue({color:PAL.axon,rim:'#ffe6b8',glow:0.16,noise:1.2})));
+}
+const boutonG=new THREE.SphereGeometry(0.52,48,32);
+const boutonMat=tissue({color:PAL.bouton,rim:'#ffe0b0',glow:0.12,trans:0.78,noise:2.2,side:THREE.DoubleSide});
+for(const b of boutons){const m=new THREE.Mesh(boutonG,boutonMat);m.position.copy(b.c);m.quaternion.setFromUnitVectors(UP,b.d);scene.add(m);}
+
+// The synapse on bouton 0: a spine of the next neuron across a narrow cleft.
+const B0=boutons[0].c,d0=boutons[0].d;
+const H=B0.clone().addScaledVector(d0,0.52+0.1+0.42);
+const Ax=V3().crossVectors(d0,fE.N).normalize();
+{
+  const post=tissue({color:PAL.post,rim:'#e2d4ff',glow:0.12,noise:1.6});
+  const spineHead=new THREE.Mesh(new THREE.SphereGeometry(0.42,48,32),tissue({color:PAL.post,rim:'#e9dcff',glow:0.14,trans:0.72,noise:2.2,side:THREE.DoubleSide}));
+  spineHead.position.copy(H);scene.add(spineHead);
+  const neckC=new THREE.CatmullRomCurve3([H.clone().addScaledVector(d0,0.25),H.clone().addScaledVector(d0,0.8),H.clone().addScaledVector(d0,1.15)]);
+  scene.add(new THREE.Mesh(taperTube(neckC,16,10,()=>0.13),post));
+  const P=H.clone().addScaledVector(d0,1.42);
+  const shaft=new THREE.CatmullRomCurve3([P.clone().addScaledVector(Ax,-8).addScaledVector(d0,1.2),P.clone().addScaledVector(Ax,-3).addScaledVector(d0,0.2),P,P.clone().addScaledVector(Ax,3).addScaledVector(d0,0.3),P.clone().addScaledVector(Ax,8).addScaledVector(d0,1.6)]);
+  scene.add(new THREE.Mesh(taperTube(shaft,120,14,()=>0.38,0.05),post));
+}
+const recMat=tissue({color:PAL.rec,rim:'#ffffff',glow:0.15,noise:3.0,pulse:0});
+{
+  const n=40,m=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.026,0.026,0.08,7),recMat,n);
+  for(let i=0;i<n;i++){let dir;do{dir=d0.clone().negate().add(randUnit().multiplyScalar(0.5)).normalize();}while(dir.dot(d0)>-0.82);
+    dummy.position.copy(H).addScaledVector(dir,0.43);dummy.quaternion.setFromUnitVectors(UP,dir);dummy.scale.setScalar(1);dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);}
+  scene.add(m);
+}
+{
+  const mito=new THREE.Mesh(new THREE.CapsuleGeometry(0.075,0.24,6,14),tissue({color:PAL.mito,rim:'#ffd2b0',glow:0.25,noise:3.0,stripe:0.8,stripeV:[0,9]}));
+  mito.position.copy(B0).addScaledVector(d0,-0.2).addScaledVector(Ax,0.12);mito.quaternion.setFromUnitVectors(UP,Ax);scene.add(mito);
+}
+
+// Synaptic vesicles: bouton 0 is animated, the others are static.
+const VB0=46,VO=22,VES_N=VB0+VO*3;
+const vesMesh=new THREE.InstancedMesh(new THREE.SphereGeometry(1,14,10),tissue({color:PAL.ves,rim:'#fff2c8',glow:0.4,noise:3.0}),VES_N);
+const vesState=[];
+for(let i=0;i<VES_N;i++){
+  const bi=i<VB0?0:1+Math.floor((i-VB0)/VO);const b=boutons[bi];
+  let home=b.c.clone().add(randBall().multiplyScalar(0.34));if(bi===0)home.addScaledVector(d0,0.07);
+  vesState.push({home,pos:home.clone(),s:1,phase:'idle',t:0,from:null,to:null});
+  dummy.position.copy(home);dummy.scale.setScalar(0.048);dummy.rotation.set(0,0,0);dummy.updateMatrix();vesMesh.setMatrixAt(i,dummy.matrix);
+}
+scene.add(vesMesh);
+
+// Neighbouring neurons for the network shot (share geometry, dimmer materials).
+const neighbors=[];
+{
+  const dimDend=tissue({color:'#4b4aa8',rim:'#8d98e8',glow:0.05,noise:1.1,pulse:0});
+  const dimAx=tissue({color:'#2f5bb8',rim:'#8fb0ff',glow:0.06,noise:1.2,pulse:0});
+  for(let i=0;i<7;i++){
+    const g=new THREE.Group();const mat=tissue({color:'#7a60e0',rim:'#b9a8ff',glow:0.08,trans:0.55,noise:0.9,pulse:0,side:THREE.DoubleSide});
+    g.add(new THREE.Mesh(dendG,dimDend));g.add(new THREE.Mesh(somaG,mat));
+    const pts=[V3()],d=randUnit();for(let k=1;k<=7;k++)pts.push(d.clone().multiplyScalar(k*4.5).add(randUnit().multiplyScalar(1.2)));
+    g.add(new THREE.Mesh(taperTube(new THREE.CatmullRomCurve3(pts),120,8,u=>0.3+0.5*Math.exp(-u*20)),dimAx));
+    const ang=i/7*Math.PI*2+rr(-.3,.3);
+    g.position.set(18+Math.cos(ang)*rr(42,62),Math.sin(ang)*rr(26,40),rr(-48,-12));
+    g.rotation.set(rr(0,6.28),rr(0,6.28),rr(0,6.28));g.scale.setScalar(rr(0.75,1.05));
+    scene.add(g);neighbors.push({g,mat,flash:0});
+  }
+}
+
+// Atmosphere: background, drifting dust, scale-free micro particles.
+const bgMain=bgSphere();scene.add(bgMain);
+const dust=makePoints(2600,pointsMat({color:'#9fb6ff',size:0.25,nearFade:0.6}));
+for(let i=0;i<2600;i++){dust.pos[i*3]=rr(-60,95);dust.pos[i*3+1]=rr(-50,50);dust.pos[i*3+2]=rr(-60,40);dust.alpha[i]=rr(0.15,0.6);}
+dust.dirty();scene.add(dust.pts);
+const microMain=microCloud('#8fb2ff');scene.add(microMain);
+
+// Synaptic input particles riding the dendrites toward the soma.
+const IN_N=420;const inP=makePoints(IN_N,pointsMat({color:'#ffd27a',size:0.17,nearFade:0.3}));scene.add(inP.pts);
+const inS=[];
+function spawnIn(p){const b=branches[Math.floor(RS()*branches.length)];p.b=b;p.u=1;p.a=RS()*Math.PI*2;p.v=(2.0+RS()*1.4)/b.len;}
+for(let i=0;i<IN_N;i++){const p={};spawnIn(p);p.u=RS();inS.push(p);}
+
+// Ion flux at the focus node (Na+ in, K+ out).
+const FOCUS_NODE=2;
+const nodeP=axon.getPointAt(S2U(nodes[FOCUS_NODE])),nodeF=frameAt(axon,S2U(nodes[FOCUS_NODE]));
+const FX_N=240;const fx=makePoints(FX_N,pointsMat({size:0.035}));scene.add(fx.pts);
+const fxS=[];{const cNa=new THREE.Color('#ffd166'),cK=new THREE.Color('#9b8cff');
+  for(let i=0;i<FX_N;i++){const na=i<150;fxS.push({na,a:R()*Math.PI*2,x:rr(-0.3,0.3),ph:R()});const c=na?cNa:cK;fx.col[i*3]=c.r;fx.col[i*3+1]=c.g;fx.col[i*3+2]=c.b;}}
+
+// Glutamate released into the cleft.
+const GLU_N=160;const glu=makePoints(GLU_N,pointsMat({color:'#ff74c8',size:0.032}));scene.add(glu.pts);
+const gluS=[];for(let i=0;i<GLU_N;i++)gluS.push({on:false});
+
+/* ------------------------------------------------------------------ cross-section scene */
+const RIN=1.22,ROUT=2.55,DEPTH=7;
+const xsGroup=new THREE.Group();xs.add(xsGroup);
+const xsTubes=[];
+{
+  const side=new THREE.CylinderGeometry(ROUT,ROUT,DEPTH,160,24,true);side.rotateX(Math.PI/2);side.translate(0,0,-DEPTH/2);
+  {const p=side.attributes.position,v=V3();for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i);const a=Math.atan2(v.y,v.x);const k=1+0.02*Math.sin(a*7+v.z*1.3)+0.015*Math.sin(a*19);v.x*=k;v.y*=k;p.setXYZ(i,v.x,v.y,v.z);}side.computeVertexNormals();}
+  xsGroup.add(new THREE.Mesh(side,tissue({color:'#2457ff',rim:'#3f6fe0',glow:0.03,noise:1.6,rimPow:3.0,stripe:0.9,stripeV:[2,30],pulse:0})));
+  const face=new THREE.Mesh(new THREE.RingGeometry(RIN,ROUT,180,48),new THREE.ShaderMaterial({uniforms:{uRin:{value:RIN},uRout:{value:ROUT},uTime:U.uTime},vertexShader:LAM_VS,fragmentShader:LAM_FS}));
+  xsGroup.add(face);
+  const plasm=new THREE.Mesh(new THREE.CircleGeometry(RIN,96),tissue({color:'#3a1d5c',rim:'#000000',glow:0.06,noise:2.6,pulse:0}));plasm.position.z=-0.01;xsGroup.add(plasm);
+  const lemma=new THREE.Mesh(new THREE.TorusGeometry(RIN,0.065,14,220),tissue({color:'#ffae45',rim:'#b8742a',glow:0.32,noise:4.0,pulse:0}));xsGroup.add(lemma);
+  const rimRing=new THREE.Mesh(new THREE.TorusGeometry(ROUT,0.03,10,220),tissue({color:'#6fa4ff',rim:'#5f86d8',glow:0.25,pulse:0}));xsGroup.add(rimRing);
+  {const n=170,m=new THREE.InstancedMesh(new THREE.SphereGeometry(1,10,8),tissue({color:'#ffffff',rim:'#4a4a60',glow:0.28,noise:3.0,pulse:0}),n);const c=new THREE.Color();
+    for(let i=0;i<n;i++){const a=i/n*Math.PI*2+rr(-.01,.01);const r=RIN+rr(-0.05,0.05);dummy.position.set(Math.cos(a)*r,Math.sin(a)*r,rr(-0.06,0.07));dummy.scale.setScalar(rr(0.028,0.058));dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);m.setColorAt(i,c.set(R()<0.75?'#ffc24d':'#62f0ff'));}
+    xsGroup.add(m);}
+  // Microtubules and neurofilaments poking out of the cut face.
+  const tubeG=new THREE.CylinderGeometry(1,1,1,14,1,false);tubeG.rotateX(Math.PI/2);
+  const placed=[];const pick=(minD,rmax)=>{for(let t=0;t<200;t++){const a=R()*Math.PI*2,r=Math.sqrt(R())*rmax;const p=[Math.cos(a)*r,Math.sin(a)*r];if(placed.every(q=>Math.hypot(q[0]-p[0],q[1]-p[1])>minD)){placed.push(p);return p;}}return null;};
+  const mk=(n,rad,zmax,cols,stripeV,glow)=>{const m=new THREE.InstancedMesh(tubeG,tissue({color:'#ffffff',rim:'#383450',glow,noise:3.2,rimPow:2.6,stripe:0.7,stripeV,pulse:0}),n);const c=new THREE.Color();let k=0;
+    for(let i=0;i<n;i++){const p=pick(rad*2.3,RIN-rad-0.06);if(!p)break;const zEnd=rr(0.05,zmax);const dir=V3(rr(-.06,.06),rr(-.06,.06),1).normalize();const len=zEnd+DEPTH;
+      const end=V3(p[0],p[1],zEnd);dummy.position.copy(end).addScaledVector(dir,-len/2);dummy.quaternion.setFromUnitVectors(V3(0,0,1),dir);dummy.scale.set(rad,rad,len);dummy.updateMatrix();m.setMatrixAt(k,dummy.matrix);m.setColorAt(k,c.set(cols[Math.floor(R()*cols.length)]));
+      if(rad>0.04)xsTubes.push({end,dir,rad});k++;}
+    m.count=k;xsGroup.add(m);};
+  mk(46,0.058,1.6,['#8e6bff','#5b7dff','#ffc24d','#c86bff','#4fb0ff','#ff9a4d'],[0,60],0.16);
+  mk(80,0.024,0.9,['#7fd6ff','#9fb6ff','#c4a8ff'],[0,30],0.12);
+  const mitoM=tissue({color:PAL.mito,rim:'#a0582a',glow:0.15,noise:3.0,stripe:0.9,stripeV:[0,7],pulse:0});
+  for(let i=0;i<3;i++){const p=pick(0.42,RIN-0.25);if(!p)continue;const mm=new THREE.Mesh(new THREE.CapsuleGeometry(0.16,1.3,8,16),mitoM);mm.rotation.x=Math.PI/2;mm.position.set(p[0],p[1],rr(-0.4,0.15));xsGroup.add(mm);}
+}
+const CARGO_N=12;const cargo=new THREE.InstancedMesh(new THREE.SphereGeometry(1,14,10),tissue({color:'#ffd06e',rim:'#c89a40',glow:0.5,noise:3.0,pulse:0}),CARGO_N);xsGroup.add(cargo);
+const cargoS=[];for(let i=0;i<CARGO_N;i++){const t=xsTubes[Math.floor(R()*xsTubes.length)];const side=perpTo(t.dir,V3(rr(-1,1),rr(-1,1),0));cargoS.push({t,side,ph:R()*2});}
+// Neighbouring fibres in the nerve bundle.
+for(const [x,y,z,s] of [[-6.6,3.6,-5,0.62],[6.4,-3.9,-7,0.55],[7.2,4.6,-11,0.5],[-7.8,-4.4,-9,0.5]]){const c=xsGroup.clone();c.position.set(x,y,z);c.scale.setScalar(s);c.rotation.z=rr(0,6.28);xs.add(c);}
+const bgXs=bgSphere();xs.add(bgXs);
+const microXs=microCloud('#9cc0ff');xs.add(microXs);
+
+/* ------------------------------------------------------------------ shots */
+const spB=branches.find(b=>b.depth===1&&b.curve.getPointAt(0.5).z>1)||branches[8];
+const spP=spB.curve.getPointAt(0.55),spF=frameAt(spB.curve,0.55);
+const hillP=axon.getPointAt(S2U(1.8)),hillT=axon.getTangentAt(S2U(1.8)).normalize();
+const myS=(nodes[1]+nodes[3])/2,myP=axon.getPointAt(S2U(myS)),myT=axon.getTangentAt(S2U(myS)).normalize();
+const termT=E.clone().addScaledVector(TE,1.5);
+const cleft=B0.clone().addScaledVector(d0,0.57);
+let synView=V3().crossVectors(d0,Ax).normalize();if(synView.z<0)synView.negate();synView.addScaledVector(Ax,0.35).addScaledVector(UP,0.15).normalize();
+const xsS=(internodes[3][0]+internodes[3][1])/2;
+
+const SHOTS=[
+ {kind:'Wide · whole neuron',title:'Motor neuron',sub:'Dendrites · soma · myelinated axon',bullets:['dendrites collect thousands of inputs','the soma sums them','the axon carries the spike out'],zoom:'×150',bar:'≈ 100 µm',dur:7,
+  tgt:V3(18,0,0),dir:V3(0.12,0.32,1),rw:36,rh:13,loc:V3(18,0,0),locR:40},
+ {kind:'Medium · dendritic tree',title:'Dendritic spines',sub:'Where most excitatory synapses land',bullets:['each spine holds one synapse','inputs drift toward the soma','small EPSPs add up in space and time'],zoom:'×900',bar:'≈ 5 µm',dur:6,
+  tgt:spP,dir:perpTo(spF.T,V3(0.2,0.4,1)),rw:2.6,rh:1.6,loc:spP,locR:3},
+ {kind:'Close-up · soma',title:'Cell body',sub:'Nucleus · nucleolus · Nissl bodies',bullets:['the nucleus holds the genome','rough ER (Nissl) builds proteins','the membrane integrates input current'],zoom:'×1 200',bar:'≈ 10 µm',dur:6,
+  tgt:V3(0.2,0,0),dir:V3(-0.35,0.3,1),rw:3.6,rh:2.7,loc:V3(0,0,0),locR:3},
+ {kind:'Close-up · axon hillock',title:'Spike initiation',sub:'Axon hillock and initial segment',bullets:['densest Na⁺ channels on the cell','fires when Vm passes ≈ −55 mV','all-or-none, about 1 ms long'],zoom:'×2 500',bar:'≈ 5 µm',dur:6,
+  tgt:hillP,dir:perpTo(hillT,V3(0.1,0.5,1)),rw:2.6,rh:1.5,loc:hillP,locR:2.5},
+ {kind:'Tracking · myelinated axon',title:'Saltatory conduction',sub:'Schwann cells wrap the axon in myelin',bullets:['myelin insulates each internode','the spike jumps node to node','fast fibres reach ≈ 120 m/s'],zoom:'×1 800',bar:'≈ 20 µm',dur:6.5,
+  tgt:myP,dir:perpTo(myT,V3(0,0.5,1)),rw:6.5,rh:2.6,loc:myP,locR:6},
+ {kind:'Macro · node of Ranvier',title:'Node of Ranvier',sub:'Na⁺ and K⁺ channels in a 1 µm gap',bullets:['Na⁺ rushes in and regenerates the spike','K⁺ flows out and resets the membrane','one node every ≈ 1 mm of axon'],zoom:'×12 000',bar:'≈ 1 µm',dur:6.5,
+  tgt:nodeP,dir:perpTo(nodeF.T,V3(0,0.4,1)),rw:1.35,rh:0.95,loc:nodeP,locR:1.5},
+ {kind:'Close-up · axon cross-section',title:'Axon cross-section',sub:'Myelin · axolemma · microtubules',bullets:['compact myelin is a lipid spiral','the axolemma encloses the axoplasm','microtubules carry cargo along the axon'],zoom:'×20 000',bar:'≈ 500 nm',dur:7,
+  scene:'xs',tgt:V3(0,0,0.35),dir:V3(0.3,0.24,1),rw:2.9,rh:2.75,loc:axon.getPointAt(S2U(xsS)),locR:1.2},
+ {kind:'Medium · axon terminal',title:'Axon terminal',sub:'Terminal branches end in boutons',bullets:['the axon splits into fine branches','each branch ends in a bouton','Ca²⁺ channels open when the spike arrives'],zoom:'×4 000',bar:'≈ 2 µm',dur:6,
+  tgt:termT,dir:perpTo(TE,V3(0,0.45,1)),rw:4.2,rh:3.2,loc:termT,locR:4},
+ {kind:'Macro · chemical synapse',title:'Synapse',sub:'Vesicle release · glutamate · AMPA',bullets:['Ca²⁺ triggers vesicle fusion','glutamate crosses a ≈ 20 nm cleft','AMPA receptors open on the next cell'],zoom:'×60 000',bar:'≈ 200 nm',dur:7.5,
+  tgt:cleft,dir:synView,rw:1.15,rh:0.9,loc:B0,locR:1.2},
+ {kind:'Wide · network',title:'Connection',sub:'One cell among many partners',bullets:['each neuron talks to thousands of others','spike timing carries the information','whole neuron → parts → whole'],zoom:'×60',bar:'≈ 200 µm',dur:7,
+  tgt:V3(16,0,-10),dir:V3(0.45,0.5,1),rw:56,rh:27,loc:V3(18,0,0),locR:60},
+];
+SHOTS.forEach(s=>{s.dir.normalize();s.scene=s.scene||'main';});
+const TOUR_LEN=SHOTS.reduce((a,s)=>a+s.dur,0);
+
+/* ------------------------------------------------------------------ simulation: Hodgkin–Huxley + synapse */
+const HH={V:-65,m:0.0529,h:0.5961,n:0.3177,t:0,ou:0};
+const SIM_RATE=25;          // ms of model time per second on screen (trace: 1 s = 25 ms)
+const DT=0.01;              // ms
+const TRACE_N=600;const trace=new Float32Array(TRACE_N).fill(-65);let traceHead=0,traceAcc=0;
+const kicks=[];let nextTrig=0.9,lastSpikeWall=-9,prevV=-65;
+function epsc(){kicks.push({t0:HH.t,dur:1.0,amp:1.4});}
+function hhStep(I){
+  const V=HH.V;
+  const am=Math.abs(V+40)<1e-6?1:0.1*(V+40)/(1-Math.exp(-(V+40)/10)),bm=4*Math.exp(-(V+65)/18);
+  const ah=0.07*Math.exp(-(V+65)/20),bh=1/(1+Math.exp(-(V+35)/10));
+  const an=Math.abs(V+55)<1e-6?0.1:0.01*(V+55)/(1-Math.exp(-(V+55)/10)),bn=0.125*Math.exp(-(V+65)/80);
+  HH.m+=DT*(am*(1-HH.m)-bm*HH.m);HH.h+=DT*(ah*(1-HH.h)-bh*HH.h);HH.n+=DT*(an*(1-HH.n)-bn*HH.n);
+  const gNa=120*HH.m**3*HH.h,gK=36*HH.n**4;
+  HH.V+=DT*(I-gNa*(V-50)-gK*(V+77)-0.3*(V+54.387));HH.t+=DT;
+}
+const SYN={ca:0,glu:0,ampa:0,epsp:0,ves:0,pump:0.3,ampaLogged:false};
+const raster=Array.from({length:8},()=>[]);
+const RATES=[0,0.7,1.3,0.9,1.8,0.6,1.4,1.0];
+const logLines=[];
+function log(text){logLines.unshift([Math.round(HH.t),text]);if(logLines.length>4)logLines.length=4;logDirty=true;}
+let logDirty=true;
+const events=[];function later(dt,fn){events.push({t:T+dt,fn});}
+
+function simulate(dt){
+  if(T>=nextTrig){kicks.push({t0:HH.t,dur:1.6,amp:22});if(RS()<0.3)kicks.push({t0:HH.t+14,dur:1.6,amp:26});nextTrig=T+1.1+RS()*1.0;}
+  const steps=Math.round(dt*SIM_RATE/DT);
+  for(let s=0;s<steps;s++){
+    HH.ou+=-HH.ou*DT/2+0.9*Math.sqrt(DT)*gauss();
+    let I=0.4+HH.ou;for(const k of kicks)if(HH.t>=k.t0&&HH.t<k.t0+k.dur)I+=k.amp;
+    hhStep(I);
+    if(prevV<0&&HH.V>=0)onSpike();
+    prevV=HH.V;
+    if(++traceAcc>=10){traceAcc=0;trace[traceHead]=HH.V;traceHead=(traceHead+1)%TRACE_N;}
+  }
+  for(let i=kicks.length-1;i>=0;i--)if(HH.t>kicks[i].t0+kicks[i].dur)kicks.splice(i,1);
+  for(let r=1;r<8;r++)if(RS()<RATES[r]*dt){raster[r].push(T);neighbors[r-1].flash=1;}
+  for(const row of raster)while(row.length&&row[0]<T-2.5)row.shift();
+  for(let i=events.length-1;i>=0;i--)if(T>=events[i].t){const e=events[i];events.splice(i,1);e.fn();}
+}
+function onSpike(){
+  lastSpikeWall=T;raster[0].push(T);SYN.pump=Math.min(0.75,SYN.pump+0.09);
+  log('AP initiated · axon hillock');
+  if(pulses.length>=4)pulses.shift();
+  pulses.push({t0:T,focusHit:false});
+}
+
+/* Pulse path: continuous at the hillock, jumping node to node under the myelin. */
+const PW=[0,S0-GAP/2,...nodes,myEnd+GAP/2,L];
+const segDur=PW.slice(1).map((_,i)=>i===0?0.30:(i===PW.length-2?0.32:0.15));
+const segStart=[0];for(const d of segDur)segStart.push(segStart[segStart.length-1]+d);
+const PULSE_LEN=segStart[segStart.length-1];
+const pulses=[];let nodeHitT=-9,fluxNa=0,fluxK=0;
+function pulseAt(tau){
+  let i=0;while(i<segDur.length-1&&tau>=segStart[i+1])i++;
+  const f=clamp01((tau-segStart[i])/segDur[i]);const salt=i>0&&i<segDur.length-1;
+  const s=PW[i]+(PW[i+1]-PW[i])*(salt?smooth(0.3,0.7,f):f);
+  return {s,w:salt?0.75+0.75*(1-Math.sin(Math.PI*f)):1.0};
+}
+function updatePulses(){
+  const arr=U.uPulse.value;
+  for(let k=0;k<4;k++)arr[k].set(0,0,0,0);
+  for(let k=pulses.length-1;k>=0;k--){
+    const p=pulses[k],tau=T-p.t0;
+    if(tau>=PULSE_LEN){pulses.splice(k,1);onArrival();continue;}
+    const {s,w}=pulseAt(tau);
+    if(!p.focusHit&&s>=nodes[FOCUS_NODE]-0.05){p.focusHit=true;nodeHitT=T;log(`node ${FOCUS_NODE+1} · Na⁺ influx`);}
+  }
+  pulses.forEach((p,k)=>{const {s,w}=pulseAt(T-p.t0);const q=axon.getPointAt(S2U(s));arr[k].set(q.x,q.y,q.z,w);});
+}
+function onArrival(){
+  SYN.ca=1;log('Ca²⁺ influx at bouton');
+  later(0.10,release);
+}
+function release(){
+  const k=1+Math.floor(RS()*3);SYN.ves=k;SYN.glu+=0.55*k;SYN.ampaLogged=false;
+  log(`vesicle fusion ×${k} · glutamate`);
+  const idle=vesState.slice(0,VB0).map((v,i)=>[v,i]).filter(([v])=>v.phase==='idle').sort((a,b)=>b[0].home.clone().sub(B0).dot(d0)-a[0].home.clone().sub(B0).dot(d0));
+  for(let j=0;j<k&&j<idle.length;j++){
+    const v=idle[j][0];const lat=perpTo(d0,randUnit(RS)).multiplyScalar(RS()*0.14);
+    v.phase='dock';v.t=0;v.from=v.pos.clone();v.to=B0.clone().addScaledVector(d0,0.43).add(lat);v.pore=B0.clone().addScaledVector(d0,0.52).add(lat);
+  }
+}
+
+function updateSynapse(dt){
+  SYN.ca*=Math.exp(-dt/0.45);SYN.glu*=Math.exp(-dt/0.3);
+  const target=SYN.glu/(SYN.glu+0.5);SYN.ampa+=(target-SYN.ampa)*Math.min(1,dt/0.08);
+  SYN.epsp+=(SYN.ampa*1.6-SYN.epsp)*Math.min(1,dt/0.25);
+  SYN.pump+=(0.3-SYN.pump)*Math.min(1,dt/3);
+  if(!SYN.ampaLogged&&SYN.ampa>0.3){SYN.ampaLogged=true;log('AMPA receptors bound · EPSP');}
+  boutonMat.uniforms.uGlow.value=0.12+SYN.ca*1.1;
+  recMat.uniforms.uGlow.value=0.15+SYN.ampa*2.6;
+  // vesicles
+  for(let i=0;i<VB0;i++){
+    const v=vesState[i];if(v.phase==='idle'){continue;}
+    v.t+=dt;
+    if(v.phase==='dock'){const k=ease(clamp01(v.t/0.14));v.pos.lerpVectors(v.from,v.to,k);if(v.t>=0.14){v.phase='fuse';v.t=0;spawnGlu(v.pore);}}
+    else if(v.phase==='fuse'){v.s=1-clamp01(v.t/0.16);if(v.t>=0.16){v.phase='gone';v.t=0;}}
+    else if(v.phase==='gone'&&v.t>1.3){v.phase='grow';v.t=0;v.pos.copy(v.home);}
+    else if(v.phase==='grow'){v.s=clamp01(v.t/0.4);if(v.t>=0.4){v.phase='idle';v.s=1;}}
+    dummy.position.copy(v.pos);dummy.scale.setScalar(0.048*Math.max(v.s,0.0001));dummy.rotation.set(0,0,0);dummy.updateMatrix();vesMesh.setMatrixAt(i,dummy.matrix);
+  }
+  vesMesh.instanceMatrix.needsUpdate=true;
+  // glutamate
+  for(let i=0;i<GLU_N;i++){const g=gluS[i];
+    if(!g.on){glu.alpha[i]=0;continue;}
+    g.age+=dt;const k=clamp01(g.age/0.5);
+    const p=g.o.clone().addScaledVector(d0,0.1*ease(k)).addScaledVector(g.lat,k*0.2);
+    glu.pos[i*3]=p.x;glu.pos[i*3+1]=p.y;glu.pos[i*3+2]=p.z;glu.alpha[i]=Math.max(0,1-g.age/1.3);if(g.age>1.3)g.on=false;}
+  glu.dirty();
+}
+function spawnGlu(o){let n=0;for(let i=0;i<GLU_N&&n<36;i++){const g=gluS[i];if(g.on)continue;g.on=true;g.age=-RS()*0.08;g.o=o.clone();g.lat=perpTo(d0,randUnit(RS)).multiplyScalar(0.3+RS());n++;}}
+
+function updateParticles(dt){
+  // dendritic inputs
+  for(let i=0;i<IN_N;i++){const p=inS[i];p.u-=p.v*dt;
+    if(p.u<=0){if(p.b.depth===0&&RS()<0.3)epsc();spawnIn(p);}
+    const f=frameAt(p.b.curve,p.u),r=bR(p.b,p.u)+0.05,c=p.b.curve.getPointAt(p.u);
+    c.addScaledVector(f.N,Math.cos(p.a)*r).addScaledVector(f.B,Math.sin(p.a)*r);
+    inP.pos[i*3]=c.x;inP.pos[i*3+1]=c.y;inP.pos[i*3+2]=c.z;inP.alpha[i]=0.3+0.7*Math.sin(Math.PI*clamp01(p.u));}
+  inP.dirty();
+  // ion flux at focus node
+  const dtN=T-nodeHitT;const actNa=dtN>=0?Math.exp(-dtN/0.25):0;const tk=dtN-0.12;const actK=tk>0?(tk/0.3)*Math.exp(1-tk/0.3):0;
+  fluxNa+=actNa*dt;fluxK+=actK*dt;
+  for(let i=0;i<FX_N;i++){const s=fxS[i];const fr=s.na?(s.ph-fluxNa*2.2):(s.ph+fluxK*1.6);const r=0.34+0.75*(fr-Math.floor(fr));
+    const p=nodeP.clone().addScaledVector(nodeF.T,s.x).addScaledVector(nodeF.N,Math.cos(s.a)*r).addScaledVector(nodeF.B,Math.sin(s.a)*r);
+    fx.pos[i*3]=p.x;fx.pos[i*3+1]=p.y;fx.pos[i*3+2]=p.z;fx.alpha[i]=(0.1+0.9*(s.na?actNa:actK))*smooth(0.34,0.45,r)*(1-smooth(0.9,1.09,r));}
+  fx.dirty();
+  // cargo in the cross-section
+  for(let i=0;i<CARGO_N;i++){const c=cargoS[i];const along=((c.ph+T*0.35)%2.2);
+    dummy.position.copy(c.t.end).addScaledVector(c.t.dir,-along).addScaledVector(c.side,c.t.rad+0.06);dummy.scale.setScalar(0.065);dummy.updateMatrix();cargo.setMatrixAt(i,dummy.matrix);}
+  cargo.instanceMatrix.needsUpdate=true;
+  for(const nb of neighbors){nb.flash*=Math.exp(-dt/0.25);nb.mat.uniforms.uGlow.value=0.08+nb.flash*1.4;}
+  somaMat.uniforms.uGlow.value=0.12+0.9*Math.exp(-Math.max(0,T-lastSpikeWall)/0.2);
+}
+
+/* ------------------------------------------------------------------ camera + tour */
+let controls=null;
+if(renderer){controls=new OrbitControls(camera,canvas);controls.enableDamping=false;controls.enablePan=false;controls.rotateSpeed=0.6;
+  controls.addEventListener('start',()=>{userCam=true;setPlaying(false);hideHint();});}
+let T=0,shotIdx=0,shotT=0,playing=!REDUCED,userCam=false,trans=null,activeScene='main';
+let stageFrac=0.5,stageOffset=0;
+
+function fitDist(s){
+  const vh=THREE.MathUtils.degToRad(camera.fov)/2;
+  const vEff=Math.atan(Math.tan(vh)*stageFrac);const hh=Math.atan(Math.tan(vh)*camera.aspect*0.92);
+  return Math.max(s.rw/Math.tan(hh),s.rh/Math.tan(vEff));
+}
+function shotPose(i,t){
+  const s=SHOTS[i];const drift=REDUCED?0:(0.09*Math.sin(t*0.22)+t*0.014);
+  const dir=s.dir.clone().applyAxisAngle(UP,drift);
+  return {tgt:s.tgt.clone(),pos:s.tgt.clone().addScaledVector(dir,fitDist(s))};
+}
+function goShot(i){
+  const prev=SHOTS[shotIdx];shotIdx=(i+SHOTS.length)%SHOTS.length;const s=SHOTS[shotIdx];shotT=0;userCam=false;
+  if(s.scene!==prev.scene||REDUCED)trans={type:'cut',t:0,swapped:false};
+  else trans={type:'move',t:0,dur:2.3,fromPos:camera.position.clone(),fromTgt:(controls?controls.target:shotPose(shotIdx,0).tgt).clone()};
+  hudShot();
+}
+function setClip(d){
+  camera.near=Math.max(0.004,d*0.008);camera.far=Math.max(80,d*14);camera.updateProjectionMatrix();
+  U.uFogNear.value=d*1.25;U.uFogFar.value=d*5.5;
+  const bg=activeScene==='xs'?bgXs:bgMain;bg.position.copy(camera.position);bg.scale.setScalar(camera.far*0.85);
+  const micro=activeScene==='xs'?microXs:microMain;const tgt=controls?controls.target:SHOTS[shotIdx].tgt;
+  micro.material.uniforms.uCenter.value.copy(tgt);micro.material.uniforms.uSpan.value=d*1.7;micro.material.uniforms.uSize.value=d*0.0055;
+  U.uPulseR.value=Math.min(1.4,Math.max(0.35,d*0.06));
+}
+function updateTour(dt){
+  if(trans){trans.t+=dt;
+    if(trans.type==='cut'){
+      const fade=$('fade');
+      if(!trans.swapped){fade.style.opacity=clamp01(trans.t/0.35);if(trans.t>=0.35){trans.swapped=true;activeScene=SHOTS[shotIdx].scene;if(renderPass)renderPass.scene=activeScene==='xs'?xs:scene;if(bloom)bloom.strength=activeScene==='xs'?0.5:0.75;shotT=0;}}
+      else{fade.style.opacity=clamp01(1-(trans.t-0.35)/0.5);if(trans.t>=0.85){fade.style.opacity=0;trans=null;}}
+    }
+  }
+  if(!(trans&&trans.type==='cut'&&!trans.swapped))shotT+=dt;
+  if(playing&&shotT>SHOTS[shotIdx].dur)goShot(shotIdx+1);
+}
+function updateCamera(){
+  if(userCam&&controls){controls.update();setClip(camera.position.distanceTo(controls.target));return;}
+  if(trans&&trans.type==='cut'&&!trans.swapped)return;
+  const pose=shotPose(shotIdx,shotT);let pos=pose.pos,tgt=pose.tgt;
+  if(trans&&trans.type==='move'){
+    const k=ease(clamp01(trans.t/trans.dur));
+    tgt=trans.fromTgt.clone().lerp(pose.tgt,k);
+    const d0_=trans.fromPos.distanceTo(trans.fromTgt),d1_=pose.pos.distanceTo(pose.tgt);
+    const a=trans.fromPos.clone().sub(trans.fromTgt).normalize(),b=pose.pos.clone().sub(pose.tgt).normalize();
+    const qk=new THREE.Quaternion().slerp(new THREE.Quaternion().setFromUnitVectors(a,b),k);
+    const d=Math.exp(Math.log(d0_)+(Math.log(d1_)-Math.log(d0_))*k);
+    pos=tgt.clone().addScaledVector(a.applyQuaternion(qk),d);
+    if(trans.t>=trans.dur)trans=null;
+  }
+  camera.position.copy(pos);camera.lookAt(tgt);if(controls)controls.target.copy(tgt);
+  setClip(pos.distanceTo(tgt));
+}
+
+/* ------------------------------------------------------------------ HUD */
+const el={};for(const id of ['vmVal','vmState','vmTrace','shotNo','shotKind','zoomTop','capTitle','capSub','capList','caption','barLbl','locator','locNo','locName','naV','naF','kV','kF','caV','caF','pmV','pmF','vesV','vesF','gluV','gluF','ampaV','ampaF','epspV','epspF','cvVal','cvArc','focusZoom','focusName','focusBar','raster','rasterN','log','prev','play','next','hint','stage'])el[id]=$(id);
+const pad2=n=>String(n).padStart(2,'0');
+function hudShot(){
+  const s=SHOTS[shotIdx];
+  el.shotNo.textContent=pad2(shotIdx+1);el.shotKind.textContent=s.kind;el.zoomTop.textContent=s.zoom;
+  el.capTitle.textContent=s.title;el.capSub.textContent=s.sub;el.capList.replaceChildren(...s.bullets.map(b=>{const li=document.createElement('li');li.textContent=b;return li;}));
+  el.caption.classList.remove('swap');void el.caption.offsetWidth;el.caption.classList.add('swap');
+  el.barLbl.textContent=s.bar;el.focusZoom.textContent=s.zoom;el.focusName.textContent=s.title;el.focusBar.textContent='scale bar '+s.bar;
+  el.locNo.textContent=`${pad2(shotIdx+1)} / ${SHOTS.length}`;el.locName.textContent=s.title.toLowerCase();
+}
+function fitCanvas(c){const r=c.getBoundingClientRect();const d=Math.min(2,window.devicePixelRatio||1);c.width=Math.max(1,Math.round(r.width*d));c.height=Math.max(1,Math.round(r.height*d));const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return {x,w:r.width,h:r.height};}
+let cvTrace,cvRaster,cvLoc,locBase=null,locMap=null;
+function drawTrace(){
+  if(!cvTrace||cvTrace.w<2)return;const {x,w,h}=cvTrace;x.clearRect(0,0,w,h);
+  const y=v=>h-2-((v+85)/130)*(h-4);
+  x.strokeStyle='rgba(140,170,255,.12)';x.lineWidth=1;x.beginPath();x.moveTo(0,y(0));x.lineTo(w,y(0));x.stroke();
+  x.setLineDash([3,4]);x.strokeStyle='rgba(255,116,200,.55)';x.beginPath();x.moveTo(0,y(-55));x.lineTo(w,y(-55));x.stroke();x.setLineDash([]);
+  x.beginPath();
+  for(let i=0;i<TRACE_N;i++){const v=trace[(traceHead+i)%TRACE_N];const px=i/(TRACE_N-1)*w;i?x.lineTo(px,y(v)):x.moveTo(px,y(v));}
+  x.strokeStyle='rgba(255,184,77,.22)';x.lineWidth=5;x.stroke();x.strokeStyle='#ffb84d';x.lineWidth=1.6;x.stroke();
+  const last=trace[(traceHead+TRACE_N-1)%TRACE_N];x.fillStyle='#ffe3b3';x.beginPath();x.arc(w-2,y(last),2.4,0,7);x.fill();
+}
+function drawRaster(){
+  if(!cvRaster||cvRaster.w<2)return;const {x,w,h}=cvRaster;x.clearRect(0,0,w,h);const rh=h/8;
+  for(let r=0;r<8;r++){x.fillStyle=r%2?'rgba(140,170,255,.04)':'rgba(140,170,255,.08)';x.fillRect(0,r*rh,w,rh);
+    x.fillStyle=r===0?'#ffb84d':'#b7a1ff';
+    for(const t of raster[r]){const px=w*(1-(T-t)/2.5);x.fillRect(px-0.75,r*rh+rh*0.15,1.5,rh*0.7);}}
+}
+function buildLocator(){
+  if(!cvLoc||cvLoc.w<2)return;const {w,h}=cvLoc;
+  const pts=[];for(const b of branches)for(let i=0;i<=6;i++)pts.push(b.curve.getPointAt(i/6));for(let i=0;i<=40;i++)pts.push(axon.getPointAt(i/40));for(const b of boutons)pts.push(b.c);
+  let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9;for(const p of pts){minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minY=Math.min(minY,p.y);maxY=Math.max(maxY,p.y);}
+  const sc=Math.min((w-16)/(maxX-minX),(h-12)/(maxY-minY));const ox=(w-(maxX-minX)*sc)/2,oy=(h-(maxY-minY)*sc)/2;
+  locMap=(v)=>[ox+(v.x-minX)*sc,oy+(maxY-v.y)*sc];locMap.sc=sc;
+  const d=Math.min(2,window.devicePixelRatio||1);locBase=document.createElement('canvas');locBase.width=Math.round(w*d);locBase.height=Math.round(h*d);
+  const x=locBase.getContext('2d');x.setTransform(d,0,0,d,0,0);x.lineCap='round';
+  for(const b of branches){x.strokeStyle='rgba(183,161,255,.75)';x.lineWidth=Math.max(0.6,b.r0*sc*1.6);x.beginPath();for(let i=0;i<=10;i++){const [px,py]=locMap(b.curve.getPointAt(i/10));i?x.lineTo(px,py):x.moveTo(px,py);}x.stroke();}
+  x.strokeStyle='rgba(255,184,77,.8)';x.lineWidth=1;x.beginPath();for(let i=0;i<=80;i++){const [px,py]=locMap(axon.getPointAt(i/80));i?x.lineTo(px,py):x.moveTo(px,py);}x.stroke();
+  x.strokeStyle='rgba(107,149,255,.95)';x.lineWidth=2.6;for(const [a,b] of internodes){x.beginPath();for(let i=0;i<=6;i++){const [px,py]=locMap(axon.getPointAt(S2U(a+(b-a)*i/6)));i?x.lineTo(px,py):x.moveTo(px,py);}x.stroke();}
+  x.fillStyle='rgba(183,161,255,.9)';{const [px,py]=locMap(V3());x.beginPath();x.arc(px,py,Math.max(2.5,2.2*sc),0,7);x.fill();}
+  x.fillStyle='rgba(255,162,74,.9)';for(const b of boutons){const [px,py]=locMap(b.c);x.beginPath();x.arc(px,py,1.8,0,7);x.fill();}
+}
+function drawLocator(){
+  if(!cvLoc||!locBase||!locMap)return;const {x,w,h}=cvLoc;x.clearRect(0,0,w,h);x.drawImage(locBase,0,0,w,h);
+  x.fillStyle='#9ff4ff';for(const p of pulses){const {s}=pulseAt(T-p.t0);const [px,py]=locMap(axon.getPointAt(S2U(s)));x.shadowColor='#72e8ff';x.shadowBlur=8;x.beginPath();x.arc(px,py,2.2,0,7);x.fill();}x.shadowBlur=0;
+  const s=SHOTS[shotIdx];const [cx,cy]=locMap(s.loc);const half=Math.max(5,Math.min(w*0.45,s.locR*locMap.sc));
+  x.strokeStyle='#ffb84d';x.lineWidth=1.2;x.strokeRect(cx-half,cy-half*0.75,half*2,half*1.5);
+  x.strokeStyle='rgba(255,184,77,.35)';x.beginPath();x.moveTo(cx,0);x.lineTo(cx,cy-half*0.75);x.moveTo(cx,cy+half*0.75);x.lineTo(cx,h);x.stroke();
+}
+const hold={na:0,k:0,ca:0};
+function peak(key,v,dt){hold[key]=Math.max(v,hold[key]*Math.exp(-dt/0.35));return hold[key];}
+function bar(f,v,frac,text){f.style.width=(clamp01(frac)*100).toFixed(1)+'%';if(v.textContent!==text)v.textContent=text;}
+let hudAcc=0;
+function updateHud(dt,draw=true){
+  const na=peak('na',HH.m**3*HH.h,dt),k=peak('k',HH.n**4,dt),ca=peak('ca',SYN.ca*0.62,dt);
+  hudAcc+=dt;
+  if(!draw)return;
+  drawTrace();drawRaster();drawLocator();
+  if(!RECORD&&hudAcc<1/15)return;hudAcc=0;
+  el.vmVal.textContent=fmtMinus(Math.round(HH.V));
+  const since=T-lastSpikeWall;
+  const st=since<0.12?'spike · Na⁺ in':since<0.45?'repolarising · K⁺ out':(HH.V<-66.5&&since<1.4)?'after-hyperpolarisation':(HH.V>-63?'depolarising · inputs':'resting');
+  if(el.vmState.textContent!==st)el.vmState.textContent=st;
+  bar(el.naF,el.naV,na/0.35,Math.round(na*100)+' %');
+  bar(el.kF,el.kV,k/0.55,Math.round(k*100)+' %');
+  bar(el.caF,el.caV,ca/0.62,Math.round(ca*100)+' %');
+  bar(el.pmF,el.pmV,SYN.pump/0.75,Math.round(SYN.pump*100)+' %');
+  bar(el.vesF,el.vesV,SYN.ves/4,String(SYN.ves));
+  bar(el.gluF,el.gluV,SYN.glu/1.6,SYN.glu.toFixed(2)+' mM');
+  bar(el.ampaF,el.ampaV,SYN.ampa/0.8,Math.round(SYN.ampa*100)+' %');
+  bar(el.epspF,el.epspV,SYN.epsp/1.4,'+'+SYN.epsp.toFixed(2)+' mV');
+  const n=raster.reduce((a,r)=>a+r.length,0);el.rasterN.textContent=n+' spikes in window';
+  if(logDirty){logDirty=false;el.log.replaceChildren(...logLines.map(([t,s])=>{const li=document.createElement('li');const tm=document.createElement('time');tm.textContent=t;li.append(tm,' '+s);return li;}));}
+}
+function initGauge(){const v=98,c=2*Math.PI*19;el.cvArc.setAttribute('stroke-dasharray',`${(v/120*c).toFixed(1)} ${c.toFixed(1)}`);el.cvVal.textContent=v;}
+
+/* ------------------------------------------------------------------ controls */
+function setPlaying(p){playing=p;el.play.textContent=p?'❚❚':'▶︎';el.play.setAttribute('aria-label',p?'Pause tour':'Play tour');if(p){userCam=false;}}
+function hideHint(){if(el.hint)el.hint.style.opacity='0';}
+el.prev.addEventListener('click',()=>{hideHint();goShot(shotIdx-1);});
+el.next.addEventListener('click',()=>{hideHint();goShot(shotIdx+1);});
+el.play.addEventListener('click',()=>{hideHint();if(userCam){goShot(shotIdx);}setPlaying(!playing||userCam);});
+addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('button')&&(e.key===' '||e.key==='Enter'))return;
+  if(e.key==='ArrowRight'){goShot(shotIdx+1);hideHint();}else if(e.key==='ArrowLeft'){goShot(shotIdx-1);hideHint();}else if(e.key===' '){e.preventDefault();if(userCam)goShot(shotIdx);setPlaying(!playing);hideHint();}});
+
+/* ------------------------------------------------------------------ render */
+function resize(){
+  const w=innerWidth,h=innerHeight;camera.aspect=w/h;
+  const r=el.stage.getBoundingClientRect();stageFrac=Math.max(0.25,r.height/h);stageOffset=h/2-(r.top+r.height/2);
+  camera.setViewOffset(w,h,0,stageOffset,w,h);camera.updateProjectionMatrix();
+  if(renderer){renderer.setSize(w,h,false);composer.setSize(w,h);}
+  const pr=renderer?renderer.getPixelRatio():1;U.uPx.value=(h*pr)/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2));
+  cvTrace=fitCanvas(el.vmTrace);cvRaster=fitCanvas(el.raster);cvLoc=fitCanvas(el.locator);buildLocator();
+}
+if(renderer){
+  composer=new EffectComposer(renderer);renderPass=new RenderPass(scene,camera);composer.addPass(renderPass);
+  bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),0.75,0.55,0.68);composer.addPass(bloom);composer.addPass(new OutputPass());
+}
+addEventListener('resize',resize);
+resize();initGauge();hudShot();
+
+function step(dt,draw=true){T+=dt;U.uTime.value=T;simulate(dt);updatePulses();updateSynapse(dt);updateParticles(dt);updateTour(dt);updateCamera();updateHud(dt,draw);}
+function render(){if(composer)composer.render();}
+
+// Opening move: start wide and settle onto the first shot.
+{const p=shotPose(0,0);camera.position.copy(p.tgt).addScaledVector(p.pos.clone().sub(p.tgt),2.2);camera.lookAt(p.tgt);if(controls)controls.target.copy(p.tgt);
+ if(!REDUCED)trans={type:'move',t:0,dur:3.0,fromPos:camera.position.clone(),fromTgt:p.tgt.clone()};}
+log('model online · rest −65 mV');
+
+if(RECORD){
+  window.__neuron={duration:TOUR_LEN,step(dt){step(dt);render();return T;},advance(dt){step(dt,false);return T;},render(){render();},ready:(async()=>{try{await document.fonts.ready;}catch(e){}resize();step(1/60);render();return true;})()};
+}else{
+  let last=performance.now();
+  const loop=now=>{const dt=Math.min(0.05,(now-last)/1000);last=now;step(dt);render();requestAnimationFrame(loop);};
+  requestAnimationFrame(loop);
+}
+</script>
