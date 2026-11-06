@@ -1,0 +1,13 @@
+import { chromium } from "playwright-core";
+import path from "node:path";
+const [html, pdf, prev] = process.argv.slice(2);
+const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium", args: ["--no-sandbox"] });
+const page = await b.newPage({ viewport: { width: 1920, height: 1080 } });
+await page.goto("file://" + path.resolve(html));
+await page.evaluate(() => document.fonts.ready);
+await page.waitForTimeout(800);
+const n = await page.locator(".slide").count();
+if (prev) for (let i = 0; i < n; i++) await page.locator(".slide").nth(i).screenshot({ path: `${prev}/slide-${String(i + 1).padStart(2, "0")}.png` });
+await page.pdf({ path: pdf, width: "1920px", height: "1080px", printBackground: true, preferCSSPageSize: true });
+console.log("slides", n);
+await b.close();
