@@ -1,0 +1,55 @@
+{
+ "as_of": "2026-11-09",
+ "macro": [
+  {"fact": "Abu Dhabi residential sales in Q3 2026: AED 21.5bn across 6,085 transactions; volume down 19% QoQ; off-plan 81% of activity (Savills).", "source": "Gulf News", "url": "https://gulfnews.com/business/property/abu-dhabi-records-dh215-billion-in-residential-property-sales-in-q3-2026-across-6085-transactions-1.500717696", "type": "press (citing Savills)"},
+  {"fact": "Expatriate residents and non-resident foreigners were the top buyer groups in Jan-Jun 2026; leading nationalities include China, India, Russia and the UK (ADREC data).", "source": "Khaleej Times", "url": "https://www.khaleejtimes.com/business/expat-residents-foreign-investors-top-abu-dhabi-property-buyers-in-2026", "type": "press (citing ADREC)"},
+  {"fact": "Foreign buyers from 116 nationalities active in H1 2026, up from 82 a year earlier.", "source": "AGBI", "url": "https://www.agbi.com/analysis/real-estate/2026/08/abu-dhabi-property-sales-exceed-2025-by-mid-august/", "type": "press"},
+  {"fact": "Expatriates and non-resident foreigners made up 62% of residential unit sales in 2025 (ADREC).", "source": "Khaleej Times", "url": "https://www.khaleejtimes.com/business/property/more-expats-buying-homes-abu-dhab", "type": "press (citing ADREC)"},
+  {"fact": "Al Reem Island: 4,471 transactions in H1 2026; apartment prices +17.3% YoY (Cavendish Maxwell).", "source": "Gulf News", "url": "https://gulfnews.com/business/property/abu-dhabi-records-dh215-billion-in-residential-property-sales-in-q3-2026-across-6085-transactions-1.500717696", "type": "press (citing Cavendish Maxwell)"},
+  {"fact": "Al Reem Island YTD 2026: median AED 1,704/sqft, +21.2% YoY, 75% of sales off-plan, gross rental yield 5.8%.", "source": "ADX Interact", "url": "https://adxinteract.com/area/al-reem-island", "type": "third-party data aggregator"},
+  {"fact": "Al Reem Island, 12 months to June 2026: 8,725 sales, residential median AED 1,591/sqft (+37.9%).", "source": "Esto", "url": "https://estoplot.app/areas/abu-dhabi/ad-reem/", "type": "third-party data aggregator"},
+  {"fact": "Property of AED 2M+ is commonly cited as qualifying for the 10-year UAE Golden Visa - a selling point for a 3BR at this price.", "source": "WeNest / ppinvests guides", "url": "https://wenestre.com/locations/al-reem-island-abu-dhabi-property-investment/", "type": "agency guide - verify with ICP before quoting"}
+ ],
+ "resale_rules": [
+  {"topic": "Registration fee", "finding": "Several guides cite 2% of contract value for off-plan (interim register) dispositions on DARI, plus an e-service fee (~AED 400 + VAT). Who pays is set by agreement; one guide says split 50/50.", "confidence": "Medium - not confirmed on an official ADREC/DARI page (adrec.gov.ae did not respond from this environment)", "urls": ["https://oplusrealty.com/adrec-abu-dhabi-real-estate-centre-guide-2026/", "https://eastfaceuae.com/guides/abu-dhabi-property-purchase-costs-and-fees", "https://www.bayut.com/mybayut/resell-off-plan-property-abu-dhabi/"]},
+  {"topic": "Developer NOC", "finding": "Developer NOC needed; confirms no arrears and accepts buyer taking over the plan. Guides quote AED 500-5,000 or 1-2% assignment fee for some projects; minimum paid thresholds of 30-40% are common.", "confidence": "Low-Medium - Radiant's own policy not found publicly; must be obtained from Radiant", "urls": ["https://www.wowdeals.me/blog/resell-off-plan-property-abu-dhabi", "https://www.equityedge.ae/tools/resale-transfer-calculator"]},
+  {"topic": "Your threshold risk", "finding": "AED 950K of AED 3.03M = 31.4% paid. If Radiant requires 30%+ you likely qualify; if it requires 40% you would need ~AED 262K more paid before a NOC.", "confidence": "Calculation - depends on Radiant policy"},
+  {"topic": "Broker commission", "finding": "Market norm 2% of price from each side, plus 5% VAT on the commission. Negotiable, especially for an exclusive.", "confidence": "Market practice"},
+  {"topic": "Mechanics of an off-plan resale", "finding": "Buyer pays you the amount you have paid to Radiant plus the agreed premium; buyer takes over the remaining balance with Radiant; the transfer is recorded in the interim register on DARI after the NOC.", "confidence": "Consistent across guides"}
+ ],
+ "snippet_comparables": [
+  {"source": "Bayut (search snippet)", "url": "https://www.bayut.com/property/details-11102835.html", "bedrooms": 3, "size_sqft": 1833, "price_aed": 2817000, "notes": "Off-plan resale, 55/45 plan, full canal view. Listing date unknown - older listing ID; may be stale.", "price_type": "asking", "verified": false},
+  {"source": "Bayut (search snippet)", "url": "https://www.bayut.com/property/details-11405362.html", "bedrooms": 3, "size_sqft": 2196, "price_aed": 3250000, "notes": "Off-plan resale, 30/70 plan, balcony. Date unknown.", "price_type": "asking", "verified": false},
+  {"source": "Bayut AR (search snippet)", "url": "https://www.bayut.com/ar/property/details-12040552.html", "bedrooms": 3, "size_sqft": 2195, "price_aed": 3074000, "notes": "Date unknown.", "price_type": "asking", "verified": false},
+  {"source": "Dubizzle (search snippet)", "url": "https://abudhabi.dubizzle.com/property-for-sale/residential/apartment/2026/5/22/canal-view-3brmaids-closed-kitchen-wate-3-235614/", "bedrooms": 3, "size_sqft": null, "price_aed": 3250000, "notes": "Posted 2026-05-22; canal view, 55/45, Q4 2027 handover.", "price_type": "asking", "verified": false},
+  {"source": "abu-dhabi.realestate / Metropolitan Capital (search snippet)", "url": "https://abu-dhabi.realestate/buy/canal-view-3brmaids-closed-kitchen-waterfront-mcs-41395", "bedrooms": 3, "size_sqft": 1693, "price_aed": 3250000, "notes": "AED 1,920/sqft quoted; canal view.", "price_type": "asking", "verified": false}
+ ],
+ "investor_channels": [
+  {"channel": "Property Finder + Bayut listings via 1-2 licensed brokers", "why": "Where all 8 competing 3BRs are marketed; buyers search by building.", "access": "Through a licensed broker with a listing permit; owner cannot self-list on PF."},
+  {"channel": "Bayut / Dubizzle 'direct from owner'", "why": "Bayut has an owner-direct section for Reem; reaches buyers avoiding agents.", "access": "Owner account; verify listing permit rules first."},
+  {"channel": "Brokers with Indian / Russian / Chinese buyer books", "why": "ADREC H1 2026 top buyer nationalities include India, China, Russia, UK.", "access": "Agents in the broker database whose profiles list Hindi/Urdu, Russian, Chinese."},
+  {"channel": "Facebook groups (Abu Dhabi property investors, Reem Island residents)", "why": "Large audiences; groups are not indexed by web search so no posts could be read here.", "access": "Manual, logged-in search by you. Use the queries in RESEARCH_PROMPT.md."},
+  {"channel": "LinkedIn (Abu Dhabi real-estate / ADGM professionals)", "why": "ADGM expansion onto Reem brings finance professionals who want 3BR family homes.", "access": "Manual, logged-in. Template messages in marketing/linkedin.md."},
+  {"channel": "OpenSooq / Mourjan (Arabic classifieds)", "why": "Arabic-speaking GCC buyers; Mourjan carries 'no brokers' owner ads on Reem.", "access": "Owner posting; Arabic ad in marketing/ads-ar.md."}
+ ],
+ "buyer_intent_search_log": [
+  {"query": "\"looking to buy\" 3 bedroom Al Reem Island Abu Dhabi", "result": "Only seller listings returned"},
+  {"query": "مطلوب شراء شقة ثلاث غرف جزيرة الريم أبوظبي", "result": "Only seller listings returned"},
+  {"query": "\"Radiant Marina\" wanted OR \"looking for\" OR buyer resale Reem", "result": "Only seller listings; one agency page claims 'real buyers looking' (marketing copy, not a buyer)"},
+  {"query": "dubizzle Abu Dhabi \"wanted\" apartment Reem Island buy", "result": "No wanted ads indexed"},
+  {"query": "مستثمر يبحث عن شقة أبوظبي جزيرة الريم على الخارطة إعادة بيع", "result": "Only seller listings returned"},
+  {"query": "Facebook group Abu Dhabi real estate buyers investors Reem Island off-plan resale", "result": "Facebook groups not indexed"},
+  {"query": "reddit abudhabi buying apartment Reem Island off-plan advice 2026", "result": "No Reddit threads indexed"},
+  {"query": "\"requirement\" 3BR \"Reem Island\" buyer cash OR investor 2026", "result": "Guides only"},
+  {"query": "\"client\" \"looking for\" 3BR Reem Island LinkedIn post 2026", "result": "No LinkedIn posts indexed"},
+  {"query": "مطلوب شقة للشراء جزيرة الريم ٣ غرف opensooq OR mourjan OR dubizzle", "result": "Only seller listings returned"},
+  {"query": "\"Radiant Marina\" site:linkedin.com / site:facebook.com / site:reddit.com", "result": "No relevant results"}
+ ],
+ "capability_notes": [
+  "Property Finder: public pages read directly (robots.txt-allowed paths only). Primary data source.",
+  "Bayut and Dubizzle search pages: bot protection; not bypassed. Data only from web-search snippets, labelled unverified.",
+  "Facebook, LinkedIn, Instagram, Reddit: need login or not indexed; no posts read. Manual search required.",
+  "ADREC / DMT sites: no response from this environment; official fee schedule not confirmed.",
+  "No registry (DARI) transaction feed is publicly available; 'claimed' sales come from agent profiles on Property Finder."
+ ]
+}

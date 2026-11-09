@@ -1,0 +1,59 @@
+{
+ "version": 1,
+ "lead_status": {},
+ "lead_notes": {},
+ "approvals": [],
+ "outreach_log": [],
+ "custom_leads": [],
+ "calculator": {
+  "sale_price": 3350000,
+  "original_price": 3030000,
+  "paid_to_date": 950000,
+  "extra_paid_before_sale": 0,
+  "commission_pct": 2,
+  "vat_pct": 5,
+  "seller_registration_share_pct": 50,
+  "registration_fee_pct": 2,
+  "noc_fee": 5000,
+  "other_costs": 0,
+  "size_sqft": null
+ },
+ "campaigns": [
+  {"id": "C1", "name": "Document & verification sprint", "channel": "Owner", "start": "2026-11-10", "end": "2026-11-23", "status": "Planned", "goal": "SPA, Radiant statement, DARI certificate, NOC policy, exact size/floor/view in hand", "tasks": [
+   {"t": "Request statement of account + resale/NOC policy from Radiant", "done": false},
+   {"t": "Download interim registration certificate from DARI", "done": false},
+   {"t": "Confirm exact sqft, floor, view, parking from SPA floor plan", "done": false},
+   {"t": "Fill unit details into data/property.json and the calculator", "done": false}
+  ]},
+  {"id": "C2", "name": "Broker shortlist & co-broke offer", "channel": "Brokers (Property Finder)", "start": "2026-11-17", "end": "2026-12-07", "status": "Planned", "goal": "3 approved brokers briefed; 1 exclusive or 2 non-exclusive listing agreements signed", "tasks": [
+   {"t": "Approve outreach to top-scored brokers in the Approvals tab", "done": false},
+   {"t": "Ask each broker: buyers who enquired on their 3BR, achieved prices, marketing plan", "done": false},
+   {"t": "Choose listing broker(s); sign listing agreement with permit", "done": false}
+  ]},
+  {"id": "C3", "name": "Portal launch (PF / Bayut / Dubizzle)", "channel": "Portals via broker", "start": "2026-12-01", "end": "2027-01-29", "status": "Planned", "goal": "Listing live with real photos/floor plan; 15+ enquiries, 5+ qualified", "tasks": [
+   {"t": "Approve final English + Arabic advert copy", "done": false},
+   {"t": "Provide floor plan, SPA extract, payment schedule to broker", "done": false},
+   {"t": "Weekly enquiry report from broker", "done": false}
+  ]},
+  {"id": "C4", "name": "Investor networks & social", "channel": "Facebook / LinkedIn / WhatsApp", "start": "2026-12-08", "end": "2027-02-05", "status": "Planned", "goal": "Posts approved and published by owner; inbound investor contacts logged", "tasks": [
+   {"t": "Owner joins 3-5 Abu Dhabi property investor groups (manual)", "done": false},
+   {"t": "Approve and post Facebook copy (owner posts manually)", "done": false},
+   {"t": "Approve LinkedIn messages to 10 ADGM/real-estate professionals", "done": false}
+  ]},
+  {"id": "C5", "name": "Day-30 / Day-60 price review", "channel": "Owner", "start": "2027-01-08", "end": "2027-02-06", "status": "Planned", "goal": "Price decision based on enquiries, viewings and competing listings", "tasks": [
+   {"t": "Day 30: fewer than 5 qualified enquiries -> step down one price band", "done": false},
+   {"t": "Day 60: no written offer -> reprice to market median ask", "done": false}
+  ]}
+ ],
+ "milestones": [
+  {"date": "2026-11-23", "label": "Documents verified; price band chosen", "done": false},
+  {"date": "2026-12-07", "label": "Listing broker(s) appointed", "done": false},
+  {"date": "2026-12-15", "label": "Listing live on portals", "done": false},
+  {"date": "2027-01-14", "label": "Day-30 review", "done": false},
+  {"date": "2027-02-13", "label": "Day-60 review / reprice decision", "done": false},
+  {"date": "2027-04-30", "label": "Latest comfortable date for a signed MOU", "done": false},
+  {"date": "2027-06-30", "label": "Hard deadline for MOU (NOC + DARI transfer need lead time)", "done": false},
+  {"date": "2027-09-30", "label": "Target: sale completed (transfer registered)", "done": false},
+  {"date": "2027-12-01", "label": "Portal-listed expected completion (handover payment falls due)", "done": false}
+ ]
+}

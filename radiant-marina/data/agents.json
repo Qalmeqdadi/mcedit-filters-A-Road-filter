@@ -1,0 +1,640 @@
+[
+ {
+  "agent_id": "273996",
+  "name": "Ahmad Assad Issam Altaha",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/ahmad-assad-issam-altaha-273996",
+  "position": "Landlord Relations Agent",
+  "licence_no": null,
+  "experience_since": 2024,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic"
+  ],
+  "nationality": "Syria",
+  "linkedin": null,
+  "total_listings": 63,
+  "claimed_sales_count": 4,
+  "claimed_sales_avg_aed": 2750000,
+  "rating": 4.3,
+  "reem_claimed_sales": [
+   {
+    "tower": "Sun Tower",
+    "bedrooms": "3",
+    "price_aed": 3150000,
+    "date": "2026-09-01",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Reem Eleven",
+    "bedrooms": "2",
+    "price_aed": 2550000,
+    "date": "2026-01-17",
+    "property_type": "Apartment"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:42:45Z"
+ },
+ {
+  "agent_id": "204164",
+  "name": "Deepak Sharma",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/deepak-sharma-204164",
+  "position": "Associate Director",
+  "licence_no": "202401049401",
+  "experience_since": 2020,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Hindi",
+   "Urdu",
+   "Punjabi"
+  ],
+  "nationality": "India",
+  "linkedin": "https://www.linkedin.com/in/deepak-sharma-97775690",
+  "total_listings": 5,
+  "claimed_sales_count": 3,
+  "claimed_sales_avg_aed": 3673700,
+  "rating": 0,
+  "reem_claimed_sales": [
+   {
+    "tower": "SAAS Heights",
+    "bedrooms": "1",
+    "price_aed": 1990000,
+    "date": "2026-09-03",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "3",
+    "price_aed": 2825000,
+    "date": "2026-08-03",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Reem Hills",
+    "bedrooms": "4",
+    "price_aed": 6206100,
+    "date": "2026-01-23",
+    "property_type": "Villa"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:58:01Z"
+ },
+ {
+  "agent_id": "270356",
+  "name": "Hind Obaid",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/hind-obaid-270356",
+  "position": "Sales Agent ",
+  "licence_no": "cn-1180810",
+  "experience_since": 2017,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic"
+  ],
+  "nationality": "Iraq",
+  "linkedin": null,
+  "total_listings": 36,
+  "claimed_sales_count": 18,
+  "claimed_sales_avg_aed": 4277778,
+  "rating": 5,
+  "reem_claimed_sales": [
+   {
+    "tower": "Pixel",
+    "bedrooms": "studio",
+    "price_aed": 1300000,
+    "date": "2026-09-11",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Garden Towers",
+    "bedrooms": "studio",
+    "price_aed": 850000,
+    "date": "2026-06-18",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Pixel",
+    "bedrooms": "2",
+    "price_aed": 3000000,
+    "date": "2026-06-16",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 2050000,
+    "date": "2026-06-12",
+    "property_type": "Apartment"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:58:08Z"
+ },
+ {
+  "agent_id": "285074",
+  "name": "Ilona Shyshkina",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/ilona-shyshkina-285074",
+  "position": "Property Sales Consultant",
+  "licence_no": null,
+  "experience_since": 2014,
+  "super_agent": false,
+  "languages": [
+   "English",
+   "Arabic",
+   "Russian",
+   "Ukrainian"
+  ],
+  "nationality": "Ukraine",
+  "linkedin": null,
+  "total_listings": 23,
+  "claimed_sales_count": 0,
+  "claimed_sales_avg_aed": 0,
+  "rating": 3.2,
+  "reem_claimed_sales": [],
+  "fetched_at": "2026-11-09T10:58:10Z"
+ },
+ {
+  "agent_id": "344314",
+  "name": "Jofel Bejec Amarilliento",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/jofel-bejec-amarilliento-344314",
+  "position": "Sales Manager",
+  "licence_no": null,
+  "experience_since": 2021,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Tagalog"
+  ],
+  "nationality": "Philippines",
+  "linkedin": null,
+  "total_listings": 52,
+  "claimed_sales_count": 40,
+  "claimed_sales_avg_aed": 4311938.5,
+  "rating": 0,
+  "reem_claimed_sales": [
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 1450000,
+    "date": "2026-09-18",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Amaya Towers",
+    "bedrooms": "2",
+    "price_aed": 1850000,
+    "date": "2026-07-10",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 1400000,
+    "date": "2026-07-10",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 1400000,
+    "date": "2026-06-01",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 1400000,
+    "date": "2026-05-25",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Oceanscape",
+    "bedrooms": "N/A",
+    "price_aed": 575000,
+    "date": "2026-05-08",
+    "property_type": "Office Space"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 2340000,
+    "date": "2026-05-01",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Oceanscape",
+    "bedrooms": "N/A",
+    "price_aed": 575000,
+    "date": "2026-04-20",
+    "property_type": "Office Space"
+   },
+   {
+    "tower": "Reem Hills",
+    "bedrooms": "2",
+    "price_aed": 2350000,
+    "date": "2026-04-20",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 2400000,
+    "date": "2026-03-31",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 2400000,
+    "date": "2026-03-03",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Elite Tower",
+    "bedrooms": "1",
+    "price_aed": 920000,
+    "date": "2026-03-02",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 2350000,
+    "date": "2026-03-02",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "3",
+    "price_aed": 2900000,
+    "date": "2026-02-28",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 2340000,
+    "date": "2026-02-26",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 2340000,
+    "date": "2026-02-26",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Marina Towers",
+    "bedrooms": "1",
+    "price_aed": 1190000,
+    "date": "2026-02-04",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Marina Towers",
+    "bedrooms": "1",
+    "price_aed": 1190000,
+    "date": "2026-01-30",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "1",
+    "price_aed": 1600000,
+    "date": "2026-01-13",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 2232500,
+    "date": "2025-12-27",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "3",
+    "price_aed": 3300000,
+    "date": "2025-12-27",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Sun Tower",
+    "bedrooms": "1",
+    "price_aed": 1540000,
+    "date": "2025-12-27",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Radiant Square",
+    "bedrooms": "2",
+    "price_aed": 1680000,
+    "date": "2025-12-22",
+    "property_type": "Apartment"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:58:19Z"
+ },
+ {
+  "agent_id": "295215",
+  "name": "Mahmoud Alsibai",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/mahmoud-alsibai-295215",
+  "position": "Sales Consultant",
+  "licence_no": null,
+  "experience_since": 2024,
+  "super_agent": true,
+  "languages": [
+   "English"
+  ],
+  "nationality": "Palestinian Territory",
+  "linkedin": null,
+  "total_listings": 14,
+  "claimed_sales_count": 2,
+  "claimed_sales_avg_aed": 4510000,
+  "rating": 0,
+  "reem_claimed_sales": [
+   {
+    "tower": "Radiant Elite Tower",
+    "bedrooms": "1",
+    "price_aed": 920000,
+    "date": "2025-11-18",
+    "property_type": "Apartment"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:58:12Z"
+ },
+ {
+  "agent_id": "404165",
+  "name": "Majd Rashed",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/majd-rashed-404165",
+  "position": "Team Leader ",
+  "licence_no": null,
+  "experience_since": 2023,
+  "super_agent": false,
+  "languages": [
+   "English",
+   "Arabic",
+   "Spanish"
+  ],
+  "nationality": "Syria",
+  "linkedin": null,
+  "total_listings": 64,
+  "claimed_sales_count": 0,
+  "claimed_sales_avg_aed": 0,
+  "rating": 0,
+  "reem_claimed_sales": [],
+  "fetched_at": "2026-11-09T10:58:21Z"
+ },
+ {
+  "agent_id": "275824",
+  "name": "Malik Alhasani",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/malik-alhasani-275824",
+  "position": "Listing Team Leader",
+  "licence_no": null,
+  "experience_since": 2020,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic"
+  ],
+  "nationality": "Palestinian Territory",
+  "linkedin": null,
+  "total_listings": 68,
+  "claimed_sales_count": 7,
+  "claimed_sales_avg_aed": 2520714.2,
+  "rating": 4.3,
+  "reem_claimed_sales": [
+   {
+    "tower": "Marina Heights",
+    "bedrooms": "2",
+    "price_aed": 1765000,
+    "date": "2026-09-10",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Sun Tower",
+    "bedrooms": "2",
+    "price_aed": 2255000,
+    "date": "2026-09-09",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Al Maha Tower",
+    "bedrooms": "1",
+    "price_aed": 1100000,
+    "date": "2026-03-02",
+    "property_type": "Apartment"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:42:47Z"
+ },
+ {
+  "agent_id": "467554",
+  "name": "Mohamed Adel",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/mohamed-adel-467554",
+  "position": "Sales Agent",
+  "licence_no": null,
+  "experience_since": 2020,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic"
+  ],
+  "nationality": "Egypt",
+  "linkedin": null,
+  "total_listings": 45,
+  "claimed_sales_count": 3,
+  "claimed_sales_avg_aed": 1636666.6,
+  "rating": 5,
+  "reem_claimed_sales": [],
+  "fetched_at": "2026-11-09T10:58:23Z"
+ },
+ {
+  "agent_id": "302115",
+  "name": "Mohamed Gamal",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/mohamed-gamal-302115",
+  "position": "Sales Manager",
+  "licence_no": "CN-2521518",
+  "experience_since": 2019,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic"
+  ],
+  "nationality": "Egypt",
+  "linkedin": null,
+  "total_listings": 54,
+  "claimed_sales_count": 15,
+  "claimed_sales_avg_aed": 9285084,
+  "rating": 5,
+  "reem_claimed_sales": [
+   {
+    "tower": "Marina Blue Tower",
+    "bedrooms": "1",
+    "price_aed": 1160000,
+    "date": "2026-10-23",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Reem Hills",
+    "bedrooms": "7",
+    "price_aed": 20464700,
+    "date": "2025-12-30",
+    "property_type": "Villa"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:58:14Z"
+ },
+ {
+  "agent_id": "297466",
+  "name": "Nabil Al Bitar",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/nabil-al-bitar-297466",
+  "position": "Sales Manager",
+  "licence_no": null,
+  "experience_since": 2019,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic"
+  ],
+  "nationality": "Syria",
+  "linkedin": null,
+  "total_listings": 24,
+  "claimed_sales_count": 7,
+  "claimed_sales_avg_aed": 3010916.5,
+  "rating": 4.6,
+  "reem_claimed_sales": [
+   {
+    "tower": "Reem Hills",
+    "bedrooms": "2",
+    "price_aed": 1916416,
+    "date": "2026-09-25",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Burooj Views",
+    "bedrooms": "2",
+    "price_aed": 1685000,
+    "date": "2026-04-07",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Reem Hills",
+    "bedrooms": "1",
+    "price_aed": 1500000,
+    "date": "2026-03-11",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Reem Hills",
+    "bedrooms": "2",
+    "price_aed": 2400000,
+    "date": "2026-03-04",
+    "property_type": "Apartment"
+   },
+   {
+    "tower": "Reem Hills",
+    "bedrooms": "3",
+    "price_aed": 3450000,
+    "date": "2026-02-01",
+    "property_type": "Duplex"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:42:54Z"
+ },
+ {
+  "agent_id": "309118",
+  "name": "Nawal Romdhani",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/nawal-romdhani-309118",
+  "position": "Listing Agent",
+  "licence_no": null,
+  "experience_since": 2020,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic",
+   "French"
+  ],
+  "nationality": "Tunisia",
+  "linkedin": null,
+  "total_listings": 23,
+  "claimed_sales_count": 0,
+  "claimed_sales_avg_aed": 0,
+  "rating": 4.7,
+  "reem_claimed_sales": [],
+  "fetched_at": "2026-11-09T10:58:16Z"
+ },
+ {
+  "agent_id": "253788",
+  "name": "Ramsi Abusida",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/ramsi-abusida-253788",
+  "position": "Vice President - Sales Director",
+  "licence_no": "CN-2753144",
+  "experience_since": 2012,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic",
+   "German"
+  ],
+  "nationality": "Germany",
+  "linkedin": null,
+  "total_listings": 19,
+  "claimed_sales_count": 4,
+  "claimed_sales_avg_aed": 1525000,
+  "rating": 5,
+  "reem_claimed_sales": [
+   {
+    "tower": "RAK Tower",
+    "bedrooms": "2",
+    "price_aed": 1850000,
+    "date": "2026-06-10",
+    "property_type": "Apartment"
+   }
+  ],
+  "fetched_at": "2026-11-09T10:58:05Z"
+ },
+ {
+  "agent_id": "469216",
+  "name": "Yara Kassem",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/yara-kassem-469216",
+  "position": "Senior Property Consultant",
+  "licence_no": null,
+  "experience_since": 2021,
+  "super_agent": true,
+  "languages": [
+   "English",
+   "Arabic"
+  ],
+  "nationality": "Syria",
+  "linkedin": null,
+  "total_listings": 57,
+  "claimed_sales_count": 0,
+  "claimed_sales_avg_aed": 0,
+  "rating": 0,
+  "reem_claimed_sales": [],
+  "fetched_at": "2026-11-09T10:43:07Z"
+ },
+ {
+  "agent_id": "233400",
+  "name": "Zara Amiralieva",
+  "profile_url": "https://www.propertyfinder.ae/en/agent/zara-amiralieva-233400",
+  "position": "Property Consultant",
+  "licence_no": "63289",
+  "experience_since": 2020,
+  "super_agent": false,
+  "languages": [
+   "English",
+   "Russian"
+  ],
+  "nationality": "Russia",
+  "linkedin": null,
+  "total_listings": 4,
+  "claimed_sales_count": 0,
+  "claimed_sales_avg_aed": 0,
+  "rating": 0,
+  "reem_claimed_sales": [],
+  "fetched_at": "2026-11-09T10:58:03Z"
+ }
+]

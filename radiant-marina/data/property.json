@@ -1,0 +1,40 @@
+{
+  "_note": "Owner-supplied figures. Every field marked verify:true must be checked against the SPA, the Radiant statement of account and the DARI record before any figure is quoted to a buyer.",
+  "project": "Radiant Marina Towers",
+  "community": "Shams Abu Dhabi, Al Reem Island, Abu Dhabi",
+  "developer": "Radiant (listed on Property Finder as Radiant Enterprises Real Estate)",
+  "bedrooms": 3,
+  "status": "Off-plan, under construction",
+  "unit": {
+    "tower": null,
+    "unit_no": null,
+    "floor": null,
+    "size_sqft": null,
+    "view": null,
+    "maids_room": null,
+    "parking": null,
+    "verify": true
+  },
+  "financials": {
+    "original_price_aed": 3030000,
+    "paid_to_date_aed": 950000,
+    "paid_as_of": "2026-11-09",
+    "payment_plan": null,
+    "next_instalments": [],
+    "verify": true
+  },
+  "targets": {
+    "target_price_aed": 3500000,
+    "target_completion": "2027-09-30",
+    "owner_expected_handover": "Late 2027 / early 2028",
+    "portal_expected_handover": "2027-12-01 (Property Finder project page, fetched 2026-11-09)"
+  },
+  "documents_needed": [
+    "Sale and Purchase Agreement (SPA) incl. resale/assignment clause",
+    "Radiant statement of account (amount paid, overdue, next due dates)",
+    "DARI / ADREC interim (off-plan) registration certificate in owner's name",
+    "Radiant resale policy: minimum % paid before NOC, NOC/admin fee, processing time",
+    "Floor plan with exact sqft, floor number and view",
+    "Owner Emirates ID / passport copy (for broker listing agreement)"
+  ]
+}

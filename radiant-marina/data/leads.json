@@ -1,0 +1,1557 @@
+{
+ "manual": [],
+ "auto": [
+  {
+   "lead_id": "BRK-METROPOLIT",
+   "name": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+   "contact_person": "Jofel Bejec Amarilliento",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159650877.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/jofel-bejec-amarilliento-344314",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock; 3BR",
+   "interest_date": "2026-11-06",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Albanian",
+    "Arabic",
+    "Belarusian",
+    "English",
+    "French",
+    "Italian",
+    "Romanian",
+    "Russian",
+    "Spanish",
+    "Tagalog",
+    "Turkish"
+   ],
+   "match": "High",
+   "intent": "Broker activity (not a buyer)",
+   "score": 86,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "20 active listing(s) in Radiant Marina Towers",
+    "Marketing 3BR at AED 3,299,999",
+    "Agent-claimed Radiant sales: 3BR Radiant Square AED 3,300,000 (2025-12-27); 3BR Radiant Square AED 2,900,000 (2026-02-28); 2BR Radiant Square AED 1,680,000 (2025-12-22); 2BR Radiant Square AED 2,232,500 (2025-12-27)"
+   ],
+   "outreach": "Offer a co-broke/exclusive on a 3BR priced against their own listing; ask whether they hold buyers who enquired on their 3BR.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-PSIASSETSR",
+   "name": "PSI ASSETS REAL ESTATES LIMITED",
+   "contact_person": "Ahmad Assad Issam Altaha",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161897518.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/ahmad-assad-issam-altaha-273996",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock; 3BR",
+   "interest_date": "2026-10-29",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French",
+    "Hindi",
+    "Spanish"
+   ],
+   "match": "High",
+   "intent": "Broker activity (not a buyer)",
+   "score": 54,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "14 active listing(s) in Radiant Marina Towers",
+    "Marketing 3BR at AED 3,300,000"
+   ],
+   "outreach": "Offer a co-broke/exclusive on a 3BR priced against their own listing; ask whether they hold buyers who enquired on their 3BR.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-KENNEDYPRO",
+   "name": "Kennedy Property - Abu Dhabi",
+   "contact_person": "Deepak Sharma",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169736071.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/deepak-sharma-204164",
+   "licence_no": "202401049401",
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock; 3BR",
+   "interest_date": "2026-11-06",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "Hindi",
+    "Punjabi",
+    "Urdu"
+   ],
+   "match": "High",
+   "intent": "Broker activity (not a buyer)",
+   "score": 48,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers",
+    "Marketing 3BR at AED 3,250,000",
+    "Agent-claimed Radiant sales: 3BR Radiant Square AED 2,825,000 (2026-08-03)"
+   ],
+   "outreach": "Offer a co-broke/exclusive on a 3BR priced against their own listing; ask whether they hold buyers who enquired on their 3BR.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-MIRAGECAPI",
+   "name": "Mirage Capital Properties LLC",
+   "contact_person": "Hind Obaid",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150006099.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/hind-obaid-270356",
+   "licence_no": "cn-1180810",
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock; 3BR",
+   "interest_date": "2026-10-26",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "High",
+   "intent": "Broker activity (not a buyer)",
+   "score": 44,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "10 active listing(s) in Radiant Marina Towers",
+    "Marketing 3BR at AED 3,300,000",
+    "Agent-claimed Radiant sales: 2BR Radiant Square AED 2,050,000 (2026-06-12); Studio Radiant Garden Towers AED 850,000 (2026-06-18)"
+   ],
+   "outreach": "Offer a co-broke/exclusive on a 3BR priced against their own listing; ask whether they hold buyers who enquired on their 3BR.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-UNIQUEHOME",
+   "name": "Unique Homes WorldWide Properties LLC",
+   "contact_person": "Ramsi Abusida",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150008810.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/ramsi-abusida-253788",
+   "licence_no": "CN-2753144",
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock; 3BR",
+   "interest_date": "2026-10-14",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "German",
+    "Spanish"
+   ],
+   "match": "High",
+   "intent": "Broker activity (not a buyer)",
+   "score": 30,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "3 active listing(s) in Radiant Marina Towers",
+    "Marketing 3BR at AED 3,200,000"
+   ],
+   "outreach": "Offer a co-broke/exclusive on a 3BR priced against their own listing; ask whether they hold buyers who enquired on their 3BR.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-CAPITALAVE",
+   "name": "Capital Avenue Real Estate",
+   "contact_person": "Mahmoud Alsibai",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168360289.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/mahmoud-alsibai-295215",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock; 3BR",
+   "interest_date": "2026-11-08",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "High",
+   "intent": "Broker activity (not a buyer)",
+   "score": 28,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "5 active listing(s) in Radiant Marina Towers",
+    "Marketing 3BR at AED 3,235,020",
+    "Agent-claimed Radiant sales: 1BR Radiant Elite Tower AED 920,000 (2025-11-18)"
+   ],
+   "outreach": "Offer a co-broke/exclusive on a 3BR priced against their own listing; ask whether they hold buyers who enquired on their 3BR.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-OPENHOMEPR",
+   "name": "Open Home Properties L.L.C.",
+   "contact_person": "Ahmad Sarhan",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-144618286.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-29",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 22,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "11 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ROYALLOUNG",
+   "name": "Royal Lounge Properties",
+   "contact_person": "Nabil Al Bitar",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159602742.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/nabil-al-bitar-297466",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-02",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Medium",
+   "intent": "Broker activity (not a buyer)",
+   "score": 22,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "3 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-MARKHOMERE",
+   "name": "MARK HOME REAL ESTATE MANAGEMENT - L.L.C",
+   "contact_person": "Mohamed Adel",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-170166968.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/mohamed-adel-467554",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock; 3BR",
+   "interest_date": "2026-11-07",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "High",
+   "intent": "Broker activity (not a buyer)",
+   "score": 22,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "4 active listing(s) in Radiant Marina Towers",
+    "Marketing 3BR at AED 3,200,000"
+   ],
+   "outreach": "Offer a co-broke/exclusive on a 3BR priced against their own listing; ask whether they hold buyers who enquired on their 3BR.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ADVISORSTW",
+   "name": "ADVISORS TWO PROPERTIES - L.L.C",
+   "contact_person": "Majd Rashed",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-136114943.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/majd-rashed-404165",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-24",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "Spanish"
+   ],
+   "match": "Medium",
+   "intent": "Broker activity (not a buyer)",
+   "score": 20,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "3 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-MASTERPIEC",
+   "name": "Masterpiece Property LLC",
+   "contact_person": "Yara Kassem",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-74232293.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/yara-kassem-469216",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock; 3BR",
+   "interest_date": "2026-10-15",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "High",
+   "intent": "Broker activity (not a buyer)",
+   "score": 19,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers",
+    "Marketing 3BR at AED 3,300,000"
+   ],
+   "outreach": "Offer a co-broke/exclusive on a 3BR priced against their own listing; ask whether they hold buyers who enquired on their 3BR.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-NATIONWIDE",
+   "name": "Nationwide Middle East Properties LLC",
+   "contact_person": "Ahmad Mahmood",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-138328557.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-02",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 18,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "5 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ROSEISLAND",
+   "name": "Rose Island Real estate",
+   "contact_person": "Mahmoud Elzeny",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150479231.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-03",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 17,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "4 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-MEGAPOLISR",
+   "name": "Megapolis Real Estate- AUH",
+   "contact_person": "Zara Amiralieva",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-145503347.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/zara-amiralieva-233400",
+   "licence_no": "63289",
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-08",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "Russian",
+    "Serbian"
+   ],
+   "match": "Medium",
+   "intent": "Broker activity (not a buyer)",
+   "score": 17,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-URBANCITYP",
+   "name": "URBAN CITY  PROPERTY  - L.L.C - S.P.C",
+   "contact_person": "Imane Benamar",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-132942731.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-24",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French",
+    "Russian"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 17,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "4 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ELIVAREALE",
+   "name": "ELIVA REAL ESTATE - L.L.C - S.P.C",
+   "contact_person": "Rouba Nasser",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159626140.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-04",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 16,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "3 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ABCPROPERT",
+   "name": "ABC Properties",
+   "contact_person": "Nawal Romdhani",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166074778.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/nawal-romdhani-309118",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-29",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French"
+   ],
+   "match": "Medium",
+   "intent": "Broker activity (not a buyer)",
+   "score": 16,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-SPIKEVISTA",
+   "name": "Spike Vista Real Estate - L.L.C - O.P.C",
+   "contact_person": "Monesse Antonio",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168347499.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-03",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "Tagalog"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 14,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-DEANSREALE",
+   "name": "Deans Real Estate Management L.L.C.",
+   "contact_person": "Dina Alaa Eldin",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-158711225.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-13",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "Pashto",
+    "Punjabi",
+    "Urdu"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 14,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ADVISORSPR",
+   "name": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+   "contact_person": "Ammar Youssef",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-138752927.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-04",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 14,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "5 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-IBUYREALES",
+   "name": "I Buy Real Estate",
+   "contact_person": "Alan Harthy",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169285978.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-06",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "Russian"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 14,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-PUREHOMERE",
+   "name": "Pure Home Real Estate",
+   "contact_person": "Rania Neji",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-129745594.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-25",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French",
+    "Italian"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 14,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-FIRSTONERE",
+   "name": "FIRST ONE REAL ESTATE - L.L.C - O.P.C",
+   "contact_person": "Hamza Khan",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-136074010.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-29",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "Pashto",
+    "Urdu"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 14,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-PROPERTYSH",
+   "name": "Property Shop Investment",
+   "contact_person": "Anastasiya  Aksatskaya",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-156927365.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-30",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "Russian"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 14,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-CROMPTONPA",
+   "name": "Crompton Partners Estate Agents AUH",
+   "contact_person": "Nisrine Kassab",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155055675.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-20",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "Spanish"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 14,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ALZAEEMLEL",
+   "name": "Al Zaeem Lel Sharq Al Awsat Real Estate",
+   "contact_person": "Maya Kassem",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-164597468.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-26",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "German",
+    "Russian"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 12,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-HLANDREALE",
+   "name": "H LAND REAL ESTATE - L.L.C - S.P.C",
+   "contact_person": "Mohammed Benkirane",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-165591161.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-28",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 12,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-BLACKOAKRE",
+   "name": "BlackOak Real Estate",
+   "contact_person": "Bianca Santos",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168355159.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-03",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "Tagalog"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 12,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-HUSPYABUDH",
+   "name": "Huspy Abu Dhabi",
+   "contact_person": "Jamshad Abdulsalam",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169725985.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-06",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "Hindi"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 12,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-EGCPROPERT",
+   "name": "EGC Properties LLC",
+   "contact_person": "Anum Kayani",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168369807.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-03",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "Urdu"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 12,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-TOWNPROPER",
+   "name": "Town Properties",
+   "contact_person": "Ilona Shyshkina",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159601307.html",
+   "profile_url": "https://www.propertyfinder.ae/en/agent/ilona-shyshkina-285074",
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-15",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "Russian",
+    "Ukrainian"
+   ],
+   "match": "Medium",
+   "intent": "Broker activity (not a buyer)",
+   "score": 10,
+   "confidence": "High - read from live portal data",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-AMLAKONERE",
+   "name": "AMLAK ONE REAL ESTATE L.L.C",
+   "contact_person": "Nada Mazyad",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-142378680.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-15",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 9,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-OIAPROPERT",
+   "name": "Oia Properties",
+   "contact_person": "Rabee Alendary",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166995796.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-31",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-SUSTAINBLE",
+   "name": "Sustainble Homes Real Estate",
+   "contact_person": "Mousa Alrousan",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-154169431.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-04",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-MDREALESTA",
+   "name": "MD Real Estate LLC",
+   "contact_person": "Alaa Badawi",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155570024.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-07",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-BENCHMARKB",
+   "name": "BENCHMARK BROKERS REAL ESTATE BROKERAGE - L.L.C - S.P.C",
+   "contact_person": "Gloria Awad",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-132505649.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-08-19",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-LINKHOMEPR",
+   "name": "Link Home Properties LLC",
+   "contact_person": "Maged Naguib",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-149559282.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-24",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-CRYPTOONEP",
+   "name": "CRYPTO ONE  PROPERTY INVESTMENT - L.L.C",
+   "contact_person": "Ahmad Amer",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-157365223.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-10",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-LOUVREINVE",
+   "name": "LOUVRE INVESTMENT REAL ESTATE - L.L.C - O.P.C",
+   "contact_person": "Mohamed Abdel Dayem",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-144629960.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-14",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ALTSPACEMA",
+   "name": "ALT SPACEMARKET PROPERTIES - L.L.C",
+   "contact_person": "Ammar Nasser  Hasan Mousa",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-149576747.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-24",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-LLJ",
+   "name": "LLJ",
+   "contact_person": "Daniel Watson",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-129298865.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-08-12",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 8,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-SAVILLSABU",
+   "name": "Savills Abu Dhabi",
+   "contact_person": "Diana Bashirova",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159141611.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-14",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "Russian"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 6,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-INFINITYHO",
+   "name": "Infinity Homes Properties",
+   "contact_person": "FADOUA BENZAROUALA",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-151921996.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-29",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English",
+    "French"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 6,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-BANKEINTER",
+   "name": "Banke International Properties - Abu Dhabi",
+   "contact_person": "Abdulrehman Yousaf",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160080965.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-16",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "Hindi",
+    "Punjabi",
+    "Urdu"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 6,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ALTURAREAL",
+   "name": "ALTURA REAL ESTATE SERVICES LLC",
+   "contact_person": "Fanny Cohen",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-140569732.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-05",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "French"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 6,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-SANDSEEKER",
+   "name": "Sand Seekers Real Estate LLC",
+   "contact_person": "Saifullah Channo",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-129285576.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-08-12",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "Hindi",
+    "Urdu"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 6,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-REXREALEST",
+   "name": "Rex Real Estate",
+   "contact_person": "Felicia Agmyren",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159170294.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-14",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English",
+    "French",
+    "Italian",
+    "Spanish",
+    "Swedish"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 6,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-RESPECTREA",
+   "name": "RESPECT REAL ESTATE - L.L.C",
+   "contact_person": "Nazmi Maher Shammah",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-156907406.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-10-28",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 3,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "2 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-KATALPROPE",
+   "name": "KATAL PROPERTY INVESTEMENT - L.L.C",
+   "contact_person": "Ilham Bouich",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169706876.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-06",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 2,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-ADDRESSPOI",
+   "name": "Address Point Properties LLC",
+   "contact_person": "Karim El Aoufi",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-132954171.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-08-20",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 2,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-EMIRADIARE",
+   "name": "EMIRADIA REAL ESTATE - L.L.C - S.P.C",
+   "contact_person": "Ayesha Sienna Soriano",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167871311.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-11-02",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 2,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  },
+  {
+   "lead_id": "BRK-NICEVIEWRE",
+   "name": "Nice View Real Estate",
+   "contact_person": "Amer Alasaad",
+   "category": "Broker",
+   "platform": "Property Finder",
+   "source_url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-143743392.html",
+   "profile_url": null,
+   "licence_no": null,
+   "budget": null,
+   "preferences": "Lists Radiant Marina stock",
+   "interest_date": "2026-09-12",
+   "contact_channel": "Property Finder agent profile / listing enquiry form",
+   "languages": [
+    "Arabic",
+    "English"
+   ],
+   "match": "Low",
+   "intent": "Broker activity (not a buyer)",
+   "score": 2,
+   "confidence": "Medium - listing data only",
+   "evidence": [
+    "1 active listing(s) in Radiant Marina Towers"
+   ],
+   "outreach": "Ask if any 2BR/1BR enquirers want to upsize to 3BR; offer standard 2% co-broke.",
+   "auto": true,
+   "last_verified": "2026-11-09"
+  }
+ ],
+ "auto_generated_at": "2026-11-09T10:59:21Z",
+ "direct_buyer_leads_verified": 0,
+ "rejected_candidates": [
+  {
+   "name": "Gamal Zayed (Masterpiece Property LLC)",
+   "url": "https://www.propertyfinder.ae/en/agent/gamal-zayed-324257",
+   "reason": "Surfaced by web search as listing Radiant Marina units; Property Finder profile empty/inactive on 2026-11-09."
+  },
+  {
+   "name": "Anabel Inciong (EGC Properties LLC)",
+   "url": "https://www.propertyfinder.ae/en/agent/anabel-inciong-315918",
+   "reason": "Search snippet showed Radiant Marina studio/1BR listings; profile empty/inactive on 2026-11-09."
+  },
+  {
+   "name": "Abouobaida Elsayed (Oia Properties)",
+   "url": "https://propertyfinder.ae/en/agent/abouobaida-elsayed-264973",
+   "reason": "Search snippet showed one Radiant Marina listing; profile empty/inactive on 2026-11-09."
+  },
+  {
+   "name": "Ali Lotfy",
+   "url": "https://propertyfinder.ae/en/agent/ali-lotfy-246320",
+   "reason": "Search result for Radiant Marina brokers; profile empty/inactive on 2026-11-09."
+  },
+  {
+   "name": "Muath Raed",
+   "url": "https://www.propertyfinder.ae/en/agent/muath-raed-242881",
+   "reason": "Active (licence CN-4983631) but no Radiant Marina or Reem sales on profile - weak match, not added."
+  },
+  {
+   "name": "data-medics.com forum 'Want to buy an apartment on Al Reem Island?'",
+   "url": "https://www.data-medics.com/forum/threads/want-to-buy-an-apartment-on-al-reem-island.121022",
+   "reason": "Off-topic forum (data recovery site); not credible buyer intent."
+  },
+  {
+   "name": "Agency page claiming 'real buyers looking' for Radiant Marina",
+   "url": "https://keltandcorealty.com/property/radiant-marina/",
+   "reason": "Marketing copy; no identifiable buyer. Could be approached as an ordinary broker."
+  }
+ ]
+}

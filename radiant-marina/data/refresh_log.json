@@ -1,0 +1,2200 @@
+[
+ {
+  "started_at": "2026-11-09T10:58:23Z",
+  "steps": [
+   {
+    "step": "radiant_marina_listings",
+    "ok": true
+   },
+   {
+    "step": "reem_3br_listings",
+    "ok": true
+   },
+   {
+    "step": "project_page",
+    "ok": true
+   }
+  ],
+  "flags": [
+   {
+    "type": "new_listing",
+    "id": "159602742",
+    "bedrooms": "2",
+    "price_aed": 2575000,
+    "size_sqft": 1711,
+    "broker": "Royal Lounge Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159602742.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166536772",
+    "bedrooms": "1",
+    "price_aed": 1499999,
+    "size_sqft": 738,
+    "broker": "Royal Lounge Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166536772.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168355159",
+    "bedrooms": "1",
+    "price_aed": 1650000,
+    "size_sqft": 1260,
+    "broker": "BlackOak Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168355159.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160096137",
+    "bedrooms": "1",
+    "price_aed": 1200000,
+    "size_sqft": 554,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160096137.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160094891",
+    "bedrooms": "2",
+    "price_aed": 2400000,
+    "size_sqft": 1525,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160094891.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159600136",
+    "bedrooms": "1",
+    "price_aed": 1697000,
+    "size_sqft": 1123,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159600136.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155055835",
+    "bedrooms": "1",
+    "price_aed": 1650000,
+    "size_sqft": 1004,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155055835.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166078955",
+    "bedrooms": "studio",
+    "price_aed": 1100000,
+    "size_sqft": 536,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166078955.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "169736877",
+    "bedrooms": "1",
+    "price_aed": 870000,
+    "size_sqft": 438,
+    "broker": "I Buy Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169736877.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "161897518",
+    "bedrooms": "3",
+    "price_aed": 3300000,
+    "size_sqft": 1692,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161897518.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "169285978",
+    "bedrooms": "1",
+    "price_aed": 1786000,
+    "size_sqft": 1004,
+    "broker": "I Buy Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169285978.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "138323327",
+    "bedrooms": "1",
+    "price_aed": 1700000,
+    "size_sqft": 993,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-138323327.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "157790234",
+    "bedrooms": "1",
+    "price_aed": 1700000,
+    "size_sqft": 1068,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-157790234.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168351213",
+    "bedrooms": "1",
+    "price_aed": 950000,
+    "size_sqft": 575,
+    "broker": "Spike Vista Real Estate - L.L.C - O.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168351213.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "74232293",
+    "bedrooms": "3",
+    "price_aed": 3300000,
+    "size_sqft": 1833,
+    "broker": "Masterpiece Property LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-74232293.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "152380235",
+    "bedrooms": "1",
+    "price_aed": 1150000,
+    "size_sqft": 742,
+    "broker": "Rose Island Real estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-152380235.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168801167",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 738,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168801167.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "167003943",
+    "bedrooms": "1",
+    "price_aed": 967000,
+    "size_sqft": 532,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167003943.html"
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-IBUYREALES",
+    "name": "I Buy Real Estate",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-BLACKOAKRE",
+    "name": "BlackOak Real Estate",
+    "score": 12
+   }
+  ],
+  "errors": [],
+  "finished_at": "2026-11-09T10:59:21Z"
+ },
+ {
+  "started_at": "2026-11-09T10:57:00Z",
+  "steps": [
+   {
+    "step": "radiant_marina_listings",
+    "ok": true
+   },
+   {
+    "step": "reem_3br_listings",
+    "ok": true
+   },
+   {
+    "step": "project_page",
+    "ok": true
+   },
+   {
+    "step": "agent_204164",
+    "ok": true
+   },
+   {
+    "step": "agent_233400",
+    "ok": true
+   },
+   {
+    "step": "agent_253788",
+    "ok": true
+   },
+   {
+    "step": "agent_270356",
+    "ok": true
+   },
+   {
+    "step": "agent_285074",
+    "ok": true
+   },
+   {
+    "step": "agent_295215",
+    "ok": true
+   },
+   {
+    "step": "agent_302115",
+    "ok": true
+   },
+   {
+    "step": "agent_309118",
+    "ok": true
+   },
+   {
+    "step": "agent_344314",
+    "ok": true
+   },
+   {
+    "step": "agent_404165",
+    "ok": true
+   },
+   {
+    "step": "agent_467554",
+    "ok": true
+   }
+  ],
+  "flags": [
+   {
+    "type": "removed_listing",
+    "id": "168355159",
+    "bedrooms": "1",
+    "price_aed": 1650000,
+    "broker": "BlackOak Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168355159.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "160096137",
+    "bedrooms": "1",
+    "price_aed": 1200000,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160096137.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "160094891",
+    "bedrooms": "2",
+    "price_aed": 2400000,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160094891.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "159600136",
+    "bedrooms": "1",
+    "price_aed": 1697000,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159600136.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "169736877",
+    "bedrooms": "1",
+    "price_aed": 870000,
+    "broker": "I Buy Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169736877.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "166078955",
+    "bedrooms": "studio",
+    "price_aed": 1100000,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166078955.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "161897518",
+    "bedrooms": "3",
+    "price_aed": 3300000,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161897518.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "155055835",
+    "bedrooms": "1",
+    "price_aed": 1650000,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155055835.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "159602742",
+    "bedrooms": "2",
+    "price_aed": 2575000,
+    "broker": "Royal Lounge Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159602742.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "166536772",
+    "bedrooms": "1",
+    "price_aed": 1499999,
+    "broker": "Royal Lounge Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166536772.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "169285978",
+    "bedrooms": "1",
+    "price_aed": 1786000,
+    "broker": "I Buy Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169285978.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "138323327",
+    "bedrooms": "1",
+    "price_aed": 1700000,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-138323327.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "157790234",
+    "bedrooms": "1",
+    "price_aed": 1700000,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-157790234.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "152380235",
+    "bedrooms": "1",
+    "price_aed": 1150000,
+    "broker": "Rose Island Real estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-152380235.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "74232293",
+    "bedrooms": "3",
+    "price_aed": 3300000,
+    "broker": "Masterpiece Property LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-74232293.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "168351213",
+    "bedrooms": "1",
+    "price_aed": 950000,
+    "broker": "Spike Vista Real Estate - L.L.C - O.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168351213.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "168801167",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168801167.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "removed_listing",
+    "id": "167003943",
+    "bedrooms": "1",
+    "price_aed": 967000,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167003943.html",
+    "note": "Missing in 2 consecutive runs: sold, withdrawn or expired. Not proof of a sale."
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-MEGAPOLISR",
+    "name": "Megapolis Real Estate- AUH",
+    "score": 17
+   }
+  ],
+  "errors": [],
+  "finished_at": "2026-11-09T10:58:23Z"
+ },
+ {
+  "started_at": "2026-11-09T10:55:39Z",
+  "steps": [
+   {
+    "step": "radiant_marina_listings",
+    "ok": true
+   },
+   {
+    "step": "reem_3br_listings",
+    "ok": true
+   },
+   {
+    "step": "project_page",
+    "ok": true
+   },
+   {
+    "step": "agent_204164",
+    "ok": true
+   },
+   {
+    "step": "agent_253788",
+    "ok": true
+   },
+   {
+    "step": "agent_270356",
+    "ok": true
+   },
+   {
+    "step": "agent_285074",
+    "ok": true
+   },
+   {
+    "step": "agent_295215",
+    "ok": true
+   },
+   {
+    "step": "agent_302115",
+    "ok": true
+   },
+   {
+    "step": "agent_309118",
+    "ok": true
+   },
+   {
+    "step": "agent_344314",
+    "ok": true
+   },
+   {
+    "step": "agent_404165",
+    "ok": true
+   },
+   {
+    "step": "agent_467554",
+    "ok": true
+   }
+  ],
+  "flags": [
+   {
+    "type": "new_listing",
+    "id": "150029889",
+    "bedrooms": "1",
+    "price_aed": 1400000,
+    "size_sqft": 828,
+    "broker": "Pure Home Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150029889.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "129745594",
+    "bedrooms": "1",
+    "price_aed": 1250000,
+    "size_sqft": 836,
+    "broker": "Pure Home Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-129745594.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "150008912",
+    "bedrooms": "1",
+    "price_aed": 1295000,
+    "size_sqft": 900,
+    "broker": "Unique Homes WorldWide Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150008912.html"
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-PUREHOMERE",
+    "name": "Pure Home Real Estate",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-REXREALEST",
+    "name": "Rex Real Estate",
+    "score": 6
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-SANDSEEKER",
+    "name": "Sand Seekers Real Estate LLC",
+    "score": 6
+   }
+  ],
+  "errors": [],
+  "finished_at": "2026-11-09T10:56:39Z"
+ },
+ {
+  "started_at": "2026-11-09T10:43:07Z",
+  "steps": [
+   {
+    "step": "radiant_marina_listings",
+    "ok": true
+   },
+   {
+    "step": "reem_3br_listings",
+    "ok": true
+   },
+   {
+    "step": "project_page",
+    "ok": true
+   }
+  ],
+  "flags": [
+   {
+    "type": "new_listing",
+    "id": "166542121",
+    "bedrooms": "1",
+    "price_aed": 2200000,
+    "size_sqft": 1335,
+    "broker": "Nationwide Middle East Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166542121.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155091805",
+    "bedrooms": "1",
+    "price_aed": 1718180,
+    "size_sqft": 1261,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155091805.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "162316143",
+    "bedrooms": "1",
+    "price_aed": 1550000,
+    "size_sqft": 831,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-162316143.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159156852",
+    "bedrooms": "1",
+    "price_aed": 1400000,
+    "size_sqft": 829,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159156852.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159147171",
+    "bedrooms": "1",
+    "price_aed": 1000000,
+    "size_sqft": 585,
+    "broker": "Unique Homes WorldWide Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159147171.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "150008810",
+    "bedrooms": "3",
+    "price_aed": 3200000,
+    "size_sqft": 1833,
+    "broker": "Unique Homes WorldWide Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150008810.html"
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-UNIQUEHOME",
+    "name": "Unique Homes WorldWide Properties LLC",
+    "score": 24
+   }
+  ],
+  "errors": [],
+  "finished_at": "2026-11-09T10:43:45Z"
+ },
+ {
+  "started_at": "2026-11-09T10:41:55Z",
+  "steps": [
+   {
+    "step": "radiant_marina_listings",
+    "ok": true
+   },
+   {
+    "step": "reem_3br_listings",
+    "ok": true
+   },
+   {
+    "step": "project_page",
+    "ok": true
+   },
+   {
+    "step": "agent_204164",
+    "ok": true
+   },
+   {
+    "step": "agent_233400",
+    "ok": true
+   },
+   {
+    "step": "agent_270356",
+    "ok": true
+   },
+   {
+    "step": "agent_273996",
+    "ok": true
+   },
+   {
+    "step": "agent_275824",
+    "ok": true
+   },
+   {
+    "step": "agent_285074",
+    "ok": true
+   },
+   {
+    "step": "agent_295215",
+    "ok": true
+   },
+   {
+    "step": "agent_297466",
+    "ok": true
+   },
+   {
+    "step": "agent_302115",
+    "ok": true
+   },
+   {
+    "step": "agent_309118",
+    "ok": true
+   },
+   {
+    "step": "agent_344314",
+    "ok": true
+   },
+   {
+    "step": "agent_404165",
+    "ok": true
+   },
+   {
+    "step": "agent_467554",
+    "ok": true
+   },
+   {
+    "step": "agent_469216",
+    "ok": true
+   }
+  ],
+  "flags": [
+   {
+    "type": "new_listing",
+    "id": "132956884",
+    "bedrooms": "1",
+    "price_aed": 1910000,
+    "size_sqft": 1549,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-132956884.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168787893",
+    "bedrooms": "1",
+    "price_aed": 1199999,
+    "size_sqft": 851,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168787893.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159626140",
+    "bedrooms": "1",
+    "price_aed": 1325000,
+    "size_sqft": 828,
+    "broker": "ELIVA REAL ESTATE - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159626140.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160083432",
+    "bedrooms": "1",
+    "price_aed": 1350000,
+    "size_sqft": 817,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160083432.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155511198",
+    "bedrooms": "1",
+    "price_aed": 1000000,
+    "size_sqft": 438,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155511198.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166074778",
+    "bedrooms": "2",
+    "price_aed": 2400000,
+    "size_sqft": 1525,
+    "broker": "ABC Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166074778.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159651460",
+    "bedrooms": "1",
+    "price_aed": 1040000,
+    "size_sqft": 574,
+    "broker": "AMLAK ONE REAL ESTATE L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159651460.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160108138",
+    "bedrooms": "1",
+    "price_aed": 1600000,
+    "size_sqft": 1068,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160108138.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "144618286",
+    "bedrooms": "1",
+    "price_aed": 1400000,
+    "size_sqft": 789,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-144618286.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166074806",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 818,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166074806.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "158683468",
+    "bedrooms": "1",
+    "price_aed": 1556000,
+    "size_sqft": 1154,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-158683468.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168347499",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 1085,
+    "broker": "Spike Vista Real Estate - L.L.C - O.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168347499.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155062582",
+    "bedrooms": "1",
+    "price_aed": 1450000,
+    "size_sqft": 760,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155062582.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "164597468",
+    "bedrooms": "1",
+    "price_aed": 1049990,
+    "size_sqft": 585,
+    "broker": "Al Zaeem Lel Sharq Al Awsat Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-164597468.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "165579356",
+    "bedrooms": "1",
+    "price_aed": 1240000,
+    "size_sqft": 787,
+    "broker": "RESPECT REAL ESTATE - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-165579356.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "158711225",
+    "bedrooms": "1",
+    "price_aed": 1750000,
+    "size_sqft": 1123,
+    "broker": "Deans Real Estate Management L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-158711225.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "156003266",
+    "bedrooms": "1",
+    "price_aed": 1650000,
+    "size_sqft": 1260,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-156003266.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "169706876",
+    "bedrooms": "1",
+    "price_aed": 1500000,
+    "size_sqft": 760,
+    "broker": "KATAL PROPERTY INVESTEMENT - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169706876.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "165591161",
+    "bedrooms": "1",
+    "price_aed": 1900000,
+    "size_sqft": 1457,
+    "broker": "H LAND REAL ESTATE - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-165591161.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159141611",
+    "bedrooms": "1",
+    "price_aed": 1600000,
+    "size_sqft": 817,
+    "broker": "Savills Abu Dhabi",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159141611.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "158711521",
+    "bedrooms": "1",
+    "price_aed": 1500000,
+    "size_sqft": 1122,
+    "broker": "Deans Real Estate Management L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-158711521.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "162312033",
+    "bedrooms": "1",
+    "price_aed": 970000,
+    "size_sqft": 574,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-162312033.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "161397613",
+    "bedrooms": "1",
+    "price_aed": 1720000,
+    "size_sqft": 1063,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161397613.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160530382",
+    "bedrooms": "1",
+    "price_aed": 1600000,
+    "size_sqft": 1123,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160530382.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "165502377",
+    "bedrooms": "1",
+    "price_aed": 1430000,
+    "size_sqft": 928,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-165502377.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168814748",
+    "bedrooms": "2",
+    "price_aed": 2600000,
+    "size_sqft": 1412,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168814748.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "167900777",
+    "bedrooms": "1",
+    "price_aed": 1100000,
+    "size_sqft": 554,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167900777.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "169726888",
+    "bedrooms": "1",
+    "price_aed": 1500000,
+    "size_sqft": 816,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169726888.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "152370953",
+    "bedrooms": "1",
+    "price_aed": 1217000,
+    "size_sqft": 365,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-152370953.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166521322",
+    "bedrooms": "1",
+    "price_aed": 1550000,
+    "size_sqft": 899,
+    "broker": "Nationwide Middle East Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166521322.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159650877",
+    "bedrooms": "3",
+    "price_aed": 3299999,
+    "size_sqft": 2236,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159650877.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "163231286",
+    "bedrooms": "1",
+    "price_aed": 890000,
+    "size_sqft": 452,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-163231286.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "151373533",
+    "bedrooms": "1",
+    "price_aed": 1350000,
+    "size_sqft": 817,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-151373533.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "163693392",
+    "bedrooms": "1",
+    "price_aed": 1550000,
+    "size_sqft": 738,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-163693392.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "161854891",
+    "bedrooms": "1",
+    "price_aed": 1500000,
+    "size_sqft": 805,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161854891.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "165058509",
+    "bedrooms": "1",
+    "price_aed": 900000,
+    "size_sqft": 460,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-165058509.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "156930530",
+    "bedrooms": "1",
+    "price_aed": 1050000,
+    "size_sqft": 608,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-156930530.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "161862675",
+    "bedrooms": "1",
+    "price_aed": 2107000,
+    "size_sqft": 1335,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161862675.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "152357645",
+    "bedrooms": "1",
+    "price_aed": 1250000,
+    "size_sqft": 836,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-152357645.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "157356331",
+    "bedrooms": "1",
+    "price_aed": 997000,
+    "size_sqft": 532,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-157356331.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "167892405",
+    "bedrooms": "1",
+    "price_aed": 1175000,
+    "size_sqft": 650,
+    "broker": "Royal Lounge Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167892405.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168791474",
+    "bedrooms": "1",
+    "price_aed": 1040000,
+    "size_sqft": 574,
+    "broker": "ELIVA REAL ESTATE - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168791474.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "142831358",
+    "bedrooms": "1",
+    "price_aed": 1100000,
+    "size_sqft": 650,
+    "broker": "Nationwide Middle East Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-142831358.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "138328557",
+    "bedrooms": "1",
+    "price_aed": 1125000,
+    "size_sqft": 509,
+    "broker": "Nationwide Middle East Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-138328557.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "167876427",
+    "bedrooms": "1",
+    "price_aed": 1800000,
+    "size_sqft": 1094,
+    "broker": "Nationwide Middle East Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167876427.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "163236016",
+    "bedrooms": "1",
+    "price_aed": 1200000,
+    "size_sqft": 761,
+    "broker": "ELIVA REAL ESTATE - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-163236016.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "150006152",
+    "bedrooms": "studio",
+    "price_aed": 850000,
+    "size_sqft": 581,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150006152.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168369807",
+    "bedrooms": "1",
+    "price_aed": 1280000,
+    "size_sqft": 881,
+    "broker": "EGC Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168369807.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "165497821",
+    "bedrooms": "1",
+    "price_aed": 1650000,
+    "size_sqft": 1005,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-165497821.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166995796",
+    "bedrooms": "1",
+    "price_aed": 1599999,
+    "size_sqft": 900,
+    "broker": "Oia Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166995796.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160095368",
+    "bedrooms": "1",
+    "price_aed": 1500000,
+    "size_sqft": 786,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160095368.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "147760330",
+    "bedrooms": "1",
+    "price_aed": 1725000,
+    "size_sqft": 1516,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-147760330.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "169725985",
+    "bedrooms": "1",
+    "price_aed": 1250000,
+    "size_sqft": 817,
+    "broker": "Huspy Abu Dhabi",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169725985.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "167000871",
+    "bedrooms": "1",
+    "price_aed": 1550000,
+    "size_sqft": 1035,
+    "broker": "MARK HOME REAL ESTATE MANAGEMENT - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167000871.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "170166968",
+    "bedrooms": "3",
+    "price_aed": 3200000,
+    "size_sqft": 1926,
+    "broker": "MARK HOME REAL ESTATE MANAGEMENT - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-170166968.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "150006099",
+    "bedrooms": "3",
+    "price_aed": 3300000,
+    "size_sqft": 1771,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150006099.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "170163887",
+    "bedrooms": "1",
+    "price_aed": 1587120,
+    "size_sqft": 1154,
+    "broker": "MARK HOME REAL ESTATE MANAGEMENT - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-170163887.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155064092",
+    "bedrooms": "1",
+    "price_aed": 1700000,
+    "size_sqft": 1261,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155064092.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "163235720",
+    "bedrooms": "1",
+    "price_aed": 1486000,
+    "size_sqft": 1122,
+    "broker": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-163235720.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168355159",
+    "bedrooms": "1",
+    "price_aed": 1650000,
+    "size_sqft": 1260,
+    "broker": "BlackOak Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168355159.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160096137",
+    "bedrooms": "1",
+    "price_aed": 1200000,
+    "size_sqft": 554,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160096137.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160094891",
+    "bedrooms": "2",
+    "price_aed": 2400000,
+    "size_sqft": 1525,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160094891.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "164587028",
+    "bedrooms": "1",
+    "price_aed": 1550000,
+    "size_sqft": 832,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-164587028.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159600136",
+    "bedrooms": "1",
+    "price_aed": 1697000,
+    "size_sqft": 1123,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159600136.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "170611064",
+    "bedrooms": "studio",
+    "price_aed": 900000,
+    "size_sqft": 512,
+    "broker": "Capital Avenue Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-170611064.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "169736877",
+    "bedrooms": "1",
+    "price_aed": 870000,
+    "size_sqft": 438,
+    "broker": "I Buy Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169736877.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166078955",
+    "bedrooms": "studio",
+    "price_aed": 1100000,
+    "size_sqft": 536,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166078955.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166999020",
+    "bedrooms": "studio",
+    "price_aed": 1050000,
+    "size_sqft": 556,
+    "broker": "MARK HOME REAL ESTATE MANAGEMENT - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166999020.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "161897518",
+    "bedrooms": "3",
+    "price_aed": 3300000,
+    "size_sqft": 1692,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161897518.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155055835",
+    "bedrooms": "1",
+    "price_aed": 1650000,
+    "size_sqft": 1004,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155055835.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168328014",
+    "bedrooms": "1",
+    "price_aed": 1500000,
+    "size_sqft": 738,
+    "broker": "Rose Island Real estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168328014.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159602742",
+    "bedrooms": "2",
+    "price_aed": 2575000,
+    "size_sqft": 1711,
+    "broker": "Royal Lounge Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159602742.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "142378680",
+    "bedrooms": "1",
+    "price_aed": 1350000,
+    "size_sqft": 801,
+    "broker": "AMLAK ONE REAL ESTATE L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-142378680.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166536772",
+    "bedrooms": "1",
+    "price_aed": 1499999,
+    "size_sqft": 738,
+    "broker": "Royal Lounge Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166536772.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "169285978",
+    "bedrooms": "1",
+    "price_aed": 1786000,
+    "size_sqft": 1004,
+    "broker": "I Buy Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169285978.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "164598769",
+    "bedrooms": "1",
+    "price_aed": 1100000,
+    "size_sqft": 461,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-164598769.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "161426659",
+    "bedrooms": "1",
+    "price_aed": 1434000,
+    "size_sqft": 802,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161426659.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "154593984",
+    "bedrooms": "1",
+    "price_aed": 1665000,
+    "size_sqft": 1260,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-154593984.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "138323327",
+    "bedrooms": "1",
+    "price_aed": 1700000,
+    "size_sqft": 993,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-138323327.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166067865",
+    "bedrooms": "studio",
+    "price_aed": 999999,
+    "size_sqft": 537,
+    "broker": "FIRST ONE REAL ESTATE - L.L.C - O.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166067865.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "162315641",
+    "bedrooms": "1",
+    "price_aed": 1250000,
+    "size_sqft": 558,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-162315641.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "131547221",
+    "bedrooms": "1",
+    "price_aed": 1900000,
+    "size_sqft": 1244,
+    "broker": "PSI ASSETS REAL ESTATES LIMITED",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-131547221.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "150006432",
+    "bedrooms": "1",
+    "price_aed": 2000000,
+    "size_sqft": 1935,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150006432.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "135171050",
+    "bedrooms": "studio",
+    "price_aed": 1040000,
+    "size_sqft": 459,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-135171050.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "149536267",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 817,
+    "broker": "ADVISORS TWO PROPERTIES - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-149536267.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155510415",
+    "bedrooms": "1",
+    "price_aed": 1802000,
+    "size_sqft": 1085,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155510415.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "169736071",
+    "bedrooms": "3",
+    "price_aed": 3250000,
+    "size_sqft": 2205,
+    "broker": "Kennedy Property - Abu Dhabi",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-169736071.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168360289",
+    "bedrooms": "3",
+    "price_aed": 3235020,
+    "size_sqft": 2205,
+    "broker": "Capital Avenue Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168360289.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "156927365",
+    "bedrooms": "1",
+    "price_aed": 1400000,
+    "size_sqft": 761,
+    "broker": "Property Shop Investment",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-156927365.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "154169431",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 828,
+    "broker": "Sustainble Homes Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-154169431.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "150006324",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 992,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150006324.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "138752927",
+    "bedrooms": "1",
+    "price_aed": 1100000,
+    "size_sqft": 533,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-138752927.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "166540237",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 817,
+    "broker": "Property Shop Investment",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-166540237.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "156907406",
+    "bedrooms": "1",
+    "price_aed": 1475000,
+    "size_sqft": 1123,
+    "broker": "RESPECT REAL ESTATE - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-156907406.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "149577689",
+    "bedrooms": "1",
+    "price_aed": 1960000,
+    "size_sqft": 1457,
+    "broker": "URBAN CITY  PROPERTY  - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-149577689.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "143280381",
+    "bedrooms": "1",
+    "price_aed": 1999999,
+    "size_sqft": 1598,
+    "broker": "URBAN CITY  PROPERTY  - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-143280381.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "137431539",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 738,
+    "broker": "URBAN CITY  PROPERTY  - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-137431539.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "132942731",
+    "bedrooms": "1",
+    "price_aed": 1050000,
+    "size_sqft": 653,
+    "broker": "URBAN CITY  PROPERTY  - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-132942731.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "161429763",
+    "bedrooms": "studio",
+    "price_aed": 1030000,
+    "size_sqft": 531,
+    "broker": "Capital Avenue Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161429763.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "144629960",
+    "bedrooms": "1",
+    "price_aed": 1200000,
+    "size_sqft": 537,
+    "broker": "LOUVRE INVESTMENT REAL ESTATE - L.L.C - O.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-144629960.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "164145385",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 817,
+    "broker": "Capital Avenue Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-164145385.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155570024",
+    "bedrooms": "studio",
+    "price_aed": 1200000,
+    "size_sqft": 585,
+    "broker": "MD Real Estate LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155570024.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "149559282",
+    "bedrooms": "1",
+    "price_aed": 1795000,
+    "size_sqft": 1338,
+    "broker": "Link Home Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-149559282.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "161864763",
+    "bedrooms": "1",
+    "price_aed": 1790000,
+    "size_sqft": 1457,
+    "broker": "Crompton Partners Estate Agents AUH",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-161864763.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "158712272",
+    "bedrooms": "1",
+    "price_aed": 970000,
+    "size_sqft": 608,
+    "broker": "Capital Avenue Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-158712272.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "149576747",
+    "bedrooms": "1",
+    "price_aed": 1725000,
+    "size_sqft": 1516,
+    "broker": "ALT SPACEMARKET PROPERTIES - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-149576747.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "132505649",
+    "bedrooms": "1",
+    "price_aed": 1750000,
+    "size_sqft": 1054,
+    "broker": "BENCHMARK BROKERS REAL ESTATE BROKERAGE - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-132505649.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "150479231",
+    "bedrooms": "1",
+    "price_aed": 1250000,
+    "size_sqft": 742,
+    "broker": "Rose Island Real estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-150479231.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155055675",
+    "bedrooms": "1",
+    "price_aed": 1556000,
+    "size_sqft": 1004,
+    "broker": "Crompton Partners Estate Agents AUH",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155055675.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160550424",
+    "bedrooms": "1",
+    "price_aed": 1260000,
+    "size_sqft": 787,
+    "broker": "Rose Island Real estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160550424.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "129298865",
+    "bedrooms": "studio",
+    "price_aed": 1092420,
+    "size_sqft": 530,
+    "broker": "LLJ",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-129298865.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "157790234",
+    "bedrooms": "1",
+    "price_aed": 1700000,
+    "size_sqft": 1068,
+    "broker": "Mirage Capital Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-157790234.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "152380235",
+    "bedrooms": "1",
+    "price_aed": 1150000,
+    "size_sqft": 742,
+    "broker": "Rose Island Real estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-152380235.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "140144608",
+    "bedrooms": "1",
+    "price_aed": 1440000,
+    "size_sqft": 830,
+    "broker": "ADVISORS TWO PROPERTIES - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-140144608.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "136114943",
+    "bedrooms": "2",
+    "price_aed": 2590000,
+    "size_sqft": 1412,
+    "broker": "ADVISORS TWO PROPERTIES - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-136114943.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "74232293",
+    "bedrooms": "3",
+    "price_aed": 3300000,
+    "size_sqft": 1833,
+    "broker": "Masterpiece Property LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-74232293.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "136074010",
+    "bedrooms": "1",
+    "price_aed": 1000000,
+    "size_sqft": 647,
+    "broker": "FIRST ONE REAL ESTATE - L.L.C - O.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-136074010.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168351213",
+    "bedrooms": "1",
+    "price_aed": 950000,
+    "size_sqft": 575,
+    "broker": "Spike Vista Real Estate - L.L.C - O.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168351213.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "157365223",
+    "bedrooms": "1",
+    "price_aed": 1015000,
+    "size_sqft": 533,
+    "broker": "CRYPTO ONE  PROPERTY INVESTMENT - L.L.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-157365223.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159601307",
+    "bedrooms": "2",
+    "price_aed": 2100000,
+    "size_sqft": 1300,
+    "broker": "Town Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159601307.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159662978",
+    "bedrooms": "1",
+    "price_aed": 1270000,
+    "size_sqft": 828,
+    "broker": "Masterpiece Property LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159662978.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "168801167",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 738,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-168801167.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "151921996",
+    "bedrooms": "1",
+    "price_aed": 1000000,
+    "size_sqft": 647,
+    "broker": "Infinity Homes Properties",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-151921996.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "132954171",
+    "bedrooms": "1",
+    "price_aed": 1350000,
+    "size_sqft": 882,
+    "broker": "Address Point Properties LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-132954171.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "167003943",
+    "bedrooms": "1",
+    "price_aed": 967000,
+    "size_sqft": 532,
+    "broker": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167003943.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160080965",
+    "bedrooms": "1",
+    "price_aed": 899999,
+    "size_sqft": 661,
+    "broker": "Banke International Properties - Abu Dhabi",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160080965.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "167871311",
+    "bedrooms": "1",
+    "price_aed": 1350000,
+    "size_sqft": 900,
+    "broker": "EMIRADIA REAL ESTATE - L.L.C - S.P.C",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-167871311.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "143743392",
+    "bedrooms": "1",
+    "price_aed": 1100000,
+    "size_sqft": 461,
+    "broker": "Nice View Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-143743392.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "145503347",
+    "bedrooms": "2",
+    "price_aed": 2950000,
+    "size_sqft": 1711,
+    "broker": "Megapolis Real Estate- AUH",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-145503347.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "140569732",
+    "bedrooms": "studio",
+    "price_aed": 1000000,
+    "size_sqft": 404,
+    "broker": "ALTURA REAL ESTATE SERVICES LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-140569732.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "155997967",
+    "bedrooms": "1",
+    "price_aed": 1822800,
+    "size_sqft": 1457,
+    "broker": "Megapolis Real Estate- AUH",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-155997967.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "129285576",
+    "bedrooms": "1",
+    "price_aed": 1749999,
+    "size_sqft": 1243,
+    "broker": "Sand Seekers Real Estate LLC",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-129285576.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "159170294",
+    "bedrooms": "1",
+    "price_aed": 1300000,
+    "size_sqft": 555,
+    "broker": "Rex Real Estate",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-159170294.html"
+   },
+   {
+    "type": "new_listing",
+    "id": "160080997",
+    "bedrooms": "1",
+    "price_aed": 1600000,
+    "size_sqft": 1069,
+    "broker": "Open Home Properties L.L.C.",
+    "url": "https://www.propertyfinder.ae/en/plp/buy/apartment-for-sale-abu-dhabi-al-reem-island-shams-abu-dhabi-radiant-marina-towers-160080997.html"
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-METROPOLIT",
+    "name": "METROPOLITAN CAPITAL REAL ESTATE - SOLE PROPRIETORSHIP L.L.C.",
+    "score": 86
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-PSIASSETSR",
+    "name": "PSI ASSETS REAL ESTATES LIMITED",
+    "score": 50
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-KENNEDYPRO",
+    "name": "Kennedy Property - Abu Dhabi",
+    "score": 48
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-MIRAGECAPI",
+    "name": "Mirage Capital Properties LLC",
+    "score": 44
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-CAPITALAVE",
+    "name": "Capital Avenue Real Estate",
+    "score": 28
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-OPENHOMEPR",
+    "name": "Open Home Properties L.L.C.",
+    "score": 22
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ROYALLOUNG",
+    "name": "Royal Lounge Properties",
+    "score": 22
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-MARKHOMERE",
+    "name": "MARK HOME REAL ESTATE MANAGEMENT - L.L.C",
+    "score": 22
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ADVISORSTW",
+    "name": "ADVISORS TWO PROPERTIES - L.L.C",
+    "score": 20
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-MASTERPIEC",
+    "name": "Masterpiece Property LLC",
+    "score": 19
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ROSEISLAND",
+    "name": "Rose Island Real estate",
+    "score": 17
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-URBANCITYP",
+    "name": "URBAN CITY  PROPERTY  - L.L.C - S.P.C",
+    "score": 17
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-MEGAPOLISR",
+    "name": "Megapolis Real Estate- AUH",
+    "score": 17
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ELIVAREALE",
+    "name": "ELIVA REAL ESTATE - L.L.C - S.P.C",
+    "score": 16
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ABCPROPERT",
+    "name": "ABC Properties",
+    "score": 16
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-SPIKEVISTA",
+    "name": "Spike Vista Real Estate - L.L.C - O.P.C",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-DEANSREALE",
+    "name": "Deans Real Estate Management L.L.C.",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ADVISORSPR",
+    "name": "ADVISORS PROPERTIES - L.L.C - S.P.C",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-IBUYREALES",
+    "name": "I Buy Real Estate",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-FIRSTONERE",
+    "name": "FIRST ONE REAL ESTATE - L.L.C - O.P.C",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-PROPERTYSH",
+    "name": "Property Shop Investment",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-CROMPTONPA",
+    "name": "Crompton Partners Estate Agents AUH",
+    "score": 14
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ALZAEEMLEL",
+    "name": "Al Zaeem Lel Sharq Al Awsat Real Estate",
+    "score": 12
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-HLANDREALE",
+    "name": "H LAND REAL ESTATE - L.L.C - S.P.C",
+    "score": 12
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-NATIONWIDE",
+    "name": "Nationwide Middle East Properties LLC",
+    "score": 12
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-EGCPROPERT",
+    "name": "EGC Properties LLC",
+    "score": 12
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-HUSPYABUDH",
+    "name": "Huspy Abu Dhabi",
+    "score": 12
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-BLACKOAKRE",
+    "name": "BlackOak Real Estate",
+    "score": 12
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-TOWNPROPER",
+    "name": "Town Properties",
+    "score": 10
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-AMLAKONERE",
+    "name": "AMLAK ONE REAL ESTATE L.L.C",
+    "score": 9
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-OIAPROPERT",
+    "name": "Oia Properties",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-SUSTAINBLE",
+    "name": "Sustainble Homes Real Estate",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-LOUVREINVE",
+    "name": "LOUVRE INVESTMENT REAL ESTATE - L.L.C - O.P.C",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-MDREALESTA",
+    "name": "MD Real Estate LLC",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-LINKHOMEPR",
+    "name": "Link Home Properties LLC",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ALTSPACEMA",
+    "name": "ALT SPACEMARKET PROPERTIES - L.L.C",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-BENCHMARKB",
+    "name": "BENCHMARK BROKERS REAL ESTATE BROKERAGE - L.L.C - S.P.C",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-LLJ",
+    "name": "LLJ",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-CRYPTOONEP",
+    "name": "CRYPTO ONE  PROPERTY INVESTMENT - L.L.C",
+    "score": 8
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-SAVILLSABU",
+    "name": "Savills Abu Dhabi",
+    "score": 6
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-INFINITYHO",
+    "name": "Infinity Homes Properties",
+    "score": 6
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-BANKEINTER",
+    "name": "Banke International Properties - Abu Dhabi",
+    "score": 6
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ALTURAREAL",
+    "name": "ALTURA REAL ESTATE SERVICES LLC",
+    "score": 6
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-SANDSEEKER",
+    "name": "Sand Seekers Real Estate LLC",
+    "score": 6
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-REXREALEST",
+    "name": "Rex Real Estate",
+    "score": 6
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-RESPECTREA",
+    "name": "RESPECT REAL ESTATE - L.L.C",
+    "score": 3
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-KATALPROPE",
+    "name": "KATAL PROPERTY INVESTEMENT - L.L.C",
+    "score": 2
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-ADDRESSPOI",
+    "name": "Address Point Properties LLC",
+    "score": 2
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-EMIRADIARE",
+    "name": "EMIRADIA REAL ESTATE - L.L.C - S.P.C",
+    "score": 2
+   },
+   {
+    "type": "new_broker",
+    "lead_id": "BRK-NICEVIEWRE",
+    "name": "Nice View Real Estate",
+    "score": 2
+   }
+  ],
+  "errors": [],
+  "finished_at": "2026-11-09T10:43:07Z"
+ }
+]
