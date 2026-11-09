@@ -120,11 +120,12 @@ Thank you,
     refs.forEach((r) => { g += `<line class="ref" x1="${m.l}" x2="${W - m.r}" y1="${Y(r.y)}" y2="${Y(r.y)}"/><text x="${W - m.r + 6}" y="${Y(r.y) + 4}">${esc(r.label)}</text>`; });
     let dots = "";
     series.forEach((s, si) => s.points.forEach((p, pi) => {
-      dots += `<g class="pt" data-s="${si}" data-p="${pi}"><circle cx="${X(p.x)}" cy="${Y(p.y)}" r="12" fill="transparent"/><circle cx="${X(p.x)}" cy="${Y(p.y)}" r="5" fill="${s.color}" stroke="var(--surface-1)" stroke-width="2"/></g>`;
+      const mark = `<g class="pt" data-s="${si}" data-p="${pi}"><circle cx="${X(p.x)}" cy="${Y(p.y)}" r="12" fill="transparent"/><circle cx="${X(p.x)}" cy="${Y(p.y)}" r="5" fill="${s.color}" stroke="var(--surface-1)" stroke-width="2"/></g>`;
+      dots += p.href ? `<a href="${esc(p.href)}" target="_blank" rel="noopener">${mark}</a>` : mark;
     }));
     host.innerHTML = `<div class="legend">${series.map((s) => `<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join("")}${refs.length ? `<span><i class="line"></i>Reference price</span>` : ""}</div>
       <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria)}">${g}${dots}</svg>`;
-    host.querySelectorAll(".pt").forEach((el) => { const p = series[+el.dataset.s].points[+el.dataset.p]; tipOn(el, p.tip); if (p.href) { el.style.cursor = "pointer"; el.addEventListener("click", () => window.open(p.href, "_blank", "noopener")); } });
+    host.querySelectorAll(".pt").forEach((el) => tipOn(el, series[+el.dataset.s].points[+el.dataset.p].tip));
   }
   function stripChart(host, items, marks, band) {
     const W = 760, H = 150, m = { l: 24, r: 24, t: 10, b: 28 };

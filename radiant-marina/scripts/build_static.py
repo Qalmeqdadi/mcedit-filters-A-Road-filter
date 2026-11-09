@@ -2,9 +2,10 @@
 """Bundle the dashboard and its current data into one self-contained HTML file (dist/dashboard.html).
 The snapshot is read-only with respect to the server: edits are kept in the viewer's browser only.
 
-    python3 scripts/build_static.py
+    python3 scripts/build_static.py              # dist/dashboard.html (standalone file)
+    python3 scripts/build_static.py --artifact   # dist/dashboard-artifact.html (page body only)
 """
-import json, os
+import json, os, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
@@ -32,7 +33,11 @@ def main():
     html = html.replace('<script src="app.js"></script>',
                         f"<script>window.__STATIC_DATA__ = {payload};</script>\n<script>\n{js}\n</script>")
     os.makedirs(os.path.join(ROOT, "dist"), exist_ok=True)
-    out = os.path.join(ROOT, "dist", "dashboard.html")
+    if "--artifact" in sys.argv:
+        # Page-body form for hosts that add their own <html>/<head>/<body> skeleton.
+        body = html.split("<body>", 1)[1].rsplit("</body>", 1)[0]
+        html = (f"<title>Radiant Marina Sale Desk</title>\n<style>\n{css}\n</style>\n{body}")
+    out = os.path.join(ROOT, "dist", "dashboard-artifact.html" if "--artifact" in sys.argv else "dashboard.html")
     with open(out, "w", encoding="utf8") as f:
         f.write(html)
     print(out, f"{os.path.getsize(out) / 1024:.0f} KB")
